@@ -1,0 +1,139 @@
+{
+    "result": 1,
+    "version": 2,
+    "tradeType": 3,
+    "data": [
+        {
+            "typeId": "01",
+            "typeName": "龙头",
+            "typeTypeId": "0101",
+            "typeTypeName": "台盆龙头"
+        },
+        {
+            "typeId": "01",
+            "typeName": "龙头",
+            "typeTypeId": "0102",
+            "typeTypeName": "浴缸龙头"
+        },
+        {
+            "typeId": "01",
+            "typeName": "龙头",
+            "typeTypeId": "0103",
+            "typeTypeName": "淋浴龙头"
+        },
+        {
+            "typeId": "01",
+            "typeName": "龙头",
+            "typeTypeId": "0104",
+            "typeTypeName": "厨房龙头"
+        },
+        {
+            "typeId": "01",
+            "typeName": "龙头",
+            "typeTypeId": "0105",
+            "typeTypeName": "妇洗盆龙头"
+        },
+        {
+            "typeId": "02",
+            "typeName": "陶瓷",
+            "typeTypeId": "0201",
+            "typeTypeName": "台盆"
+        },
+        {
+            "typeId": "02",
+            "typeName": "陶瓷",
+            "typeTypeId": "0202",
+            "typeTypeName": "座厕"
+        },
+        {
+            "typeId": "02",
+            "typeName": "陶瓷",
+            "typeTypeId": "0203",
+            "typeTypeName": "小便斗"
+        },
+        {
+            "typeId": "02",
+            "typeName": "陶瓷",
+            "typeTypeId": "0204",
+            "typeTypeName": "妇洗盆"
+        },
+        {
+            "typeId": "03",
+            "typeName": "浴缸",
+            "typeTypeId": "0301",
+            "typeTypeName": "空缸"
+        },
+        {
+            "typeId": "03",
+            "typeName": "浴缸",
+            "typeTypeId": "0302",
+            "typeTypeName": "按摩缸"
+        },
+        {
+            "typeId": "04",
+            "typeName": "淋浴房",
+            "typeTypeId": "0401",
+            "typeTypeName": "标准"
+        },
+        {
+            "typeId": "04",
+            "typeName": "淋浴房",
+            "typeTypeId": "0402",
+            "typeTypeName": "定制"
+        },
+        {
+            "typeId": "04",
+            "typeName": "淋浴房",
+            "typeTypeId": "0403",
+            "typeTypeName": "淋浴底盆"
+        },
+        {
+            "typeId": "05",
+            "typeName": "卫浴家居",
+            "typeTypeId": "05",
+            "typeTypeName": "卫浴家居"
+        },
+        {
+            "typeId": "06",
+            "typeName": "卫浴五金",
+            "typeTypeId": "06",
+            "typeTypeName": "卫浴五金"
+        },
+        {
+            "typeId": "07",
+            "typeName": "水槽",
+            "typeTypeId": "07",
+            "typeTypeName": "水槽"
+        },
+        {
+            "typeId": "08",
+            "typeName": "污水提升泵",
+            "typeTypeId": "08",
+            "typeTypeName": "污水提升泵"
+        },
+        {
+            "typeId": "09",
+            "typeName": "其他",
+            "typeTypeId": "09",
+            "typeTypeName": "其他"
+        },
+        {
+            "typeId": "10",
+            "typeName": "开关智能",
+            "typeTypeId": "10",
+            "typeTypeName": "开关智能"
+        },
+        {
+            "typeId": "11",
+            "typeName": "橱柜",
+            "typeTypeId": "11",
+            "typeTypeName": "橱柜"
+        },
+        {
+            "typeId": "12",
+            "typeName": "衣柜",
+            "typeTypeId": "12",
+            "typeTypeName": "衣柜"
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+@rem: 75rem;
+.form-control {
+  display: block;
+  width: 250/@rem;
+  height: 28/@rem;
+  line-height: 28/@rem;
+  box-sizing: border-box;
+  padding: 0px 8/@rem;
+  border: 1px solid #ddd;
+  border-radius: 4/@rem;
+  font-size: 24/@rem;
+  color: #666;
+
+  &:focus {
+    outline: 0;
+    border-color: #108ee9;
+    -webkit-box-shadow: rgba(16, 142, 233, 0.2) 0px 0px 10/@rem;  
+    -moz-box-shadow: rgba(16, 142, 233, 0.2) 0px 0px 10/@rem;  
+    box-shadow: rgba(16, 142, 233, 0.2) 0px 0px 10px/@rem; 
+    + .unit {
+      border-color: #a8e7e7;
+    }
+  }
+  &:hover {
+    outline: 0;
+    border-color: #108ee9;
+  }
+  &::placeholder {
+    color: #ddd;
+  }
+}
