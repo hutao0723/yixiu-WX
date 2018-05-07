@@ -1,6 +1,23 @@
 <template>
   <div class="store-main">
-    我的
+      <div class="user-box">
+        <div class="user-info">
+            <img :src="imageUrl" class="info-icon" />
+            <div class="info-text">{{username}}</div>
+        </div>
+        <div class="mt20 user-h110 row">
+          <div class="icon-box share column-center">
+            <i class="iconfont icon-recom user-icon"></i>
+          </div>
+          <div class="row ft32 ml30">推荐给好友</div>
+        </div>
+        <a class="mt20 user-h110 row" href="">
+          <div class="icon-box help column-center">
+            <i class="iconfont icon-help user-icon"></i>
+          </div>
+          <div class="row ft32 ml30">帮助中心</div>
+        </a>
+      </div>
   </div>
 </template>
 
@@ -10,7 +27,9 @@ export default {
   },
   data () {
     return {
-      data: {}
+      data: {},
+      imageUrl: 'https://yun.dui88.com/yoofans/images/201804/miniapp/help-center.png',
+      username: '哈哈'
     };
   },
   watch: {},
@@ -25,66 +44,65 @@ export default {
 
 <style lang="less">
 @import '../../../less/tool.less';
+.center-main{
+  background: #f4f4f4;
+  height:100%;
+}
 .store-main {
-  .my_header_v4{
-    position: relative;
-    height: 169/@rem;
-    margin: 0 auto;
-    background: #d34201 url(//gw.alicdn.com/tfscom/TB10.51HFXXXXXqXpXXYx6l2pXX-750-235.jpg_q90) no-repeat top center;
-    background-size: cover;
-    color: #fff;
-  }
-  .label-act{
-    height: 80/@rem;
-    line-height: 80/@rem;
-    padding-left: 24/@rem;
-    display: -webkit-box;
-    display: box;
-    .navItem{
-      display: -webkit-box;
-      display: box;
-      width: 100%;
+  .user-box{
+    height: 100%;
+    background:rgba(244,244,244,1);
+    box-sizing:border-box;
+    border-top: 2/@rem solid #F4F4F4;
+    .user-info{
+      width: 750/@rem;
+      height: 328/@rem; 
+      background: rgba(255,255,255,1);
+      padding: 1/@rem 0;
+    }
+    .info-icon{
+      height: 150/@rem;
+      margin: 54/@rem auto 0;
+      width: 150/@rem;
+      display: block;
+      border-radius: 50%;
+    }
+    .info-text{
+      text-align: center;
+      margin-top: 22/@rem;
+      height: 50/@rem; 
+      .fontSize(36);
+      color: rgba(68,68,68,1);
+      line-height: 50/@rem;
+    }
+    .user-h110{
+      height: 110/@rem;
+      background:rgba(255,255,255,1);
+      padding:0 30/@rem;
+      border-radius:0;
       color: #333;
-      font-weight: normal;
-      .iconfont{
-        &.icon{
-          width: 36/@rem;
-          height: 36/@rem;
-          .fontSize(30);
-          margin-right: 14/@rem;
-          color: #fd8839;
-          padding: 5/@rem 3/@rem;
-        }
-        &.right{
-          padding: 0 7/@rem;
-          color: #aaa;
-          position: absolute;
-          border-bottom: 1px solid #e7e7e7;
-        }
+    }
+    .ft32{
+      .fontSize(32);
+    }
+    .ml30{
+      margin-left:30/@rem;
+    }
+    .icon-box{
+      width: 50/@rem;
+      height: 50/@rem;
+      border-radius: 50%;
+      &.share{
+        background:rgba(255,78,81,1);
       }
-      .h1{
-        .fontSize(24);
-        width: 635/@rem;
-        border-bottom: 1px solid #e7e7e7;
-      }
-      .sub{
-        // .fontSize(20);
-        position: absolute;
-        right: 50/@rem;
+      &.help{
+        background:rgba(65,164,255,1);
       }
     }
-    &:last-child{
-      border-bottom: 0;
+    .user-icon{
+      color:#fff;
+      .fontSize(26);
     }
-  }
-  .line{
-    content: '';
-    display: block;
-    height: 17/@rem;
-    background: #f8f8f8;
-  }
-  .other{
-    margin-top: 20/@rem;
   }
 }
 </style>
