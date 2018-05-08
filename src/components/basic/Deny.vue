@@ -1,12 +1,11 @@
 <template>
-  <div class="notice-bar">
-    <div class="pop-mask"></div>
-    <div class="no-choice">
-      <img src="https://yun.dui88.com/yoofans/images/201804/miniapp/no-choice.png" class="cry-icon" />
-      <div class="tac word">你还未选择任何音频课程</div>
-      <div class="tac word">请先选择后在点击收听</div>
-      <button class="know">我知道了</button>
-    </div>
+  <div class="deny-box">
+      <img src="//yun.duiba.com.cn/yoofans/images/201804/miniapp/deny.png" class="icon"/>
+      <div class="tac mt88">小程序需要获取用户信息权限, </div>
+      <div class="tac">前往设置</div>
+      <button class="row-center go-set" @click="goGetSetting">
+        <div class="row-center ft32 ml30">去设置<i class="iconfont jiantou ft32"></i></div>
+      </button>
   </div>
 </template>
 <script>
@@ -15,84 +14,55 @@
       return {
         data: {}
       };
+    },
+    methods: {
+      goGetSetting (){
+        console.log("goGetSetting")
+      }
     }
   };
 </script>
 <style lang="less">
   @import url('../../assets/style/base/tool.less');
-  .pop-mask{
-    width: 750/@rem;
+   .deny-box{
     height: 100%;
-    position: fixed;
-    background: rgba(0,0,0,0.4971);
-    z-index: 1000;
-    top: 0;
-    left: 0;
-  }
-  .no-choice{
-    width:750/@rem;
-    height:540/@rem; 
-    background:rgba(255,251,251,1);
-    border-radius: 18/@rem 18/@rem 0 0; 
-    position: fixed;
-    bottom: -540/@rem;
-    z-index: 1001;
-    &.show{
-      animation: moveup 1s forwards;
-      -moz-animation: moveup 1s forwards; 
-      -webkit-animation: moveup 1s forwards;
-      -o-animation: moveup 1s forwards;
-      bottom: 80/@rem;
+    background: #fff;
+    padding:1/@rem 20/@rem;
+    box-sizing: border-box;
+    .go-set{
+      width: 223/@rem;
+      height: 63/@rem; 
+      line-height: 63/@rem; 
+      background: rgba(255,255,255,1);
+      border-radius: 8/@rem; 
+      margin: 44/@rem auto 0;
+      border: 2/@rem solid rgba(85,85,85,1);
     }
-    &.hide{
-      animation: movedown 1s forwards;
-      -moz-animation: movedown 1s forwards; 
-      -webkit-animation: movedown 1s forwards;
-      -o-animation: movedown 1s forwards;
-      bottom:-5400/@rem;
-    }
-    .cry-icon{
-      display:block;
-      margin: 81/@rem auto 26/@rem;
-      width: 150/@rem;
-      height: 146/@rem;
-      border-radius: 50%; 
+    .icon{
+      display: block;
+      width: 160/@rem;
+      height: 150/@rem;
+      margin: 350/@rem auto 0;
     }
     .tac{
+      .fontSize(30);
+      color: rgba(154,154,154,1);
+      line-height: 42/@rem;
       text-align: center;
     }
-    .word{
-      .fontSize(30);
-      line-height: 42/@rem;
-      color: rgba(136,136,136,1);
-      }
-    .know{
-      width: 640/@rem;
-      height: 80/@rem; 
-      border-radius: 6/@rem;
-      margin: 74/@rem auto 0;
-      background:inherit;
-      line-height: 80/@rem;
-      color:rgba(136,136,136,1);
-      display:block;
-      border: 1/@rem solid #979797;
+    .mt88{
+      margin-top: 88/@rem;
     }
-  }
-  @keyframes moveup{
-    from { 
-      bottom:-540/@rem; 
+    .ft32{
+      font-size: 32/@rem;
     }
-    to {
-      bottom:80/@rem; 
-    }   
+    .jiantou{
+      width: 14/@rem;
+      height: 14/@rem;
+      border-top: 2/@rem solid rgba(85,85,85,1);
+      border-right: 2/@rem solid rgba(85,85,85,1);
+      transform: rotate(45deg);
+      margin-left:5/@rem;
     }
-
-  @keyframes movedown{
-    from { 
-      bottom:80/@rem; 
-    }
-    to { 
-      bottom:-540/@rem;
-    }   
   }
 </style>

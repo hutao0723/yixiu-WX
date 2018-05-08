@@ -11,12 +11,14 @@
         </div>
         <div class="row ft32 ml30">推荐给好友</div>
       </div>
-      <a class="mtr20 user-h110 row" href="">
-        <div class="icon-box help column-center">
-          <i class="iconfont icon-help user-icon"></i>
+      <router-link :to="{ path: 'help' }">
+        <div class="mtr20 user-h110 row">
+          <div class="icon-box help column-center">
+            <i class="iconfont icon-help user-icon"></i>
+          </div>
+          <div class="row ft32 ml30">帮助中心</div>
         </div>
-        <div class="row ft32 ml30">帮助中心</div>
-      </a>
+      </router-link>
     </div>
 
     <Share/>
@@ -25,11 +27,9 @@
 
 <script>
 import Share from 'components/basic/Share';
-import Deny from 'components/basic/Deny';
 export default {
   components: {
-    Share,
-    Deny
+    Share
   },
   data () {
     return {
@@ -65,11 +65,11 @@ export default {
 
 <style lang="less">
 @import '../../../less/tool.less';
-.center-main{
-  background: #f4f4f4;
-  height:100%;
+.store-page{
+  height: 100%;
 }
 .store-main {
+  height: 100%;
   .user-box{
     height: 100%;
     background:rgba(244,244,244,1);

@@ -37,7 +37,7 @@ export default {
   -webkit-overflow-scrolling: touch;
   position: absolute;
   padding-bottom: 0;
-  z-index: 9;
+  // z-index: 9;
   background: #fff;
 }
 // --- 基础样式gobal_loading 加载动画 --- //
