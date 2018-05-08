@@ -1,6 +1,6 @@
 <template>
-  <div class="home-page">
-    <router-view></router-view>
+  <div class="course-page">
+    课程详情
   </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
     // if (!this.isLogin) {
     //   this.$router.push({ path: '/login' });
     // }
-    // this.setGoodsDetailAll();
+    this.setGoodsDetailAll();
   },
   methods: {
     setGoodsDetailAll: function () {

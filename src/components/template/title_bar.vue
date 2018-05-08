@@ -19,7 +19,7 @@ export default {
     // if (!this.isLogin) {
     //   this.$router.push({ path: '/login' });
     // }
-    // this.setGoodsDetailAll();
+    this.setGoodsDetailAll();
   },
   methods: {
     setGoodsDetailAll: function () {

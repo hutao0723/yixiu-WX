@@ -19,6 +19,7 @@ export default {
 </script>
 
 <style lang="less">
+@import "./less/icon";
 @import "./less/base";
 @import "./less/animate";
 

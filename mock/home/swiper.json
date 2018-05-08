@@ -1,0 +1,67 @@
+{
+    "success": true,
+    "data": {
+        "id": 167,
+        "pageId": 51,
+        "titleName": "",
+        "subTitle": "",
+        "componentType": "SWIPER",
+        "fillType": "aspectFill",
+        "carouselHeight":20,
+        "carouselWidth":40,
+        "showTitle" :true,
+        "layout": "MAX",
+        "tabs": [
+            {
+                "gmtModified": 1524117412000,
+                "pageComponentId": 167,
+                "deleted": 0,
+                "pictureUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
+                "linkType": 2,
+                "id": 102,
+                "gmtCreate": 1524117412000,
+                "linkDataJson": {"linkUrl":"https://www.baidu.com"}
+            },
+            {
+                "gmtModified": 1524117412000,
+                "pageComponentId": 167,
+                "deleted": 0,
+                "pictureUrl": "//yun.dui88.com/youfen/images/anmi290dka.jpg",
+                "linkType": 1,
+                "id": 104,
+                "gmtCreate": 1524117412000,
+                "linkDataJson": {"publishTime":"2018-04-19 12:00:00","gmtModified":"2018-04-19 10:21:10","courseType":1,"address":{"name":"10003.mp3","url":"knowledge/1524104430807"},"playTimes":0,"gmtCreate":"2018-04-19 10:21:10","title":"434","lecturerId":1,"timeLength":43,"subTitle":"434","rate":1000,"price":12000,"freeTime":22,"buyTimes":0,"id":114,"status":0}
+            },
+            {
+                "gmtModified": 1524117412000,
+                "pageComponentId": 167,
+                "deleted": 0,
+                "pictureUrl": "//yun.dui88.com/youfen/images/anmi290dka.jpg",
+                "linkType": 1,
+                "id": 104,
+                "gmtCreate": 1524117412000,
+                "linkDataJson": {"publishTime":"2018-04-19 12:00:00","gmtModified":"2018-04-19 10:21:10","courseType":2,"address":{"name":"10003.mp3","url":"knowledge/1524104430807"},"playTimes":0,"gmtCreate":"2018-04-19 10:21:10","title":"434","lecturerId":1,"timeLength":43,"subTitle":"434","rate":1000,"price":12000,"freeTime":22,"buyTimes":0,"id":114,"status":0}
+            },
+            {
+                "gmtModified": 1524117412000,
+                "pageComponentId": 168,
+                "deleted": 0,
+                "pictureUrl": "//yun.dui88.com/youfen/images/anmi290dka.jpg",
+                "linkType": 3,
+                "id": 105,
+                "gmtCreate": 1524117412000,
+                "linkDataJson": {"courseType":1,"appId":"","linkUrl":"/pages/index.html"}
+            },
+            {
+                "gmtModified": 1524117412000,
+                "pageComponentId": 168,
+                "deleted": 0,
+                "pictureUrl": "//yun.dui88.com/youfen/images/anmi290dka.jpg",
+                "linkType": 3,
+                "id": 106,
+                "gmtCreate": 1524117412000,
+                "linkDataJson": {"courseType":2,"appId":"wx12123232344","linkUrl":"/pages/index.html"}
+            }
+        ]
+    }
+}
