@@ -4,7 +4,7 @@
       <li v-for="(item, index) in navlist">
         <router-link :to="item.router">
           <p>
-            <i class="iconfont" v-html="item.icon"></i>
+            <i class="iconfont" :class="item.icon"></i>
           </p>
           <p>{{item.title}}</p>
         </router-link>
@@ -19,17 +19,17 @@
         navlist: [
           {
             title: '首页',
-            icon: '&#xe626;',
+            icon: 'icon-shouye',
             router: '/home/index'
           },
           {
             title: '已购',
-            icon: '&#xe61a;',
+            icon: 'icon-yigou1',
             router: '/cart'
           },
           {
             title: '我的',
-            icon: '&#xe689;',
+            icon: 'icon-wode',
             router: '/user'
           }
         ]
@@ -45,11 +45,11 @@
     bottom: -1px;
     right: 0;
     left: 0;
-    height: 60/@rem;
-    padding: 25/@rem 0;
-    background-color: #f5f5f5;
+    height: 70/@rem;
+    padding: 14/@rem 0;
+    background-color: #FFFFFF;
     box-shadow: 0 -5/@rem 5/@rem 0 rgba(150, 150, 150, 0.1);
-    .fontSize(24);
+    .fontSize(22);
     ul {
       li{
         width: 33%;
@@ -59,10 +59,10 @@
           line-height: 34/@rem;
         }
         i{
-          .fontSize(40);
+          .fontSize(32);
         }
         .router-link-active{
-          color: #ff6700;
+          color: #FF3E44;
         }
       }
     }

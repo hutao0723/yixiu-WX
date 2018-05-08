@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page">
+  <div class="audio-page">
     <router-view></router-view>
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
     // if (!this.isLogin) {
     //   this.$router.push({ path: '/login' });
     // }
-    // this.setGoodsDetailAll();
+    this.setGoodsDetailAll();
   },
   methods: {
     setGoodsDetailAll: function () {

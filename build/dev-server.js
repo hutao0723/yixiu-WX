@@ -73,29 +73,15 @@ devMiddleware.waitUntilValid(function () {
 })
 
 // ----- 路由 && mock - 动态查找所有index.html页面 ----- //
-// var files = glob.sync('./mock/*/mock.js');
+var files = glob.sync('./mock/*/mock.js');
 
-// files.forEach(function(f) {
-//   var fileHtmlPath = f.split('.')[1];
-//   var mock = require('..' + fileHtmlPath + '.js');
-//   var setOnline = mock.setOnline;
-//   // 动态获取mock
-//   setOnline.forEach(function(m) {
-//     app[m.type](m.url, mock[m.name]);
-//   });
-// });
-app.get('/datainter/dataFillServlet', function (req, res) {
-  var tradeType = req.query.tradeType;
-  fs.readFile(path.join(__dirname, '/../mock/cart/tradeType' + tradeType + '.json'), function (err, data) {
-    if (err) throw err;
-    res.json(JSON.parse(data));
-  });
-});
-app.post('/datainter/dataFillServlet', function (req, res) {
-  var tradeType = req.query.tradeType;
-  fs.readFile(path.join(__dirname, '/../mock/cart/tradeType' + tradeType + '.json'), function (err, data) {
-    if (err) throw err;
-    res.json(JSON.parse(data));
+files.forEach(function(f) {
+  var fileHtmlPath = f.split('.')[1];
+  var mock = require('..' + fileHtmlPath + '.js');
+  var setOnline = mock.setOnline;
+  // 动态获取mock
+  setOnline.forEach(function(m) {
+    app[m.type](m.url, mock[m.name]);
   });
 });
 

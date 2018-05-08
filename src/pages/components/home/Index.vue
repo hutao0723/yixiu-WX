@@ -1,19 +1,20 @@
 <template>
   <div class="homepage-main">
-    <banner></banner>
+    <swiper></swiper>
     <!-- <goods v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="40" :goods='goodsAll'></goods> -->
     <!-- <loading :loading="busy" class="loading"></loading> -->
   </div>
 </template>
 
 <script>
-import banner from 'components/layout/Banner';
+import config from '../../../api/config';
+import swiper from 'components/template/swiper';
 import goods from 'components/layout/Goods';
 import loading from 'components/layout/Loading';
 import { mapState } from 'vuex';
 export default {
   components: {
-    banner,
+    swiper,
     goods,
     loading
   },
@@ -49,18 +50,19 @@ export default {
   },
   methods: {
     getAllGoods () {
-      this.$http.get('/datainter/dataFillServlet?tradeType=35', {params: this.params}).then(res => {
-        res = res.body;
-        if (res.result === 1) {
-          this.busy = false;
-          let data = res.data;
-          let arr = this.goodsAll || [];
-          arr.push(...data);
-          this.goodsAll = arr;
-          // this.$store.dispatch('setGoodsAll', data);
-        }
-      }, (res) => {
-      });
+      // this.$http.get('/datainter/dataFillServlet?tradeType=35', {params: this.params}).then(res => {
+      //   res = res.body;
+      //   if (res.result === 1) {
+      //     this.busy = false;
+      //     let data = res.data;
+      //     let arr = this.goodsAll || [];
+      //     arr.push(...data);
+      //     this.goodsAll = arr;
+      //     // this.$store.dispatch('setGoodsAll', data);
+      //   }
+      // }, (res) => {
+      // });
+      config.layout()
     },
     loadMore: function () {
       this.busy = true;
