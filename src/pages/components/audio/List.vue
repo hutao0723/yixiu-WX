@@ -4,8 +4,7 @@
       <div v-for="item in list">
         <div class="audio-item row-between" @click="playAudio()">
           <div class="row-center" :class="!item.playing ? 'icon-paused' : 'icon-play'">
-            <!-- ../../images/svg/audio.svg -->
-            <img class="wave-icon" src=""  v-if="item.playing"/>
+            <img class="wave-icon" src="../../../images/audio.svg"  v-if="item.playing"/>
             <i class="iconfont icon-bofang" v-else></i>
           </div>
           <div class="content-bar column-between">
@@ -90,7 +89,7 @@ export default {
       background: @color-soft;
       border-radius: 50%;
       .wave-icon{
-        width: 20/@rem
+        width: 45/@rem
       }
       .iconfont {
         color: white;

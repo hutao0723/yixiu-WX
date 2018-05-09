@@ -9,6 +9,7 @@
       </div>
       <div class="controler column-between">
         <div class="slider-bar">
+          <!--播放器进度条-->
           <div></div>
           <div class="row-between timer">
             <span class="xs week row-center">{{currentTime}}</span>
@@ -211,6 +212,7 @@ export default {
         .btn-fetch{
           background:white;
           color: @colorbefore;
+          border:1px solid #ff464a;
         }
       }
       .buy-bar-after{
