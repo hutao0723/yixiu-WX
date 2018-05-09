@@ -1,6 +1,6 @@
 <template>
   <div class="deny-box">
-      <img src="//yun.duiba.com.cn/yoofans/images/201804/miniapp/deny.png" class="icon"/>
+      <img src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/deny.png" class="icon"/>
       <div class="tac mt88">小程序需要获取用户信息权限, </div>
       <div class="tac">前往设置</div>
       <button class="row-center go-set" @click="goGetSetting">

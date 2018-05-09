@@ -1,5 +1,5 @@
 <template>
-  <div class="share">
+  <div class="share" v-if="guide">
     <div class="share-mask"></div>
     <div class="share-point">
       <img src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/jiantou.png" class="arrow" />
@@ -12,11 +12,13 @@
   export default {
     data () {
       return {
-        data: {}
+        data: {},
+        guide: true
       };
     },
     methods: {
       know (){
+        this.guide = false;
         console.log("I know")
       }
     }

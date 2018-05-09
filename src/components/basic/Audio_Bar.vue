@@ -1,9 +1,8 @@
 <template>
   <div>
-    <!--  @tap="goAudioPage" -->
-    <div class="audio-controler row"  :class="bottom ? 'bt130' : 'bt40'" > 
+    <div class="audio-controler row"  :class="bottom ? 'bt130' : 'bt40'" @click="goAudioPage"> 
       <div class="right-bar row-around" style="background-repeat:no-repeat;background-size:100% 100%;" 
-      :style="{background:`url(${audioData.coverImgUrl ? audioData.coverImgUrl : baseImg}`}" >
+      :style="{backgroundImage:`url(${audioData.coverImgUrl ? audioData.coverImgUrl : baseImg}`}" >
         <div class="icon-play column-center" :class="audioData.paused ? 'line' : 'mask'">
           <i class="iconfont icon-bofang" v-if="audioData.paused"></i>
           <img class="" src="" v-else/>
@@ -12,31 +11,32 @@
     </div>
     <div class="notice-bar">
       <div class="pop-mask" v-if="notice"></div>
-      <div class="no-choice" :class="{show:animation && notice, hide:animation && !notice}">
-        <img src="//yun.duiba.com.cn/yoofans/images/201804/miniapp/no-choice.png" class="cry-icon" />
+      <div class="no-choice" :class="{showin:animation && notice, hideout:animation && !notice}">
+        <img src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/no-choice.png" class="cry-icon" />
         <div class="tac word">你还未选择任何音频课程</div>
         <div class="tac word">请先选择后在点击收听</div>
-        <button class="know" @tap="hideNotice">我知道了</button>
+        <button class="know" @click="hideNotice">我知道了</button>
       </div>
     </div>
   </div>
 </template>
 <script>
   export default {
+    props : {
+      bottom: {
+        default: false
+      }
+    },
     data () {
       return {
-        baseImg: '//yun.dui88.com/yoofans/images/201804/miniapp/player.png',
+        baseImg: 'https://yun.dui88.com/yoofans/images/201804/miniapp/player.png',
         audioData: {
           current: 0,
           duration: 0,
           paused: true
         },
-        bottom: 1,
         notice: false,
         animation: false
-
-        // asdsa: `url(${audioData.coverImgUrl ? audioData.coverImgUrl : baseImg}asdasd`
-        // asdsa: 
 
       };
     },
@@ -70,7 +70,7 @@
   &.bt130{
     bottom: 130/@rem;
   }
-   &.bt40{
+  &.bt40{
     bottom: 40/@rem;
   }
   .right-bar{
@@ -116,19 +116,17 @@
     position: fixed;
     bottom: -540/@rem;
     z-index: 1001;
-    &.show{
+    &.showin{
       animation: moveup 1s forwards;
       -moz-animation: moveup 1s forwards; 
       -webkit-animation: moveup 1s forwards;
       -o-animation: moveup 1s forwards;
-      bottom: 0/@rem;
     }
-    &.hide{
+    &.hideout{
       animation: movedown 1s forwards;
       -moz-animation: movedown 1s forwards; 
       -webkit-animation: movedown 1s forwards;
       -o-animation: movedown 1s forwards;
-      bottom:-540/@rem;
     }
     .cry-icon{
       display:block;
