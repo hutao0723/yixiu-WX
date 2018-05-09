@@ -9,7 +9,7 @@
             <i class="iconfont icon-bofang" v-else></i>
           </div>
           <div class="content-bar column-between">
-            <span class="lg  line1 strong" :class="!item.playing ? 'strong' : 'soft'">{{item.title}}</span>
+            <span class="lg  line1" :class="!item.playing ? 'strong' : 'soft'">{{item.title}}</span>
             <div class="info-bar row-between">
               <div class="duration">
                 <i class="iconfont icon-clock mr10"></i>

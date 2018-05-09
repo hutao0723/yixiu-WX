@@ -21,7 +21,7 @@
       </router-link>
     </div>
 
-    <!-- <AudioBar/>  -->
+    <AudioBar/>
   </div>
 </template>
 

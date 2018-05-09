@@ -1,8 +1,9 @@
 <template>
   <div>
     <!--  @tap="goAudioPage" -->
-    <div class="audio-controler row"  style="bottom: 65px" > 
-      <div class="right-bar row-around" >
+    <div class="audio-controler row"  :class="bottom ? 'bt130' : 'bt40'" > 
+      <div class="right-bar row-around" style="background-repeat:no-repeat;background-size:100% 100%;" 
+      :style="{background:`url(${audioData.coverImgUrl ? audioData.coverImgUrl : baseImg}`}" >
         <div class="icon-play column-center" :class="audioData.paused ? 'line' : 'mask'">
           <i class="iconfont icon-bofang" v-if="audioData.paused"></i>
           <img class="" src="" v-else/>
@@ -11,8 +12,8 @@
     </div>
     <div class="notice-bar">
       <div class="pop-mask" v-if="notice"></div>
-      <div class="no-choice show">
-        <img src="//yun.dui88.com/yoofans/images/201804/miniapp/no-choice.png" class="cry-icon" />
+      <div class="no-choice" :class="{show:animation && notice, hide:animation && !notice}">
+        <img src="//yun.duiba.com.cn/yoofans/images/201804/miniapp/no-choice.png" class="cry-icon" />
         <div class="tac word">你还未选择任何音频课程</div>
         <div class="tac word">请先选择后在点击收听</div>
         <button class="know" @tap="hideNotice">我知道了</button>
@@ -30,8 +31,13 @@
           duration: 0,
           paused: true
         },
+        bottom: 1,
         notice: false,
         animation: false
+
+        // asdsa: `url(${audioData.coverImgUrl ? audioData.coverImgUrl : baseImg}asdasd`
+        // asdsa: 
+
       };
     },
     methods: {
@@ -43,6 +49,7 @@
         } else {
           this.notice = false
           this.animation = false
+          // this.$root.$navigate('/pages/play/audio_detail')
         }
       },
       hideNotice: function(){
@@ -60,7 +67,12 @@
   right: 60/@rem;
   bottom: 40/@rem;
   z-index: 20;
-  
+  &.bt130{
+    bottom: 130/@rem;
+  }
+   &.bt40{
+    bottom: 40/@rem;
+  }
   .right-bar{
     width: @size;
     height: @size;
@@ -109,14 +121,14 @@
       -moz-animation: moveup 1s forwards; 
       -webkit-animation: moveup 1s forwards;
       -o-animation: moveup 1s forwards;
-      bottom: 80/@rem;
+      bottom: 0/@rem;
     }
     &.hide{
       animation: movedown 1s forwards;
       -moz-animation: movedown 1s forwards; 
       -webkit-animation: movedown 1s forwards;
       -o-animation: movedown 1s forwards;
-      bottom:-5400/@rem;
+      bottom:-540/@rem;
     }
     .cry-icon{
       display:block;
@@ -150,13 +162,13 @@
       bottom:-540/@rem; 
     }
     to {
-      bottom:80/@rem; 
+      bottom:0/@rem; 
     }   
     }
 
   @keyframes movedown{
     from { 
-      bottom:80/@rem; 
+      bottom:0/@rem; 
     }
     to { 
       bottom:-540/@rem;
