@@ -2,14 +2,13 @@
   <div class="">
     <div class="audio-list">
       <div v-for="item in list">
-        <div class="audio-item row-between">
+        <div class="audio-item row-between" @click="playAudio()">
           <div class="row-center" :class="!item.playing ? 'icon-paused' : 'icon-play'">
-            <!-- ../../images/svg/audio.svg -->
-            <img class="wave-icon" src=""  v-if="item.playing"/>
+            <img class="wave-icon" src="../../../images/audio.svg"  v-if="item.playing"/>
             <i class="iconfont icon-bofang" v-else></i>
           </div>
           <div class="content-bar column-between">
-            <span class="lg  line1 strong" :class="!item.playing ? 'strong' : 'soft'">{{item.title}}</span>
+            <span class="lg line1" :class="!item.playing ? 'strong' : 'soft'">{{item.title}}</span>
             <div class="info-bar row-between">
               <div class="duration">
                 <i class="iconfont icon-clock mr10"></i>
@@ -38,12 +37,18 @@ export default {
       list:[
         {
           playing: 1,
+          title: '学会这几种方法学会这几种方法学会这几种方法学会这几种方法',
+          duration: '04:06',
+          percent: 30
+        },
+        {
+          playing: 0,
           title: '学会这几种方法',
           duration: '04:06',
           percent: 30
-
         }
-      ]
+      ],
+      option: {}
     };
   },
   mounted () {
@@ -60,6 +65,9 @@ export default {
         console.log(res);
         this.$store.dispatch('setGoodsDetailAll', res.data);
       });
+    },
+    playAudio(item) {
+        
     }
   }
 };
@@ -81,7 +89,7 @@ export default {
       background: @color-soft;
       border-radius: 50%;
       .wave-icon{
-        width: 20/@rem
+        width: 45/@rem
       }
       .iconfont {
         color: white;
