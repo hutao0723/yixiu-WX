@@ -1,5 +1,5 @@
 @import "variable";
-@rem: 46.875rem;
+@rem: 75rem;
 
 html, body, div, span, object, iframe,h1, h2, h3, h4, h5, h6, p, pre,a, acronym, address, big, 
 cite, code, em, img, small, strike, strong, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label,
@@ -39,10 +39,6 @@ li {
   list-style: none;
 }
 
-input,
-button {
-  border: 0;
-}
 button {
   padding: 0;
 }
@@ -54,9 +50,6 @@ a:active {
 ins, a {
   color: #333;
   text-decoration: none;
-}
-fieldset, img, button, input {
-  border: 0;
 }
 button, input, select, textarea {
   font-size: 100%;
@@ -143,10 +136,6 @@ input {
   top: 0;
   bottom: 0;
   z-index: 10;
-}
-page{
-  height: 100%;
-  background-color: @color-bg-body;
 }
 
 //******外边距原子样式******/
@@ -292,9 +281,6 @@ button[type="primary"][plain]{
   background-color: @color-warm;
 }
 /*分享按钮*/
-button[plain]{
-  border:none;
-}
 button.pain-btn[open-type="share"]{
   background-color: transparent;
   line-height: normal;
@@ -340,6 +326,6 @@ button.pain-btn[open-type="share"]::after {
   width: 100%;
   display: -webkit-box;
   overflow: hidden;
-  -webkit-box-orient: vertical;
+  -webkit-box-orient: vertical !important;;
   -webkit-line-clamp: 2;
 }

@@ -1,58 +1,109 @@
 <template>
-  <div class="banner" v-if="banner && banner.length">
-    <Swipe class="index_banner my-swipe" :auto="5000" v-if="banner.length">
-      <Swipe-item v-for="(item, index) in banner" class="slide" :class="'slide' + index">
-        <a :href="item.url || 'javascript:;'"
-        @click="clickBanner({'item': item, 'index': index})">
-          <img :src="item.imgUrl + '?x-oss-process=image/quality,Q_60'" >
-        </a>
-      </Swipe-item>
-    </Swipe>
+  <div class="column-between goods-grid-two-box" @tap="routeToCourse(goods)">
+    <div class="icon-fetch">
+      <span class="xxs white" v-if="!goods.price">{{goods.playTimes + '人已听'}}</span>
+      <span class="xxs white" v-else>{{goods.buyTimes + '人已购'}}</span>
+    </div>
+    <!--图片-->
+    <div class="goods-container">
+      <img class="goods-image" :src="goods.lateralCover || goods.verticalCover || 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png'" />
+    </div>
+    <div class="main-box column-between">
+      <span class="sm primary line2 title">{{goods.title}}</span>
+      <div class="bottom row-between">
+        <span class="nm warm line1" style="width:200px" v-if="goods.price && !goods.checkPower">{{'¥ ' + goods.price}}</span>
+        <span class="sm warm line1" style="width:200px" v-if="goods.price && goods.checkPower">已购买</span>
+        <span class="sm warm line1" style="width:200px" v-if="!goods.price">免费</span>
+        <button type="primary" plain hover-class="none" class="btn-icon" @tap.stop="routeByIconAction(goods)" v-if="goods.price && goods.checkPower">
+          <i class="iconfont icon-bofang2"></i>{{goods.fetchText}}
+        </button>
+        <button type="primary" plain hover-class="none" class="btn-icon" @tap.stop="routeByIconAction(goods)" v-if="!goods.price">
+          <i class="iconfont icon-bofang2"></i>{{goods.fetchText}}
+        </button>
+        <button type="primary" plain hover-class="none" class="btn-fetch" @tap.stop="routeByIconAction(goods)" v-if="goods.price && !goods.checkPower">{{goods.fetchText}}</button>
+      </div>
+      
+    </div>
   </div>
 </template>
+
 <script>
-  import { Swipe, SwipeItem } from 'components/swipe';
+  // import router from '../../../mixins/router';
   export default {
-    components: {
-      Swipe,
-      SwipeItem
+    props: {
+      goods: Object
     },
-    data () {
-      return {
-        banner: [
-          {
-            imgUrl: '//yun.duiba.com.cn/maila/images/jx3ipguwlg.jpg',
-            url: ''
-          }
-        ]
+    methods: {}
+    // mixins = [router]
+  }
+</script>
+
+<style lang="less">
+  @import "../../../less/variable";
+  .goods-grid-two-box{
+    @size: 320/@rem;
+    position: relative;
+    background-color: white;
+    width: @size;
+    height: 360/@rem;
+    padding-top: 34/@rem;
+    .icon-fetch{
+      width: 314/@rem;
+      height: 45/@rem;
+      position: absolute;
+      background:linear-gradient(180deg,rgba(255,255,255,0),rgba(0,0,0,0.64));
+      border-radius: 10/@rem;
+      top: 214/@rem;
+      left: 0;
+      padding:0 0 4/@rem 6/@rem;
+      line-height: 58/@rem;
+      .iconfont{
+        color: white;
+        font-size: @text-xxs;
       };
-    },
-    methods: {
-      clickBanner () {
-        // console.log(111);
-      },
-      getBannerData () {
-        let self = this;
-        this.$http.post('/banner/list', {}).then((res) => {
-          if (res && res.data && res.data.success && res.data.list) {
-            var list = res.data.list;
-            if (list && list.length) {
-            }
-            self.banner = res.data.list;
-          } else {
-            // @TODO 商品数据为空
-          }
-        }, () => {
-          // @TODO 网络错误
-        });
+    }
+    .goods-container{
+      width: 100%;
+      height: 230/@rem;
+      border-radius:10/@rem;
+      overflow: hidden;
+    }
+    .goods-image{
+      width: 100%;
+      height: 230/@rem;
+    }
+    .main-box{
+      width: 100%;
+      margin-top: 16/@rem;
+      .title{
+        height: 76/@rem;
+      }
+      .btn-fetch{
+        display: block;
+        width:110/@rem;
+        height:45/@rem; 
+        line-height: 45/@rem;
+        text-align: center;
+        border: 0;
+        border-color: transparent;
+        background:linear-gradient(90deg,rgba(255,62,68,1),rgba(255,99,77,1));
+        border-radius: 45/@rem; 
+        font-size: @text-nm;
+      }
+      .btn-icon{
+        display: block;
+        width:110/@rem;
+        height:45/@rem; 
+        color:rgba(255,70,74,1);
+        line-height: 40/@rem;
+        text-align: center;
+        background:white;
+        border-radius: 45/@rem; 
+        font-size: @text-nm;
+        .iconfont{
+          font-size: @text-nm;
+        }
       }
     }
-  };
-</script>
-<style lang="less">
-@import url('../../assets/style/base/tool.less');
-  .banner{
-    height: 220/@rem;
-    border: 1px solid #ccc;
   }
 </style>

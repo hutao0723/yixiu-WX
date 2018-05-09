@@ -1,33 +1,52 @@
 <template>
-  <div class="home-page">
-    <router-view></router-view>
+  <div class="title-bar" @click="routeByBlockAction(param)">
+    <div class="main-box row-between title-padding" v-if="param.layout === 'BASE'">
+      <span class="xxxl hard weight">{{param.titleName}}</span>
+      <div class=" row-center" v-if="param.subTitle">
+        <span class="nm weak row-center">{{param.subTitle}}</span>
+        <div class="column-center"><i class="iconfont icon-more "></i></div>
+      </div>
+    </div>
+    <div class="main-box row-center border-more" v-if="param.layout == 'CENTER'">
+      <span class="nm weak row-center">{{param.subTitle || ''}}</span>
+      <div class="column-center"><i class="iconfont icon-more "></i></div>
+    </div>
   </div>
 </template>
-
 <script>
-import { mapState } from 'vuex';
+  // import router from '../../mixins/router';
+  export default{
+    props: {
+      param: {}
+    },
+    async mounted () {
+    },
+    methods: {
+    },
+    // mixins = [router]
+  }
+</script>
 
-export default {
-  computed: {
-    ...mapState({
-      isLogin: state => state.isLogin
-    })
-  },
-  mounted () {
-    // this.$store.dispatch('setWhichpage', '首页');
-    // // 返回登录页面
-    // if (!this.isLogin) {
-    //   this.$router.push({ path: '/login' });
-    // }
-    this.setGoodsDetailAll();
-  },
-  methods: {
-    setGoodsDetailAll: function () {
-      this.$http.get('/datainter/dataFillServlet?tradeType=23').then(res => {
-        console.log(res);
-        this.$store.dispatch('setGoodsDetailAll', res.data);
-      });
+<style lang="less">
+  @import "../../less/variable.less";
+  .title-bar{
+    background: white;
+    .border-more{
+      padding: 0 0 16/@rem 0;
+      margin: 0/@rem 30/@rem 0 30/@rem;
+    }
+    .weight{
+      font-weight: bold;
+    }
+    .title-padding{
+      padding: 34/@rem 30/@rem 0/@rem 30/@rem;
+    }
+    .main-box{
+      height: 56/@rem;
+      .iconfont{
+        color: @color-weak;
+        font-size: 34/@rem;
+      }
     }
   }
-};
-</script>
+</style>

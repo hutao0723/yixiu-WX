@@ -8,6 +8,9 @@
         "fillType": "",
         "showTitle": 1,
         "layout": "BASE",
-        "linkUrl": "www.baidu.com"
+        "linkUrl": "www.baidu.com",
+        "blankHeight": 20,
+        "blankWidth": 750,
+        "blankFillColor": "#999"
     }
 }

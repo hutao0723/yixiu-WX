@@ -1,33 +1,27 @@
 <template>
-  <div class="home-page">
-    <router-view></router-view>
+  <div class="blank-bar" :style="{width: blankWidth,height: blankHeight,background: param.blankFillColor,margin: '0 auto'}">
   </div>
 </template>
-
 <script>
-import { mapState } from 'vuex';
-
-export default {
-  computed: {
-    ...mapState({
-      isLogin: state => state.isLogin
-    })
-  },
-  mounted () {
-    // this.$store.dispatch('setWhichpage', '首页');
-    // // 返回登录页面
-    // if (!this.isLogin) {
-    //   this.$router.push({ path: '/login' });
-    // }
-    this.setGoodsDetailAll();
-  },
-  methods: {
-    setGoodsDetailAll: function () {
-      this.$http.get('/datainter/dataFillServlet?tradeType=23').then(res => {
-        console.log(res);
-        this.$store.dispatch('setGoodsDetailAll', res.data);
-      });
-    }
+  export default {
+    props: {
+      param: {}
+    },
+    computed: {
+      blankWidth: function (val) {
+        return (this.param.blankWidth) / 75 + 'rem'; 
+      },
+      blankHeight: function (val){
+        return (this.param.blankHeight) / 75 + 'rem';
+      }
+    },
+    async mounted () {
+    },
+    methods: {
+    },
+    mixins: []
   }
-};
 </script>
+
+<style lang="less">
+</style>
