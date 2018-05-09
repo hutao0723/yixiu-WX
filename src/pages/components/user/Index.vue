@@ -40,7 +40,7 @@ export default {
   },
   watch: {},
   mounted () {
-    // this.getAllStocks();
+    this.getUserInfo();
   },
   methods: {
     // share: function () {
@@ -59,6 +59,18 @@ export default {
     //     }
     //   });
     // }
+    getUserInfo () {
+      this.$http.get('/user/getUserInfo').then(res => {
+        let resp = res.data
+        // console.log(resp.data)
+        if (resp.success) {
+          this.username = resp.data.nickname;
+          this.imageUrl = resp.data.headimgurl;
+        } else {
+          console.log("获取用户信息失败")
+        }
+      });
+    }
   }
 };
 </script>
