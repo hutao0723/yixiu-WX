@@ -23,6 +23,10 @@
           {
             imgUrl: '//yun.duiba.com.cn/maila/images/jx3ipguwlg.jpg',
             url: ''
+          },
+          {
+            imgUrl: '//yun.duiba.com.cn/maila/images/jx3ipguwlg.jpg',
+            url: ''
           }
         ]
       };
@@ -52,7 +56,11 @@
 <style lang="less">
 @import url('../../assets/style/base/tool.less');
   .banner{
-    height: 220/@rem;
-    border: 1px solid #ccc;
+    height: 280/@rem;
+    width: 690/@rem;
+    margin: 0 auto;
+    border-radius:10/@rem;
+    box-shadow:0 10/@rem 10/@rem 0 rgba(235,235,235,0.6);
+
   }
 </style>
