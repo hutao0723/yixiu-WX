@@ -1,36 +1,48 @@
 <template>
   <div class="homepage-main">
-    <swiper></swiper>
     <!-- <goods v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="40" :goods='goodsAll'></goods> -->
     <!-- <loading :loading="busy" class="loading"></loading> -->
+    <div class="template-box" v-for="(item, index) in components">
+      <!--顶部标题-->
+        <TitleBar v-if="item.componentType === 'TITLE'" :param.sync="item" />
+
+      <!--轮播图-->  
+        <SwiperBar v-if="item.componentType === 'SWIPER'" :param.sync="item" />
+
+      <!--商品组-->
+        <GoodsBox v-if="item.componentType === 'GOODSBOX'" :param.sync="item" />
+
+      <!--留白-->
+        <BlankBar v-if="item.componentType == 'BLANK'" :param.sync="item" />
+    </div>
   </div>
 </template>
 
 <script>
 import config from '../../../api/config';
-import swiper from 'components/template/swiper';
+import SwiperBar from 'components/template/swiper_bar';
+import TitleBar from 'components/template/title_bar';
+import GoodsBox from 'components/template/goods_box';
+import BlankBar from 'components/template/blank_bar';
 import goods from 'components/layout/Goods';
 import loading from 'components/layout/Loading';
 import { mapState } from 'vuex';
 export default {
   components: {
-    swiper,
-    goods,
+    TitleBar,
+    SwiperBar,
+    BlankBar,
+    GoodsBox,
     loading
   },
   data () {
     return {
       data: {},
-      mock: '',
-      transform: '',
-      busy: false,
-      params: {
-        brandName: '',
-        gradeName: '',
-        pageNow: 1,
-        pageCount: 20
-      },
-      goodsAll: ''
+      init: false,
+      notice: false,
+      animation: false,
+      params:'',
+      components: []
     };
   },
   computed: {
@@ -38,8 +50,8 @@ export default {
       // goodsAll: state => state.goodsAll
     })
   },
-  mounted () {
-    this.getAllGoods();
+  async mounted () {
+    await this.renderTemplatePage();
   },
   watch: {
     'busy': function (val) {
@@ -49,20 +61,32 @@ export default {
     }
   },
   methods: {
-    getAllGoods () {
-      // this.$http.get('/datainter/dataFillServlet?tradeType=35', {params: this.params}).then(res => {
-      //   res = res.body;
-      //   if (res.result === 1) {
-      //     this.busy = false;
-      //     let data = res.data;
-      //     let arr = this.goodsAll || [];
-      //     arr.push(...data);
-      //     this.goodsAll = arr;
-      //     // this.$store.dispatch('setGoodsAll', data);
-      //   }
-      // }, (res) => {
-      // });
-      config.layout()
+     /**
+     * 渲染页面
+     */
+    async renderTemplatePage() {
+      console.log('渲染页面的方法')
+      const layout = (await config.layout()).body.data;
+      let page = [];
+      let that = this;
+      Promise.all(JSON.parse(layout.componentSections).map(function(item, i){
+        return new Promise(function(resolve, reject){
+           resolve(config.component(item.componentType, item.componentId))
+        }).then(res => page[i] = res.body.data )
+      })).then(function(data){
+        let processData = config.processPage(layout, page)
+        that.params = processData.params;
+        that.components = processData.components;
+        that.components.forEach(item=>{
+          if(item.componentType == 'GOODSBOX'){
+            item['navActive'] = 0;
+          }
+          console.log('通过这个步骤渲染页面')
+        })
+        // that.loaded();
+        console.log(that.components)
+        console.info(`[template] render template page success`);
+      })
     },
     loadMore: function () {
       this.busy = true;

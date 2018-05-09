@@ -1,58 +1,97 @@
 <template>
-  <div class="banner" v-if="banner && banner.length">
-    <Swipe class="index_banner my-swipe" :auto="5000" v-if="banner.length">
-      <Swipe-item v-for="(item, index) in banner" class="slide" :class="'slide' + index">
-        <a :href="item.url || 'javascript:;'"
-        @click="clickBanner({'item': item, 'index': index})">
-          <img :src="item.imgUrl + '?x-oss-process=image/quality,Q_60'" >
-        </a>
-      </Swipe-item>
-    </Swipe>
+  <div class="row goods-nopic-box" @click.stop="routeByIconAction(goods)">
+    <div class="main-box row">
+      <!--左边栏-->
+      <div class="left-bar row-between on-play">
+        <div class="icon-fecth column-center" :class="goods.playing ? 'icon-play' : 'icon-paused'">
+          <img class="" src="https://yun.dui88.com/youfen/images/audio.svg" v-if="goods.playing" />
+          <i class="iconfont icon-bofang" v-else></i>
+        </div>
+        <span class="nm line1 title" :class="goods.playing ? 'soft' : 'strong'">{{goods.title}}</span>
+      </div>
+      <!--右边栏-->
+      <div class="right-bar">
+        <span class="xs week line1 c999">{{goods.duration}}</span>
+      </div>
+    </div>
   </div>
+
 </template>
+
 <script>
-  import { Swipe, SwipeItem } from 'components/swipe';
+  // import router from '../../../mixins/router';
   export default {
-    components: {
-      Swipe,
-      SwipeItem
-    },
-    data () {
-      return {
-        banner: [
-          {
-            imgUrl: '//yun.duiba.com.cn/maila/images/jx3ipguwlg.jpg',
-            url: ''
-          }
-        ]
-      };
+    props: {
+      goods: {}
     },
     methods: {
-      clickBanner () {
-        // console.log(111);
-      },
-      getBannerData () {
-        let self = this;
-        this.$http.post('/banner/list', {}).then((res) => {
-          if (res && res.data && res.data.success && res.data.list) {
-            var list = res.data.list;
-            if (list && list.length) {
-            }
-            self.banner = res.data.list;
-          } else {
-            // @TODO 商品数据为空
-          }
-        }, () => {
-          // @TODO 网络错误
-        });
+    }
+    // mixins = [router]
+  }
+</script>
+
+<style lang="less">
+  @import "../../../less/variable";
+  .goods-nopic-box{
+    @size: 40/@rem;
+    align-items: center;
+    padding: 10/@rem 0;
+    .main-box{
+      height: @size;
+      flex: 1;
+      .left-bar{
+        width: 620/@rem;
+        height: @size;
+        .icon-fetch{
+          width: @size;
+          height: @size;
+          background:rgba(255,62,68, 1);
+          border-radius: 50%;
+          .iconfont{
+            color: white;
+            font-size: @text-xxs;
+          };
+        }
+        .icon-play{
+          width: 40/@rem;
+          height: 40/@rem;
+          border-radius: 50%;
+          background:rgba(255,70,74,1);
+          .iconfont{
+            color: white;
+            font-size: 16/@rem;
+          };
+        }
+        .icon-paused{
+          width: 40/@rem;
+          height: 40/@rem;
+          background:rgba(255,255,255,1);
+          box-shadow: 0px 2px 17px 0px rgba(164,164,164,0.5);
+          border-radius: 50%;
+          .iconfont{
+            color: rgba(255,70,74,1);
+            font-size: 16/@rem;
+          };
+        }
+        .title{
+          width: 560/@rem;
+        }
+      }
+      .right-bar{
+        width: 70/@rem;
+        height: @size;
+        align-items: flex-end;
+        span{
+          display: block;
+          width: 100%;
+          height:@size; 
+          line-height: @size;
+          text-align: right;
+        }
       }
     }
-  };
-</script>
-<style lang="less">
-@import url('../../assets/style/base/tool.less');
-  .banner{
-    height: 220/@rem;
-    border: 1px solid #ccc;
+    .c999{
+      color: #999;
+    }
   }
 </style>
