@@ -28,9 +28,14 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/datainter/dataFillServlet': {
-            target: 'http://115.236.12.122:8080'
+      '/apis': {
+        // 测试环境
+        target: 'https://k.youfen666dev.com',  // 接口域名
+        changeOrigin: true,  //是否跨域
+        pathRewrite: {
+          '^/apis': ''   //需要rewrite重写的,
         }
+      },
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
