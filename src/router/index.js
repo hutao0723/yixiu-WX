@@ -60,7 +60,16 @@ export default new Router({
             resolve(require('../pages/components/user/Index'));
           }, 'user');
         }
-      }]
+      },
+      {
+        path: 'help',
+        component: function (resolve) {
+          require.ensure([], function () {
+            resolve(require('../pages/components/user/Help'));
+          }, 'help');
+        }
+      }
+      ]
     },
     {
       path: '/activity/:id',
