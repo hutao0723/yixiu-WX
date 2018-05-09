@@ -1,11 +1,10 @@
 <template>
   <div class="cart-page">
-    已购
     <div class="page-list">
       <div class="item" v-for="(item,index) in cartList" :key="index">
-        <div class="item-img-big" v-show="item.lateralCover" :style="{backgroundImage: `url(${item.lateralCover})`}"></div>
+        <div class="item-img" v-show="item.lateralCover" :style="{backgroundImage: `url(${item.lateralCover})`}"></div>
         <div class="item-img-small" v-show="!item.lateralCover&&item.verticalCover" :style="{backgroundImage: `url(${item.verticalCover})`}"></div>
-        <div class="item-img-none" v-show="!item.lateralCover&&!item.verticalCover" :style="{backgroundImage: `url('//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
+        <div class="item-img" v-show="!item.lateralCover&&!item.verticalCover" :style="{backgroundImage: `url('//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
         <span class="item-title">{{item.title}}</span>
         <span class="item-sub" v-if="item.subTitle">{{item.subTitle}}</span>
         <span class="item-new" v-if="item.latestSubTitle">最新：{{item.latestSubTitle}}</span>
@@ -18,10 +17,16 @@
           <i class="iconfont icon-play"></i>播放</a>
       </div>
     </div>
+    <div class="page-none" v-if="cartList.length == 0">
+      <img src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/zanwushuju.png" class="none-img" />
+      <p class="none-text">暂无数据</p>
+      <a href="javascript:void(0)" class="none-btn">去逛逛</a>
+    </div>
   </div>
 </template>
 
 <script>
+  import httpServer from '../../../api/api';
   export default {
     data() {
       return {
@@ -35,13 +40,12 @@
             "currentReadTitle": '最新再度最新再度最新再度最新再度最新再度',
             "playbackProgress": 21,
             "timeLength": 100,
-            "lateralCover": "https://yun.dui88.com/youfen/images/z6qj8zsviw.jpg",
             "verticalCover": "https://yun.dui88.com/youfen/images/z6qj8zsviw.jpg"
           },
           {
             "title": "篮球课程上线",
             "subTitle": "这是关于学习篮球技巧的课程",
-            "itemType": 0,
+            "itemType": 1,
             "courseId": 80,
             "playbackProgress": 21,
             "timeLength": 100,
@@ -56,6 +60,11 @@
       }
     },
     mounted() {
+      let params = {
+        // dbredirect: 'www.baidu.com'
+      }
+      let res = httpServer('get','/apis/user/getUserInfo',params)
+      // location.href = 'k.youfen666dev.com/loginH5?dbredirect=https://www.baidu.com'
     },
     computed: {
     },
@@ -74,6 +83,18 @@
       border-bottom: 1/@rem solid #D8D8D8;
       position: relative;
       height: 216/@rem;
+      .item-img {
+        .size(214, 156);
+        .pos(0, 30);
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        border-radius: 5rpx;
+        overflow: hidden;
+      }
+      .item-img-small {
+        .pos(42, 30);
+        .size(116, 156);
+      }
 
       .item-title {
         .pos(235, 34);
@@ -122,6 +143,29 @@
         right: 0;
         bottom: 35/@rem;
       }
+    }
+  }
+
+  .page-none {
+    .none-img {
+      .pos(248, 147);
+      .size(258, 283);
+    }
+    .none-text {
+      .text(32, 45);
+      .pos(0, 483);
+      text-align: center;
+      width: 100%;
+      color: #787878;
+    }
+    .none-btn {
+      .size(200, 58);
+      .pos(275, 611);
+      .text(30, 58);
+      color: #ff464a;
+      border: 2/@rem solid #ff464a;
+      text-align: center;
+      border-radius: 45/@rem;
     }
   }
 </style>

@@ -1,9 +1,9 @@
 <template>
   <div class="column-page">
     <div class="page-header">
-      <div class="header-img-big" v-show="detailObj.lateralCover" :style="{backgroundImage: `url(${detailObj.lateralCover})`}"></div>
+      <div class="header-img" v-show="detailObj.lateralCover" :style="{backgroundImage: `url(${detailObj.lateralCover})`}"></div>
       <div class="header-img-small" v-show="!detailObj.lateralCover&&detailObj.verticalCover" :style="{backgroundImage: `url(${detailObj.verticalCover})`}"></div>
-      <div class="header-img-none" v-show="!detailObj.lateralCover&&!detailObj.verticalCover" :style="{backgroundImage: `url('//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
+      <div class="header-img" v-show="!detailObj.lateralCover&&!detailObj.verticalCover" :style="{backgroundImage: `url('//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
       <div class="header-name-bg"></div>
       <div class="header-name">
         <span v-if="detailObj.price>0">{{detailObj.buyTimes}}人已购</span>
@@ -55,6 +55,8 @@
 
 <script>
   import { mapState } from 'vuex';
+  import httpServer from '../api/api';
+  
 
   export default {
     data() {
