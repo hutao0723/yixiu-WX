@@ -24,7 +24,6 @@ export default {
   methods: {
     setGoodsDetailAll: function () {
       this.$http.get('/datainter/dataFillServlet?tradeType=23').then(res => {
-        console.log(res);
         this.$store.dispatch('setGoodsDetailAll', res.data);
       });
     }
