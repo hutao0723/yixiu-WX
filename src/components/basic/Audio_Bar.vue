@@ -5,7 +5,7 @@
       :style="{backgroundImage:`url(${audioData.coverImgUrl ? audioData.coverImgUrl : baseImg}`}" >
         <div class="icon-play column-center" :class="audioData.paused ? 'line' : 'mask'">
           <i class="iconfont icon-bofang" v-if="audioData.paused"></i>
-          <img class="" src="../../../images/audio.svg" v-else/>
+          <img class="" src="../../images/audio.svg" v-else/>
         </div>
       </div>
     </div>

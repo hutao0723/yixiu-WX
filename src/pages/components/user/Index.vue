@@ -21,15 +21,15 @@
       </router-link>
     </div>
 
-    <Share/>
+    <AudioBar/>
   </div>
 </template>
 
 <script>
-import Share from 'components/basic/Share';
+import AudioBar from 'components/basic/Audio_Bar';
 export default {
   components: {
-    Share
+    AudioBar
   },
   data () {
     return {
