@@ -66,7 +66,7 @@
   position: fixed;
   right: 60/@rem;
   bottom: 40/@rem;
-  z-index: 20;
+  z-index: 101;
   &.bt130{
     bottom: 130/@rem;
   }

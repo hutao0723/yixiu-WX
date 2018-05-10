@@ -11,9 +11,9 @@
     <div class="main-box column-between">
       <span class="sm primary line2 title">{{goods.title}}</span>
       <div class="bottom row-between">
-        <span class="nm warm line1" style="width:200px" v-if="goods.price && !goods.checkPower">{{'¥ ' + goods.price}}</span>
-        <span class="sm warm line1" style="width:200px" v-if="goods.price && goods.checkPower">已购买</span>
-        <span class="sm warm line1" style="width:200px" v-if="!goods.price">免费</span>
+        <span class="nm warm line1 w200"  v-if="goods.price && !goods.checkPower">{{'¥ ' + goods.price}}</span>
+        <span class="sm warm line1 w200"  v-if="goods.price && goods.checkPower">已购买</span>
+        <span class="sm warm line1 w200"  v-if="!goods.price">免费</span>
         <button type="primary" plain hover-class="none" class="btn-icon" @tap.stop="routeByIconAction(goods)" v-if="goods.price && goods.checkPower">
           <i class="iconfont icon-bofang2"></i>{{goods.fetchText}}
         </button>
@@ -45,7 +45,7 @@
     position: relative;
     background-color: white;
     width: @size;
-    height: 360/@rem;
+    height: 364/@rem;
     padding-top: 34/@rem;
     .icon-fetch{
       width: 314/@rem;
@@ -53,7 +53,7 @@
       position: absolute;
       background:linear-gradient(180deg,rgba(255,255,255,0),rgba(0,0,0,0.64));
       border-radius: 10/@rem;
-      top: 214/@rem;
+      top: 213/@rem;
       left: 0;
       padding:0 0 4/@rem 6/@rem;
       line-height: 58/@rem;
@@ -78,6 +78,9 @@
       .title{
         height: 76/@rem;
       }
+      .w200{
+        width: 200/@rem;
+      }
       .btn-fetch{
         display: block;
         width:110/@rem;
@@ -95,11 +98,11 @@
         width:110/@rem;
         height:45/@rem; 
         color:rgba(255,70,74,1);
-        line-height: 40/@rem;
         text-align: center;
         background:white;
         border-radius: 45/@rem; 
         font-size: @text-nm;
+        border: 1/@rem solid #FF464A;
         .iconfont{
           font-size: @text-nm;
         }

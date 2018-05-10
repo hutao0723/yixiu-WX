@@ -5,8 +5,9 @@
       <transition name="router-fade" mode="out-in">
         <router-view></router-view>
       </transition>
+      <bnav></bnav>
     </div>
-    <bnav></bnav>
+    
   </div>
 </template>
 

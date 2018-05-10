@@ -7,7 +7,7 @@
         "componentType": "GOODSBOX",
         "fillType": "aspectFill",
         "showTitle": 1,
-        "layout": "GRID_3",
+        "layout": "NOPIC",
         "linkUrl": "商品组链接",
         "tabs": [
             {
@@ -34,7 +34,7 @@
                     },
                     {
                         "itemType": 2,
-                        "verticalCover": "//yun.dui88.com/maila/images/280.png",
+                        "verticalCover": "//yun.duiba.com.cn/maila/images/jx3ipguwlg.jpg",
                         "price": 0,
                         "checkPower": false,
                         "columnId": 699,
