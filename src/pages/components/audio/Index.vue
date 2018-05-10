@@ -33,7 +33,7 @@
             <span class="remind nm " v-if="!audioData.tryEnd && audioData.columnId">试听免费课程，购买后收听完整专栏</span>
             <span class="remind nm " v-if="!audioData.tryEnd && !audioData.columnId">免费试听前{{audioData.watchable}}秒，购买后收听完整版</span>
             <span class="remind nm " v-if="audioData.tryEnd">试听结束，购买后收听完整版</span>
-            <button type="primary" class="btn-fetch row-center" @tap="goPay">
+            <button type="primary" plain hover-class="none" class="btn-fetch row-center" @tap="goPay">
               直接购买
             </button>
           </div>
@@ -202,6 +202,7 @@ export default {
           height:56/@rem; 
           border-radius: 45/@rem; 
           font-size: @text-sm;
+          border: 1/@rem solid #ff464a;
         }
       }
       .buy-bar-before{

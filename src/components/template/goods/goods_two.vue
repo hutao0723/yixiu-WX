@@ -97,6 +97,7 @@
         display: block;
         width:110/@rem;
         height:45/@rem; 
+        line-height:40/@rem; 
         color:rgba(255,70,74,1);
         text-align: center;
         background:white;
