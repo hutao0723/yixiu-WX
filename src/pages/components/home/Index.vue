@@ -22,11 +22,10 @@
 <script>
 import config from '../../../api/config';
 import AudioBar from 'components/basic/Audio_Bar';
-import SwiperBar from 'components/template/swiper_bar';
-import TitleBar from 'components/template/title_bar';
-import GoodsBox from 'components/template/goods_box';
-import BlankBar from 'components/template/blank_bar';
-import goods from 'components/layout/Goods';
+import SwiperBar from 'components/layout/swiper_bar';
+import TitleBar from 'components/layout/title_bar';
+import GoodsBox from 'components/layout/goods_box';
+import BlankBar from 'components/layout/blank_bar';
 import loading from 'components/layout/Loading';
 import { mapState } from 'vuex';
 export default {
@@ -69,13 +68,13 @@ export default {
      */
     async renderTemplatePage() {
       console.log('渲染页面的方法')
-      const layout = (await config.layout()).body.data;
+      const layout = (await config.layout());
       let page = [];
       let that = this;
       Promise.all(JSON.parse(layout.componentSections).map(function(item, i){
         return new Promise(function(resolve, reject){
            resolve(config.component(item.componentType, item.componentId))
-        }).then(res => page[i] = res.body.data )
+        }).then(res => page[i] = res )
       })).then(function(data){
         let processData = config.processPage(layout, page)
         that.params = processData.params;

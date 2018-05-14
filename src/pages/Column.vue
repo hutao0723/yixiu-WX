@@ -105,7 +105,7 @@
     methods: {
       // 获取专栏详情
       getColumnDetail(id) {
-        this.$axios.get('/floor/column/getCourses?columnId=115').then(res => {
+        this.$http.get('/floor/column/getCourses?columnId=115').then(res => {
         })
       },
 

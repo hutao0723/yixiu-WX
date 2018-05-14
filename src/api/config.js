@@ -7,7 +7,7 @@ export default class config extends base {
    */
   static layout() {
     const url = `/floor/page?isHome=true`;
-    return this.get(url, { params: {} }).then(data => { return data });
+    return this.get(url, {params:{}}).then(res => {return res.body.data});
   }
 
   /**
@@ -16,14 +16,14 @@ export default class config extends base {
   static layoutAc(pageId) {
     const id = pageId;
     const url = `/floor/page?isHome=false`;
-    return this.get(url, { id }).then(data => { return data });
+    return this.get(url, {params:{id}}).then(res => {return res.body.data});
   }
   /**
    * 获取模块数据
    */
   static async component(floorType, componentId) {
     const url = `/floor/${floorType}/${componentId}`;
-    return this.get(url);
+    return this.get(url).then(res => {return res.body.data});
   }
 
   // *** 数据处理方法
@@ -63,15 +63,14 @@ export default class config extends base {
   static processComponents(page) {
     page.map(component => {
       // 处理轮播模块数据
-      if (component.componentType === 'SWIPER') {
-        component.tabs.forEach(tab => {
-          tab.fillType = component.fillType;
-          tab.pictureUrl = 'https:' + tab.pictureUrl;
-        })
-      }
+      // if (component.componentType === 'SWIPER') {
+      //   component.tabs.forEach(tab => {
+      //     tab.fillType = component.fillType;
+      //     tab.pictureUrl = 'https:' + tab.pictureUrl;
+      //   })
+      // }
       // 处理商品组模块数据
       if (component.componentType === 'GOODSBOX') {
-        // let audioData = wepy.$instance.globalData.audioData;
         component.tabs.forEach(tab => {
           tab.goods.forEach(good => {
             // 图片填充方式
@@ -89,13 +88,7 @@ export default class config extends base {
             // 价格处理
             if (good.price) good.price = (+good.price / 100).toFixed(2);
             // 音频时长处理
-            good.duration = play.fmtTime(good.timeLength)
-            // 播放状态
-            // if (audioData && audioData.columnId) {
-            //   if (good.itemType == 2 && good.columnId == audioData.columnId)  good.playing = true;
-            // } else if (audioData && !audioData.columnId) {
-            //   if (good.itemType == 1 && good.courseId == audioData.courseId)  good.playing = true;
-            // }
+            good.duration = play.fmtTime(good.timeLength);
           });
           // 展示商品个数
           if (!tab.showAll) tab.goods = tab.goods.slice(0, tab.showLimitNumber);
