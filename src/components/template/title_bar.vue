@@ -14,7 +14,7 @@
   </div>
 </template>
 <script>
-  // import router from '../../mixins/router';
+  import router from '../../mixins/router';
   export default{
     props: {
       param: {}
@@ -23,7 +23,7 @@
     },
     methods: {
     },
-    // mixins = [router]
+    mixins: [router]
   }
 </script>
 

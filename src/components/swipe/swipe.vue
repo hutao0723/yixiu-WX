@@ -503,7 +503,7 @@
     display: none;
     a, img {
       width: 100%;
-      height: 220/@rem;
+      height: 280/@rem;
       display: block;
       border-radius: 10/@rem;
     }
@@ -530,11 +530,11 @@
     border-radius: 100/@rem;
     background: #ccc;
     margin: 0 5/@rem;
-    background: pink; 
+    background: black; 
   }
 
   .mint-swipe-indicator.is-active {
-    width: 30/@rem;
-    background: grey;
+    width: 10/@rem;
+    background: red;
   }
 </style>

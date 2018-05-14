@@ -22,35 +22,36 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
-  import store from '../../../vuex/store'
-  export default {
-    computed: {
-    },
-    data() {
-      return {
-        list: [
-          {
-            playing: 1,
-            title: '学会这几种方法学会这几种方法学会这几种方法学会这几种方法',
-            duration: '04:06',
-            percent: 30
-          },
-          {
-            playing: 0,
-            title: '学会这几种方法',
-            duration: '04:06',
-            percent: 30
-          }
-        ],
-        option: {}
-      };
-    },
-    mounted() {
-
-    },
-    methods: {
-      playAudio(item) {
+import { mapState } from 'vuex';
+import store from '../../../vuex/store'
+export default {
+  computed: {
+    
+  },
+  data () {
+    return {
+      list:[
+        {
+          playing: 1,
+          title: '学会这几种方法学会这几种方法学会这几种方法学会这几种方法',
+          duration: '04:06',
+          percent: 30
+        },
+        {
+          playing: 0,
+          title: '学会这几种方法',
+          duration: '04:06',
+          percent: 30
+        }
+      ],
+      option: {}
+    };
+  },
+  mounted () {
+    
+  },
+  methods: {
+    playAudio(item) {
         store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
         store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title);
         store.commit('play');

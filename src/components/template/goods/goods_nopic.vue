@@ -19,14 +19,14 @@
 </template>
 
 <script>
-  // import router from '../../../mixins/router';
+  import router from '../../../mixins/router';
   export default {
     props: {
       goods: {}
     },
     methods: {
-    }
-    // mixins = [router]
+    },
+    mixins: [router]
   }
 </script>
 
