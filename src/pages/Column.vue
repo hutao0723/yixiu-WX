@@ -57,16 +57,17 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+  import {
+    mapState
+  } from 'vuex';
   import store from '../vuex/store'
   import order from '../api/order'
-  
+
 
   export default {
     data() {
       return {
-        detailObj: {
-        },
+        detailObj: {},
         tabActive: true,
         btnActive: 1,
         courseList: []
@@ -85,7 +86,6 @@
       this.getColumnDetail(this.$route.params.columnId)
       this.getColumnList(this.$route.params.columnId)
     },
-<<<<<<< HEAD
     filters: {
       // 时长
       formatTimeText: function (value) {
@@ -94,13 +94,6 @@
 
         let data = (h < 10 ? '0' + h : h) + '分' + (m < 10 ? '0' + m : m) + '秒'
         return data
-=======
-    methods: {
-      // 获取专栏详情
-      getColumnDetail(id) {
-        this.$http.get('/floor/column/getCourses?columnId=115').then(res => {
-        })
->>>>>>> be1f14eb3628f649bd73ce45c7c6e54879862be0
       },
       // 时长
       formatTime: function (value) {
@@ -127,7 +120,15 @@
         //   self.detailObj = res.data.data
         // });
         let obj = await order.getColumnDetail(id)
+        if (obj.powerLevel == 1 || obj.price == 0) {
+          this.btnActive = 2;
+        } else if (obj.watchable == 1) {
+          this.btnActive = 1;
+        } else {
+          this.btnActive = 0;
+        }
         this.detailObj = obj
+
       },
       // 获取详情
       async getColumnList(id) {
@@ -140,12 +141,11 @@
         let obj = await order.getColumnList(id)
         this.courseList = obj
       },
-      getPay() {
-      },
-      goAudition() {
-      },
+      getPay() {},
+      goAudition() {},
     },
   };
+
 </script>
 <style lang="less" scoped>
   @import "../assets/style/base/util";
@@ -353,4 +353,5 @@
       background: linear-gradient(90deg, rgba(255, 80, 72, 1), rgba(255, 99, 77, 1));
     }
   }
+
 </style>

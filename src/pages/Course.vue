@@ -27,17 +27,20 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+  import {
+    mapState
+  } from 'vuex';
   import store from '../vuex/store'
 
   import order from '../api/order'
   export default {
     data() {
       return {
-        detailObj: {
-        },
+        detailObj: {},
         tabActive: true,
         btnActive: 1,
+
+
         courseList: []
 
       }
@@ -87,14 +90,20 @@
         //   self.detailObj = res.data.data
         // });
         let obj = await order.getCourseDetail(id)
+        if (obj.powerLevel == 1 || obj.price == 0) {
+          this.btnActive = 2;
+        } else if (obj.freeTime > 0) {
+          this.btnActive = 1;
+        } else {
+          this.btnActive = 0;
+        }
         this.detailObj = obj
       },
-      getPay() {
-      },
-      goAudition() {
-      },
+      getPay() {},
+      goAudition() {},
     },
   };
+
 </script>
 <style lang="less" scoped>
   @import "../assets/style/base/util";
@@ -302,4 +311,5 @@
       background: linear-gradient(90deg, rgba(255, 80, 72, 1), rgba(255, 99, 77, 1));
     }
   }
+
 </style>
