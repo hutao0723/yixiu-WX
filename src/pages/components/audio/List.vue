@@ -26,7 +26,7 @@ import { mapState } from 'vuex';
 import store from '../../../vuex/store'
 export default {
   computed: {
-    ...mapState()
+    
   },
   data () {
     return {

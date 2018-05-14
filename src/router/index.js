@@ -96,7 +96,7 @@ export default new Router({
       }
     },
     {
-      path: '/audioindex',
+      path: '/audio/index',
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../pages/components/audio/Index'));
@@ -104,7 +104,7 @@ export default new Router({
       }
     },
     {
-      path: '/list',
+      path: '/audio/list',
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../pages/components/audio/List'));

@@ -7,8 +7,7 @@
        * 处理跳转到播放列表页
        */
       routeToAudioList() {
-        console.log(1222)
-        this.$router.push(`/list`)
+        this.$router.push(`/audio/list`)
       },
       /**
        * 处理跳转到课程／专栏详情
@@ -39,14 +38,22 @@
           case 1:
             if (checkPower || !price) {
               // 播放
-              this.$emit('playAudio', columnId, courseId);
+              // this.$emit('playAudio', columnId, courseId);
+              store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
+              store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
+              store.commit('play');
             } else {
               if (watchable) {
                 // 试听
-                this.$root.$navigate(`/pages/play/audio_detail?courseId=${courseId}`);
+                // this.$root.$navigate(`/pages/play/audio_detail?courseId=${courseId}`);
+                store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
+                store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
+                store.commit('play');
+                this.$router.push(`/audio/index`);
               } else {
                 // 购买
-                this.$root.$navigate(`/pages/course/course_detail?courseId=${courseId}`);
+                // this.$root.$navigate(`/pages/course/course_detail?courseId=${courseId}`);
+                this.$router.push(`/course/${courseId}`);
               }
             }
             break;
@@ -54,17 +61,20 @@
           case 2:
             if (checkPower || !price) {
               // 播放
-              this.$emit('playAudio', columnId, courseId);
+              store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
+              store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
+              store.commit('play');
             } else {
               if (watchable) {
                 // 试听
                 store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
                 store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
                 store.commit('play');
-                this.$router.push(`/audioindex`)
+                this.$router.push(`/audio/index`);
               } else {
                 // 购买
-                this.$root.$navigate(`/pages/column/column_detail?columnId=${columnId}&isbuy=${false}`);
+                // this.$root.$navigate(`/pages/column/column_detail?columnId=${columnId}&isbuy=${false}`);
+                this.$router.push(`/column/${columnId}`)
               }
             }
             break;
@@ -80,28 +90,23 @@
         switch (linkType) {
           case 1:
             // 跳转商品
-            if (linkData.courseType == 1) this.$root.$navigate(`/pages/course/course_detail?courseId=${linkData.id}`);
-            if (!linkData.courseType || linkData.courseType == 2) this.$root.$navigate(`/pages/column/column_detail?columnId=${linkData.id}`);
+            if (linkData.courseType == 1) this.$router.push(`/course/${linkData.id}`);
+            if (!linkData.courseType || linkData.courseType == 2) this.$router.push(`/column/${linkData.id}`);
             break;
           case 2:
-            // 跳转webview
-            let url = encodeURIComponent(linkData.linkUrl)
-            this.$root.$navigate(`/pages/activity/web?url=${url}`);
+            // 跳转外链
+            window.location.href=`${linkData.linkUrl}`;
             break;
           case 3:
             // 小程序链接
             if (linkData.courseType == 1) {
-              if (linkData.linkUrl == '/pages/home/tmp_home' || linkData.linkUrl == '/pages/cart/cart' || linkData.linkUrl == '/pages/user/user') {
-                this.$root.$switch(linkData.linkUrl);
-              } else {
-                this.$root.$navigate(linkData.linkUrl);
-              }
+              this.$router.push(`${linkData.linkUrl}`);
             }
             if (linkData.courseType == 2) {
-              wepy.navigateToMiniProgram({
-                appId: linkData.appId,
-                path: linkData.linkUrl
-              })
+              // wepy.navigateToMiniProgram({
+              //   appId: linkData.appId,
+              //   path: linkData.linkUrl
+              // })
             }
             break;
         }
