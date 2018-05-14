@@ -2,22 +2,21 @@ import base from './base';
 import play from './play';
 
 export default class config extends base {
-
   /**
    * 获取首页布局视图
    */
   static layout() {
     const url = `/floor/page?isHome=true`;
-    return this.get(url, {params:{}}).then(data => {return data});
+    return this.get(url, { params: {} }).then(data => { return data });
   }
-  
+
   /**
    * 获取活动页布局视图
    */
   static layoutAc(pageId) {
     const id = pageId;
     const url = `/floor/page?isHome=false`;
-    return this.get(url, {id}).then(data => {return data});
+    return this.get(url, { id }).then(data => { return data });
   }
   /**
    * 获取模块数据
@@ -49,11 +48,11 @@ export default class config extends base {
     if (layout == null || layout == '') {
       return {};
     } else {
-      const {pageTitle, backgroundColor} = layout;
-      const {shareDescribe, sharePictureUrl} = layout;
-      const navigation = {pageTitle, backgroundColor};
-      const shareConfig = {shareDescribe, sharePictureUrl};
-      const params = {navigation, shareConfig};
+      const { pageTitle, backgroundColor } = layout;
+      const { shareDescribe, sharePictureUrl } = layout;
+      const navigation = { pageTitle, backgroundColor };
+      const shareConfig = { shareDescribe, sharePictureUrl };
+      const params = { navigation, shareConfig };
       return params;
     }
   }
@@ -61,7 +60,7 @@ export default class config extends base {
   /**
    * 处理页面的组件
    */
-  static processComponents (page) {
+  static processComponents(page) {
     page.map(component => {
       // 处理轮播模块数据
       if (component.componentType === 'SWIPER') {
@@ -82,9 +81,9 @@ export default class config extends base {
               good.fetchText = '播放';
             } else {
               if (good.watchable) {
-               good.fetchText = '试听';
+                good.fetchText = '试听';
               } else {
-               good.fetchText = '购买';
+                good.fetchText = '购买';
               }
             };
             // 价格处理
@@ -105,5 +104,7 @@ export default class config extends base {
     })
     return page;
   }
+  
+
 
 }
