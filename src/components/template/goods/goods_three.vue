@@ -1,6 +1,6 @@
 <template>
   <div class="column goods-grid-three-box" @click="routeToCourse(goods)">
-    <div class="icon-fetch column-center" v-if="!goods.price || goods.checkPower || goods.watchable" @tap.stop="routeByIconAction(goods)">
+    <div class="icon-fetch column-center" v-if="!goods.price || goods.checkPower || goods.watchable" @click.stop="routeByIconAction(goods)">
       <i class="iconfont icon-bofang"></i>
     </div>
     <!--图片-->
@@ -17,13 +17,13 @@
 </template>
 
 <script>
-  // import router from '../../../mixins/router';
+  import router from '../../../mixins/router';
   export default {
     props: {
       goods: {}
     },
-    methods: {}
-    // mixins = [router]
+    methods: {},
+    mixins: [router]
   }
 </script>
 

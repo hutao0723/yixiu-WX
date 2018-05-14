@@ -1,5 +1,5 @@
 <template>
-  <div class="column-between goods-grid-two-box" @tap="routeToCourse(goods)">
+  <div class="column-between goods-grid-two-box" @click="routeToCourse(goods)">
     <div class="icon-fetch">
       <span class="xxs white" v-if="!goods.price">{{goods.playTimes + '人已听'}}</span>
       <span class="xxs white" v-else>{{goods.buyTimes + '人已购'}}</span>
@@ -14,13 +14,13 @@
         <span class="nm warm line1 w200"  v-if="goods.price && !goods.checkPower">{{'¥ ' + goods.price}}</span>
         <span class="sm warm line1 w200"  v-if="goods.price && goods.checkPower">已购买</span>
         <span class="sm warm line1 w200"  v-if="!goods.price">免费</span>
-        <button type="primary" plain hover-class="none" class="btn-icon" @tap.stop="routeByIconAction(goods)" v-if="goods.price && goods.checkPower">
+        <button type="primary" plain hover-class="none" class="btn-icon" @click.stop="routeByIconAction(goods)" v-if="goods.price && goods.checkPower">
           <i class="iconfont icon-bofang2"></i>{{goods.fetchText}}
         </button>
-        <button type="primary" plain hover-class="none" class="btn-icon" @tap.stop="routeByIconAction(goods)" v-if="!goods.price">
+        <button type="primary" plain hover-class="none" class="btn-icon" @click.stop="routeByIconAction(goods)" v-if="!goods.price">
           <i class="iconfont icon-bofang2"></i>{{goods.fetchText}}
         </button>
-        <button type="primary" plain hover-class="none" class="btn-fetch" @tap.stop="routeByIconAction(goods)" v-if="goods.price && !goods.checkPower">{{goods.fetchText}}</button>
+        <button type="primary" plain hover-class="none" class="btn-fetch" @click.stop="routeByIconAction(goods)" v-if="goods.price && !goods.checkPower">{{goods.fetchText}}</button>
       </div>
       
     </div>
@@ -28,13 +28,13 @@
 </template>
 
 <script>
-  // import router from '../../../mixins/router';
+  import router from '../../../mixins/router';
   export default {
     props: {
       goods: Object
     },
-    methods: {}
-    // mixins = [router]
+    methods: {},
+    mixins: [router]
   }
 </script>
 
