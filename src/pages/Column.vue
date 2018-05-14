@@ -44,7 +44,9 @@
         </div>
       </div>
     </div>
-    <div class="page-content" v-show="tabActive"></div>
+    <div class="page-content" v-show="tabActive">
+      <div class="page-content" v-html="detailObj.detail"></div>
+    </div>
     <div class="page-btn">
       <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" @click="goAudition">免费试听</a>
       <a href="javascript:void(0)" class="btn-small btn" v-if="btnActive == 1" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
@@ -55,8 +57,13 @@
 
 <script>
   import { mapState } from 'vuex';
+  import store from '../vuex/store'
   import httpServer from '../api/api';
-  
+  import config from '../api/config';
+  import qs from 'qs';
+
+
+
 
   export default {
     data() {
@@ -82,9 +89,9 @@
       }
     },
     computed: {
-      ...mapState({
-        isLogin: state => state.isLogin
-      })
+
+      ...mapState(['audio', 'playing', 'currentTime', 'musicDuration']),
+
     },
     mounted() {
       // this.$store.dispatch('setWhichpage', '首页');
@@ -92,22 +99,19 @@
       // if (!this.isLogin) {
       //   this.$router.push({ path: '/login' });
       // }
-      this.setGoodsDetailAll();
+      console.log(this.audio)
+      this.getColumnDetail(115)
     },
     methods: {
-      setGoodsDetailAll() {
-        this.$http.get('/datainter/dataFillServlet?tradeType=23').then(res => {
-          console.log(res);
-          this.$store.dispatch('setGoodsDetailAll', res.data);
-        });
+      // 获取专栏详情
+      getColumnDetail(id) {
+        this.$axios.get('/floor/column/getCourses?columnId=115').then(res => {
+        })
       },
-      // 支付
+
       getPay() {
-
       },
-      // 支付
       goAudition() {
-
       },
     }
   };
@@ -115,6 +119,11 @@
 <style lang="less" scoped>
   @import "../assets/style/base/util";
   @rem: 75rem;
+  .column-page {
+    height: 100%;
+    position: relative;
+  }
+
   .page-header {
     .size(750, 400);
     position: relative;
@@ -278,7 +287,7 @@
     .size(750, 120);
     border-top: 1/@rem solid #E5E5E5;
     position: fixed;
-    bottom: 100;
+    bottom: 0;
     left: 0;
     text-align: center;
     background: #fff;

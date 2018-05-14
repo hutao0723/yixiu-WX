@@ -7,7 +7,7 @@
       <!--左边栏-->
       <div class="title-bar row-between">
         <div class="left-bar">
-          <span class="nm strong line1 bold">{{goods.title}}</span>
+          <span class="nm strong line2 bold">{{goods.title}}</span>
           <span class="xs muted line1">{{goods.subTitle}}</span>
         </div>
         <!--右边栏-->

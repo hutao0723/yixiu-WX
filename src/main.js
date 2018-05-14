@@ -49,6 +49,10 @@ Vue.http.interceptors.push((request, next) => {
     return response;
   });
 });
+import axios from 'axios'
+
+axios.defaults.headers.common['tk'] = 'ZEnrPP8wBUNhjtGwV5veCW7i5cZMJs1P2jBFZywQJKhz5taZ15bYWvXKsTESLdD85REaem63opFkazNHBd2XyP3KSkHm9KEqrnUvbWupegBnvCdQ2zNKgk8yNiEh2FCN5wGwwbNjUGp6T7qzRSeaEvXhA';
+Vue.prototype.$axios = axios
 
 /* eslint-disable no-new */
 new Vue({
