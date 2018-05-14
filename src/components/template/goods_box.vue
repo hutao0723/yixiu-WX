@@ -52,7 +52,6 @@
      * 点击tab切换
      */
       swichNav(i) {
-        console.log(this.param)
         this.param.navActive = i;
         this.currentTab = i;
         this.scrollLeft = this.currentTab > 3 ? (this.currentTab * 120/75)+'rem' : 0;
