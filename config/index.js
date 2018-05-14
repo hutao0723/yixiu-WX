@@ -28,24 +28,6 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-<<<<<<< HEAD
-      '/apis': {
-        // 测试环境
-        target: 'https://k.youfen666dev.com',  // 接口域名
-        changeOrigin: true,  //是否跨域
-        pathRewrite: {
-          '^/apis': ''   //需要rewrite重写的,
-        }
-      },
-
-      '/apis': {
-        // 测试环境
-        target: 'https://k.youfen666dev.com',  // 接口域名
-        changeOrigin: true,  //是否跨域
-        pathRewrite: {
-          '^/apis': ''   //需要rewrite重写的,
-        }
-=======
       '/floor': {
         // 测试环境
         target: 'https://k.youfen666dev.com',  // 接口域名
@@ -53,7 +35,6 @@ module.exports = {
         // pathRewrite: {
         //   '': ''   //需要rewrite重写的,
         // }
->>>>>>> c29b9b8616bf3d575527f245c772b0d79d610e92
       },
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
