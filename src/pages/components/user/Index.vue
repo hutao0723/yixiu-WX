@@ -11,7 +11,7 @@
         </div>
         <div class="row ft32 ml30">推荐给好友</div>
       </div>
-      <router-link :to="{ path: 'help' }">
+      <router-link :to="{ path: '/help' }">
         <div class="mtr20 user-h110 row">
           <div class="icon-box help column-center">
             <i class="iconfont icon-help user-icon"></i>

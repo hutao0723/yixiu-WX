@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  // import router from '../../../mixins/router';
+  import router from '../../../mixins/router';
 
   export default {
     props: {
@@ -53,8 +53,8 @@
       imgRrr() {
         console.log(this.goods)
       }
-    }
-    // mixins = [router]
+    },
+    mixins: [router]
   }
 </script>
 

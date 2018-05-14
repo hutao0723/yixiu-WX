@@ -1,5 +1,5 @@
 <template>
-  <div class="banner" v-if="banner && banner.length">
+  <div class="swiper-bar" v-if="banner && banner.length">
     <Swipe class="index_banner my-swipe" :auto="5000" v-if="banner.length">
       <Swipe-item v-for="(item, index) in banner" class="slide" :class="'slide' + index">
         <a :href="item.url || 'javascript:;'"
@@ -55,7 +55,7 @@
 </script>
 <style lang="less">
 @import url('../../assets/style/base/tool.less');
-  .banner{
+  .swiper-bar{
     height: 280/@rem;
     width: 690/@rem;
     margin: 0 auto;

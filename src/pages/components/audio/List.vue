@@ -1,8 +1,7 @@
 <template>
-  <div class="">
     <div class="audio-list">
       <div v-for="item in list">
-        <div class="audio-item row-between" @click="playAudio()">
+        <div class="audio-item row-between" @click="playAudio">
           <div class="row-center" :class="!item.playing ? 'icon-paused' : 'icon-play'">
             <img class="wave-icon" src="../../../images/audio.svg"  v-if="item.playing"/>
             <i class="iconfont icon-bofang" v-else></i>
@@ -20,17 +19,14 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-
+import store from '../../../vuex/store'
 export default {
   computed: {
-    ...mapState({
-      isLogin: state => state.isLogin
-    })
+    ...mapState()
   },
   data () {
     return {
@@ -52,28 +48,19 @@ export default {
     };
   },
   mounted () {
-    // this.$store.dispatch('setWhichpage', '首页');
-    // // 返回登录页面
-    // if (!this.isLogin) {
-    //   this.$router.push({ path: '/login' });
-    // }
-    this.setGoodsDetailAll();
+    
   },
   methods: {
-    setGoodsDetailAll: function () {
-      this.$http.get('/datainter/dataFillServlet?tradeType=23').then(res => {
-        console.log(res);
-        this.$store.dispatch('setGoodsDetailAll', res.data);
-      });
-    },
     playAudio(item) {
-        
+        store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
+        store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
+        store.commit('play');
     }
   }
 };
 </script>
 <style lang="less">
-@import '../../../less/base.less';
+@import '../../../less/variable';
 @import '../../../less/tool.less';
 .audio-list {
   width: 690/@rem;

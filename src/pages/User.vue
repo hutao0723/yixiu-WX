@@ -1,11 +1,13 @@
 <template>
   <div class="store-page">
     <router-view></router-view>
+    <bnav></bnav>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import bnav from 'components/layout/Nav';
 
 export default {
   computed: {
@@ -19,6 +21,7 @@ export default {
     // if (!this.isLogin) {
     //   this.$router.push({ path: '/login' });
     // }
-  }
+  },
+  components: { bnav }
 };
 </script>

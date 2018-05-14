@@ -14,11 +14,6 @@ export default {
     })
   },
   mounted () {
-    // this.$store.dispatch('setWhichpage', '首页');
-    // // 返回登录页面
-    // if (!this.isLogin) {
-    //   this.$router.push({ path: '/login' });
-    // }
     this.setGoodsDetailAll();
   },
   methods: {

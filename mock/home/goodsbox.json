@@ -7,7 +7,7 @@
         "componentType": "GOODSBOX",
         "fillType": "aspectFill",
         "showTitle": 1,
-        "layout": "GRID_2",
+        "layout": "ROW",
         "linkUrl": "商品组链接",
         "tabs": [
             {

@@ -28,12 +28,12 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '*': {
+      '/floor': {
         // 测试环境
         target: 'https://k.youfen666dev.com',  // 接口域名
-        // changeOrigin: true,  //是否跨域
+        changeOrigin: true,  //是否跨域
         // pathRewrite: {
-        //   '^/apis': ''   //需要rewrite重写的,
+        //   '': ''   //需要rewrite重写的,
         // }
       },
     },

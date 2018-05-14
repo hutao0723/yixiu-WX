@@ -1,12 +1,13 @@
 <template>
   <div class="home-page">
     <router-view></router-view>
+    <bnav></bnav>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-
+import bnav from 'components/layout/Nav';
 export default {
   computed: {
     ...mapState({
@@ -28,6 +29,7 @@ export default {
         this.$store.dispatch('setGoodsDetailAll', res.data);
       });
     }
-  }
+  },
+  components: { bnav }
 };
 </script>

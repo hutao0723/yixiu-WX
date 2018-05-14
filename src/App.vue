@@ -5,14 +5,11 @@
       <transition name="router-fade" mode="out-in">
         <router-view></router-view>
       </transition>
-      <bnav></bnav>
     </div>
-    
   </div>
 </template>
 
 <script>
-import bnav from 'components/layout/Nav';
 import store from './vuex/store'
 export default {
   data () {
@@ -24,12 +21,6 @@ export default {
     // 音频播放结束事件
     musicEnded () {
       store.dispatch('play_Ended')
-      // 歌词初始化
-      musicLrcIndex = 0
-      store.commit({
-        type: 'setLyricIndex',
-        index: 0
-      })
     },
     // 音乐播放时间更新事件
     musicTimeUpdate () {
@@ -37,12 +28,13 @@ export default {
         type: 'set_CurrentTime',
         time: Math.floor(this.$refs.audio.currentTime)
       })
-
-      let currentTime = Math.floor(this.$refs.audio.currentTime)
+      if (!store.getters.getAudioInfo.powerLevel && Math.floor(this.$refs.audio.currentTime) == store.getters.getAudioInfo.watchable) {
+        store.commit('pause');
+        store.commit('setMusicTryEnd');
+      }
     },
     // 可以播放事件
     musicCanPlay () {
-
       store.dispatch({
         type: 'set_MusicDuration',
         duration: Math.floor(this.$refs.audio.duration)
@@ -51,6 +43,7 @@ export default {
         type: 'setMusicLoadStart',
         isloadstart: false
       })
+      if (this.$refs.audio.currentTime === 0) this.$refs.audio.currentTime = store.getters.getAudioInfo.playbackProgress;
     },
     // 音乐处于播放状态
     musicOnPlaying () {
@@ -58,8 +51,7 @@ export default {
     },
     // 音乐处于watting状态
     musicOnWaiting () {
-
-      alert('音乐加载中')
+      // alert('音乐加载中')
     },
     // 音乐处于暂停状态
     musicOnPause () {
@@ -67,7 +59,6 @@ export default {
     },
     // 音乐加载
     loadStart () {
-
       store.commit({
         type: 'setMusicLoadStart',
         isloadstart: true
@@ -75,16 +66,8 @@ export default {
     }
   },
   mounted() {
-
     store.dispatch('set_AudioElement', this.$refs.audio);
-    this.$refs.audio.setAttribute('src', store.getters.getAudioInfo.url);
-    alert(this.$refs.audio.src)
-     document.addEventListener('touchstart', function() {
-        store.commit('play')
-    })
-    
-  },
-  components: { bnav }
+  }
 };
 </script>
 
