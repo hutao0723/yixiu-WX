@@ -1,37 +1,36 @@
 <template>
     <!--tab栏-->
-<!--   <div class="g-tabbar  category-wrapperparam.tabs.length " scroll-x scroll-with-animation scroll-left="scrollLeft"
-    v-if='param.tabs && param.tabs.length > 1'>
-    <div v-for="(item, index) in param.tabs">
-      <div class="type-box">
-        <div class="type-navbar-item index" :class={ param.navActive == index ? 'type-item-on' : ''} data-index="index" @click="swichNav">
+  <div>
+    <div class="g-tabbar" :class="'category-wrapper'+param.tabs.length" v-if='param.tabs && param.tabs.length > 1'>
+      <div v-for="(item, index) in param.tabs" class="type-box" :key="index">
+        <div class="type-navbar-item index" :class="(currentTab == index) ? 'type-item-on' : ''" @click="swichNav(index)">
           {{item.groupName || '-'}}
         </div>
       </div>
     </div>
-  </div> -->
-  <div class="goods-box">
-    <!--横向单个布局-->
-    <div class="row-box column" v-if="param.layout == 'ROW'">
-      <RowItem v-for="(item, index) in  param.tabs[param.navActive?param.navActive:0].goods" :goods.sync="item" :index.sync="index" />
+    <div class="goods-box">
+      <!--横向单个布局-->
+      <div class="row-box column" v-if="param.layout == 'ROW'">
+        <RowItem v-for="(item, index) in  param.tabs[param.navActive?param.navActive:0].goods" :goods.sync="item" :index.sync="index" />
+      </div>
+
+      <!--横向广告栏布局-->
+      <div class="nopic-box column" v-if="param.layout == 'NOPIC'">
+        <NopicItem v-for="(item, index) in  param.tabs[param.navActive?param.navActive:0].goods" :goods.sync="item" />
+      </div>
+
+      <!--横向两个布局-->
+      <div class="grid-two-box row-between" v-if="param.layout == 'GRID_2'">
+        <GridTwoItem v-for="(item, index) in  param.tabs[param.navActive?param.navActive:0].goods" :goods.sync="item" />
+      </div>
+
+      <!--横向三个布局-->
+      <div class="grid-three-box row-around" v-if="param.layout == 'GRID_3'">
+        <GridThreeItem v-for="(item, index) in  param.tabs[param.navActive?param.navActive:0].goods" :goods.sync="item" />
+      </div>
     </div>
 
-    <!--横向广告栏布局-->
-    <div class="nopic-box column" v-if="param.layout == 'NOPIC'">
-      <NopicItem v-for="(item, index) in  param.tabs[param.navActive?param.navActive:0].goods" :goods.sync="item" />
-    </div>
-
-    <!--横向两个布局-->
-    <div class="grid-two-box row-between" v-if="param.layout == 'GRID_2'">
-      <GridTwoItem v-for="(item, index) in  param.tabs[param.navActive?param.navActive:0].goods" :goods.sync="item" />
-    </div>
-
-    <!--横向三个布局-->
-    <div class="grid-three-box row-around" v-if="param.layout == 'GRID_3'">
-      <GridThreeItem v-for="(item, index) in  param.tabs[param.navActive?param.navActive:0].goods" :goods.sync="item" />
-    </div>
   </div>
-
 </template>
 <script>
   import RowItem from './goods/goods_row';
@@ -52,10 +51,11 @@
       /**
      * 点击tab切换
      */
-      swichNav(e) {
-        this.param.navActive = e.target.dataset.index;
-        this.currentTab = e.target.dataset.index;
-        this.scrollLeft = this.currentTab > 3 ? (this.currentTab * 120) : 0;
+      swichNav(i) {
+        console.log(this.param)
+        this.param.navActive = i;
+        this.currentTab = i;
+        this.scrollLeft = this.currentTab > 3 ? (this.currentTab * 120/75)+'rem' : 0;
       }
     },
     components: {
@@ -127,7 +127,8 @@
   background-color: #fff;
   position: relative;
   z-index: 20;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   border-bottom: 2/@rem solid #E5E5E5;
 }
 ::-webkit-scrollbar {
