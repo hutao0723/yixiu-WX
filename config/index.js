@@ -36,6 +36,14 @@ module.exports = {
         //   '': ''   //需要rewrite重写的,
         // }
       },
+      '/api': {
+        // 测试环境
+        target: 'https://k.youfen666dev.com',  // 接口域名
+        changeOrigin: true,  //是否跨域
+        pathRewrite: {
+          '/api': 'https://k.youfen666dev.com'   //需要rewrite重写的,
+        }
+      },
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

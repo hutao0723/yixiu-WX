@@ -1,6 +1,6 @@
 <template>
   <div class="cart-page">
-    <div class="page-list">
+    <div class="page-list" v-show="!noData">
       <div class="item" v-for="(item,index) in cartList" :key="index">
         <div class="item-img" v-show="item.lateralCover" :style="{backgroundImage: `url(${item.lateralCover})`}"></div>
         <div class="item-img-small" v-show="!item.lateralCover&&item.verticalCover" :style="{backgroundImage: `url(${item.verticalCover})`}"></div>
@@ -17,7 +17,7 @@
           <i class="iconfont icon-play"></i>播放</a>
       </div>
     </div>
-    <div class="page-none" v-if="cartList.length == 0">
+    <div class="page-none" v-show="noData">
       <img src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/zanwushuju.png" class="none-img" />
       <p class="none-text">暂无数据</p>
       <a href="javascript:void(0)" class="none-btn">去逛逛</a>
@@ -27,56 +27,49 @@
 </template>
 
 <script>
-  import httpServer from '../../../api/api';
   import AudioBar from 'components/basic/Audio_Bar';
+  import order from '../../../api/order';
+
   export default {
     data() {
       return {
-        cartList: [
-          {
-            "title": "篮球课程上线",
-            // "subTitle": "这是关于学习篮球技巧的课程",
-            "itemType": 0,
-            "courseId": 80,
-            "latestSubTitle": '最新再度最新再度最新再度最新再度最新再度',
-            "currentReadTitle": '最新再度最新再度最新再度最新再度最新再度',
-            "playbackProgress": 21,
-            "timeLength": 100,
-            "verticalCover": "https://yun.dui88.com/youfen/images/z6qj8zsviw.jpg"
-          },
-          {
-            "title": "篮球课程上线",
-            "subTitle": "这是关于学习篮球技巧的课程",
-            "itemType": 1,
-            "courseId": 80,
-            "playbackProgress": 21,
-            "timeLength": 100,
-            "lateralCover": "https://yun.dui88.com/youfen/images/z6qj8zsviw.jpg",
-            "verticalCover": "https://yun.dui88.com/youfen/images/z6qj8zsviw.jpg"
-          },
-        ]
+        cartList: [],
+        noData: false,
+        pageNum: 1,
+        pageSize: 20,
+
       };
     },
     watch: {
-      data: {
-      }
+      data: {}
     },
     mounted() {
-      let params = {
-        // dbredirect: 'www.baidu.com'
-      }
-      let res = httpServer('get','/apis/user/getUserInfo',params)
-      // location.href = 'k.youfen666dev.com/loginH5?dbredirect=https://www.baidu.com'
+      this.getList()
     },
-    computed: {
-    },
+    computed: {},
     methods: {
-
+      // 获取详情
+      async getList() {
+        // const url = `/api/userItem/list`;
+        // this.$http.get(url, { params: { pageNum: this.pageNum, pageSize: this.pageSize } }).then(res => {
+        //   this.cartList = res.data.data.lists;
+        //   if(this.cartList.length == 0){
+        //     this.noData = true;
+        //   }
+        // });
+        let params = {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize
+        }
+        let obj = await order.getCartList(params)
+        this.cartList = obj
+      },
     },
     components: {
       AudioBar
     }
   };
+
 </script>
 
 <style lang="less" scoped>
@@ -105,6 +98,11 @@
         .pos(235, 34);
         .text(26, 37);
         color: #333;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 420/@rem;
+
       }
       .item-sub {
         .pos(235, 77);
@@ -173,4 +171,5 @@
       border-radius: 45/@rem;
     }
   }
+
 </style>

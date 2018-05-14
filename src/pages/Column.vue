@@ -7,14 +7,15 @@
       <div class="header-name-bg"></div>
       <div class="header-name">
         <span v-if="detailObj.price>0">{{detailObj.buyTimes}}人已购</span>
-        <span v-else>{{detailObj.playTimes}}人已听</span> | 时长{{detailObj.timeLength}}
+        <span v-else>{{detailObj.playTimes}}人已听</span>
+        <span v-if="courseList.length > 0"> | 共{{courseList.length}}节</span>
       </div>
     </div>
     <div class="page-title">
       <div class="title-main">{{detailObj.title}}</div>
       <div class="title-sub">{{detailObj.subTitle}}</div>
     </div>
-    <div class="page-tab">
+    <div class="page-tab" v-show="courseList.length > 0">
       <div class="clearfix">
         <div class="tab-left tab" :class="{ active: tabActive}" @click="tabActive = true">专栏详情</div>
         <div class="tab-right tab" :class="{ active: !tabActive}" @click="tabActive = fasle">课程目录</div>
@@ -37,15 +38,15 @@
             <span :class="{red:item.playing}">{{item.title}}</span>
           </span>
           <span class="item-time">
-            <i class="iconfont icon-time"></i>{{item.timeLength}}
+            <i class="iconfont icon-time"></i>{{item.timeLength | formatTime}}
           </span>
-          <span class="item-date">{{item.date}}</span>
+          <span class="item-date">{{item.publishTime | formatDate}}</span>
           <i class="iconfong icon-ispay"></i>
         </div>
       </div>
     </div>
     <div class="page-content" v-show="tabActive">
-      <div class="page-content" v-html="detailObj.detail"></div>
+      <div v-html="detailObj.detail"></div>
     </div>
     <div class="page-btn">
       <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" @click="goAudition">免费试听</a>
@@ -58,40 +59,22 @@
 <script>
   import { mapState } from 'vuex';
   import store from '../vuex/store'
-  import httpServer from '../api/api';
-  import config from '../api/config';
-  import qs from 'qs';
-
-
-
+  import order from '../api/order'
+  
 
   export default {
     data() {
       return {
         detailObj: {
-          title: '课程标题测试测试测试测试课程标题测试测试测试测试课程标题测试测试测试测试课程标题测试测试测试测试',
-          subTitle: '副标题测试副标题测试副标题测试副标题测试副标题测试副标题测试副标题测试副标题测试副标题测试副标题测试',
-          powerLevel: 0,
-          price: 19999,
         },
         tabActive: true,
         btnActive: 1,
-        courseList: [
-          {
-            title: '课程表头课程表头课程表头课程表头课程表头课程表头课程表头课程表头',
-            timeLength: '1:00',
-            date: '03-20',
-            watchable: 1,
-            playing: 1,
-          }
-        ]
+        courseList: []
 
       }
     },
     computed: {
-
       ...mapState(['audio', 'playing', 'currentTime', 'musicDuration']),
-
     },
     mounted() {
       // this.$store.dispatch('setWhichpage', '首页');
@@ -99,21 +82,61 @@
       // if (!this.isLogin) {
       //   this.$router.push({ path: '/login' });
       // }
-      console.log(this.audio)
-      this.getColumnDetail(115)
+      this.getColumnDetail(this.$route.params.columnId)
+      this.getColumnList(this.$route.params.columnId)
+    },
+    filters: {
+      // 时长
+      formatTimeText: function (value) {
+        let h = Math.floor(value / 60 % 60)
+        let m = Math.floor(value % 60)
+
+        let data = (h < 10 ? '0' + h : h) + '分' + (m < 10 ? '0' + m : m) + '秒'
+        return data
+      },
+      // 时长
+      formatTime: function (value) {
+        let h = Math.floor(value / 60 % 60)
+        let m = Math.floor(value % 60)
+
+        let data = (h < 10 ? '0' + h : h) + ':' + (m < 10 ? '0' + m : m)
+        return data
+      },
+      // 日期
+      formatDate: function (value) {
+        let newDate = new Date(value);
+        let m = newDate.getMonth() + 1;
+        let d = newDate.getDate();
+        return m + '-' + d;
+      },
     },
     methods: {
-      // 获取专栏详情
-      getColumnDetail(id) {
-        this.$axios.get('/floor/column/getCourses?columnId=115').then(res => {
-        })
+      // 获取详情
+      async getColumnDetail(id) {
+        // let self = this;
+        // const url = `/api/column/get`;
+        // this.$http.get(url, { params: { columnId: id } }).then(res => {
+        //   self.detailObj = res.data.data
+        // });
+        let obj = await order.getColumnDetail(id)
+        this.detailObj = obj
       },
-
+      // 获取详情
+      async getColumnList(id) {
+        // let self = this;
+        // const url = `/api/column/getCourses`;
+        // this.$http.get(url, { params: { columnId: id } }).then(res => {
+        //   self.courseList = res.data.data
+        //   console.log(res.data.data)
+        // });
+        let obj = await order.getColumnList(id)
+        this.courseList = obj
+      },
       getPay() {
       },
       goAudition() {
       },
-    }
+    },
   };
 </script>
 <style lang="less" scoped>
@@ -127,8 +150,9 @@
   .page-header {
     .size(750, 400);
     position: relative;
-    .header-img-big {
+    .header-img {
       .size(750, 400);
+      display: block;
     }
     .header-name-bg {
       position: absolute;
@@ -282,6 +306,7 @@
       }
     }
   }
+
 
   .page-btn {
     .size(750, 120);

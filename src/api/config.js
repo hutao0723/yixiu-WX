@@ -2,6 +2,8 @@ import base from './base';
 import play from './play';
 
 export default class config extends base {
+
+  
   /**
    * 获取首页布局视图
    */
@@ -104,7 +106,7 @@ export default class config extends base {
     })
     return page;
   }
-  
+
 
 
 }
