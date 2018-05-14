@@ -40,7 +40,7 @@ export default {
 </script>
 
 <style lang="less">
-@import '../../../less/tool.less';
+@import '../less/tool.less';
 .help-box{
     height: 100%;
     padding: 1/@rem 0;

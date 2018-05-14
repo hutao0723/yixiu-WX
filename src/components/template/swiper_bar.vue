@@ -1,5 +1,5 @@
 <template>
-  <div class="banner" v-if="banner && banner.length">
+  <div class="swiper-bar" v-if="banner && banner.length">
     <Swipe class="index_banner my-swipe" :auto="5000" v-if="banner.length">
       <Swipe-item v-for="(item, index) in banner" class="slide" :class="'slide' + index">
         <a :href="item.url || 'javascript:;'"
@@ -20,6 +20,10 @@
     data () {
       return {
         banner: [
+          {
+            imgUrl: '//yun.duiba.com.cn/maila/images/jx3ipguwlg.jpg',
+            url: ''
+          },
           {
             imgUrl: '//yun.duiba.com.cn/maila/images/jx3ipguwlg.jpg',
             url: ''
@@ -51,8 +55,12 @@
 </script>
 <style lang="less">
 @import url('../../assets/style/base/tool.less');
-  .banner{
-    height: 220/@rem;
-    border: 1px solid #ccc;
+  .swiper-bar{
+    height: 280/@rem;
+    width: 690/@rem;
+    margin: 0 auto;
+    border-radius:10/@rem;
+    box-shadow:0 10/@rem 10/@rem 0 rgba(235,235,235,0.6);
+
   }
 </style>

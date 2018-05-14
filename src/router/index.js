@@ -60,16 +60,16 @@ export default new Router({
             resolve(require('../pages/components/user/Index'));
           }, 'user');
         }
-      },
-      {
-        path: 'help',
-        component: function (resolve) {
-          require.ensure([], function () {
-            resolve(require('../pages/components/user/Help'));
-          }, 'help');
-        }
       }
       ]
+    },
+    {
+      path: '/help',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../pages/Help'));
+        }, 'help');
+      }
     },
     {
       path: '/activity/:id',
@@ -80,7 +80,7 @@ export default new Router({
       }
     },
     {
-      path: '/column/:id',
+      path: '/column/:columnId',
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../pages/Column'));
@@ -88,7 +88,7 @@ export default new Router({
       }
     },
     {
-      path: '/course/:id',
+      path: '/course/:courseId',
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../pages/Course'));
@@ -96,32 +96,20 @@ export default new Router({
       }
     },
     {
-      name: 'audio',
-      path: '/audio',
-      redirect: '/audio/index',
+      path: '/audioindex',
       component: function (resolve) {
         require.ensure([], function () {
-          resolve(require('pages/Audio'));
-        }, 'audio');
-      },
-      children: [
-        {
-          path: '/audio/index',
-          component: function (resolve) {
-            require.ensure([], function () {
-              resolve(require('../pages/components/audio/Index'));
-            }, 'audio');
-          }
-        },
-        {
-          path: '/audio/list',
-          component: function (resolve) {
-            require.ensure([], function () {
-              resolve(require('../pages/components/audio/List'));
-            }, 'audio_list');
-          }
-        }
-      ]
+          resolve(require('../pages/components/audio/Index'));
+        }, 'audio_index');
+      }
+    },
+    {
+      path: '/list',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../pages/components/audio/List'));
+        }, 'audio_list');
+      }
     }
   ]
 });

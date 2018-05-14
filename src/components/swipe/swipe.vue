@@ -485,7 +485,7 @@
     margin: 0 3px;
   }
   .mint-swipe-indicator.is-active {
-    background: #fff;
+    background: grey;
   }
   /* slider插件css + 改写*/
   .mint-swipe, .mint-swipe-items-wrap {
@@ -505,6 +505,7 @@
       width: 100%;
       height: 220/@rem;
       display: block;
+      border-radius: 10/@rem;
     }
   }
 
@@ -517,7 +518,7 @@
   .mint-swipe-indicators {
     position: absolute;
     bottom: 10px;
-    left: 60/@rem;
+    /*left: 60/@rem;*/
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%)
   }
@@ -529,11 +530,11 @@
     border-radius: 100/@rem;
     background: #ccc;
     margin: 0 5/@rem;
-    background: rgba(255,255,255,0.70); 
+    background: pink; 
   }
 
   .mint-swipe-indicator.is-active {
     width: 30/@rem;
-    background: #fff;
+    background: grey;
   }
 </style>

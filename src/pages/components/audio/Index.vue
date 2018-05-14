@@ -2,43 +2,42 @@
   <div class="home-page">
     <div class="audio-page">
       <div class=" banner">
-        <img class="course-img" :src="audioData.verticalCover" v-if="audioData.verticalCover && ! audioData.lateralCover"/>
-        <img class="course-img-lateral" :src="audioData.lateralCover" v-if="audioData.lateralCover"/>
-        <img class="course-img-lateral" src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png" v-if="!audioData.lateralCover && !audioData.verticalCover"/>
-        <span class="xl strong line1 detail-word">{{audioData.title}}</span>
+        <img class="course-img" :src="audio.verticalCover" v-if="audio.verticalCover && ! audio.lateralCover"/>
+        <img class="course-img-lateral" :src="audio.lateralCover" v-if="audio.lateralCover"/>
+        <img class="course-img-lateral" src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png" v-if="!audio.lateralCover && !audio.verticalCover"/>
+        <span class="xl strong line1 detail-word">{{audio.title}}</span>
       </div>
       <div class="controler column-between">
         <div class="slider-bar">
           <!--播放器进度条-->
-          <div></div>
+          <range  ball-width="30" :canDrag="audio.powerLevel"/>
           <div class="row-between timer">
-            <span class="xs week row-center">{{currentTime}}</span>
-            <span class="xs week row-center">{{durationTime}}</span>
+            <span class="xs week row-center">{{current}}</span>
+            <span class="xs week row-center">{{duration}}</span>
           </div>
         </div>
         <div class="row-between control-bar">
           <button type="primary" class="btn-switch" @click="audioPrev">
-            <i class="iconfont icon-shangyiqu" :style="{color: `${!audioData.isPrev ? '#FF9E9A' : '#FF5349'}`}"></i>
+            <i class="iconfont icon-shangyiqu" :style="{color: `${!audio.isPrev ? '#FF9E9A' : '#FF5349'}`}"></i>
           </button>
-          <button type="primary" class="btn-play" @click="pauseOrplay">
-            <i class="iconfont" :class="audioData.paused ? 'icon-bofang' : 'icon-bofangqi-zanting'"></i>
+          <button type="primary" class="btn-play" @click="togglePlay">
+            <i class="iconfont" :class="playing ? 'icon-bofangqi-zanting' : 'icon-bofang'"></i>
           </button>
           <button type="primary" class="btn-switch" @tap="audioNext">
-            <i class="iconfont icon-xiayiqu" :style="{color: `${!audioData.isNext ? '#FF9E9A' : '#FF5349'}`}"></i>
+            <i class="iconfont icon-xiayiqu" :style="{color: `${!audio.isNext ? '#FF9E9A' : '#FF5349'}`}"></i>
           </button>
         </div>
-        <div class="column-between bottom" :class="!audioData.powerLevel ? 'h214' : 'h120'" :style ="{borderTop: `${!audioData.powerLevel ? 'none' : '1px solid #E5E5E5'}`}">
-
-          <div class="buy-bar row-around" :class="audioData.tryEnd ? 'buy-bar-after' : 'buy-bar-before'" v-if="!audioData.powerLevel">
-            <span class="remind nm " v-if="!audioData.tryEnd && audioData.columnId">试听免费课程，购买后收听完整专栏</span>
-            <span class="remind nm " v-if="!audioData.tryEnd && !audioData.columnId">免费试听前{{audioData.watchable}}秒，购买后收听完整版</span>
-            <span class="remind nm " v-if="audioData.tryEnd">试听结束，购买后收听完整版</span>
+        <div class="column-between bottom" :class="!audio.powerLevel ? 'h214' : 'h120'" :style ="{borderTop: `${!audio.powerLevel ? 'none' : '1px solid #E5E5E5'}`}">
+          <div class="buy-bar row-around" :class="audio.musicTryEnd ? 'buy-bar-after' : 'buy-bar-before'" v-if="!audio.powerLevel">
+            <span class="remind nm " v-if="!audio.musicTryEnd && audio.columnId">试听免费课程，购买后收听完整专栏</span>
+            <span class="remind nm " v-if="!audio.musicTryEnd && !audio.columnId">免费试听前{{audio.watchable}}秒，购买后收听完整版</span>
+            <span class="remind nm " v-if="audio.musicTryEnd">试听结束，购买后收听完整版</span>
             <button type="primary" class="btn-fetch row-center" @tap="goPay">
               直接购买
             </button>
           </div>
           <div class="row-around table" style="">
-            <button type="primary" class="column-around btn-bottom" @click="routeToCourse()">
+            <button type="primary" class="column-around btn-bottom" @click="routeToCourse(audio)">
               <i class="iconfont icon-detail"></i>
               <span class="xxs weak">详情</span>
             </button>
@@ -58,63 +57,52 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-
+import router from '../../../mixins/router';
+import store from '../../../vuex/store'
+import { mapState } from 'vuex'
+import range from 'components/basic/range'
 export default {
   data () {
     return {
-      audioData:{
-        verticalCover: '',
-        lateralCover: '',
-        title:'这个时代的终结生活指南',
-        isPrev: 1,
-        tryEnd: 1,
-        powerLevel: 0,
-        watchable: 1,
-        columnId: 1,
-      },
-      currentTime: '03:20',
-      durationTime: '09:30',
-      option: {}
     };
   },
   computed: {
-    ...mapState({
-      isLogin: state => state.isLogin
-    })
+    ...mapState(['audio','playing','currentTime','musicDuration']),
+    current() {
+      return this.timerFomart(this.currentTime)
+    },
+    duration() {
+      return this.timerFomart(this.musicDuration)
+    }
   },
   mounted () {
-    // this.$store.dispatch('setWhichpage', '首页');
-    // // 返回登录页面
-    // if (!this.isLogin) {
-    //   this.$router.push({ path: '/login' });
-    // }
-    this.setGoodsDetailAll();
+
   },
   methods: {
-    setGoodsDetailAll: function () {
-      this.$http.get('/datainter/dataFillServlet?tradeType=23').then(res => {
-        console.log(res);
-        this.$store.dispatch('setGoodsDetailAll', res.data);
-      });
-    },
     audioPrev () {
     },
-    pauseOrplay (){
+    togglePlay() {
+      if (!this.audio.musicTryEnd) {
+        store.commit('togglePlay');
+      }
     },
     audioNext (){
     },
     goPay(){},
-    routeToCourse(){},
     onShareAppMessage(){},
-    routeToAudioList(){}
-  }
+    timerFomart (time) {
+      if (isNaN(time)) return '00:00';
+      let mm = time / 60 > 9 ? Math.floor(time / 60) : '0' + Math.floor(time / 60);
+      let ss = time % 60 > 9 ? Math.floor(time % 60) : '0' + Math.floor(time % 60);
+      return mm + ':' + ss;
+    }
+  },
+  components:{ range },
+  mixins: [router]
 };
 </script>
 <style lang="less">
-@import '../../../less/base.less';
-@import '../../../less/tool.less';
-@import '../../../less/icon.less';
+@import '../../../less/variable';
  .audio-page{
     position: fixed;
     top: 0;
@@ -130,6 +118,7 @@ export default {
       position: relative;
       padding: 1/@rem;
       box-sizing: border-box;
+      border:none;
       .course-img{
         width: 360/@rem;
         height: 468/@rem;
@@ -202,6 +191,7 @@ export default {
           height:56/@rem; 
           border-radius: 45/@rem; 
           font-size: @text-sm;
+          border: 1/@rem solid #ff464a;
         }
       }
       .buy-bar-before{

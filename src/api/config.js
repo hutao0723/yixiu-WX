@@ -7,9 +7,8 @@ export default class config extends base {
    * 获取首页布局视图
    */
   static layout() {
-    const appId = '0001';
     const url = `/floor/page?isHome=true`;
-    return this.get(url, {appId}).then(data => {return data});
+    return this.get(url, {params:{}}).then(data => {return data});
   }
   
   /**

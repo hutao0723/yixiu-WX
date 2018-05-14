@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  // import router from '../../../mixins/router';
+  import router from '../../../mixins/router';
 
   export default {
     props: {
@@ -53,8 +53,8 @@
       imgRrr() {
         console.log(this.goods)
       }
-    }
-    // mixins = [router]
+    },
+    mixins: [router]
   }
 </script>
 
@@ -148,7 +148,8 @@
         line-height: 40/@rem;
         text-align: center;
         background:white;
-        border-radius: 45/@rem; 
+        border-radius: 45/@rem;
+        border: 1/@rem solid #ff464a;
         font-size: @text-nm;
         .iconfont{
           font-size: @text-nm;

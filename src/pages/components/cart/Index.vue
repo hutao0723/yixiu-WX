@@ -22,11 +22,13 @@
       <p class="none-text">暂无数据</p>
       <a href="javascript:void(0)" class="none-btn">去逛逛</a>
     </div>
+    <AudioBar/>
   </div>
 </template>
 
 <script>
   import httpServer from '../../../api/api';
+  import AudioBar from 'components/basic/Audio_Bar';
   export default {
     data() {
       return {
@@ -70,6 +72,9 @@
     },
     methods: {
 
+    },
+    components: {
+      AudioBar
     }
   };
 </script>

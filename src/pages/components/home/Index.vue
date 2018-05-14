@@ -15,11 +15,13 @@
       <!--留白-->
         <BlankBar v-if="item.componentType == 'BLANK'" :param.sync="item" />
     </div>
+    <AudioBar/>
   </div>
 </template>
 
 <script>
 import config from '../../../api/config';
+import AudioBar from 'components/basic/Audio_Bar';
 import SwiperBar from 'components/template/swiper_bar';
 import TitleBar from 'components/template/title_bar';
 import GoodsBox from 'components/template/goods_box';
@@ -29,6 +31,7 @@ import loading from 'components/layout/Loading';
 import { mapState } from 'vuex';
 export default {
   components: {
+    AudioBar,
     TitleBar,
     SwiperBar,
     BlankBar,

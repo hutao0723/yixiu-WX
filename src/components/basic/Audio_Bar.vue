@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="audio-controler row"  :class="bottom ? 'bt130' : 'bt40'" @click="goAudioPage"> 
+    <div class="audio-controler row"  @click="goAudioPage"> 
       <div class="right-bar row-around" style="background-repeat:no-repeat;background-size:100% 100%;" 
       :style="{backgroundImage:`url(${audioData.coverImgUrl ? audioData.coverImgUrl : baseImg}`}" >
-        <div class="icon-play column-center" :class="audioData.paused ? 'line' : 'mask'">
-          <i class="iconfont icon-bofang" v-if="audioData.paused"></i>
+        <div class="icon-play column-center" :class="!playing ? 'line' : 'mask'">
+          <i class="iconfont icon-bofang" v-if="!playing"></i>
           <img class="" src="../../images/audio.svg" v-else/>
         </div>
       </div>
@@ -21,6 +21,8 @@
   </div>
 </template>
 <script>
+import store from '../../vuex/store';
+import { mapState } from 'vuex';
   export default {
     props : {
       bottom: {
@@ -40,16 +42,18 @@
 
       };
     },
+    computed: {
+      ...mapState(['audio','playing'])
+    },
     methods: {
       goAudioPage: function() {
-        if (!false) {
-          // this.$emit('showNotice');
-          this.notice = true
-          this.animation = true
+        if (!this.audio.src) {
+          this.notice = true;
+          this.animation = true;
         } else {
-          this.notice = false
-          this.animation = false
-          // this.$root.$navigate('/pages/play/audio_detail')
+          this.notice = false;
+          this.animation = false;
+          this.$router.push(`/audioindex`);
         }
       },
       hideNotice: function(){
@@ -65,7 +69,7 @@
   @size: 90/@rem;
   position: fixed;
   right: 60/@rem;
-  bottom: 40/@rem;
+  bottom: 130/@rem;
   z-index: 20;
   &.bt130{
     bottom: 130/@rem;
