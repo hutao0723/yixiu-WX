@@ -85,6 +85,7 @@
       this.getColumnDetail(this.$route.params.columnId)
       this.getColumnList(this.$route.params.columnId)
     },
+<<<<<<< HEAD
     filters: {
       // 时长
       formatTimeText: function (value) {
@@ -93,6 +94,13 @@
 
         let data = (h < 10 ? '0' + h : h) + '分' + (m < 10 ? '0' + m : m) + '秒'
         return data
+=======
+    methods: {
+      // 获取专栏详情
+      getColumnDetail(id) {
+        this.$http.get('/floor/column/getCourses?columnId=115').then(res => {
+        })
+>>>>>>> be1f14eb3628f649bd73ce45c7c6e54879862be0
       },
       // 时长
       formatTime: function (value) {

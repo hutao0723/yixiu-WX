@@ -4,18 +4,14 @@ import App from './App';
 import router from './router';
 import store from './vuex/store';
 import VueCookie from 'vue-cookie';
-// import modal from 'components/basic/Modal.vue';
-// import Mint from 'mint-ui';
-import 'mint-ui/lib/style.css';
 var infiniteScroll = require('vue-infinite-scroll');
 Vue.use(infiniteScroll);
-// Vue.use(Mint);
 
 import './assets/style/main.less';
 Vue.use(VueCookie);
 Vue.use(VueResource);
 // vue-resource配置项
-Vue.http.options.emulateJSON = true;
+// Vue.http.options.emulateJSON = true;
 // Vue.component(modal.name, modal);
 // rem 换算
 import { setDPR, remChange } from './components/basic/remChange';
@@ -39,6 +35,7 @@ Vue.use(VueLazyload, {
   }
 });
 Vue.http.headers.common['tk'] = 'ZEnrPP8wBUNhjtGwV5veCW7i5cZMJs1P2jBFZywQJKhz5taZ15bYWvXKsTESLdD85REaem63opFkazNHBd2XyP3KSkHm9KEqrnUvbWupegBnvCdQ2zNKgk8yNiEh2FCN5wGwwbNjUGp6T7qzRSeaEvXhA';
+<<<<<<< HEAD
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
@@ -49,6 +46,17 @@ Vue.http.interceptors.push((request, next) => {
     return response;
   });
 });
+=======
+// import axios from 'axios'
+
+// axios.defaults.headers.common['tk'] = 'ZEnrPP8wBUNhjtGwV5veCW7i5cZMJs1P2jBFZywQJKhz5taZ15bYWvXKsTESLdD85REaem63opFkazNHBd2XyP3KSkHm9KEqrnUvbWupegBnvCdQ2zNKgk8yNiEh2FCN5wGwwbNjUGp6T7qzRSeaEvXhA';
+// Vue.prototype.$axios = axios
+// Vue.http.interceptors.push((request, next) => {
+//   next((response) => {
+//     return response;
+//   });
+// });
+>>>>>>> be1f14eb3628f649bd73ce45c7c6e54879862be0
 
 /* eslint-disable no-new */
 new Vue({

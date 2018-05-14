@@ -58,7 +58,7 @@
 
 <script>
 import router from '../../../mixins/router';
-import store from '../../../vuex/store'
+import store from '../../../vuex/store';
 import { mapState } from 'vuex'
 import range from 'components/basic/range'
 export default {
