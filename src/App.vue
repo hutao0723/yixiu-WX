@@ -51,7 +51,7 @@ export default {
     },
     // 音乐处于watting状态
     musicOnWaiting () {
-      // alert('音乐加载中')
+      
     },
     // 音乐处于暂停状态
     musicOnPause () {

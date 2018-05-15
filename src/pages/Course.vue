@@ -19,22 +19,21 @@
       <div v-html="detailObj.detail"></div>
     </div>
     <div class="page-btn">
-      <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" @click="goAudition">免费试听</a>
+      <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" 
+      @click.stop="playClick('', detailObj.id, true)">免费试听</a>
       <a href="javascript:void(0)" class="btn-small btn" v-if="btnActive == 1" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
       <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 0" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
-      <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 2" @click="goAudition">播放</a>
+      <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 2" @click.stop="playClick('', detailObj.id, false)">播放</a>
       
     </div>
   </div>
 </template>
 
 <script>
-  import {
-    mapState
-  } from 'vuex';
-  import store from '../vuex/store'
-
-  import order from '../api/order'
+  import { mapState } from 'vuex';
+  import store from '../vuex/store';
+  import order from '../api/order';
+  import router from '../mixins/router';
   export default {
     data() {
       return {
@@ -103,9 +102,9 @@
       },
       async getPay() {
         let obj = await order.buy(this.detailObj.id, 1)
-      },
-      goAudition() {},
+      }
     },
+    mixins: [router]
   };
 
 </script>

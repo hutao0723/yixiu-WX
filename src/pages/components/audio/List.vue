@@ -1,13 +1,13 @@
 <template>
   <div class="audio-list">
     <div v-for="item in list">
-      <div class="audio-item row-between" @click="playAudio">
-        <div class="row-center" :class="!(audio.courseId === item.courseId) ? 'icon-paused' : 'icon-play'">
-          <img class="wave-icon" src="../../../images/audio.svg" v-if="!(audio.courseId === item.courseId)" />
+      <div class="audio-item row-between" @click="playAudio(item)">
+        <div class="row-center" :class="!(audio.courseId === item.id) ? 'icon-paused' : 'icon-play'">
+          <img class="wave-icon" src="../../../images/audio.svg" v-if="audio.courseId == item.id" />
           <i class="iconfont icon-bofang" v-else></i>
         </div>
         <div class="content-bar column-between">
-          <span class="lg line1" :class="!(audio.courseId === item.courseId) ? 'strong' : 'soft'">{{item.title}}</span>
+          <span class="lg line1" :class="!(audio.courseId === item.id) ? 'strong' : 'soft'">{{item.title}}</span>
           <div class="info-bar row-between">
             <div class="duration">
               <i class="iconfont icon-clock mr10"></i>
@@ -55,10 +55,9 @@ export default {
   },
   methods: {
     playAudio(item) {
-        store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
-        store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title);
-        store.commit('play');
-      }
+      play.startAudio(this.audio.columnId,item.id,'init');
+      this.$router.go(-1);
+    }
     }
   };
 </script>
