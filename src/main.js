@@ -46,6 +46,10 @@ Vue.http.interceptors.push((request, next) => {
   });
 });
 
+router.beforeEach((to, from, next) => {
+  /* 路由发生变化修改页面title */
+  next()
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

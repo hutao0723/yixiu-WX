@@ -67,6 +67,7 @@ export default {
   },
   mounted() {
     store.dispatch('set_AudioElement', this.$refs.audio);
+    store.commit('setPlaying')
   },
   beforeDestroy () {
     // store.commit('pause')

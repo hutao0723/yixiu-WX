@@ -15,15 +15,15 @@
         <button class="btn-find bgred">寻找组织</button>
       </div>
     </div>
+    <AudioBar/>
   </div>
 </template>
 
 <script>
 import order from '../api/order';
-
+import AudioBar from 'components/basic/Audio_Bar';
 export default {
-  components: {
-  },
+  components: { AudioBar },
   data () {
     return {
       data: {},

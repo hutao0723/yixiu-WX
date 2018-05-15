@@ -56,8 +56,20 @@
           pageSize: this.pageSize
         }
         let obj = await order.getCartList(params)
-        this.cartList = obj
+        obj.forEach(item => {
+          item['timeLengthText'] = this.secondToDate(item.timeLength);
+          let percent = Math.floor((+item.playbackProgress ? +item.playbackProgress : 0) / +item.timeLength * 100);
+          item['percent'] = percent > 100 ? 100 : percent;
+        })
+        this.cartList = obj;
+        if (!this.cartList.length) this.noData = true
       },
+      secondToDate(result) {
+        if (result == null || result == undefined) return ''
+        let m = Math.floor((result / 60 % 60));
+        let s = Math.floor((result % 60));
+        return result = m + "分" + s + "秒";
+      }
     },
     components: {
       AudioBar

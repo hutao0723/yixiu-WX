@@ -69,7 +69,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['audio','playing','currentTime','musicDuration']),
+    ...mapState(['audio','playing','currentTime','musicDuration','audioelement']),
     current() {
       return this.timerFomart(this.currentTime)
     },
@@ -78,7 +78,10 @@ export default {
     }
   },
   mounted () {
-
+    if (!this.audioelement.src) {
+      this.audioelement.setAttribute('src', this.audio.src);
+      this.audioelement.setAttribute('title', this.audio.title);
+    }
   },
   methods: {
     audioPrev () {

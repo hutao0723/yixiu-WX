@@ -19,7 +19,7 @@ export default {
 				state.playing = true
 				state.audioelement.play()
 			};
-			if (state.audio.powerLevel && state.audio.price) this.syncProgress(state.audio.columnId,state.audio.courseId,state.currentTime)
+			if (state.audio.powerLevel && state.audio.price) play.syncProgress(state.audio.columnId,state.audio.courseId,state.currentTime)
 		},
 		// 更新音乐数据
 		setAudio (state, obj) {
@@ -41,6 +41,7 @@ export default {
 			if (state.audio.isNext) {
 				play.startAudio(state.audio.columnId, state.audio.courseId, 'next')
 			} else {
+				if (state.audio.powerLevel && state.audio.price) play.syncProgress(state.audio.columnId,state.audio.courseId,state.currentTime)
 				state.audioelement.load()
 				state.audioelement.pause()
 			}	
@@ -54,10 +55,14 @@ export default {
 		// 设置音乐是否正在加载
 		setMusicLoadStart (state, obj) {
 			state.musicLoadStart = obj.isloadstart;
-			if (state.audioelement.currentTime === 0) state.audioelement.currentTime = state.audio.playbackProgress;
+			if (state.audioelement.currentTime === 0 && state.audio.playbackProgress < state.musicDuration) state.audioelement.currentTime = state.audio.playbackProgress;
 		},
 		// 设置音乐试听结束
 		setMusicTryEnd (state) {
 			state.audio.musicTryEnd = true;
-		}
+		},
+		// 设置音乐停止播放状态
+		setPlaying (state) {
+			state.playing = false;
+		},
 }

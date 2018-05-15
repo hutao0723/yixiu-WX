@@ -20,7 +20,7 @@
           {
             title: '首页',
             icon: 'icon-shouye',
-            router: '/home/index'
+            router: '/home'
           },
           {
             title: '已购',

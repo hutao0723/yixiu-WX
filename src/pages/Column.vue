@@ -56,6 +56,7 @@
       <a href="javascript:void(0)" class="btn-small btn" v-if="btnActive == 1" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
       <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 0" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
     </div>
+    <AudioBar/>
   </div>
 </template>
 
@@ -64,6 +65,7 @@
   import store from '../vuex/store'
   import order from '../api/order'
   import router from '../mixins/router';
+  import AudioBar from 'components/basic/Audio_Bar';
 
   export default {
     data() {
@@ -153,6 +155,7 @@
         this.reverseTs = !this.reverseTs;
       },
     },
+    components: { AudioBar },
     mixins: [router]
   };
 
