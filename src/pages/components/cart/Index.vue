@@ -77,6 +77,7 @@
   @rem: 75rem;
   .page-list {
     padding: 0 30/@rem;
+    padding-bottom: 100/@rem;
     .item {
       border-bottom: 1/@rem solid #D8D8D8;
       position: relative;
@@ -101,7 +102,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        width: 420/@rem;
+        width: 450/@rem;
 
       }
       .item-sub {
