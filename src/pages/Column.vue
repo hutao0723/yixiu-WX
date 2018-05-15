@@ -48,7 +48,7 @@
     <div class="page-content" v-show="tabActive">
       <div v-html="detailObj.detail"></div>
     </div>
-    <div class="page-btn">
+    <div class="page-btn" v-if="btnActive != 2">
       <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" @click="goAudition">免费试听</a>
       <a href="javascript:void(0)" class="btn-small btn" v-if="btnActive == 1" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
       <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 0" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
@@ -141,7 +141,9 @@
         let obj = await order.getColumnList(id)
         this.courseList = obj
       },
-      getPay() {},
+      async getPay() {
+        let obj = await order.buy(this.detailObj.id, 2)
+      },
       goAudition() {},
     },
   };
@@ -153,6 +155,10 @@
   .column-page {
     height: 100%;
     position: relative;
+  }
+
+  .page-content {
+    padding-bottom: 120/@rem;
   }
 
   .page-header {
@@ -355,3 +361,4 @@
   }
 
 </style>
+

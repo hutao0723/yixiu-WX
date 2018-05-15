@@ -99,7 +99,9 @@
         }
         this.detailObj = obj
       },
-      getPay() {},
+      async getPay() {
+        let obj = await order.buy(this.detailObj.id, 1)
+      },
       goAudition() {},
     },
   };
@@ -112,7 +114,9 @@
     height: 100%;
     position: relative;
   }
-
+  .page-content{
+    padding-bottom: 120/@rem;
+  }
   .page-header {
     .size(750, 400);
     position: relative;
