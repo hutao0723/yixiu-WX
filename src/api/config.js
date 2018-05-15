@@ -9,7 +9,7 @@ export default class config extends base {
    */
   static layout() {
     const url = `/floor/page?isHome=true`;
-    return this.get(url, {params:{}}).then(res => {return res.body.data});
+    return this.get(url, {params:{}}).then(res => {return res.data.data});
   }
 
   /**
@@ -18,14 +18,14 @@ export default class config extends base {
   static layoutAc(pageId) {
     const id = pageId;
     const url = `/floor/page?isHome=false`;
-    return this.get(url, {params:{id}}).then(res => {return res.body.data});
+    return this.get(url, {params:{id}}).then(res => {return res.data.data});
   }
   /**
    * 获取模块数据
    */
   static async component(floorType, componentId) {
     const url = `/floor/${floorType}/${componentId}`;
-    return this.get(url).then(res => {return res.body.data});
+    return this.get(url).then(res => {return res.data.data});
   }
 
   // *** 数据处理方法

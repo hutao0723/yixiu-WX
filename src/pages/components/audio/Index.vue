@@ -23,7 +23,7 @@
           <button type="primary" class="btn-play" @click="togglePlay">
             <i class="iconfont" :class="playing ? 'icon-bofangqi-zanting' : 'icon-bofang'"></i>
           </button>
-          <button type="primary" class="btn-switch" @tap="audioNext">
+          <button type="primary" class="btn-switch" @click="audioNext">
             <i class="iconfont icon-xiayiqu" :style="{color: `${!audio.isNext ? '#FF9E9A' : '#FF5349'}`}"></i>
           </button>
         </div>
@@ -59,6 +59,7 @@
 <script>
 import router from '../../../mixins/router';
 import store from '../../../vuex/store';
+import play from '../../../api/play';
 import { mapState } from 'vuex'
 import range from 'components/basic/range'
 export default {
@@ -80,6 +81,7 @@ export default {
   },
   methods: {
     audioPrev () {
+      play.startAudio(this.audio.columnId, this.audio.courseId, 'prev')
     },
     togglePlay() {
       if (!this.audio.musicTryEnd) {
@@ -87,6 +89,7 @@ export default {
       }
     },
     audioNext (){
+      play.startAudio(this.audio.columnId, this.audio.courseId, 'next')
     },
     goPay(){},
     onShareAppMessage(){},

@@ -3,11 +3,11 @@
     <div class="main-box row">
       <!--左边栏-->
       <div class="left-bar row-between on-play">
-        <div class="icon-fecth column-center" :class="(audio.columnId == goods.columnId || audio.courseId == goods.courseId) ? 'icon-play' : 'icon-paused'">
-          <img class="" src="https://yun.dui88.com/youfen/images/audio.svg" v-if="audio.columnId == goods.columnId || audio.courseId == goods.courseId" />
+        <div class="icon-fecth column-center" :class="(audio.columnId === goods.columnId || audio.courseId === goods.courseId) ? 'icon-play' : 'icon-paused'">
+          <img class="" src="https://yun.dui88.com/youfen/images/audio.svg" v-if="audio.columnId === goods.columnId || audio.courseId === goods.courseId" />
           <i class="iconfont icon-bofang" v-else></i>
         </div>
-        <span class="nm line1 title" :class="(audio.columnId == goods.columnId || audio.courseId == goods.courseId) ? 'soft' : 'strong'">{{goods.title}}</span>
+        <span class="nm line1 title" :class="(audio.columnId === goods.columnId || audio.courseId === goods.courseId) ? 'soft' : 'strong'">{{goods.title}}{{goods.courseId}}</span>
       </div>
       <!--右边栏-->
       <div class="right-bar">
