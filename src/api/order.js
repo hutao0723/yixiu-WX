@@ -56,7 +56,7 @@ export default class order extends base {
    * 支付
    */
   static async wxPay(payment) {
-    const url = location.href.split('#')[0];
+    const url = encodeURIComponent(location.href.split('#')[0]);
     const urlData = `/wechat/getJsapiSignature`;
     const res = await this.get(urlData, {
       params: {
@@ -66,49 +66,40 @@ export default class order extends base {
     this.wxChooseWXPay(res.data.data, payment)
   }
   static wxChooseWXPay(obj, payment) {
-    wx.config({
-      // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-      debug: true,
-      // 必填，公众号的唯一标识
-      appId: obj.appid,
-      // 必填，生成签名的时间戳
-      timestamp: obj.timestamp,
-      // 必填，生成签名的随机串
-      nonceStr: obj.noncestr,
-      // 必填，签名，见附录1
-      signature: obj.signature,
-      // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-      jsApiList: ['chooseWXPay']
-    });
-    wx.error(function (res) {
-      console.log("出错了：" + res.errMsg); //这个地方的好处就是wx.config配置错误，会弹出窗口哪里错误，然后根据微信文档查询即可。
-    });
-    wx.ready(function () {
-      wx.checkJsApi({
-        jsApiList: ['chooseWXPay'],
-        success: function (res) {
 
+    function onBridgeReady() {
+      WeixinJSBridge.invoke(
+        'getBrandWCPayRequest', {
+          "appId": payment.appId, //公众号名称，由商户传入     
+          "timeStamp": payment.timeStamp, //时间戳，自1970年以来的秒数     
+          "nonceStr": payment.nonceStr, //随机串     
+          "package": payment.package,
+          "signType": payment.signType, //微信签名方式：     
+          "paySign": payment.paySign //微信签名 
+        },
+        function (res) {
+          if (res.err_msg == "get_brand_wcpay_request:ok") {
+           
+          } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
         }
-      });
-
-      wx.chooseWXPay({
-        "timeStamp": payment.timeStamp, //时间戳，自1970年以来的秒数     
-        "nonceStr": payment.nonceStr, //随机串     
-        "package": payment.package,
-        "signType": payment.signType, //微信签名方式：     
-        "paySign": payment.paySign, //微信签名 
-        success: function (res) {
-          // 支付成功后的回调函数
-        }
-      });
-
-    });
+      );
+    }
+    if (typeof WeixinJSBridge == "undefined") {
+      if (document.addEventListener) {
+        document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+      } else if (document.attachEvent) {
+        document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+        document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+      }
+    } else {
+      onBridgeReady();
+    }
 
   }
 
   static async wxShare() {
     console.log('分享')
-    const url = location.href.split('#')[0];
+    const url = encodeURIComponent(location.href.split('#')[0]);
     const urlData = `/wechat/getJsapiSignature`;
     const res = await this.get(urlData, {
       params: {
@@ -160,7 +151,7 @@ export default class order extends base {
 
   static async wxPreview(imgUrl) {
     console.log('预览')
-    const url = location.href.split('#')[0];
+    const url = encodeURIComponent(location.href.split('#')[0]);
     const urlData = `/wechat/getJsapiSignature`;
     const res = await this.get(urlData, {
       params: {
