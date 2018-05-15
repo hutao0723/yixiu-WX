@@ -56,9 +56,9 @@ export default class order extends base {
    * 支付
    */
   static async wxPay(payment) {
-    const url = location.href;
+    const url = location.href.split('#')[0];
     const urlData = `/wechat/getJsapiSignature`;
-    const res = await this.post(urlData, {
+    const res = await this.get(urlData, {
       params: {
         url
       }
@@ -108,7 +108,7 @@ export default class order extends base {
 
   static async wxShare() {
     console.log('分享')
-    const url = location.href;
+    const url = location.href.split('#')[0];
     const urlData = `/wechat/getJsapiSignature`;
     const res = await this.get(urlData, {
       params: {
@@ -160,9 +160,9 @@ export default class order extends base {
 
   static async wxPreview(imgUrl) {
     console.log('预览')
-    const url = location.href;
+    const url = location.href.split('#')[0];
     const urlData = `/wechat/getJsapiSignature`;
-    const res = await this.post(urlData, {
+    const res = await this.get(urlData, {
       params: {
         url
       }
