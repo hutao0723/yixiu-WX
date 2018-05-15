@@ -94,8 +94,7 @@ export default {
     },
     goPay(){},
     onShareAppMessage(){
-      var oldUrl = location.href.split('#')[0];
-      order.wxShare(oldUrl);
+      order.wxShare();
     },
     timerFomart (time) {
       if (isNaN(time)) return '00:00';
