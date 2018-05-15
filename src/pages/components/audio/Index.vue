@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     audioPrev () {
-      play.startAudio(this.audio.columnId, this.audio.courseId, 'prev')
+      if (this.audio.isPrev) play.startAudio(this.audio.columnId, this.audio.courseId, 'prev')
     },
     togglePlay() {
       if (!this.audio.musicTryEnd) {
@@ -90,7 +90,7 @@ export default {
       }
     },
     audioNext (){
-      play.startAudio(this.audio.columnId, this.audio.courseId, 'next')
+      if (this.audio.isNext) play.startAudio(this.audio.columnId, this.audio.courseId, 'next')
     },
     goPay(){},
     onShareAppMessage(){
