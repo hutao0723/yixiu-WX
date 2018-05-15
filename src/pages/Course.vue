@@ -22,6 +22,8 @@
       <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" @click="goAudition">免费试听</a>
       <a href="javascript:void(0)" class="btn-small btn" v-if="btnActive == 1" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
       <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 0" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
+      <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 2" @click="goAudition">播放</a>
+      
     </div>
   </div>
 </template>
@@ -107,15 +109,19 @@
   };
 
 </script>
-<style lang="less" scoped>
+<style lang="less">
   @import "../assets/style/base/util";
   @rem: 75rem;
   .column-page {
     height: 100%;
     position: relative;
   }
-  .page-content{
+  .page-content {
     padding-bottom: 120/@rem;
+    background: #fff;
+    img{
+      width: 100%!important;
+    }
   }
   .page-header {
     .size(750, 400);

@@ -18,30 +18,32 @@
     <div class="page-tab" v-show="courseList.length > 0">
       <div class="clearfix">
         <div class="tab-left tab" :class="{ active: tabActive}" @click="tabActive = true">专栏详情</div>
-        <div class="tab-right tab" :class="{ active: !tabActive}" @click="tabActive = fasle">课程目录</div>
+        <div class="tab-right tab" :class="{ active: !tabActive}" @click="tabActive = false">课程目录</div>
       </div>
     </div>
     <div class="page-list" v-show="!tabActive">
       <div class="list-nav">
         <div class="nav-title">内容</div>
-        <div class="nav-sort">
-          <i class="iconfont icon-sort"></i>排序</div>
+        <div class="nav-sort" @click="reverseList">
+          <i class="iconfont icon-sort" v-show="!reverseTs">&#xe685;</i>
+          <i class="iconfont icon-sort" v-show="reverseTs">&#xe684;</i>
+          {{reverseTs?'倒序':'正序'}}</div>
       </div>
       <div class="list-content">
         <div class="item" v-for="(item,index) in courseList" :key="index">
-          <i class="iconfont icon-svn">
-            <!-- <img class="" src="https://yun.dui88.com/youfen/imgs/audio.svg" /> -->
-          </i>
-          <i class="iconfont icon-play"></i>
+          <!-- <i class="iconfont icon-play">
+            <img class="" src="../images/audio.svg"/>
+          </i> -->
+          <i class="iconfont icon-play">&#xe617;</i>
           <span class="item-title">
             <span class="item-audition" v-if="item.watchable  == 1 && detailObj.powerLevel == 0">试听</span>
             <span :class="{red:item.playing}">{{item.title}}</span>
           </span>
           <span class="item-time">
-            <i class="iconfont icon-time"></i>{{item.timeLength | formatTime}}
+            <i class="iconfont icon-time">&#xe62d;</i>{{item.timeLength | formatTime}}
           </span>
           <span class="item-date">{{item.publishTime | formatDate}}</span>
-          <i class="iconfong icon-ispay"></i>
+          <i class="iconfont icon-ispay" v-show="item.powerLevel == 0 && item.price > 0">&#xe60c;</i>
         </div>
       </div>
     </div>
@@ -70,7 +72,8 @@
         detailObj: {},
         tabActive: true,
         btnActive: 1,
-        courseList: []
+        courseList: [],
+        reverseTs: false,
 
       }
     },
@@ -145,11 +148,16 @@
         let obj = await order.buy(this.detailObj.id, 2)
       },
       goAudition() {},
+      // 排序
+      reverseList() {
+        this.courseList = this.courseList.reverse();
+        this.reverseTs = !this.reverseTs;
+      },
     },
   };
 
 </script>
-<style lang="less" scoped>
+<style lang="less">
   @import "../assets/style/base/util";
   @rem: 75rem;
   .column-page {
@@ -159,6 +167,10 @@
 
   .page-content {
     padding-bottom: 120/@rem;
+    background: #fff;
+    img{
+      width: 100%!important;
+    }
   }
 
   .page-header {
@@ -359,6 +371,11 @@
       background: linear-gradient(90deg, rgba(255, 80, 72, 1), rgba(255, 99, 77, 1));
     }
   }
+  .icon-sort,.icon-ispay,.icon-time{
+    font-size: 24/@rem;
+  }
+
 
 </style>
 
+                                                                                                                                                                                                                                                                                                                                                                 
