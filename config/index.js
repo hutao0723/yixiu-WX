@@ -43,7 +43,16 @@ module.exports = {
         pathRewrite: {
           '/api': 'https://k.youfen666dev.com'   //需要rewrite重写的,
         }
-      },'/course': {
+      },
+      '/course': {
+        // 测试环境
+        target: 'https://k.youfen666dev.com',  // 接口域名
+        changeOrigin: true,  //是否跨域
+        // pathRewrite: {
+        //   '': ''   //需要rewrite重写的,
+        // }
+      },
+      '/userItem': {
         // 测试环境
         target: 'https://k.youfen666dev.com',  // 接口域名
         changeOrigin: true,  //是否跨域
