@@ -38,8 +38,7 @@ export default {
   methods: {
     // 查询订单信息
     onImage(){
-      var oldUrl = location.href.split('#')[0];
-      order.wxPreview(oldUrl,'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/ask-que.png');
+      order.wxPreview('https://yun.duiba.com.cn/yoofans/images/201804/miniapp/ask-que.png');
     }
   }
 };
