@@ -7,46 +7,52 @@
       <div class="header-name-bg"></div>
       <div class="header-name">
         <span v-if="detailObj.price>0">{{detailObj.buyTimes}}人已购</span>
-        <span v-else>{{detailObj.playTimes}}人已听</span> | 时长{{detailObj.timeLength}}
+        <span v-else>{{detailObj.playTimes}}人已听</span>
+        <span v-if="courseList.length > 0"> | 共{{courseList.length}}节</span>
       </div>
     </div>
     <div class="page-title">
       <div class="title-main">{{detailObj.title}}</div>
       <div class="title-sub">{{detailObj.subTitle}}</div>
     </div>
-    <div class="page-tab">
+    <div class="page-tab" v-show="courseList.length > 0">
       <div class="clearfix">
         <div class="tab-left tab" :class="{ active: tabActive}" @click="tabActive = true">专栏详情</div>
-        <div class="tab-right tab" :class="{ active: !tabActive}" @click="tabActive = fasle">课程目录</div>
+        <div class="tab-right tab" :class="{ active: !tabActive}" @click="tabActive = false">课程目录</div>
       </div>
     </div>
     <div class="page-list" v-show="!tabActive">
       <div class="list-nav">
         <div class="nav-title">内容</div>
-        <div class="nav-sort">
-          <i class="iconfont icon-sort"></i>排序</div>
+        <div class="nav-sort" @click="reverseList">
+          <i class="iconfont icon-sort" v-show="!reverseTs">&#xe685;</i>
+          <i class="iconfont icon-sort" v-show="reverseTs">&#xe684;</i>
+          {{reverseTs?'倒序':'正序'}}</div>
       </div>
       <div class="list-content">
-        <div class="item" v-for="(item,index) in courseList" :key="index">
-          <i class="iconfont icon-svn">
-            <!-- <img class="" src="https://yun.dui88.com/youfen/imgs/audio.svg" /> -->
+        <div class="item" v-for="(item,index) in courseList" :key="index" @click="playClick(detailObj.id, item.id, false)">
+          <i class="iconfont icon-play active" v-if="audio.courseId == item.id">
+            <img class="" src="../images/audio.svg"/>
           </i>
-          <i class="iconfont icon-play"></i>
+          <i class="iconfont icon-play" v-else>&#xe617;</i>
           <span class="item-title">
             <span class="item-audition" v-if="item.watchable  == 1 && detailObj.powerLevel == 0">试听</span>
-            <span :class="{red:item.playing}">{{item.title}}</span>
+            <span  :class="{active:audio.courseId == item.id}">{{item.title}}</span>
           </span>
           <span class="item-time">
-            <i class="iconfont icon-time"></i>{{item.timeLength}}
+            <i class="iconfont icon-time">&#xe62d;</i>{{item.timeLength | formatTime}}
           </span>
-          <span class="item-date">{{item.date}}</span>
-          <i class="iconfong icon-ispay"></i>
+          <span class="item-date">{{item.publishTime | formatDate}}</span>
+          <i class="iconfont icon-ispay" v-show="item.powerLevel == 0 && item.price > 0">&#xe60c;</i>
         </div>
       </div>
     </div>
-    <div class="page-content" v-show="tabActive"></div>
-    <div class="page-btn">
-      <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" @click="goAudition">免费试听</a>
+    <div class="page-content" v-show="tabActive">
+      <div v-html="detailObj.detail"></div>
+    </div>
+    <div class="page-btn" v-if="btnActive != 2">
+      <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" 
+      @click.stop="playClick(detailObj.id, '', true)">免费试听</a>
       <a href="javascript:void(0)" class="btn-small btn" v-if="btnActive == 1" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
       <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 0" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
     </div>
@@ -55,36 +61,23 @@
 
 <script>
   import { mapState } from 'vuex';
-  import httpServer from '../api/api';
-  
+  import store from '../vuex/store'
+  import order from '../api/order'
+  import router from '../mixins/router';
 
   export default {
     data() {
       return {
-        detailObj: {
-          title: '课程标题测试测试测试测试课程标题测试测试测试测试课程标题测试测试测试测试课程标题测试测试测试测试',
-          subTitle: '副标题测试副标题测试副标题测试副标题测试副标题测试副标题测试副标题测试副标题测试副标题测试副标题测试',
-          powerLevel: 0,
-          price: 19999,
-        },
+        detailObj: {},
         tabActive: true,
         btnActive: 1,
-        courseList: [
-          {
-            title: '课程表头课程表头课程表头课程表头课程表头课程表头课程表头课程表头',
-            timeLength: '1:00',
-            date: '03-20',
-            watchable: 1,
-            playing: 1,
-          }
-        ]
+        courseList: [],
+        reverseTs: false,
 
       }
     },
     computed: {
-      ...mapState({
-        isLogin: state => state.isLogin
-      })
+      ...mapState(['audio', 'playing', 'currentTime', 'musicDuration']),
     },
     mounted() {
       // this.$store.dispatch('setWhichpage', '首页');
@@ -92,34 +85,100 @@
       // if (!this.isLogin) {
       //   this.$router.push({ path: '/login' });
       // }
-      this.setGoodsDetailAll();
+      this.getColumnDetail(this.$route.params.columnId)
+      this.getColumnList(this.$route.params.columnId)
+    },
+    filters: {
+      // 时长
+      formatTimeText: function (value) {
+        let h = Math.floor(value / 60 % 60)
+        let m = Math.floor(value % 60)
+
+        let data = (h < 10 ? '0' + h : h) + '分' + (m < 10 ? '0' + m : m) + '秒'
+        return data
+      },
+      // 时长
+      formatTime: function (value) {
+        let h = Math.floor(value / 60 % 60)
+        let m = Math.floor(value % 60)
+
+        let data = (h < 10 ? '0' + h : h) + ':' + (m < 10 ? '0' + m : m)
+        return data
+      },
+      // 日期
+      formatDate: function (value) {
+        let newDate = new Date(value);
+        let m = newDate.getMonth() + 1;
+        let d = newDate.getDate();
+        return m + '-' + d;
+      },
     },
     methods: {
-      setGoodsDetailAll() {
-        this.$http.get('/datainter/dataFillServlet?tradeType=23').then(res => {
-          console.log(res);
-          this.$store.dispatch('setGoodsDetailAll', res.data);
-        });
-      },
-      // 支付
-      getPay() {
+      // 获取详情
+      async getColumnDetail(id) {
+        // let self = this;
+        // const url = `/api/column/get`;
+        // this.$http.get(url, { params: { columnId: id } }).then(res => {
+        //   self.detailObj = res.data.data
+        // });
+        let obj = await order.getColumnDetail(id)
+        if (obj.powerLevel == 1 || obj.price == 0) {
+          this.btnActive = 2;
+        } else if (obj.watchable == 1) {
+          this.btnActive = 1;
+        } else {
+          this.btnActive = 0;
+        }
+        this.detailObj = obj
 
       },
-      // 支付
-      goAudition() {
-
+      // 获取详情
+      async getColumnList(id) {
+        // let self = this;
+        // const url = `/api/column/getCourses`;
+        // this.$http.get(url, { params: { columnId: id } }).then(res => {
+        //   self.courseList = res.data.data
+        //   console.log(res.data.data)
+        // });
+        let obj = await order.getColumnList(id)
+        this.courseList = obj
       },
-    }
+      async getPay() {
+        let obj = await order.buy(this.detailObj.id, 2)
+      },
+      goAudition() {},
+      // 排序
+      reverseList() {
+        this.courseList = this.courseList.reverse();
+        this.reverseTs = !this.reverseTs;
+      },
+    },
+    mixins: [router]
   };
+
 </script>
-<style lang="less" scoped>
+<style lang="less">
   @import "../assets/style/base/util";
   @rem: 75rem;
+  .column-page {
+    height: 100%;
+    position: relative;
+  }
+
+  .page-content {
+    padding-bottom: 120/@rem;
+    background: #fff;
+    img{
+      width: 100%!important;
+    }
+  }
+
   .page-header {
     .size(750, 400);
     position: relative;
-    .header-img-big {
+    .header-img {
       .size(750, 400);
+      display: block;
     }
     .header-name-bg {
       position: absolute;
@@ -218,6 +277,7 @@
         text-align: center;
         color: #fff;
         border-radius: 50%;
+        background: #FF3E44;
       }
       .icon-svn {
         background: #ff3e44;
@@ -244,6 +304,9 @@
           display: inline-block;
           color: #fff;
           background: #FF3E44;
+        }
+        .active{
+          color: #FF3E44;
         }
         .red {
           color: #FF3E44;
@@ -274,11 +337,12 @@
     }
   }
 
+
   .page-btn {
     .size(750, 120);
     border-top: 1/@rem solid #E5E5E5;
     position: fixed;
-    bottom: 100;
+    bottom: 0;
     left: 0;
     text-align: center;
     background: #fff;
@@ -311,4 +375,11 @@
       background: linear-gradient(90deg, rgba(255, 80, 72, 1), rgba(255, 99, 77, 1));
     }
   }
+  .icon-sort,.icon-ispay,.icon-time{
+    font-size: 24/@rem;
+  }
+
+
 </style>
+
+                                                                                                                                                                                                                                                                                                                                                                 

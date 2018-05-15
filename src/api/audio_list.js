@@ -1,4 +1,3 @@
-import wepy from 'wepy';
 import base from './base';
 import order from './order';
 export default class play extends base {
@@ -44,6 +43,7 @@ export default class play extends base {
           isNext: isNext,
           isPrev: isPrev,
           powerLevel: price == 0 ?1:powerLevel,
+          price,
         };
         return videoMsg;
       } else {
@@ -95,6 +95,7 @@ export default class play extends base {
               isNext: i != videoList.length-1,
               isPrev: i != 0,
               powerLevel: price == 0 ?1:powerLevel,
+              price,
             };
             break
           }
@@ -150,6 +151,7 @@ export default class play extends base {
             isNext: true,
             isPrev: i != 1,
             powerLevel: price == 0 ?1:powerLevel,
+            price,
             
           };
           console.log('getPrev', tsElement)
@@ -204,6 +206,7 @@ export default class play extends base {
               isPrev: true,
               isNext: i != videoList.length - 1,
               powerLevel: price == 0 ?1:powerLevel,
+              price,
             };
             console.log('getNext', videoMsg)
 

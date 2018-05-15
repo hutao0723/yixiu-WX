@@ -1,21 +1,19 @@
 <template>
-  <div class="">
-    <div class="audio-list">
-      <div v-for="item in list">
-        <div class="audio-item row-between" @click="playAudio()">
-          <div class="row-center" :class="!item.playing ? 'icon-paused' : 'icon-play'">
-            <img class="wave-icon" src="../../../images/audio.svg"  v-if="item.playing"/>
-            <i class="iconfont icon-bofang" v-else></i>
-          </div>
-          <div class="content-bar column-between">
-            <span class="lg line1" :class="!item.playing ? 'strong' : 'soft'">{{item.title}}</span>
-            <div class="info-bar row-between">
-              <div class="duration">
-                <i class="iconfont icon-clock mr10"></i>
-                <span class="xs weak">{{item.duration}}</span>
-              </div>
-              <span class="already xs weak">{{'已收听' + item.percent}}</span>
+  <div class="audio-list">
+    <div v-for="item in list">
+      <div class="audio-item row-between" @click="playAudio(item)">
+        <div class="row-center" :class="!(audio.courseId === item.id) ? 'icon-paused' : 'icon-play'">
+          <img class="wave-icon" src="../../../images/audio.svg" v-if="audio.courseId == item.id" />
+          <i class="iconfont icon-bofang" v-else></i>
+        </div>
+        <div class="content-bar column-between">
+          <span class="lg line1" :class="!(audio.courseId === item.id) ? 'strong' : 'soft'">{{item.title}}</span>
+          <div class="info-bar row-between">
+            <div class="duration">
+              <i class="iconfont icon-clock mr10"></i>
+              <span class="xs weak">{{item.duration}}</span>
             </div>
+            <span class="already xs weak">{{'已收听' + item.percent}}</span>
           </div>
         </div>
       </div>
@@ -25,113 +23,104 @@
 
 <script>
 import { mapState } from 'vuex';
-
+import store from '../../../vuex/store';
+import order from '../../../api/order';
+import play from '../../../api/play';
 export default {
   computed: {
-    ...mapState({
-      isLogin: state => state.isLogin
-    })
+    ...mapState(['audio'])
   },
   data () {
     return {
-      list:[
-        {
-          playing: 1,
-          title: '学会这几种方法学会这几种方法学会这几种方法学会这几种方法',
-          duration: '04:06',
-          percent: 30
-        },
-        {
-          playing: 0,
-          title: '学会这几种方法',
-          duration: '04:06',
-          percent: 30
-        }
-      ],
-      option: {}
+      list:[]
     };
   },
-  mounted () {
-    // this.$store.dispatch('setWhichpage', '首页');
-    // // 返回登录页面
-    // if (!this.isLogin) {
-    //   this.$router.push({ path: '/login' });
-    // }
-    this.setGoodsDetailAll();
+  async mounted () {
+    if (!this.audio.columnId) {
+        // 单课程列表
+        let objs = await order.getCourseDetail(this.audio.courseId);
+        this.list = [objs]
+      } else {
+        let objs = await order.getColumnList(this.audio.columnId);
+        this.list = objs.filter((item) => {
+          return item.powerLevel == 1 || item.freeTime > 0;
+        });
+      }
+      this.list.forEach((item) => {
+        item.duration = play.fmtTime(+item.timeLength);
+        let percent = Math.floor((+item.playbackProgress ? +item.playbackProgress : 0) / +item.timeLength * 100);
+        item.percent = (percent > 100 ? 100 : percent) + "%";
+      })
+      console.log(this.list)
   },
   methods: {
-    setGoodsDetailAll: function () {
-      this.$http.get('/datainter/dataFillServlet?tradeType=23').then(res => {
-        console.log(res);
-        this.$store.dispatch('setGoodsDetailAll', res.data);
-      });
-    },
     playAudio(item) {
-        
+      play.startAudio(this.audio.columnId,item.id,'init');
+      this.$router.go(-1);
     }
-  }
-};
+    }
+  };
 </script>
 <style lang="less">
-@import '../../../less/base.less';
-@import '../../../less/tool.less';
-.audio-list {
-  width: 690/@rem;
-  padding: 0 30/@rem;
-  border-top: 1px solid rgba(216,216,216,1);
-  .audio-item {
+  @import '../../../less/variable';
+  @import '../../../less/tool.less';
+  .audio-list {
     width: 690/@rem;
-    height: 142/@rem;
-    border-bottom: @border;
-    .icon-play {
-      width: 54/@rem;
-      height: 54/@rem;
-      background: @color-soft;
-      border-radius: 50%;
-      .wave-icon{
-        width: 45/@rem
-      }
-      .iconfont {
-        color: white;
-        .fontSize(22);
-      }
-      ;
-    }
-    .icon-paused {
-      width: 54/@rem;
-      height: 54/@rem;
-      background: rgba(170, 170, 170, 1);
-      box-shadow: 0px 2px 4px 0px rgba(214, 214, 214, 0.5);
-      border-radius: 50%;
-      .iconfont {
-        color: white;
-        .fontSize(22);
-      }
-      ;
-    }
-    .content-bar {
-      width: 626/@rem;
-      height: 92/@rem;
-      padding-left: 20/@rem;
-      box-sizing: border-box;
-      text.onplay {
-        color: #fff
-      }
-      .info-bar {
-        width: 100%;
-      }
-      .duration {
-        width: 200/@rem;
-        .iconfont {
-          color: @color-weak;
-          .fontSize(24);
+    padding: 0 30/@rem;
+    border-top: 1px solid rgba(216, 216, 216, 1);
+    .audio-item {
+      width: 690/@rem;
+      height: 142/@rem;
+      border-bottom: @border;
+      .icon-play {
+        width: 54/@rem;
+        height: 54/@rem;
+        background: @color-soft;
+        border-radius: 50%;
+        .wave-icon {
+          width: 45/@rem
         }
+        .iconfont {
+          color: white;
+          .fontSize(22);
+        }
+        ;
       }
-      .already {
-        width: 200/@rem;
-        text-align: right;
+      .icon-paused {
+        width: 54/@rem;
+        height: 54/@rem;
+        background: rgba(170, 170, 170, 1);
+        box-shadow: 0px 2px 4px 0px rgba(214, 214, 214, 0.5);
+        border-radius: 50%;
+        .iconfont {
+          color: white;
+          .fontSize(22);
+        }
+        ;
+      }
+      .content-bar {
+        width: 626/@rem;
+        height: 92/@rem;
+        padding-left: 20/@rem;
+        box-sizing: border-box;
+        text.onplay {
+          color: #fff
+        }
+        .info-bar {
+          width: 100%;
+        }
+        .duration {
+          width: 200/@rem;
+          .iconfont {
+            color: @color-weak;
+            .fontSize(24);
+          }
+        }
+        .already {
+          width: 200/@rem;
+          text-align: right;
+        }
       }
     }
   }
-}
 </style>

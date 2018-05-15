@@ -15,6 +15,11 @@ var setOnline = [
     name: 'login',
     type: 'post',
     url: '/datainter/dataFillServlet'
+  },
+  {
+    name: 'userinfo',
+    type: 'get',
+    url: '/user/getUserInfo'
   }
 ];
 

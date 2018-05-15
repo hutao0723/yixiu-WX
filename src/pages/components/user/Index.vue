@@ -11,7 +11,7 @@
         </div>
         <div class="row ft32 ml30">推荐给好友</div>
       </div>
-      <router-link :to="{ path: 'help' }">
+      <router-link :to="{ path: '/help' }">
         <div class="mtr20 user-h110 row">
           <div class="icon-box help column-center">
             <i class="iconfont icon-help user-icon"></i>
@@ -40,7 +40,7 @@ export default {
   },
   watch: {},
   mounted () {
-    // this.getAllStocks();
+    this.getUserInfo();
   },
   methods: {
     // share: function () {
@@ -59,6 +59,18 @@ export default {
     //     }
     //   });
     // }
+    getUserInfo () {
+      this.$http.get('/user/getUserInfo').then(res => {
+        let resp = res.data
+        // console.log(resp.data)
+        if (resp.success) {
+          this.username = resp.data.nickname;
+          this.imageUrl = resp.data.headimgurl;
+        } else {
+          console.log("获取用户信息失败")
+        }
+      });
+    }
   }
 };
 </script>

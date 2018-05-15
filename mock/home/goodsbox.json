@@ -7,7 +7,7 @@
         "componentType": "GOODSBOX",
         "fillType": "aspectFill",
         "showTitle": 1,
-        "layout": "GRID_2",
+        "layout": "ROW",
         "linkUrl": "商品组链接",
         "tabs": [
             {
@@ -15,7 +15,7 @@
                 "groupName": "最新修改1",
                 "pageComponentId": 59,
                 "deleted": 0,
-                "showLimitNumber": 3,
+                "showLimitNumber": 6,
                 "goodsGroupId": 1,
                 "goods": [
                     {
@@ -29,11 +29,12 @@
                         "courseNum":20,
                         "buyTimes":50 ,
                         "watchable":1,
-                        "subTitle":"子标题"
+                        "subTitle":"子标题",
+                        "timeLength": 124
                     },
                     {
                         "itemType": 2,
-                        "verticalCover": "//yun.dui88.com/maila/images/280.png",
+                        "verticalCover": "//yun.duiba.com.cn/maila/images/jx3ipguwlg.jpg",
                         "price": 0,
                         "checkPower": false,
                         "columnId": 699,
@@ -42,7 +43,8 @@
                         "courseNum":20,
                         "buyTimes":50 ,
                         "watchable":0,
-                        "subTitle":"子标题"
+                        "subTitle":"子标题",
+                        "timeLength": 124
                     },
                     {
                         "itemType": 1,
@@ -54,7 +56,8 @@
                         "title": "课程一",
                         "buyTimes":50,
                         "watchable":0,
-                        "subTitle":"子标题"
+                        "subTitle":"子标题",
+                        "timeLength": 124
                     },
                     {
                         "itemType": 1,
@@ -66,7 +69,8 @@
                         "title": "课程一",
                         "buyTimes":50,
                         "watchable":0,
-                        "subTitle":"子标题"
+                        "subTitle":"子标题",
+                        "timeLength": 124
                     },
                     {
                         "itemType": 1,
@@ -78,7 +82,8 @@
                         "title": "课程一",
                         "buyTimes":50,
                         "watchable":0,
-                        "subTitle":"子标题"
+                        "subTitle":"子标题",
+                        "timeLength": 124
                     },
                     {
                         "itemType": 2,
@@ -91,7 +96,8 @@
                         "buyTimes":50,
                         "courseNum":20,
                         "watchable":0,
-                        "subTitle":"子标题"
+                        "subTitle":"子标题",
+                        "timeLength": 124
                     }
                 ],
                 "id": 19,

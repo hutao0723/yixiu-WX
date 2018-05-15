@@ -456,6 +456,9 @@
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
   }
+  .mint-swipe-item{
+    padding-left: 30/@rem;
+  }
   .mint-swipe-items-wrap > div {
     position: absolute;
     -webkit-transform: translateX(-100%);
@@ -485,7 +488,7 @@
     margin: 0 3px;
   }
   .mint-swipe-indicator.is-active {
-    background: #fff;
+    background: grey;
   }
   /* slider插件css + 改写*/
   .mint-swipe, .mint-swipe-items-wrap {
@@ -502,9 +505,11 @@
     height: 100%;
     display: none;
     a, img {
-      width: 100%;
-      height: 220/@rem;
+      width: 690/@rem;
+      height: 280/@rem;
       display: block;
+      border-radius: 10/@rem;
+      // box-shadow:0 10/@rem 10/@rem 0 rgba(235,235,235,0.6);
     }
   }
 
@@ -517,7 +522,7 @@
   .mint-swipe-indicators {
     position: absolute;
     bottom: 10px;
-    left: 60/@rem;
+    /*left: 60/@rem;*/
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%)
   }
@@ -529,11 +534,11 @@
     border-radius: 100/@rem;
     background: #ccc;
     margin: 0 5/@rem;
-    background: rgba(255,255,255,0.70); 
+    background: black; 
   }
 
   .mint-swipe-indicator.is-active {
-    width: 30/@rem;
-    background: #fff;
+    width: 10/@rem;
+    background: red;
   }
 </style>

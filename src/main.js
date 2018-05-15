@@ -4,19 +4,14 @@ import App from './App';
 import router from './router';
 import store from './vuex/store';
 import VueCookie from 'vue-cookie';
-// import modal from 'components/basic/Modal.vue';
-// import Mint from 'mint-ui';
-import 'mint-ui/lib/style.css';
 var infiniteScroll = require('vue-infinite-scroll');
 Vue.use(infiniteScroll);
-// Vue.use(Mint);
 
 import './assets/style/main.less';
 Vue.use(VueCookie);
 Vue.use(VueResource);
-Vue.http.options.root = 'http://115.236.12.122:8080';
 // vue-resource配置项
-Vue.http.options.emulateJSON = true;
+// Vue.http.options.emulateJSON = true;
 // Vue.component(modal.name, modal);
 // rem 换算
 import { setDPR, remChange } from './components/basic/remChange';
@@ -39,15 +34,15 @@ Vue.use(VueLazyload, {
     }
   }
 });
+Vue.http.headers.common['tk'] = 'ZEnrPP8wBUNhjtGwV5veCW7i5cZMJs1P2jBFZywQJKhz5taZ15bYWvXKsTESLdD85REaem63opFkazNHBd2XyP3KSkHm9KEqrnUvbWupegBnvCdQ2zNKgk8yNiEh2FCN5wGwwbNjUGp6WFhWJ3uEsAhGe';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
-  // request.method = 'POST'; // 在请求之前可以进行一些预处理和配置
     // continue to next interceptor
   next((response) => { // 在响应之后传给then之前对response进行修改和逻辑判断。对于token时候已过期的判断，就添加在此处，页面中任何一次http请求都会先调用此处方法
     // console.log(response);
     // response.body = '...';
-    // return response;
+    return response;
   });
 });
 

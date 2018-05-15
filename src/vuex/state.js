@@ -1,18 +1,35 @@
+
 export default {
-  // 是否在加载中
-  isLoading: false,
-  // 用户名
-  username: '',
-  // 头像
-  avator: '',
-  // 是否登录
-  isLogin: false,
-  // 当前所在页面 homepage | order | myzone (myzone切换还有问题)
-  whichPage: '',
-  isOldUser: false,
-  stocksAll: [],
-  goodsAll: [],
-  goodsDetailAll: [],
-  shopId: '',
-  confirmOrder: {} // 确认订单
+    // audio元素
+	audioelement: '',
+	// audio信息
+	audio: {
+		columnId: '',
+		courseId: '',
+		current: '',
+		isNext: '',
+		isPrev: '',
+		lateralCover:"",
+		lecturerId: '',
+		lecturerName: '',
+		playbackProgress: '',
+		powerLevel: '',
+		src: "",
+		timeLength: '',
+		title: "",
+		verticalCover: "",
+		watchable: ''
+	},
+	// 是否正在播放
+	playing: false,
+	// 是否正在加载
+	waiting: false,
+	// 播放类型   1是正序  2是倒序 
+	playType: 1,
+	// 当前播放的时间
+	currentTime: 0,
+	// 音乐的播放时长
+	musicDuration: 0,
+	// 音乐是否在加载
+	musicLoadStart: false
 };

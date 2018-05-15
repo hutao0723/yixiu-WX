@@ -1,11 +1,12 @@
 import base from './base';
-
+import list from './audio_list';
+import store from '../vuex/store'
 export default class play extends base {
 
   /**
-   * 获取音频数据
+   * 获取音频地址
    */
-  static async getAudioUrl({columnId, courseId}) {
+  static async getAudioUrl(columnId, courseId) {
     const url = `/course/getAccessUrl`;
     let params = {};
     if (columnId) {
@@ -18,8 +19,8 @@ export default class play extends base {
         courseId: courseId
       }
     }
-    const data = await this.get(url,params);
-    return data;
+    const res = await this.get(url, {params});
+    return res.body.data;
   }
   
   
@@ -28,7 +29,7 @@ export default class play extends base {
    */
   static async syncPlaytimes(courseId) {
     const url = `/course/playTimesIncrement`;
-    await this.post(url, {courseId});
+    this.post(url, {courseId});
   }
 
   /**
@@ -51,6 +52,52 @@ export default class play extends base {
     const url = `/userItem/progress`;
     const isOk = await this.post(url, params);
     return isOk;
+  }
+
+  /**
+   * 初始化音频
+   */
+  static async audioInit(columnId,courseId) {
+    let cat = await list.getVideoList(columnId,courseId);
+    return  cat.getVideoMsg();
+  }
+  
+  /**
+   * 下一曲音频
+   */
+  static async audioNext(columnId,courseId) {
+    let cat = list.getVideoList(columnId,courseId);
+    return cat.getNext(courseId);
+  }
+  
+  /**
+   * 上一曲音频
+   */
+  static async audioPrev(columnId,courseId) {
+    let cat = list.getVideoList(columnId,courseId);
+    return cat.getPrev(courseId);
+  }
+  
+  /**
+   * 更新并播放音频
+   */
+  static async startAudio(columnId,courseId,action) {
+    let audio = {};
+    if ( action === 'init') audio =  await this.audioInit(columnId, courseId);
+    if ( action === 'next') audio =  await this.audioNext(columnId, courseId);
+    if ( action === 'prev') audio =  await this.audioPrev(columnId, courseId);
+    console.log(audio)
+    let colId = audio.columnId,
+        couId = audio.courseId;
+    // audio.src = await this.getAudioUrl(colId, couId);
+    audio.src = 'http://mp3.qqmusic.cc/yq/208662441.mp3'
+    store.commit({
+      type: 'setAudio',
+      audio: audio
+    });
+    store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
+    store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
+    store.commit('play');
   }
   /**
    * 时间格式化
