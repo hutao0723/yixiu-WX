@@ -34,16 +34,17 @@ Vue.use(VueLazyload, {
     }
   }
 });
-Vue.http.headers.common['tk'] = 'ZEnrPP8wBUNhjtGwV5veCW7i5cZMJs1P2jBFZywQJKhz5taZ15bYWvXKsTESLdD85REaem63opFkazNHBd2XyP3KSkHm9KEqrnUvbWupegBnvCdQ2zNKgk8yNiEh2FCN5wGwwbNjUGp6T7qzRSeaEvXhA';
-// import axios from 'axios'
-
-// axios.defaults.headers.common['tk'] = 'ZEnrPP8wBUNhjtGwV5veCW7i5cZMJs1P2jBFZywQJKhz5taZ15bYWvXKsTESLdD85REaem63opFkazNHBd2XyP3KSkHm9KEqrnUvbWupegBnvCdQ2zNKgk8yNiEh2FCN5wGwwbNjUGp6T7qzRSeaEvXhA';
-// Vue.prototype.$axios = axios
-// Vue.http.interceptors.push((request, next) => {
-//   next((response) => {
-//     return response;
-//   });
-// });
+Vue.http.headers.common['tk'] = 'ZEnrPP8wBUNhjtGwV5veCW7i5cZMJs1P2jBFZywQJKhz5taZ15bYWvXKsTESLdD85REaem63opFkazNHBd2XyP3KSkHm9KEqrnUvbWupegBnvCdQ2zNKgk8yNiEh2FCN5wGwwbNjUGp6WFhWJ3uEsAhGe';
+Vue.http.interceptors.push((request, next) => {
+  // modify request
+  // request.url = request.root + request.url;
+    // continue to next interceptor
+  next((response) => { // 在响应之后传给then之前对response进行修改和逻辑判断。对于token时候已过期的判断，就添加在此处，页面中任何一次http请求都会先调用此处方法
+    // console.log(response);
+    // response.body = '...';
+    return response;
+  });
+});
 
 /* eslint-disable no-new */
 new Vue({

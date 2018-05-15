@@ -1,4 +1,3 @@
-import wepy from 'wepy';
 import base from './base';
 import order from './order';
 export default class play extends base {

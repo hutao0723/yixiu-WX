@@ -23,13 +23,9 @@ export default {
 		toggerMusicDetail (state) {
 			state.showMusicDetail = !state.showMusicDetail
 		},
-		// 初始化音乐
-		initAudio (state) {
-			if (state.musicList) {
-				alert(1)
-			} else {
-				alert(2)
-			}
+		// 更新音乐数据
+		setAudio (state, obj) {
+			state.audio = obj.audio
 		},
 		// 插入播放列表信息
 		setMusicList (state, obj) {

@@ -2,12 +2,12 @@
   <div class="audio-list">
     <div v-for="item in list">
       <div class="audio-item row-between" @click="playAudio">
-        <div class="row-center" :class="!item.playing ? 'icon-paused' : 'icon-play'">
-          <img class="wave-icon" src="../../../images/audio.svg" v-if="item.playing" />
+        <div class="row-center" :class="!(audio.courseId === item.courseId) ? 'icon-paused' : 'icon-play'">
+          <img class="wave-icon" src="../../../images/audio.svg" v-if="!(audio.courseId === item.courseId)" />
           <i class="iconfont icon-bofang" v-else></i>
         </div>
         <div class="content-bar column-between">
-          <span class="lg line1" :class="!item.playing ? 'strong' : 'soft'">{{item.title}}</span>
+          <span class="lg line1" :class="!(audio.courseId === item.courseId) ? 'strong' : 'soft'">{{item.title}}</span>
           <div class="info-bar row-between">
             <div class="duration">
               <i class="iconfont icon-clock mr10"></i>
@@ -23,32 +23,35 @@
 
 <script>
 import { mapState } from 'vuex';
-import store from '../../../vuex/store'
+import store from '../../../vuex/store';
+import order from '../../../api/order';
+import play from '../../../api/play';
 export default {
   computed: {
-    
+    ...mapState(['audio'])
   },
   data () {
     return {
-      list:[
-        {
-          playing: 1,
-          title: '学会这几种方法学会这几种方法学会这几种方法学会这几种方法',
-          duration: '04:06',
-          percent: 30
-        },
-        {
-          playing: 0,
-          title: '学会这几种方法',
-          duration: '04:06',
-          percent: 30
-        }
-      ],
-      option: {}
+      list:[]
     };
   },
-  mounted () {
-    
+  async mounted () {
+    if (!this.audio.columnId) {
+        // 单课程列表
+        let objs = await order.getCourseDetail(this.audio.courseId);
+        this.list = [objs]
+      } else {
+        let objs = await order.getColumnList(this.audio.columnId);
+        this.list = objs.filter((item) => {
+          return item.powerLevel == 1 || item.freeTime > 0;
+        });
+      }
+      this.list.forEach((item) => {
+        item.duration = play.fmtTime(+item.timeLength);
+        let percent = Math.floor((+item.playbackProgress ? +item.playbackProgress : 0) / +item.timeLength * 100);
+        item.percent = (percent > 100 ? 100 : percent) + "%";
+      })
+      console.log(this.list)
   },
   methods: {
     playAudio(item) {

@@ -3,8 +3,8 @@ export default {
 	set_AudioElement ({commit}, ele) {
 		commit('setAudioElement', ele)
 	},
-	set_MusicDetail ({commit}, obj) {
-		commit('setMusicDetail', obj)
+	set_Audio ({commit}, obj) {
+		commit('setAudio', obj)
 	},
 	set_CurrentTime ({commit}, obj) {
 		commit('setCurrentTime', obj)

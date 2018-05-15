@@ -1,5 +1,5 @@
   import store from '../vuex/store'
-
+  import play from '../api/play'
   export default {
       
     methods: {
@@ -39,16 +39,15 @@
             if (checkPower || !price) {
               // 播放
               // this.$emit('playAudio', columnId, courseId);
-              store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
-              store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
-              store.commit('play');
+              play.startAudio(columnId,courseId,'init')
             } else {
               if (watchable) {
                 // 试听
                 // this.$root.$navigate(`/pages/play/audio_detail?courseId=${courseId}`);
-                store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
-                store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
-                store.commit('play');
+                // store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
+                // store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
+                // store.commit('play');
+                play.startAudio(columnId,courseId,'init')
                 this.$router.push(`/audio/index`);
               } else {
                 // 购买
@@ -61,15 +60,11 @@
           case 2:
             if (checkPower || !price) {
               // 播放
-              store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
-              store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
-              store.commit('play');
+              play.startAudio(columnId,courseId,'init')
             } else {
               if (watchable) {
                 // 试听
-                store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
-                store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
-                store.commit('play');
+                play.startAudio(columnId,courseId,'init')
                 this.$router.push(`/audio/index`);
               } else {
                 // 购买
