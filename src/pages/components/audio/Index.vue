@@ -79,7 +79,7 @@
         return this.timerFomart(this.musicDuration)
       }
     },
-    mounted() {
+    async mounted() {
       const url = location.href;
       const urlData = `/wechat/getJsapiSignature`;
       const res = await this.get(urlData, {
