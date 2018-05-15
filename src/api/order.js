@@ -67,7 +67,6 @@ export default class order extends base {
       },
       function (res) {
         if (res.err_msg == "get_brand_wcpay_request:ok") {
-          self.$goRouter('./NewIsStopCar')
         } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
       }
     );
@@ -79,12 +78,12 @@ export default class order extends base {
     const res = await this.post(urlData, {
       url
     });
-    wxOnMenuShareTimeline(res.data.data)
+   this.wxOnMenuShareTimeline(res.data.data)
   }
   static wxOnMenuShareTimeline(obj) {
     wx.config({
       // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-      debug: false,
+      debug: true,
       // 必填，公众号的唯一标识
       appId: obj.appId,
       // 必填，生成签名的时间戳
@@ -128,12 +127,12 @@ export default class order extends base {
     const res = await this.post(urlData, {
       url
     });
-    wxPreviewImage(res.data.data,imgUrl)
+    this.wxPreviewImage(res.data.data,imgUrl)
   }
   static wxPreviewImage(obj,imgUrl) {
     wx.config({
       // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-      debug: false,
+      debug: true,
       // 必填，公众号的唯一标识
       appId: obj.appId,
       // 必填，生成签名的时间戳

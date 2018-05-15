@@ -30,14 +30,14 @@
           {{reverseTs?'倒序':'正序'}}</div>
       </div>
       <div class="list-content">
-        <div class="item" v-for="(item,index) in courseList" :key="index">
-          <!-- <i class="iconfont icon-play">
+        <div class="item" v-for="(item,index) in courseList" :key="index" @click="playClick(detailObj.id, item.id, false)">
+          <i class="iconfont icon-play active" v-if="audio.courseId == item.id">
             <img class="" src="../images/audio.svg"/>
-          </i> -->
-          <i class="iconfont icon-play">&#xe617;</i>
+          </i>
+          <i class="iconfont icon-play" v-else>&#xe617;</i>
           <span class="item-title">
             <span class="item-audition" v-if="item.watchable  == 1 && detailObj.powerLevel == 0">试听</span>
-            <span :class="{red:item.playing}">{{item.title}}</span>
+            <span  :class="{active:audio.courseId == item.id}">{{item.title}}</span>
           </span>
           <span class="item-time">
             <i class="iconfont icon-time">&#xe62d;</i>{{item.timeLength | formatTime}}
@@ -52,7 +52,7 @@
     </div>
     <div class="page-btn" v-if="btnActive != 2">
       <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" 
-      @click.stop="playClick('', '', true)">免费试听</a>
+      @click.stop="playClick(detailObj.id, '', true)">免费试听</a>
       <a href="javascript:void(0)" class="btn-small btn" v-if="btnActive == 1" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
       <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 0" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
     </div>
@@ -277,6 +277,7 @@
         text-align: center;
         color: #fff;
         border-radius: 50%;
+        background: #FF3E44;
       }
       .icon-svn {
         background: #ff3e44;
@@ -303,6 +304,9 @@
           display: inline-block;
           color: #fff;
           background: #FF3E44;
+        }
+        .active{
+          color: #FF3E44;
         }
         .red {
           color: #FF3E44;

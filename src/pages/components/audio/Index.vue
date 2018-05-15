@@ -60,6 +60,7 @@
 import router from '../../../mixins/router';
 import store from '../../../vuex/store';
 import play from '../../../api/play';
+import order from '../../../api/order';
 import { mapState } from 'vuex'
 import range from 'components/basic/range'
 export default {
@@ -92,7 +93,10 @@ export default {
       play.startAudio(this.audio.columnId, this.audio.courseId, 'next')
     },
     goPay(){},
-    onShareAppMessage(){},
+    onShareAppMessage(){
+      var oldUrl = location.href.split('#')[0];
+      order.wxShare(oldUrl);
+    },
     timerFomart (time) {
       if (isNaN(time)) return '00:00';
       let mm = time / 60 > 9 ? Math.floor(time / 60) : '0' + Math.floor(time / 60);

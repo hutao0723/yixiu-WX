@@ -11,7 +11,7 @@
         <div class="word">击「寻找组织」加入一修课堂学习交流群</div>
       </div>
       <div class="btn-box">
-        <button class="btn-find">遇到问题</button>
+        <button class="btn-find" @click="onImage">遇到问题</button>
         <button class="btn-find bgred">寻找组织</button>
       </div>
     </div>
@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import order from '../api/order';
+
 export default {
   components: {
   },
@@ -35,6 +37,10 @@ export default {
   },
   methods: {
     // 查询订单信息
+    onImage(){
+      var oldUrl = location.href.split('#')[0];
+      order.wxPreview(oldUrl,'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/ask-que.png');
+    }
   }
 };
 </script>
