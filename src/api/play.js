@@ -89,7 +89,8 @@ export default class play extends base {
     console.log(audio)
     let colId = audio.columnId,
         couId = audio.courseId;
-    audio.src = await this.getAudioUrl(colId, couId);
+    // audio.src = await this.getAudioUrl(colId, couId);
+    audio.src = 'http://mp3.qqmusic.cc/yq/208662441.mp3'
     store.commit({
       type: 'setAudio',
       audio: audio

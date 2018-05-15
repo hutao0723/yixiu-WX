@@ -27,6 +27,13 @@
         } 
       },
       /**
+       * 播放或试听点击事件
+       */
+       playClick(columnId, courseId, isTry) {
+         play.startAudio(columnId,courseId,'init');
+         if (isTry) this.$router.push(`/audio/index`);
+       },
+      /**
        * 处理图标点击事件
        */
       routeByIconAction(goods) {

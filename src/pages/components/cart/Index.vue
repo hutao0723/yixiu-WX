@@ -1,7 +1,7 @@
 <template>
   <div class="cart-page">
     <div class="page-list" v-show="!noData">
-      <div class="item" v-for="(item,index) in cartList" :key="index">
+      <div class="item" v-for="(item,index) in cartList" :key="index" @click="routeToCourse(item)">
         <div class="item-img" v-show="item.lateralCover" :style="{backgroundImage: `url(${item.lateralCover})`}"></div>
         <div class="item-img-small" v-show="!item.lateralCover&&item.verticalCover" :style="{backgroundImage: `url(${item.verticalCover})`}"></div>
         <div class="item-img" v-show="!item.lateralCover&&!item.verticalCover" :style="{backgroundImage: `url('//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
@@ -13,7 +13,7 @@
           <span v-if="item.playbackProgress&&item.timeLength">{{item.playbackProgress == item.timeLength ? '已听完' : '已听'}}</span>
           <span class="red mr20">{{item.playbackProgress && item.timeLength ? (item.percent + '%') : '未收听'}}</span>{{item.timeLengthText}}
         </span>
-        <a href="javascript:void(0)" class="item-btn">
+        <a href="javascript:void(0)" class="item-btn" @click.stop="playClick(item.columnId, item.courseId, false)">
           <i class="iconfont icon-play"></i>播放</a>
       </div>
     </div>
@@ -29,7 +29,8 @@
 <script>
   import AudioBar from 'components/basic/Audio_Bar';
   import order from '../../../api/order';
-
+  import router from '../../../mixins/router';
+  
   export default {
     data() {
       return {
@@ -50,13 +51,6 @@
     methods: {
       // 获取详情
       async getList() {
-        // const url = `/api/userItem/list`;
-        // this.$http.get(url, { params: { pageNum: this.pageNum, pageSize: this.pageSize } }).then(res => {
-        //   this.cartList = res.data.data.lists;
-        //   if(this.cartList.length == 0){
-        //     this.noData = true;
-        //   }
-        // });
         let params = {
           pageNum: this.pageNum,
           pageSize: this.pageSize
@@ -67,7 +61,8 @@
     },
     components: {
       AudioBar
-    }
+    },
+    mixins: [router]
   };
 
 </script>

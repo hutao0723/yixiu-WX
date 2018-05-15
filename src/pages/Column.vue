@@ -51,7 +51,8 @@
       <div v-html="detailObj.detail"></div>
     </div>
     <div class="page-btn" v-if="btnActive != 2">
-      <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" @click="goAudition">免费试听</a>
+      <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" 
+      @click.stop="playClick('', '', true)">免费试听</a>
       <a href="javascript:void(0)" class="btn-small btn" v-if="btnActive == 1" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
       <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 0" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
     </div>
@@ -59,12 +60,10 @@
 </template>
 
 <script>
-  import {
-    mapState
-  } from 'vuex';
+  import { mapState } from 'vuex';
   import store from '../vuex/store'
   import order from '../api/order'
-
+  import router from '../mixins/router';
 
   export default {
     data() {
@@ -154,6 +153,7 @@
         this.reverseTs = !this.reverseTs;
       },
     },
+    mixins: [router]
   };
 
 </script>
