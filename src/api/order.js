@@ -56,7 +56,7 @@ export default class order extends base {
    * 支付
    */
   static async wxPay(payment) {
-    const url = encodeURIComponent(location.href.split('#')[0]);
+    const url = location.href;
     const urlData = `/wechat/getJsapiSignature`;
     const res = await this.get(urlData, {
       params: {
@@ -99,7 +99,7 @@ export default class order extends base {
 
   static async wxShare() {
     console.log('分享')
-    const url = encodeURIComponent(location.href.split('#')[0]);
+    const url = location.href;
     const urlData = `/wechat/getJsapiSignature`;
     const res = await this.get(urlData, {
       params: {
@@ -121,14 +121,14 @@ export default class order extends base {
       // 必填，签名，见附录1
       signature: obj.signature,
       // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-      jsApiList: ['onMenuShareTimeline']
+      jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage']
     });
     wx.error(function (res) {
       console.log("出错了：" + res.errMsg); //这个地方的好处就是wx.config配置错误，会弹出窗口哪里错误，然后根据微信文档查询即可。
     });
     wx.ready(function () {
       wx.checkJsApi({
-        jsApiList: ['onMenuShareTimeline'],
+        jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'],
         success: function (res) {
 
         }
@@ -136,7 +136,7 @@ export default class order extends base {
 
       wx.onMenuShareTimeline({
         title: '分享测试标题', // 分享标题
-        link: '分享链接', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        link: '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
         imgUrl: '', // 分享图标
         success: function () {
           // 用户确认分享后执行的回调函数
@@ -145,13 +145,27 @@ export default class order extends base {
           // 用户取消分享后执行的回调函数
         }
       });
+      wx.onMenuShareAppMessage({
+        title: '分享好友标题', // 分享标题
+        desc: '', // 分享描述
+        link: '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: '', // 分享图标
+        type: '', // 分享类型,music、video或link，不填默认为link
+        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+        success: function () {
+        // 用户确认分享后执行的回调函数
+        },
+        cancel: function () {
+        // 用户取消分享后执行的回调函数
+        }
+        });
 
     });
   }
 
   static async wxPreview(imgUrl) {
     console.log('预览')
-    const url = encodeURIComponent(location.href.split('#')[0]);
+    const url = location.href;
     const urlData = `/wechat/getJsapiSignature`;
     const res = await this.get(urlData, {
       params: {

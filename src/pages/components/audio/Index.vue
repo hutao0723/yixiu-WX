@@ -78,7 +78,7 @@ export default {
     }
   },
   mounted () {
-
+      order.wxShare();
   },
   methods: {
     audioPrev () {
@@ -94,7 +94,6 @@ export default {
     },
     goPay(){},
     onShareAppMessage(){
-      order.wxShare();
     },
     timerFomart (time) {
       if (isNaN(time)) return '00:00';
