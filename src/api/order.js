@@ -27,7 +27,7 @@ export default class order extends base {
     itemType
   }) {
     console.log('下单')
-    const url = `/order/submit`;
+    const url = `/api/order/submit`;
     const res = await this.post(url, {
       itemId,
       itemType
@@ -44,7 +44,7 @@ export default class order extends base {
   }) {
     console.log('预支付')
     const payType = 'WECHATH5APAY';
-    const url = `/pay/submit`;
+    const url = `/api/pay/submit`;
     const res = await this.post(url, {
       orderId,
       payType
@@ -57,7 +57,7 @@ export default class order extends base {
    */
   static async wxPay(payment) {
     const url = encodeURIComponent(location.href.split('#')[0]);
-    const urlData = `/wechat/getJsapiSignature`;
+    const urlData = `/api/wechat/getJsapiSignature`;
     const res = await this.get(urlData, {
       params: {
         url
@@ -99,23 +99,24 @@ export default class order extends base {
   static async getApiRules(arr) {
     console.log('初始化jdk')
     const url = encodeURIComponent(location.href.split('#')[0]);
-    const urlData = `/wechat/getJsapiSignature`;
+    const urlData = `/api/wechat/getJsapiSignature`;
     const obj = await this.get(urlData, {
       params: {
         url
       }
     });
+    console.log(obj)
     wx.config({
       // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
       debug: true,
       // 必填，公众号的唯一标识
-      appId: obj.appid,
+      appId: obj.data.data.appid,
       // 必填，生成签名的时间戳
-      timestamp: obj.timestamp,
+      timestamp: obj.data.data.timestamp,
       // 必填，生成签名的随机串
-      nonceStr: obj.noncestr,
+      nonceStr: obj.data.data.noncestr,
       // 必填，签名，见附录1
-      signature: obj.signature,
+      signature: obj.data.data.signature,
       // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
       jsApiList: arr
     });
@@ -166,7 +167,7 @@ export default class order extends base {
    */
   static async getColumnDetail(columnId) {
     console.log('专栏详情')
-    const url = `/column/get`;
+    const url = `/api/column/get`;
     const payment = await this.get(url, {
       params: {
         columnId
@@ -179,7 +180,7 @@ export default class order extends base {
    */
   static async getColumnList(columnId) {
     console.log('专栏列表')
-    const url = `/column/getCourses`;
+    const url = `/api/column/getCourses`;
     const payment = await this.get(url, {
       params: {
         columnId
@@ -192,7 +193,7 @@ export default class order extends base {
    */
   static async getCourseDetail(courseId) {
     console.log('课程详情')
-    const url = `/course/get`;
+    const url = `/api/course/get`;
     const payment = await this.get(url, {
       params: {
         courseId
@@ -205,7 +206,7 @@ export default class order extends base {
    */
   static async getCartList(params) {
     console.log('已购列表')
-    const url = `/userItem/list`;
+    const url = `/api/userItem/list`;
     const payment = await this.get(url, {
       params: params
     });
