@@ -130,12 +130,16 @@
     img{
       width: 100%!important;
     }
+    div {
+      -webkit-overflow-scrolling: touch!important;
+    }
   }
   .page-header {
     .size(750, 400);
     position: relative;
     .header-img {
-      .size(750, 400);
+      width: 100%;
+      height: 100%;
       display: block;
     }
     .header-name-bg {
