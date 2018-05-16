@@ -47,7 +47,7 @@ Vue.http.interceptors.push((request, next) => {
     // response.body = '...';
     if (response.data.code == '000001') {
       // const url = '/' + window.location.href.split('/').slice(3).join('/');
-      location.href = "http://k.youfen666dev.com/loginH5?dbredirect=/#/home/index";
+      location.href = "http://k.youfen666dev.com/loginH5?dbredirect=/home/index";
     }
     return response;
   });
