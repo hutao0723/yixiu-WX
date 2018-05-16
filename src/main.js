@@ -59,7 +59,7 @@ Vue.prototype.wxShare = function (title, desc, link) {
   // const url = encodeURIComponent(window.location.href.split('#')[0]);
   // const url = location.href.split('#')[0];
   const urlData = `/wechat/getJsapiSignature`;
-  const url = location.href;
+  const url = location.href.split("#")[0];
 
   Vue.http.get(urlData, {
     params: {
