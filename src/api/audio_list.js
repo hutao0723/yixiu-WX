@@ -28,6 +28,8 @@ export default class play extends base {
           lateralCover, // 宽图
           verticalCover, // 竖图
           price,
+          subTitle,
+          
         } = objs;
         videoMsg = {
           columnId: null, // 课程id
@@ -44,6 +46,8 @@ export default class play extends base {
           isPrev: isPrev,
           powerLevel: price == 0 ?1:powerLevel,
           price,
+          subTitle,
+          
         };
         return videoMsg;
       } else {
@@ -80,6 +84,8 @@ export default class play extends base {
               id,
               price,
               watchable,
+              subTitle,
+              
             } = element;
             videoTs = {
               columnId: colId, // 课程id
@@ -96,6 +102,8 @@ export default class play extends base {
               isPrev: i != 0,
               powerLevel: price == 0 ?1:powerLevel,
               price,
+              subTitle,
+              
             };
             break
           }
@@ -135,6 +143,7 @@ export default class play extends base {
             verticalCover, // 竖图
             price,
             watchable,
+            subTitle,
             
           } = tsElement;
           tsElement = {
@@ -152,6 +161,7 @@ export default class play extends base {
             isPrev: i != 1,
             powerLevel: price == 0 ?1:powerLevel,
             price,
+            subTitle,
             
           };
           console.log('getPrev', tsElement)
@@ -191,6 +201,7 @@ export default class play extends base {
               verticalCover, // 竖图
               price,
               watchable,
+              subTitle,
             } = element;
             videoMsg = {
               columnId: colId, // 课程id
@@ -207,6 +218,8 @@ export default class play extends base {
               isNext: i != videoList.length - 1,
               powerLevel: price == 0 ?1:powerLevel,
               price,
+              subTitle,
+              
             };
             console.log('getNext', videoMsg)
 

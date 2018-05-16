@@ -19,19 +19,20 @@
       <div v-html="detailObj.detail"></div>
     </div>
     <div class="page-btn">
-      <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" 
-      @click.stop="playClick('', detailObj.id, true)">免费试听</a>
+      <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" @click.stop="playClick('', detailObj.id, true)">免费试听</a>
       <a href="javascript:void(0)" class="btn-small btn" v-if="btnActive == 1" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
       <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 0" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
       <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 2" @click.stop="playClick('', detailObj.id, false)">播放</a>
-      
+
     </div>
     <AudioBar/>
   </div>
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+  import {
+    mapState
+  } from 'vuex';
   import store from '../vuex/store';
   import order from '../api/order';
   import router from '../mixins/router';
@@ -48,7 +49,7 @@
     computed: {
       ...mapState(['audio', 'playing', 'currentTime', 'musicDuration']),
     },
-    
+
     mounted() {
       // this.$store.dispatch('setWhichpage', '首页');
       // // 返回登录页面
@@ -112,7 +113,9 @@
         let obj = await order.buy(this.detailObj.id, 1)
       }
     },
-    components: { AudioBar },
+    components: {
+      AudioBar
+    },
     mixins: [router]
   };
 
@@ -124,19 +127,33 @@
     height: 100%;
     position: relative;
   }
+
   .page-content {
     padding-bottom: 120/@rem;
     background: #fff;
-    img{
-      width: 100%!important;
+    img {
+      width: 100% !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
+    div {
+      -webkit-overflow-scrolling: touch !important;
     }
   }
+
   .page-header {
     .size(750, 400);
     position: relative;
     .header-img {
-      .size(750, 400);
+      width: 100%;
+      height: 100%;
       display: block;
+      background-repeat: no-repeat;
+      /* background-size: 100% 100%; */
+      background-attachment: fixed;
+    }
+    .header-img-small{
+      .pos(272, 50);
+      .size(206, 276);
     }
     .header-name-bg {
       position: absolute;
@@ -331,3 +348,4 @@
   }
 
 </style>
+

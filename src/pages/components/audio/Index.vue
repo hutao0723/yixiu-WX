@@ -32,7 +32,7 @@
             <span class="remind nm " v-if="!audio.musicTryEnd && audio.columnId">试听免费课程，购买后收听完整专栏</span>
             <span class="remind nm " v-if="!audio.musicTryEnd && !audio.columnId">免费试听前{{audio.watchable}}秒，购买后收听完整版</span>
             <span class="remind nm " v-if="audio.musicTryEnd">试听结束，购买后收听完整版</span>
-            <button type="primary" class="btn-fetch row-center" @tap="goPay">
+            <button type="primary" class="btn-fetch row-center" @click="goPay">
               直接购买
             </button>
           </div>
@@ -89,7 +89,7 @@ export default {
           desc: this.audio.subTitle,
           link: this.audio.courseId ? 'http://k.youfen666dev.com/#/course/' + this.audio.courseId:false ||this.audio.columnId ? 'http://k.youfen666dev.com/#/column/' + this.audio.columnId:false ,
           imgUrl: this.audio.lateralCover || this.audio.verticalCover ||
-            '//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
+            'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }
         this.wxShare(msg)
     },3000)
@@ -109,8 +109,8 @@ export default {
     audioNext (){
       play.startAudio(this.audio.columnId, this.audio.courseId, 'next')
     },
-    async goPay(){
-        let obj = await order.buy(this.audio.columnId?this.audio.columnId:this.audio.courseId, this.audio.columnId?2:1)
+    goPay(){
+        order.buy(this.audio.columnId?this.audio.columnId:this.audio.courseId, this.audio.columnId?2:1)
       
     },
     timerFomart (time) {
