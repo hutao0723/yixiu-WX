@@ -54,17 +54,17 @@ export default class order extends base {
   /**
    * 支付
    */
-  static async wxPay(payment) {
-    const url = encodeURIComponent(location.href.split('#')[0]);
-    const urlData = `/wechat/getJsapiSignature`;
-    const res = await this.get(urlData, {
-      params: {
-        url
-      }
-    });
-    this.wxChooseWXPay(res.data.data, payment)
-  }
-  static wxChooseWXPay(obj, payment) {
+  // static async wxPay(payment) {
+  //   const url = encodeURIComponent(location.href.split('#')[0]);
+  //   const urlData = `/wechat/getJsapiSignature`;
+  //   const res = await this.get(urlData, {
+  //     params: {
+  //       url
+  //     }
+  //   });
+  //   this.wxChooseWXPay(res.data.data, payment)
+  // }
+  static wxPay(payment) {
     function onBridgeReady() {
       WeixinJSBridge.invoke(
         'getBrandWCPayRequest', {

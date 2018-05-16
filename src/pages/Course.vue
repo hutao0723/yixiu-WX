@@ -48,15 +48,7 @@
     computed: {
       ...mapState(['audio', 'playing', 'currentTime', 'musicDuration']),
     },
-    created() {
-      const msg = {
-        title: this.detailObj.title,
-        desc: this.detailObj.subTitle,
-        link: window.location.href,
-        imgUrl: this.detailObj.lateralCover || this.detailObj.verticalCover || '//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
-      }
-      this.wxShare(msg)
-    },
+    
     mounted() {
       // this.$store.dispatch('setWhichpage', '首页');
       // // 返回登录页面
@@ -107,6 +99,14 @@
           this.btnActive = 0;
         }
         this.detailObj = obj
+        const msg = {
+          title: obj.title,
+          desc: obj.subTitle,
+          link: window.location.href,
+          imgUrl: obj.lateralCover || obj.verticalCover ||
+            '//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
+        }
+        this.wxShare(msg)
       },
       async getPay() {
         let obj = await order.buy(this.detailObj.id, 1)

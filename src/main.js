@@ -37,7 +37,7 @@ Vue.use(VueLazyload, {
     }
   }
 });
-// Vue.http.headers.common['tk'] = 'ZEnrPP8wBUNhjtGwV5veCW7i5cZMJs1P2jBFZywQJKhz5taZ15bYWvXKsTESLdD85REaem63opFkazNHBd2XyP3KSkHm9KEqrnUvbWupegBnvCdQ2zNKgk8yNiEh2FCN5wGwwbNjUGp6WFhWJ3uEsAhGe';
+Vue.http.headers.common['tk'] = 'ZEnrPP8wBUNhjtGwV5veCW7i5cZMJs1P2jBFZywQJKhz5taZ15bYWvXKsTESLdD85REaem63opFkazNHBd2XyP3KSkHm9KEqrnUvbWupegBnvCdQ2zNKgk8yNiEh2FCN5wGwwbNjUGp6amRkSkvVWYyUv';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
@@ -47,13 +47,14 @@ Vue.http.interceptors.push((request, next) => {
     // response.body = '...';
     if (response.data.code == '000001') {
       const url = encodeURIComponent('/' + window.location.href.split('/').slice(3).join('/'));
-      location.href = "/loginH5?dbredirect=" + url;
+      // location.href = "/loginH5?dbredirect=" + url;
     }
     return response;
   });
 });
 
 Vue.prototype.wxShare = function (msg) {
+  console.log(msg)
   // var link  = encodeURIComponent(link);
   // const url = encodeURIComponent(location.href.split('#')[0]);// 当前url
   // const url = encodeURIComponent(window.location.href.split('#')[0]);
@@ -67,7 +68,7 @@ Vue.prototype.wxShare = function (msg) {
       imgUrl: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
     }
   }
-  const urlData = `/wechat/getJsapiSignature`;
+  const urlData = `/api/wechat/getJsapiSignature`;
   const url = location.href.split("#")[0];
 
   Vue.http.get(urlData, {

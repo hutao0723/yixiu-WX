@@ -32,12 +32,12 @@
       <div class="list-content">
         <div class="item" v-for="(item,index) in courseList" :key="index" @click="playClick(detailObj.id, item.id, false)">
           <i class="iconfont icon-play active" v-if="audio.courseId == item.id">
-            <img class="" src="../images/audio.svg"/>
+            <img class="" src="../images/audio.svg" />
           </i>
           <i class="iconfont icon-play" v-else>&#xe617;</i>
           <span class="item-title">
             <span class="item-audition" v-if="item.watchable  == 1 && detailObj.powerLevel == 0">试听</span>
-            <span  :class="{active:audio.courseId == item.id}">{{item.title}}</span>
+            <span :class="{active:audio.courseId == item.id}">{{item.title}}</span>
           </span>
           <span class="item-time">
             <i class="iconfont icon-time">&#xe62d;</i>{{item.timeLength | formatTime}}
@@ -51,8 +51,7 @@
       <div v-html="detailObj.detail"></div>
     </div>
     <div class="page-btn" v-if="btnActive != 2">
-      <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" 
-      @click.stop="playClick(detailObj.id, '', true)">免费试听</a>
+      <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" @click.stop="playClick(detailObj.id, '', true)">免费试听</a>
       <a href="javascript:void(0)" class="btn-small btn" v-if="btnActive == 1" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
       <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 0" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
     </div>
@@ -61,7 +60,9 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+  import {
+    mapState
+  } from 'vuex';
   import store from '../vuex/store'
   import order from '../api/order'
   import router from '../mixins/router';
@@ -116,13 +117,7 @@
       },
     },
     created() {
-      const msg = {
-        title: this.detailObj.title,
-        desc: this.detailObj.subTitle,
-        link: window.location.href,
-        imgUrl: this.detailObj.lateralCover || this.detailObj.verticalCover || '//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
-      }
-      this.wxShare(msg)
+
     },
     methods: {
       // 获取详情
@@ -141,6 +136,15 @@
           this.btnActive = 0;
         }
         this.detailObj = obj
+
+        const msg = {
+          title: obj.title,
+          desc: obj.subTitle,
+          link: window.location.href,
+          imgUrl: obj.lateralCover || obj.verticalCover ||
+            '//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
+        }
+        this.wxShare(msg)
 
       },
       // 获取详情
@@ -164,7 +168,9 @@
         this.reverseTs = !this.reverseTs;
       },
     },
-    components: { AudioBar },
+    components: {
+      AudioBar
+    },
     mixins: [router]
   };
 
@@ -180,8 +186,8 @@
   .page-content {
     padding-bottom: 120/@rem;
     background: #fff;
-    img{
-      width: 100%!important;
+    img {
+      width: 100% !important;
     }
   }
 
@@ -317,7 +323,7 @@
           color: #fff;
           background: #FF3E44;
         }
-        .active{
+        .active {
           color: #FF3E44;
         }
         .red {
@@ -387,11 +393,11 @@
       background: linear-gradient(90deg, rgba(255, 80, 72, 1), rgba(255, 99, 77, 1));
     }
   }
-  .icon-sort,.icon-ispay,.icon-time{
+
+  .icon-sort,
+  .icon-ispay,
+  .icon-time {
     font-size: 24/@rem;
   }
 
-
 </style>
-
-                                                                                                                                                                                                                                                                                                                                                                 
