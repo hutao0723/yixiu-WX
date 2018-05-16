@@ -26,6 +26,7 @@
       <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 2" @click.stop="playClick('', detailObj.id, false)">播放</a>
       
     </div>
+    <AudioBar/>
   </div>
 </template>
 
@@ -34,16 +35,14 @@
   import store from '../vuex/store';
   import order from '../api/order';
   import router from '../mixins/router';
+  import AudioBar from 'components/basic/Audio_Bar';
   export default {
     data() {
       return {
         detailObj: {},
         tabActive: true,
         btnActive: 1,
-
-
         courseList: []
-
       }
     },
     computed: {
@@ -104,6 +103,7 @@
         let obj = await order.buy(this.detailObj.id, 1)
       }
     },
+    components: { AudioBar },
     mixins: [router]
   };
 

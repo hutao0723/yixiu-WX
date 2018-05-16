@@ -43,7 +43,7 @@ export default {
         type: 'setMusicLoadStart',
         isloadstart: false
       })
-      if (this.$refs.audio.currentTime === 0) this.$refs.audio.currentTime = store.getters.getAudioInfo.playbackProgress;
+      // if (this.$refs.audio.currentTime === 0) this.$refs.audio.currentTime = store.getters.getAudioInfo.playbackProgress;
     },
     // 音乐处于播放状态
     musicOnPlaying () {
@@ -67,6 +67,10 @@ export default {
   },
   mounted() {
     store.dispatch('set_AudioElement', this.$refs.audio);
+    store.commit('setPlaying')
+  },
+  beforeDestroy () {
+    // store.commit('pause')
   }
 };
 </script>

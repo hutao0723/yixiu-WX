@@ -15,15 +15,15 @@
         <button class="btn-find bgred">寻找组织</button>
       </div>
     </div>
+    <AudioBar/>
   </div>
 </template>
 
 <script>
 import order from '../api/order';
-
+import AudioBar from 'components/basic/Audio_Bar';
 export default {
-  components: {
-  },
+  components: { AudioBar },
   data () {
     return {
       data: {},
@@ -32,13 +32,16 @@ export default {
     };
   },
   watch: {},
-  mounted () {
-    // this.getAllStocks();
+  async mounted () {
+    const arr = ['previewImage','onMenuShareAppMessage']
+    const res = await order.getApiRules(arr);
+    order.wxShare();
+    
   },
   methods: {
-    // 查询订单信息
+    // 预览
     onImage(){
-      order.wxPreview('https://yun.duiba.com.cn/yoofans/images/201804/miniapp/ask-que.png');
+      order.wxPreview();
     }
   }
 };

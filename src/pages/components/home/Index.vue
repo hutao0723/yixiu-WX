@@ -1,7 +1,5 @@
 <template>
   <div class="homepage-main">
-    <!-- <goods v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="40" :goods='goodsAll'></goods> -->
-    <!-- <loading :loading="busy" class="loading"></loading> -->
     <div class="template-box" v-for="(item, index) in components">
       <!--顶部标题-->
         <TitleBar v-if="item.componentType === 'TITLE'" :param.sync="item" />
@@ -48,27 +46,17 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      // goodsAll: state => state.goodsAll
-    })
+    ...mapState({})
   },
   async mounted () {
     await this.renderTemplatePage();
-  },
-  watch: {
-    'busy': function (val) {
-      if (val) {
-
-      }
-    }
   },
   methods: {
      /**
      * 渲染页面
      */
     async renderTemplatePage() {
-      console.log('渲染页面的方法')
-      const layout = (await config.layout());
+      const layout = await config.layout();
       let page = [];
       let that = this;
       Promise.all(JSON.parse(layout.componentSections).map(function(item, i){
@@ -83,17 +71,10 @@ export default {
           if(item.componentType == 'GOODSBOX'){
             item['navActive'] = 0;
           }
-          console.log('通过这个步骤渲染页面')
         })
         // that.loaded();
-        console.log(that.components)
-        console.info(`[template] render template page success`);
+        console.log(that.components,`[template] render template page success`)
       })
-    },
-    loadMore: function () {
-      this.busy = true;
-      this.params.pageNow = this.params.pageNow += 1;
-      this.getAllGoods();
     }
   }
 };

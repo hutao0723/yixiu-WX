@@ -8,7 +8,7 @@
 <script>
 import { mapState } from 'vuex';
 import bnav from 'components/layout/Nav';
-
+import AudioBar from 'components/basic/Audio_Bar';
 export default {
   computed: {
     ...mapState({
@@ -18,6 +18,6 @@ export default {
   mounted () {
   
   },
-  components: { bnav }
+  components: { bnav}
 };
 </script>

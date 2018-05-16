@@ -6,6 +6,15 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
+      path: '*',
+      redirect: '/home/index',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('pages/Home'));
+        }, 'home');
+      }
+    },
+    {
       name: 'home',
       path: '/home',
       redirect: '/home/index',
@@ -31,7 +40,7 @@ export default new Router({
       redirect: '/cart/index',
       component: function (resolve) {
         require.ensure([], function () {
-          resolve(require('pages/cart'));
+          resolve(require('pages/Cart'));
         }, 'cart');
       },
       children: [
