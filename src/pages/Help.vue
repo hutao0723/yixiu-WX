@@ -35,7 +35,6 @@ export default {
   async mounted () {
     const arr = ['previewImage','onMenuShareAppMessage']
     const res = await order.getApiRules(arr);
-    order.wxShare();
     
   },
   methods: {
