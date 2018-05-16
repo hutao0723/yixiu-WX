@@ -28,6 +28,9 @@
     computed: {
       ...mapState(['audio'])
     },
+    mounted(){
+      console.log(this.$parent)
+    },
     methods: {
     },
     mixins: [router]

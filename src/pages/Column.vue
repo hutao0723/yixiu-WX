@@ -238,9 +238,12 @@
       text-overflow: ellipsis;
     }
   }
-
+  .page-list{
+    background: #fff;
+  }
   .page-tab {
     padding: 0 30/@rem;
+    background: #fff;
     .clearfix {
       border-bottom: 1/@rem solid #e5e5e5;
     }

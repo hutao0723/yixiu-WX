@@ -41,6 +41,7 @@ export function monitorHandler () {
             }
 
             if (isIn) {
+              console.log(monitorLog)
               monitorEl[i].setAttribute('monitor-log-get', true);
             } else {
               continue;

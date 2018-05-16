@@ -12,7 +12,7 @@
       </div>
       <div class="btn-box">
         <button class="btn-find" @click="onImage">遇到问题</button>
-        <button class="btn-find bgred">寻找组织</button>
+        <button class="btn-find bgred" @click="onFlock">寻找组织</button>
       </div>
     </div>
     <AudioBar/>
@@ -44,7 +44,10 @@
     methods: {
       // 预览
       onImage() {
-        order.wxPreview();
+        order.wxPreview('https://yun.duiba.com.cn/yoofans/images/201804/miniapp/ask-que.png');
+      },
+      onFlock() {
+        order.wxPreview('https://yun.duiba.com.cn/yoofans/images/201804/miniapp/ask-que2.png');
       },
     }
   };
