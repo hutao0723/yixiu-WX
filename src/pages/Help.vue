@@ -33,7 +33,7 @@ export default {
   },
   watch: {},
   async mounted () {
-    const arr = ['previewImage','onMenuShareAppMessage']
+    const arr = ['previewImage','onMenuShareAppMessage','onMenuShareTimeline']
     const res = await order.getApiRules(arr);
     
   },
