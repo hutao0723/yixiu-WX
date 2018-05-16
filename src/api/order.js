@@ -150,7 +150,38 @@ export default class order extends base {
 
   // 分享
   static wxShare() {
+    wx.onMenuShareAppMessage({
+      title: '这是分享给朋友标题', // 分享标题  
+      desc: '这是分享给朋友描述', // 分享描述  
+      link: '这是分享给朋友链接', // 分享链接  
+      imgUrl: 'https://pic1.zhimg.com/da8e974dc_s.jpg', // 分享图标  
+      type: '', // 分享类型,music、video或link，不填默认为link  
+      dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空  
+      success: function () {
+        // 用户确认分享后执行的回调函数  
+        alert("分享给朋友成功");
+      },
+      cancel: function () {
+        // 用户取消分享后执行的回调函数  
+        alert("分享给朋友失败");
+      }
+    });
+    wx.onMenuShareTimeline({
+      title: '这是分享给朋友标题', // 分享标题
+      link: '这是分享给朋友描述', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      imgUrl: 'https://pic1.zhimg.com/da8e974dc_s.jpg', // 分享图标
+      success: function () {
+        // 用户确认分享后执行的回调函数
+      },
+    })
+  }
 
+  // 预览
+  static wxPreview() {
+    wx.previewImage({
+      current: '', // 当前显示图片的http链接
+      urls: ['https://yun.duiba.com.cn/yoofans/images/201804/miniapp/ask-que.png'] // 需要预览的图片http链接列表
+    });
   }
 
   // 预览

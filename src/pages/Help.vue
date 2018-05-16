@@ -12,7 +12,7 @@
       </div>
       <div class="btn-box">
         <button class="btn-find" @click="onImage">遇到问题</button>
-        <button class="btn-find bgred">寻找组织</button>
+        <button class="btn-find bgred" @click="onShare">寻找组织</button>
       </div>
     </div>
     <AudioBar/>
@@ -41,12 +41,14 @@
     mounted() {
       // const arr = ['previewImage', 'onMenuShareAppMessage', 'onMenuShareTimeline']
       // const res = await order.getApiRules(arr);
-
     },
     methods: {
       // 预览
       onImage() {
         order.wxPreview();
+      },
+      onShare(){
+        order.wxShare();
       }
     }
   };

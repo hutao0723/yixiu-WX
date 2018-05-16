@@ -46,8 +46,8 @@ Vue.http.interceptors.push((request, next) => {
     // console.log(response);
     // response.body = '...';
     if (response.data.code == '000001') {
-      // const url = '/' + window.location.href.split('/').slice(3).join('/');
-      location.href = "/loginH5?dbredirect=/#/home/index";
+      const url = encodeURIComponent('/' + window.location.href.split('/').slice(3).join('/'));
+      location.href = "/loginH5?dbredirect=" + url;
     }
     return response;
   });

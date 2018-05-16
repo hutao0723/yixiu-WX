@@ -82,7 +82,7 @@ export default {
   methods: {
     audioPrev () {
       play.startAudio(this.audio.columnId, this.audio.courseId, 'prev')
-    },
+    },  
     togglePlay() {
       if (!this.audio.musicTryEnd) {
         store.commit('togglePlay');
