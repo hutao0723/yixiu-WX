@@ -58,6 +58,15 @@ Vue.prototype.wxShare = function (msg) {
   // const url = encodeURIComponent(location.href.split('#')[0]);// 当前url
   // const url = encodeURIComponent(window.location.href.split('#')[0]);
   // const url = location.href.split('#')[0];
+
+  if (!msg) {
+    msg = {
+      title: '一修读书', // 分享标题
+      desc: '在这里发现更好的自己', // 分享描述
+      link: 'http://k.youfen666dev.com/#/home/index', // 分享链接 默认以当前链接
+      imgUrl: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
+    }
+  }
   const urlData = `/wechat/getJsapiSignature`;
   const url = location.href.split("#")[0];
 
@@ -81,10 +90,10 @@ Vue.prototype.wxShare = function (msg) {
     // 所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，
     // 则可以直接调用，不需要放在ready函数中。
     wx.onMenuShareAppMessage({ // 分享给朋友
-      title: msg.title ? msg.title : '一修读书', // 分享标题
-      desc: msg.desc ? msg.desc : '在这里发现更好的自己', // 分享描述
-      link: msg.link ? msg.link : 'http://k.youfen666dev.com/#/home/index', // 分享链接 默认以当前链接
-      imgUrl: msg.imgUrl ? msg.imgUrl : 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
+      title: msg.title, // 分享标题
+      desc: msg.desc, // 分享描述
+      link: msg.link, // 分享链接 默认以当前链接
+      imgUrl: msg.imgUrl, // 分享图标
       // 用户确认分享后执行的回调函数
       success: function () {
 
@@ -96,10 +105,10 @@ Vue.prototype.wxShare = function (msg) {
     });
     //分享到朋友圈
     wx.onMenuShareTimeline({
-      title: msg.title ? msg.title : '一修读书', // 分享标题
-      desc: msg.desc ? msg.desc : '在这里发现更好的自己', // 分享描述
-      link: msg.link ? msg.link : 'http://k.youfen666dev.com/#/home/index', // 分享链接 默认以当前链接
-      imgUrl: msg.imgUrl ? msg.imgUrl : 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
+      title: msg.title, // 分享标题
+      desc: msg.desc, // 分享描述
+      link: msg.link, // 分享链接 默认以当前链接
+      imgUrl: msg.imgUrl, // 分享图标
       // 用户确认分享后执行的回调函数
       success: function () {
 
