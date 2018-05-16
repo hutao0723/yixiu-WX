@@ -91,8 +91,9 @@ export default {
     audioNext (){
       play.startAudio(this.audio.columnId, this.audio.courseId, 'next')
     },
-    goPay(){},
-    onShareAppMessage(){},
+    goPay(){
+
+    },
     timerFomart (time) {
       if (isNaN(time)) return '00:00';
       let mm = time / 60 > 9 ? Math.floor(time / 60) : '0' + Math.floor(time / 60);

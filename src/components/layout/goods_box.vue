@@ -1,6 +1,6 @@
 <template>
     <!--tab栏-->
-  <div>
+  <div class="goods-main">
     <div class="g-tabbar" :class="'category-wrapper'+param.tabs.length" v-if='param.tabs && param.tabs.length > 1'>
       <div v-for="(item, index) in param.tabs" class="type-box" :key="index">
         <div class="type-navbar-item index" :class="(currentTab == index) ? 'type-item-on' : ''" @click="swichNav(index)">

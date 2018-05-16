@@ -1,13 +1,13 @@
 <template>
   <div class="title-bar" @click="routeByBlockAction(param)">
-    <div class="main-box row-between title-padding" v-if="param.layout === 'BASE'">
+    <div class="main-box row-between title-padding" v-if="param.layout === 'BASE'" monitor-log="dcm:1.0.0.1">
       <span class="xxxl hard weight">{{param.titleName}}</span>
       <div class=" row-center" v-if="param.subTitle">
         <span class="nm weak row-center">{{param.subTitle}}</span>
         <div class="column-center"><i class="iconfont icon-more "></i></div>
       </div>
     </div>
-    <div class="main-box row-center border-more" v-if="param.layout == 'CENTER'">
+    <div class="main-box row-center border-more" v-if="param.layout == 'CENTER'" monitor-log="dcm:1.0.0.1">
       <span class="nm weak row-center">{{param.subTitle || ''}}</span>
       <div class="column-center"><i class="iconfont icon-more "></i></div>
     </div>
@@ -19,7 +19,8 @@
     props: {
       param: {}
     },
-    async mounted () {
+    mounted () {
+      
     },
     methods: {
     },

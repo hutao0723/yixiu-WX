@@ -12,7 +12,6 @@ Vue.use(VueCookie);
 Vue.use(VueResource);
 // vue-resource配置项
 // Vue.http.options.emulateJSON = true;
-// Vue.component(modal.name, modal);
 // rem 换算
 import {
   setDPR,
@@ -22,8 +21,8 @@ setDPR();
 remChange();
 
 // monitor 埋点
-// import { monitorHandler } from './components/basic/monitorHandler';
-// monitorHandler();
+import { monitorHandler } from './components/basic/monitorHandler';
+monitorHandler();
 
 // lazyload 图片懒加载
 import VueLazyload from 'vue-lazyload';

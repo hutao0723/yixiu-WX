@@ -8,6 +8,7 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'assets',
     assetsPublicPath: './',
+    //yun.dui88.com/yoofans/konwledge
     productionSourceMap: false, // 设为true生成map可以作调试
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
@@ -45,6 +46,14 @@ module.exports = {
         }
       },
       '/course': {
+        // 测试环境
+        target: 'https://k.youfen666dev.com',  // 接口域名
+        changeOrigin: true,  //是否跨域
+        // pathRewrite: {
+        //   '': ''   //需要rewrite重写的,
+        // }
+      },
+      '/column': {
         // 测试环境
         target: 'https://k.youfen666dev.com',  // 接口域名
         changeOrigin: true,  //是否跨域
