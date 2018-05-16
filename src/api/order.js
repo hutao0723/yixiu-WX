@@ -27,7 +27,7 @@ export default class order extends base {
     itemType
   }) {
     console.log('下单')
-    const url = `/order/submit`;
+    const url = `/api/order/submit`;
     const res = await this.post(url, {
       itemId,
       itemType
@@ -44,7 +44,7 @@ export default class order extends base {
   }) {
     console.log('预支付')
     const payType = 'WECHATH5APAY';
-    const url = `/pay/submit`;
+    const url = `/api/pay/submit`;
     const res = await this.post(url, {
       orderId,
       payType
@@ -57,7 +57,7 @@ export default class order extends base {
    */
   static async wxPay(payment) {
     const url = location.href;
-    const urlData = `/wechat/getJsapiSignature`;
+    const urlData = `/api/wechat/getJsapiSignature`;
     const res = await this.get(urlData, {
       params: {
         url
@@ -66,7 +66,6 @@ export default class order extends base {
     this.wxChooseWXPay(res.data.data, payment)
   }
   static wxChooseWXPay(obj, payment) {
-
     function onBridgeReady() {
       WeixinJSBridge.invoke(
         'getBrandWCPayRequest', {
@@ -79,7 +78,7 @@ export default class order extends base {
         },
         function (res) {
           if (res.err_msg == "get_brand_wcpay_request:ok") {
-           
+
           } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
         }
       );
@@ -97,10 +96,35 @@ export default class order extends base {
 
   }
 
+  static async getApiRules(arr) {
+    console.log('初始化jdk')
+    const url = location.href.split('#')[0];
+    const urlData = `/api/wechat/getJsapiSignature`;
+    const obj = await this.get(urlData, {
+      params: {
+        url
+      }
+    });
+    wx.config({
+      // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      debug: true,
+      // 必填，公众号的唯一标识
+      appId: obj.appid,
+      // 必填，生成签名的时间戳
+      timestamp: obj.timestamp,
+      // 必填，生成签名的随机串
+      nonceStr: obj.noncestr,
+      // 必填，签名，见附录1
+      signature: obj.signature,
+      // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+      jsApiList: arr
+    });
+  }
+
   static async wxShare() {
     console.log('分享')
     const url = location.href;
-    const urlData = `/wechat/getJsapiSignature`;
+    const urlData = `/api/wechat/getJsapiSignature`;
     const res = await this.get(urlData, {
       params: {
         url
@@ -121,14 +145,14 @@ export default class order extends base {
       // 必填，签名，见附录1
       signature: obj.signature,
       // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-      jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage']
+      jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
     });
     wx.error(function (res) {
       console.log("出错了：" + res.errMsg); //这个地方的好处就是wx.config配置错误，会弹出窗口哪里错误，然后根据微信文档查询即可。
     });
     wx.ready(function () {
       wx.checkJsApi({
-        jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'],
+        jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage'],
         success: function (res) {
 
         }
@@ -153,12 +177,12 @@ export default class order extends base {
         type: '', // 分享类型,music、video或link，不填默认为link
         dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
         success: function () {
-        // 用户确认分享后执行的回调函数
+          // 用户确认分享后执行的回调函数
         },
         cancel: function () {
-        // 用户取消分享后执行的回调函数
+          // 用户取消分享后执行的回调函数
         }
-        });
+      });
 
     });
   }
@@ -166,7 +190,7 @@ export default class order extends base {
   static async wxPreview(imgUrl) {
     console.log('预览')
     const url = location.href;
-    const urlData = `/wechat/getJsapiSignature`;
+    const urlData = `/api/wechat/getJsapiSignature`;
     const res = await this.get(urlData, {
       params: {
         url
@@ -212,7 +236,7 @@ export default class order extends base {
    */
   static async getColumnDetail(columnId) {
     console.log('专栏详情')
-    const url = `/column/get`;
+    const url = `/api/column/get`;
     const payment = await this.get(url, {
       params: {
         columnId
@@ -225,7 +249,7 @@ export default class order extends base {
    */
   static async getColumnList(columnId) {
     console.log('专栏列表')
-    const url = `/column/getCourses`;
+    const url = `/api/column/getCourses`;
     const payment = await this.get(url, {
       params: {
         columnId
@@ -238,7 +262,7 @@ export default class order extends base {
    */
   static async getCourseDetail(courseId) {
     console.log('课程详情')
-    const url = `/course/get`;
+    const url = `/api/course/get`;
     const payment = await this.get(url, {
       params: {
         courseId
@@ -251,7 +275,7 @@ export default class order extends base {
    */
   static async getCartList(params) {
     console.log('已购列表')
-    const url = `/userItem/list`;
+    const url = `/api/userItem/list`;
     const payment = await this.get(url, {
       params: params
     });
