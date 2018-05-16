@@ -37,7 +37,7 @@ Vue.use(VueLazyload, {
     }
   }
 });
-Vue.http.headers.common['tk'] = 'ZEnrPP8wBUNhjtGwV5veCW7i5cZMJs1P2jBFZywQJKhz5taZ15bYWvXKsTESLdD85REaem63opFkazNHBd2XyP3KSkHm9KEqrnUvbWupegBnvCdQ2zNKgk8yNiEh2FCN5wGwwbNjUGp6WFhWJ3uEsAhGe';
+// Vue.http.headers.common['tk'] = 'ZEnrPP8wBUNhjtGwV5veCW7i5cZMJs1P2jBFZywQJKhz5taZ15bYWvXKsTESLdD85REaem63opFkazNHBd2XyP3KSkHm9KEqrnUvbWupegBnvCdQ2zNKgk8yNiEh2FCN5wGwwbNjUGp6WFhWJ3uEsAhGe';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
