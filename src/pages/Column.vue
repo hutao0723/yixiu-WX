@@ -188,6 +188,7 @@
     background: #fff;
     img {
       width: 100% !important;
+      -webkit-overflow-scrolling: touch!important;
     }
     div {
       -webkit-overflow-scrolling: touch!important;
@@ -201,6 +202,13 @@
       width: 100%;
       height: 100%;
       display: block;
+      background-repeat: no-repeat;
+      /* background-size: 100% 100%; */
+      background-attachment: fixed;
+    }
+    .header-img-small{
+      .pos(272, 50);
+      .size(206, 276);
     }
     .header-name-bg {
       position: absolute;
