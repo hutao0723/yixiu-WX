@@ -45,6 +45,9 @@ export default {
       components: []
     };
   },
+  created() {
+      this.wxShare()
+    },
   computed: {
     ...mapState({})
   },

@@ -48,6 +48,15 @@
     computed: {
       ...mapState(['audio', 'playing', 'currentTime', 'musicDuration']),
     },
+    created() {
+      const msg = {
+        title: this.detailObj.title,
+        desc: this.detailObj.subTitle,
+        link: window.location.href,
+        imgUrl: this.detailObj.lateralCover || this.detailObj.verticalCover || '//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
+      }
+      this.wxShare(msg)
+    },
     mounted() {
       // this.$store.dispatch('setWhichpage', '首页');
       // // 返回登录页面

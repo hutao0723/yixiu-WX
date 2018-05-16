@@ -53,7 +53,7 @@ Vue.http.interceptors.push((request, next) => {
   });
 });
 
-Vue.prototype.wxShare = function (title, desc, link) {
+Vue.prototype.wxShare = function (msg) {
   // var link  = encodeURIComponent(link);
   // const url = encodeURIComponent(location.href.split('#')[0]);// 当前url
   // const url = encodeURIComponent(window.location.href.split('#')[0]);
@@ -69,7 +69,7 @@ Vue.prototype.wxShare = function (title, desc, link) {
     var Data = res.data.data;
     // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，
     wx.config({
-      debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
       appId: Data.appid, // 必填，公众号的唯一标识
       timestamp: Number(Data.timestamp), // 必填，生成签名的时间戳
       nonceStr: Data.noncestr, // 必填，生成签名的随机串
@@ -81,10 +81,10 @@ Vue.prototype.wxShare = function (title, desc, link) {
     // 所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，
     // 则可以直接调用，不需要放在ready函数中。
     wx.onMenuShareAppMessage({ // 分享给朋友
-      title: title, // 分享标题
-      desc: desc, // 分享描述
-      link: link, // 分享链接 默认以当前链接
-      imgUrl: '', // 分享图标
+      title: msg.title ? msg.title : '一修读书', // 分享标题
+      desc: msg.desc ? msg.desc : '在这里发现更好的自己', // 分享描述
+      link: msg.link ? msg.link : 'http://k.youfen666dev.com/#/home/index', // 分享链接 默认以当前链接
+      imgUrl: msg.imgUrl ? msg.imgUrl : 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
       // 用户确认分享后执行的回调函数
       success: function () {
 
@@ -96,10 +96,10 @@ Vue.prototype.wxShare = function (title, desc, link) {
     });
     //分享到朋友圈
     wx.onMenuShareTimeline({
-      title: title, // 分享标题
-      desc: desc,
-      link: link,
-      imgUrl: '',
+      title: msg.title ? msg.title : '一修读书', // 分享标题
+      desc: msg.desc ? msg.desc : '在这里发现更好的自己', // 分享描述
+      link: msg.link ? msg.link : 'http://k.youfen666dev.com/#/home/index', // 分享链接 默认以当前链接
+      imgUrl: msg.imgUrl ? msg.imgUrl : 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
       // 用户确认分享后执行的回调函数
       success: function () {
 

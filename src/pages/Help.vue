@@ -12,7 +12,7 @@
       </div>
       <div class="btn-box">
         <button class="btn-find" @click="onImage">遇到问题</button>
-        <button class="btn-find bgred" @click="onShare">寻找组织</button>
+        <button class="btn-find bgred">寻找组织</button>
       </div>
     </div>
     <AudioBar/>
@@ -35,8 +35,7 @@
     },
     watch: {},
     created() {
-      var link = window.location.href;
-      this.wxShare('这一次,我想和你一起走在美丽的路上', '我正在参加中国丽人秀海选盛典,诚请你为我投上宝贵的一票', link)
+      this.wxShare()
     },
     mounted() {
       // const arr = ['previewImage', 'onMenuShareAppMessage', 'onMenuShareTimeline']
@@ -47,9 +46,6 @@
       onImage() {
         order.wxPreview();
       },
-      onShare(){
-        order.wxShare();
-      }
     }
   };
 

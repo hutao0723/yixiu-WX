@@ -115,6 +115,15 @@
         return m + '-' + d;
       },
     },
+    created() {
+      const msg = {
+        title: this.detailObj.title,
+        desc: this.detailObj.subTitle,
+        link: window.location.href,
+        imgUrl: this.detailObj.lateralCover || this.detailObj.verticalCover || '//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
+      }
+      this.wxShare(msg)
+    },
     methods: {
       // 获取详情
       async getColumnDetail(id) {

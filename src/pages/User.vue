@@ -15,6 +15,9 @@ export default {
       isLogin: state => state.isLogin
     })
   },
+  created() {
+      this.wxShare()
+    },
   mounted () {
   
   },
