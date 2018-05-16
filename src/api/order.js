@@ -98,6 +98,7 @@ export default class order extends base {
   // 初始化jdk获取权限
   static async getApiRules(arr) {
     console.log('初始化jdk')
+    alert(location.href.split('#')[0])
     const url = encodeURIComponent(location.href.split('#')[0]);
     const urlData = `/wechat/getJsapiSignature`;
     const obj = await this.get(urlData, {
