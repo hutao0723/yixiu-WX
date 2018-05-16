@@ -64,5 +64,5 @@ export default {
 		// 设置音乐停止播放状态
 		setPlaying (state) {
 			state.playing = false;
-		},
+		}
 }

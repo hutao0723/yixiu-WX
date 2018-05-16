@@ -22,6 +22,7 @@
       <p class="none-text">暂无数据</p>
       <a href="javascript:void(0)" class="none-btn">去逛逛</a>
     </div>
+    <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0" ></div>
     <AudioBar/>
   </div>
 </template>
@@ -38,7 +39,7 @@
         noData: false,
         pageNum: 1,
         pageSize: 20,
-
+        busy: true
       };
     },
     watch: {
@@ -56,13 +57,28 @@
           pageSize: this.pageSize
         }
         let obj = await order.getCartList(params)
-        obj.forEach(item => {
-          item['timeLengthText'] = this.secondToDate(item.timeLength);
-          let percent = Math.floor((+item.playbackProgress ? +item.playbackProgress : 0) / +item.timeLength * 100);
-          item['percent'] = percent > 100 ? 100 : percent;
-        })
-        this.cartList = obj;
-        if (!this.cartList.length) this.noData = true
+        if (obj && obj.length) {
+          this.busy = false;
+          obj.forEach(item => {
+            item['timeLengthText'] = this.secondToDate(item.timeLength);
+            let percent = Math.floor((+item.playbackProgress ? +item.playbackProgress : 0) / +item.timeLength * 100);
+            item['percent'] = percent > 100 ? 100 : percent;
+          });
+          if (!this.cartList.length) {
+            this.cartList = obj;
+          } else {
+            this.cartList = this.cartList.concat(obj);
+            console.log(this.cartList)
+          };
+        } else {
+          this.busy = true
+        };
+        if (!this.cartList.length) this.noData = true;
+      },
+      loadMore () {
+        this.busy = true;
+        this.pageNum ++;
+        this.getList();
       },
       secondToDate(result) {
         if (result == null || result == undefined) return ''

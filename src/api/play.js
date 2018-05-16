@@ -57,24 +57,23 @@ export default class play extends base {
   /**
    * 初始化音频
    */
-  static async audioInit(columnId,courseId) {
-    let cat = await list.getVideoList(columnId,courseId);
+  static  audioInit(columnId,courseId) {
+    let cat =  list.getVideoList(columnId,courseId);
     return  cat.getVideoMsg();
   }
   
   /**
    * 下一曲音频
    */
-  static async audioNext(columnId,courseId) {
+  static  audioNext(columnId,courseId) {
     let cat = list.getVideoList(columnId,courseId);
-    console.log(courseId,333)
     return cat.getNext(courseId);
   }
   
   /**
    * 上一曲音频
    */
-  static async audioPrev(columnId,courseId) {
+  static  audioPrev(columnId,courseId) {
     let cat = list.getVideoList(columnId,courseId);
     return cat.getPrev(courseId);
   }
@@ -88,12 +87,10 @@ export default class play extends base {
     if ( action === 'init') audio =  await this.audioInit(columnId, courseId);
     if ( action === 'next') audio =  await this.audioNext(columnId, courseId);
     if ( action === 'prev') audio =  await this.audioPrev(columnId, courseId);
-    console.log(audio)
     let colId = audio.columnId,
         couId = audio.courseId;
     audio.src = await this.getAudioUrl(colId, couId);
     // audio.src = 'http://mp3.qqmusic.cc/yq/208662441.mp3'
-    // audio.playbackProgress = 20
     store.commit({
       type: 'setAudio',
       audio: audio
@@ -101,8 +98,10 @@ export default class play extends base {
     this.syncPlaytimes(store.getters.getAudioInfo.courseId);
     store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
     store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
+    // 这里，很迷
     store.commit('play');
   }
+
   /**
    * 时间格式化
    */
@@ -119,5 +118,4 @@ export default class play extends base {
   }
 
 }
-
 

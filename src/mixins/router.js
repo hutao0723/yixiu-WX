@@ -31,6 +31,7 @@
        */
        playClick(columnId, courseId, isTry) {
          play.startAudio(columnId,courseId,'init');
+         store.commit('play');
          if (isTry) this.$router.push(`/audio/index`);
        },
       /**
@@ -45,20 +46,16 @@
           case 1:
             if (checkPower || !price) {
               // 播放
-              // this.$emit('playAudio', columnId, courseId);
               play.startAudio(columnId,courseId,'init')
+              store.commit('play');
             } else {
               if (watchable) {
                 // 试听
-                // this.$root.$navigate(`/pages/play/audio_detail?courseId=${courseId}`);
-                // store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
-                // store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
-                // store.commit('play');
                 play.startAudio(columnId,courseId,'init')
+                store.commit('play');
                 this.$router.push(`/audio/index`);
               } else {
                 // 购买
-                // this.$root.$navigate(`/pages/course/course_detail?courseId=${courseId}`);
                 this.$router.push(`/course/${courseId}`);
               }
             }
@@ -68,14 +65,15 @@
             if (checkPower || !price) {
               // 播放
               play.startAudio(columnId,courseId,'init')
+              store.commit('play');
             } else {
               if (watchable) {
                 // 试听
                 play.startAudio(columnId,courseId,'init')
+                store.commit('play');
                 this.$router.push(`/audio/index`);
               } else {
                 // 购买
-                // this.$root.$navigate(`/pages/column/column_detail?columnId=${columnId}&isbuy=${false}`);
                 this.$router.push(`/column/${columnId}`)
               }
             }

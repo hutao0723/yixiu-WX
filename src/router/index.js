@@ -7,7 +7,7 @@ export default new Router({
   routes: [
     {
       path: '*',
-      redirect: '/home/index',
+      redirect: '/home',
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('pages/Home'));
@@ -17,60 +17,29 @@ export default new Router({
     {
       name: 'home',
       path: '/home',
-      redirect: '/home/index',
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('pages/Home'));
         }, 'home');
-      },
-      children: [
-        {
-          path: '/home/index',
-          component: function (resolve) {
-            require.ensure([], function () {
-              resolve(require('../pages/components/home/Index'));
-            }, 'home');
-          }
-        }
-      ]
+      }
     },
     {
       name: 'cart',
       path: '/cart',
-      redirect: '/cart/index',
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('pages/Cart'));
         }, 'cart');
-      },
-      children: [
-      {
-        path: '/cart/index',
-        component: function (resolve) {
-          require.ensure([], function () {
-            resolve(require('../pages/components/cart/Index'));
-          }, 'cart');
-        }
-      }]
+      }
     },
     {
+      name: 'user',
       path: '/user',
-      redirect: '/user/index',
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('pages/User'));
         }, 'user');
-      },
-      children: [
-      {
-        path: 'index',
-        component: function (resolve) {
-          require.ensure([], function () {
-            resolve(require('../pages/components/user/Index'));
-          }, 'user');
-        }
       }
-      ]
     },
     {
       path: '/help',

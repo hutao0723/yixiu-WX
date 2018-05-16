@@ -1,5 +1,5 @@
 <template>
-  <div class="homepage-main">
+  <div class="homepage-main" ref="homepageMain">
     <div class="template-box" v-for="(item, index) in components">
       <!--顶部标题-->
         <TitleBar v-if="item.componentType === 'TITLE'" :param.sync="item" />
@@ -37,12 +37,9 @@ export default {
   },
   data () {
     return {
-      data: {},
-      init: false,
-      notice: false,
-      animation: false,
       params:'',
-      components: []
+      components: [],
+      mainScrollTop: 0
     };
   },
   computed: {
@@ -58,24 +55,40 @@ export default {
     async renderTemplatePage() {
       const layout = await config.layout();
       let page = [];
-      let that = this;
+      let self = this;
       Promise.all(JSON.parse(layout.componentSections).map(function(item, i){
         return new Promise(function(resolve, reject){
            resolve(config.component(item.componentType, item.componentId))
         }).then(res => page[i] = res )
       })).then(function(data){
         let processData = config.processPage(layout, page)
-        that.params = processData.params;
-        that.components = processData.components;
-        that.components.forEach(item=>{
+        self.params = processData.params;
+        self.components = processData.components;
+        self.components.forEach(item=>{
           if(item.componentType == 'GOODSBOX'){
             item['navActive'] = 0;
           }
         })
-        // that.loaded();
-        console.log(that.components,`[template] render template page success`)
+        // self.loaded();
+        console.log(self.components,`[template] render template page success`)
+        // 同步事件
+      setTimeout(() => {
+        // 滚动
+        self.$refs.homepageMain.addEventListener('scroll', self.dispatchScroll, false);
+        // 埋点
+        window.monitor && window.monitor.showLog(self);
+      }, 100);
       })
-    }
+    },
+    // 触发滚动
+    dispatchScroll () {
+      this.mainScrollTop = this.$refs.homepageMain.scrollTop;
+      console.log(this.$refs.homepageMain.scrollTop)
+      window.monitor && window.monitor.showLog(this);
+    },
+  },
+  beforeDestroy () {
+    this.$refs.homepageMain.removeEventListener('scroll', this.dispatchScroll, false);
   }
 };
 </script>
@@ -84,6 +97,8 @@ export default {
 @import '../../../less/tool.less';
 .homepage-main {
   padding-bottom: 135/@rem;
+  height: 100%;
+  overflow-y: auto;
   .fontSize(24);
   .icon-nav{
     height: 480/@rem;
