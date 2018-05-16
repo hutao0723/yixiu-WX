@@ -41,7 +41,7 @@
               <i class="iconfont icon-detail"></i>
               <span class="xxs weak">详情</span>
             </button>
-            <button type="primary" class="column-around btn-bottom" @click="onShareAppMessage()">
+            <button type="primary" class="column-around btn-bottom" @click="shareToggle = true">
               <i class="iconfont icon-share1"></i>
               <span class="xxs weak">分享</span>
             </button>
@@ -53,6 +53,8 @@
         </div>
       </div>
     </div> 
+    <Share v-show="shareToggle" v-on:success="success"/>
+    
   </div>
 </template>
 
@@ -60,11 +62,15 @@
 import router from '../../../mixins/router';
 import store from '../../../vuex/store';
 import play from '../../../api/play';
+import order from '../../../api/order';
 import { mapState } from 'vuex'
 import range from 'components/basic/range'
+import Share from 'components/basic/Share';
+
 export default {
   data () {
     return {
+      shareToggle: false,
     };
   },
   computed: {
@@ -77,9 +83,21 @@ export default {
     }
   },
   mounted () {
-
+    setTimeout(()=>{
+      const msg = {
+          title: this.audio.title,
+          desc: this.audio.subTitle,
+          link: this.audio.courseId ? 'http://k.youfen666dev.com/#/course/' + this.audio.courseId:false ||this.audio.columnId ? 'http://k.youfen666dev.com/#/column/' + this.audio.columnId:false ,
+          imgUrl: this.audio.lateralCover || this.audio.verticalCover ||
+            '//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
+        }
+        this.wxShare(msg)
+    },3000)
   },
   methods: {
+    success(){
+      this.shareToggle = false;
+    },
     audioPrev () {
       play.startAudio(this.audio.columnId, this.audio.courseId, 'prev')
     },  
@@ -91,8 +109,9 @@ export default {
     audioNext (){
       play.startAudio(this.audio.columnId, this.audio.courseId, 'next')
     },
-    goPay(){
-
+    async goPay(){
+        let obj = await order.buy(this.audio.columnId?this.audio.columnId:this.audio.courseId, this.audio.columnId?2:1)
+      
     },
     timerFomart (time) {
       if (isNaN(time)) return '00:00';
@@ -101,7 +120,7 @@ export default {
       return mm + ':' + ss;
     }
   },
-  components:{ range },
+  components:{ range,Share },
   mixins: [router]
 };
 </script>

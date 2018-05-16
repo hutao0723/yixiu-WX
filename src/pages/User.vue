@@ -9,7 +9,7 @@
         <div class="icon-box share column-center">
           <i class="iconfont icon-recom user-icon"></i>
         </div>
-        <div class="row ft32 ml30">推荐给好友</div>
+        <div class="row ft32 ml30" @click="shareToggle = true">推荐给好友</div>
       </div>
       <router-link :to="{ path: '/help' }">
         <div class="mtr20 user-h110 row">
@@ -22,22 +22,27 @@
     </div>
     <AudioBar/>
     <bnav></bnav>
+    <Share v-show="shareToggle" v-on:success="success"/>
   </div>
 </template>
 
 <script>
 import AudioBar from 'components/basic/Audio_Bar';
 import bnav from 'components/layout/Nav';
+import Share from 'components/basic/Share';
+
 export default {
   components: {
     AudioBar,
-    bnav
+    bnav,
+    Share,
   },
   data () {
     return {
       data: {},
       imageUrl: 'https://yun.dui88.com/yoofans/images/201804/miniapp/help-center.png',
-      username: '哈哈'
+      username: '哈哈',
+      shareToggle: false,
     };
   },
   created() {
@@ -63,6 +68,10 @@ export default {
     //     }
     //   });
     // }
+    success(){
+      console.log('ss')
+      this.shareToggle = false;
+    },
     getUserInfo () {
       this.$http.get('/user/getUserInfo').then(res => {
         let resp = res.data
