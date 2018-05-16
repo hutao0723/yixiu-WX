@@ -93,6 +93,10 @@ export default {
         }
         this.wxShare(msg)
     },3000)
+    if (!store.getters.getAudioElement.getAttribute('src')) {
+      store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
+      store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title);
+    }
   },
   methods: {
     success(){

@@ -1,7 +1,7 @@
 <template>
   <div class="row goods-row-box" @click="routeToCourse(goods)">
     <div class="por" >
-      <img class="goods-image"  :mode="goods.fillType" lazy-load :src="goods.lateralCover || goods.verticalCover || 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png'" />
+      <img class="goods-image"   v-lazy="goods.lateralCover || goods.verticalCover || 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png'" />
     </div>
     <div class="main-box column">
       <!--左边栏-->

@@ -1,11 +1,9 @@
 <template>
   <div id="app">
     <audio id="myaudio" ref="audio" @timeupdate="musicTimeUpdate" @canplay="musicCanPlay" @playing="musicOnPlaying" @ended="musicEnded" @waiting="musicOnWaiting" @pause="musicOnPause" @loadstart="loadStart"></audio>
-    <!-- <div class="center-main"> -->
       <transition name="router-fade" mode="out-in">
         <router-view></router-view>
       </transition>
-    <!-- </div> -->
   </div>
 </template>
 
@@ -80,23 +78,6 @@ export default {
 @import "./less/base";
 @import "./less/animate";
 
-// .center-main {
-//   width: 750/@rem;
-//   height: 100%;
-//   // padding-top: 80/@rem;
-//   padding-bottom: 110/@rem; 
-//   position: absolute;
-//   left: 0;
-//   top: 0;
-//   bottom: 0;
-//   overflow-x: hidden;
-//   // overflow-y: auto;
-//   -webkit-overflow-scrolling: touch;
-//   position: absolute;
-//   padding-bottom: 0;
-//   // z-index: 9;
-//   background: #fff;
-// }
 // --- 基础样式gobal_loading 加载动画 --- //
 /* router-fade */
 .router-fade-enter-active, .router-fade-leave-active {

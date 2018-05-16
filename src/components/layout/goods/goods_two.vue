@@ -6,7 +6,7 @@
     </div>
     <!--图片-->
     <div class="goods-container">
-      <img class="goods-image" :src="goods.lateralCover || goods.verticalCover || 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png'" />
+      <img class="goods-image" v-lazy="goods.lateralCover || goods.verticalCover || 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png'" />
     </div>
     <div class="main-box column-between">
       <span class="sm primary line2 title">{{goods.title}}</span>

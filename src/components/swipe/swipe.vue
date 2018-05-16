@@ -53,7 +53,7 @@
 
       showIndicators: {
         type: Boolean,
-        default: true
+        default: false
       },
 
       noDragWhenSingle: {

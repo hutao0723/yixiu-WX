@@ -7,7 +7,7 @@
           <img class="" src="https://yun.dui88.com/youfen/images/audio.svg" v-if="audio.columnId === goods.columnId || audio.courseId === goods.courseId" />
           <i class="iconfont icon-bofang" v-else></i>
         </div>
-        <span class="nm line1 title" :class="(audio.columnId === goods.columnId || audio.courseId === goods.courseId) ? 'soft' : 'strong'">{{goods.title}}{{goods.courseId}}</span>
+        <span class="nm line1 title" :class="(audio.columnId === goods.columnId || audio.courseId === goods.courseId) ? 'soft' : 'strong'">{{goods.title}}</span>
       </div>
       <!--右边栏-->
       <div class="right-bar">

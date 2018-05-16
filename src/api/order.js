@@ -66,7 +66,7 @@ export default class order extends base {
   //   });
   //   this.wxChooseWXPay(res.data.data, payment)
   // }
-  static async wxPay(payment) {
+  static  wxPay(payment) {
     function onBridgeReady() {
       WeixinJSBridge.invoke(
         'getBrandWCPayRequest', {
@@ -77,7 +77,7 @@ export default class order extends base {
           "signType": payment.signType, //微信签名方式：     
           "paySign": payment.paySign //微信签名 
         },
-        function (res) {
+        async function (res) {
           if (res.err_msg == "get_brand_wcpay_request:ok") {
             await play.startAudio(store.getters.getAudioInfo.columnId, store.getters.getAudioInfo.courseId, 'init')
             location.reload()
