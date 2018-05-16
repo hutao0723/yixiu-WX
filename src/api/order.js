@@ -27,7 +27,7 @@ export default class order extends base {
     itemType
   }) {
     console.log('下单')
-    const url = `/api/order/submit`;
+    const url = `/order/submit`;
     const res = await this.post(url, {
       itemId,
       itemType
@@ -44,7 +44,7 @@ export default class order extends base {
   }) {
     console.log('预支付')
     const payType = 'WECHATH5APAY';
-    const url = `/api/pay/submit`;
+    const url = `/pay/submit`;
     const res = await this.post(url, {
       orderId,
       payType
@@ -57,7 +57,7 @@ export default class order extends base {
    */
   static async wxPay(payment) {
     const url = encodeURIComponent(location.href.split('#')[0]);
-    const urlData = `/api/wechat/getJsapiSignature`;
+    const urlData = `/wechat/getJsapiSignature`;
     const res = await this.get(urlData, {
       params: {
         url
@@ -99,7 +99,7 @@ export default class order extends base {
   static async getApiRules(arr) {
     console.log('初始化jdk')
     const url = encodeURIComponent(location.href.split('#')[0]);
-    const urlData = `/api/wechat/getJsapiSignature`;
+    const urlData = `/wechat/getJsapiSignature`;
     const obj = await this.get(urlData, {
       params: {
         url
@@ -167,7 +167,7 @@ export default class order extends base {
    */
   static async getColumnDetail(columnId) {
     console.log('专栏详情')
-    const url = `/api/column/get`;
+    const url = `/column/get`;
     const payment = await this.get(url, {
       params: {
         columnId
@@ -180,7 +180,7 @@ export default class order extends base {
    */
   static async getColumnList(columnId) {
     console.log('专栏列表')
-    const url = `/api/column/getCourses`;
+    const url = `/column/getCourses`;
     const payment = await this.get(url, {
       params: {
         columnId
@@ -193,7 +193,7 @@ export default class order extends base {
    */
   static async getCourseDetail(courseId) {
     console.log('课程详情')
-    const url = `/api/course/get`;
+    const url = `/course/get`;
     const payment = await this.get(url, {
       params: {
         courseId
@@ -206,7 +206,7 @@ export default class order extends base {
    */
   static async getCartList(params) {
     console.log('已购列表')
-    const url = `/api/userItem/list`;
+    const url = `/userItem/list`;
     const payment = await this.get(url, {
       params: params
     });
