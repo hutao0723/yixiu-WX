@@ -40,7 +40,7 @@ export default new Router({
       redirect: '/cart/index',
       component: function (resolve) {
         require.ensure([], function () {
-          resolve(require('pages/cart'));
+          resolve(require('pages/Cart'));
         }, 'cart');
       },
       children: [
