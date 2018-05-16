@@ -60,7 +60,6 @@
 import router from '../../../mixins/router';
 import store from '../../../vuex/store';
 import play from '../../../api/play';
-import order from '../../../api/order';
 import { mapState } from 'vuex'
 import range from 'components/basic/range'
 export default {
@@ -69,7 +68,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['audio','playing','currentTime','musicDuration','audioelement']),
+    ...mapState(['audio','playing','currentTime','musicDuration']),
     current() {
       return this.timerFomart(this.currentTime)
     },
@@ -78,27 +77,22 @@ export default {
     }
   },
   mounted () {
-    if (!this.audioelement.src) {
-      this.audioelement.setAttribute('src', this.audio.src);
-      this.audioelement.setAttribute('title', this.audio.title);
-    }
+
   },
   methods: {
     audioPrev () {
-      if (this.audio.isPrev) play.startAudio(this.audio.columnId, this.audio.courseId, 'prev')
-    },
+      play.startAudio(this.audio.columnId, this.audio.courseId, 'prev')
+    },  
     togglePlay() {
       if (!this.audio.musicTryEnd) {
         store.commit('togglePlay');
       }
     },
     audioNext (){
-      if (this.audio.isNext) play.startAudio(this.audio.columnId, this.audio.courseId, 'next')
+      play.startAudio(this.audio.columnId, this.audio.courseId, 'next')
     },
     goPay(){},
-    onShareAppMessage(){
-      order.wxShare();
-    },
+    onShareAppMessage(){},
     timerFomart (time) {
       if (isNaN(time)) return '00:00';
       let mm = time / 60 > 9 ? Math.floor(time / 60) : '0' + Math.floor(time / 60);

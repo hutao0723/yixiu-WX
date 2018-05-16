@@ -13,6 +13,9 @@ export default {
   computed: {
    
   },
+  created() {
+      this.wxShare()
+    },
   mounted () {
   },
   components: { bnav }

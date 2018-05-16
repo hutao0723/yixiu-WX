@@ -30,7 +30,7 @@
   import AudioBar from 'components/basic/Audio_Bar';
   import order from '../../../api/order';
   import router from '../../../mixins/router';
-  
+
   export default {
     data() {
       return {
@@ -75,7 +75,7 @@
       AudioBar
     },
     mixins: [router]
-  };
+  }
 
 </script>
 
@@ -181,3 +181,4 @@
   }
 
 </style>
+
