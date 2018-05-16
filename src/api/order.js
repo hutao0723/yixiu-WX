@@ -56,7 +56,7 @@ export default class order extends base {
    * 支付
    */
   static async wxPay(payment) {
-    const url = location.href;
+    const url = encodeURIComponent(location.href.split('#')[0]);
     const urlData = `/wechat/getJsapiSignature`;
     const res = await this.get(urlData, {
       params: {
@@ -98,7 +98,7 @@ export default class order extends base {
   // 初始化jdk获取权限
   static async getApiRules(arr) {
     console.log('初始化jdk')
-    const url = location.href;
+    const url = encodeURIComponent(location.href.split('#')[0]);
     const urlData = `/wechat/getJsapiSignature`;
     const obj = await this.get(urlData, {
       params: {
