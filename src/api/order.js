@@ -32,7 +32,6 @@ export default class order extends base {
       itemId,
       itemType
     });
-    console.log(res.data.data)
     return res.data.data;
   }
 
