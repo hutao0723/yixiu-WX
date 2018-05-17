@@ -20,17 +20,17 @@
           {
             title: '首页',
             icon: 'icon-shouye',
-            router: '/home'
+            router: '/index/home'
           },
           {
             title: '已购',
             icon: 'icon-yigou1',
-            router: '/cart'
+            router: '/index/cart'
           },
           {
             title: '我的',
             icon: 'icon-wode',
-            router: '/user'
+            router: '/index/user'
           }
         ]
       };

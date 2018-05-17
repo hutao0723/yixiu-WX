@@ -15,13 +15,13 @@
     </div>
     <div style="height: 2rem"></div>
     <AudioBar/>
-    <bnav></bnav>
+    <!-- <bnav></bnav> -->
   </div>
 </template>
 
 <script>
 import config from '../api/config';
-import bnav from 'components/layout/Nav';
+// import bnav from 'components/layout/Nav';
 import AudioBar from 'components/basic/Audio_Bar';
 import SwiperBar from 'components/layout/swiper_bar';
 import TitleBar from 'components/layout/title_bar';
@@ -36,8 +36,7 @@ export default {
     SwiperBar,
     BlankBar,
     GoodsBox,
-    loading,
-    bnav
+    loading
   },
   data () {
     return {

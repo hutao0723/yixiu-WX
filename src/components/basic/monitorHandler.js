@@ -9,7 +9,7 @@
  */
 
 export function monitorHandler () {
-  let domain = window.mailaDomain || '/'; // 客户端提供
+  // let domain = window.mailaDomain || '/'; // 客户端提供
   let monitorList = []; // 数据
   let monitorTimeout;
   var monitor = {

@@ -21,20 +21,20 @@
       </router-link>
     </div>
     <AudioBar/>
-    <bnav></bnav>
+    <!-- <bnav></bnav> -->
     <Share v-show="shareToggle" v-on:success="success"/>
   </div>
 </template>
 
 <script>
 import AudioBar from 'components/basic/Audio_Bar';
-import bnav from 'components/layout/Nav';
+// import bnav from 'components/layout/Nav';
 import Share from 'components/basic/Share';
 
 export default {
   components: {
     AudioBar,
-    bnav,
+    // bnav,
     Share,
   },
   data () {

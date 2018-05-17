@@ -7,40 +7,75 @@ export default new Router({
   routes: [
     {
       path: '*',
-      redirect: '/home',
+      redirect: '/index',
       component: function (resolve) {
         require.ensure([], function () {
-          resolve(require('pages/Home'));
-        }, 'home');
+          resolve(require('pages/Index'));
+        }, 'index');
       }
     },
     {
-      name: 'home',
-      path: '/home',
+      name: 'index',
+      path: '/index',
+      redirect: '/index/home',
       component: function (resolve) {
         require.ensure([], function () {
-          resolve(require('pages/Home'));
-        }, 'home');
+          resolve(require('pages/Index'));
+        }, 'index');
+      },
+      children: [{
+        path: '/index/home',
+        component: function (resolve) {
+          require.ensure([], function () {
+            resolve(require('pages/Home'));
+          }, 'home');
+        }
+      },
+      {
+        path: '/index/cart',
+        component: function (resolve) {
+          require.ensure([], function () {
+            resolve(require('pages/Cart'));
+          }, 'cart');
+        }
+      },
+      {
+        path: '/index/user',
+        component: function (resolve) {
+          require.ensure([], function () {
+            resolve(require('pages/User'));
+          }, 'user');
+        }
       }
+      ]
     },
-    {
-      name: 'cart',
-      path: '/cart',
-      component: function (resolve) {
-        require.ensure([], function () {
-          resolve(require('pages/Cart'));
-        }, 'cart');
-      }
-    },
-    {
-      name: 'user',
-      path: '/user',
-      component: function (resolve) {
-        require.ensure([], function () {
-          resolve(require('pages/User'));
-        }, 'user');
-      }
-    },
+    // {
+    //   name: 'home',
+    //   path: '/home',
+    //   component: function (resolve) {
+    //     require.ensure([], function () {
+    //       resolve(require('pages/Home'));
+    //     }, 'home');
+    //   }
+    // },
+    // {
+    //   name: 'cart',
+    //   path: '/cart',
+    //   component: function (resolve) {
+    //     require.ensure([], function () {
+    //       resolve(require('pages/Cart'));
+    //     }, 'cart');
+    //   }
+    // },
+    // {
+    //   name: 'user',
+    //   path: '/user',
+    //   component: function (resolve) {
+    //     require.ensure([], function () {
+    //       resolve(require('pages/User'));
+    //     }, 'user');
+    //   }
+    // },
     {
       path: '/help',
       component: function (resolve) {

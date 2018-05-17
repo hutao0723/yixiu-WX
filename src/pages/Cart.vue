@@ -24,7 +24,7 @@
     </div>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0" ></div>
     <AudioBar/>
-    <bnav></bnav>
+    <!-- <bnav></bnav> -->
   </div>
 </template>
 
@@ -32,7 +32,7 @@
   import AudioBar from 'components/basic/Audio_Bar';
   import order from '../api/order';
   import router from '../mixins/router';
-  import bnav from 'components/layout/Nav';
+  // import bnav from 'components/layout/Nav';
   
   export default {
     data() {
@@ -90,8 +90,7 @@
       }
     },
     components: {
-      AudioBar,
-      bnav
+      AudioBar
     },
     mixins: [router]
   };
