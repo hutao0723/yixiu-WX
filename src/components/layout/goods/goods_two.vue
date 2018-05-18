@@ -1,5 +1,5 @@
 <template>
-  <div class="column-between goods-grid-two-box" @click="routeToCourse(goods)">
+  <div class="column-between goods-grid-two-box" @click="routeToCourse(goods)" :monitor-log="getMonitor()">
     <div class="icon-fetch">
       <span class="xxs white" v-if="!goods.price">{{goods.playTimes + '人已听'}}</span>
       <span class="xxs white" v-else>{{goods.buyTimes + '人已购'}}</span>
@@ -33,7 +33,11 @@
     props: {
       goods: Object
     },
-    methods: {},
+    methods: {
+      getMonitor () {
+        return JSON.stringify({'dcm': 'goods_two','dpm': '1.1.1','url': '1111'});
+      }
+    },
     mixins: [router]
   }
 </script>

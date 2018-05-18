@@ -24,7 +24,7 @@
   import TitleBar from 'components/layout/title_bar';
   import GoodsBox from 'components/layout/goods_box';
   import BlankBar from 'components/layout/blank_bar';
-  import loading from 'components/layout/Loading';
+  // import loading from 'components/layout/Loading';
   import {
     mapState
   } from 'vuex';
@@ -34,8 +34,7 @@
       TitleBar,
       SwiperBar,
       BlankBar,
-      GoodsBox,
-      loading
+      GoodsBox
     },
     data() {
       return {

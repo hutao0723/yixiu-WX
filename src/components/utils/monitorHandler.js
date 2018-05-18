@@ -2,14 +2,11 @@
  * @note   监控埋点系统
  * @param  pointer this指针
  * @func   showLog() 发送埋点
- * @author 朱双龙
- * @email  zsl@duiba.com.cn
- * @date   2017-09-23
+ * @date   2018-05-17
  * @des    showLog(pointer)    this指针 必传
  */
 
 export function monitorHandler () {
-  // let domain = window.mailaDomain || '/'; // 客户端提供
   let monitorList = []; // 数据
   let monitorTimeout;
   var monitor = {
@@ -49,7 +46,8 @@ export function monitorHandler () {
 
             try {
               monitorList.push(JSON.parse(monitorLog));
-            } catch (e) {}
+            } catch (e) {
+            }
           }
         }
         if (monitorList.length) {
@@ -59,12 +57,12 @@ export function monitorHandler () {
       }, 200);
     },
     sendApi: function (pointer, data) {
+
       if (!pointer) {
         return;
       }
       var list = [];
-      var baseUrl = '/exposure/standard?';
-      var exposeUrl = '';
+      var exposeUrl = '/embed/exposure';
       // iframe数据过滤，防刷
       try {
         list = JSON.stringify(data);
@@ -77,22 +75,19 @@ export function monitorHandler () {
 
       // 单独发送埋点还是批量发送埋点
       if (data.length > 1) {
-        baseUrl += 'batch=1&batch_c=';
-        exposeUrl = domain + baseUrl + encodeURIComponent(list);
+        var {referer, url, adzoneId, pageId} = data[0];
+        var params = {referer, url, adzoneId, pageId};
+        var body = [];
+        for (var i = 0; i < data.length; i++) {
+          var {dpm, dcm, moduleId, itemType, itemId} = data[i];
+          body.push({dpm, dcm, moduleId, itemType, itemId});
+        }
+        params.body = JSON.stringify(body); 
       } else {
-        baseUrl = '/exposure/standard?';
-        if (data[0].dcm) {
-          baseUrl += 'dcm=' + data[0].dcm;
-        }
-        if (data[0].dpm) {
-          baseUrl += (data[0].dcm ? '&' : '') + 'dpm=' + data[0].dpm;
-        }
-        exposeUrl = domain + baseUrl;
+        params = data[0];
       }
-      // 加入APPID 和 设备号
-      exposeUrl += '&app_id=' + window.JQG.appId + '&device_id=' + pointer.$cookie.get('_coll_ci');
-
-      pointer.$http.jsonp(exposeUrl, {}).then((res) => {
+      
+      pointer.$http.post(exposeUrl, params).then((res) => {
         // 埋点成功
       }, (res) => {
         // 埋点失败
@@ -123,10 +118,6 @@ export function monitorHandler () {
       document.getElementsByClassName(el)[0].addEventListener('touchend', function () {
         deltaX > 0 && self.showLog(pointer);
       }, false);
-    },
-    // 首页曝光
-    indexShowLog: function (pointer) {
-      this.sendApi(pointer, [{'dpm': 'maila-' + window.JQG.appId + '.15.13.0'}]);
     }
   };
   window.monitor = monitor;

@@ -16,12 +16,12 @@ Vue.use(VueResource);
 import {
   setDPR,
   remChange
-} from './components/basic/remChange';
+} from './components/utils/remChange';
 setDPR();
 remChange();
 
 // monitor 埋点
-import { monitorHandler } from './components/basic/monitorHandler';
+import { monitorHandler } from './components/utils/monitorHandler';
 monitorHandler();
 
 // lazyload 图片懒加载
@@ -36,7 +36,7 @@ Vue.use(VueLazyload, {
     }
   }
 });
-Vue.http.headers.common['tk'] = 'ZEnrPP8wBUNhjtKEZGh3k1cGeWc9pdjH5X9CQQH4HQLGwbYytZJ1rQdbEd26ZjnsXcRf9cRHvCP9t9ezCWWZepHjejbGsea9QCXfNNTdaeNrmx6TXWbFNCAFFYHtJHaEfX9LHgREpHPCoWGzt9fLkygd4';
+Vue.http.headers.common['tk'] = 'ZEnrPP8wBUNhjtKEZGh3k1cGeWc9pdjH5X9CQQH4HQLGwbYytZJ1rQdbEd26ZjnsXcRf9cRHvCP9t9ezCWWZepHjejbGsea9QCXfNNTdaeNrmx6TXWbFNCAFFYHtJHaEfX9LHgREpHPCd3aH4ctawwpkr';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;

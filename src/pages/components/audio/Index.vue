@@ -64,7 +64,7 @@ import store from '../../../vuex/store';
 import play from '../../../api/play';
 import order from '../../../api/order';
 import { mapState } from 'vuex'
-import range from 'components/basic/range'
+import range from 'components/basic/Range'
 import Share from 'components/basic/Share';
 
 export default {

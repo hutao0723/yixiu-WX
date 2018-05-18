@@ -27,7 +27,7 @@ import SwiperBar from 'components/layout/swiper_bar';
 import TitleBar from 'components/layout/title_bar';
 import GoodsBox from 'components/layout/goods_box';
 import BlankBar from 'components/layout/blank_bar';
-import loading from 'components/layout/Loading';
+import access from '../mixins/accessHandler';
 import { mapState } from 'vuex';
 export default {
   components: {
@@ -35,8 +35,7 @@ export default {
     TitleBar,
     SwiperBar,
     BlankBar,
-    GoodsBox,
-    loading
+    GoodsBox
   },
   data () {
     return {
@@ -51,8 +50,8 @@ export default {
   created() {
       this.wxShare()
     },
-  async mounted () {
-    await this.renderTemplatePage();
+  mounted () {
+    this.renderTemplatePage();
   },
   methods: {
      /**
@@ -95,7 +94,8 @@ export default {
   },
   beforeDestroy () {
     this.$refs.homeMain.removeEventListener('scroll', this.dispatchScroll, false);
-  }
+  },
+  mixins: [access]
 };
 </script>
 
