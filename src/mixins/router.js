@@ -14,7 +14,7 @@
        * 处理跳转到课程／专栏详情
        */
       routeToCourse(data, monitorLog) {
-        clickHandler(monitorLog);
+        // clickHandler(monitorLog);
         const {columnId, courseId} = data;
         if (columnId) {
           // if (powerLevel || checkPower || !price) {
@@ -40,7 +40,7 @@
        * 处理图标点击事件
        */
       routeByIconAction(goods, monitorLog) {
-        clickHandler(monitorLog);
+        // clickHandler(monitorLog);
         const {itemType, watchable, price, checkPower, columnId, courseId} = goods;
         let that = this;
         // 根据课程状态进行相关处理
@@ -87,7 +87,7 @@
        * 处理区块点击事件
        */
       routeByBlockAction(item,monitorLog) {
-        clickHandler(monitorLog);
+        // clickHandler(monitorLog);
         const {linkType, linkDataJson} = item;
         // 根据动作进行路由
         let linkData = JSON.parse(linkDataJson);

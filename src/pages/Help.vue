@@ -38,6 +38,7 @@
       this.wxShare()
     },
     mounted() {
+      window.monitor && window.monitor.showLog(this);
       // const arr = ['previewImage', 'onMenuShareAppMessage', 'onMenuShareTimeline']
       // const res = await order.getApiRules(arr);
     },

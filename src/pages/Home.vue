@@ -90,7 +90,7 @@ export default {
       this.mainScrollTop = this.$refs.homeMain.scrollTop;
       // console.log(this.$refs.homeMain.scrollTop)
       window.monitor && window.monitor.showLog(this);
-    },
+    }
   },
   beforeDestroy () {
     this.$refs.homeMain.removeEventListener('scroll', this.dispatchScroll, false);

@@ -1,5 +1,5 @@
 <template>
-  <div class="homepage-main">
+  <div class="activity-main" ref="activityMain">
     <div class="template-box" v-for="(item, index) in components">
       <!--顶部标题-->
       <TitleBar v-if="item.componentType === 'TITLE'" :param.sync="item" />
@@ -60,7 +60,7 @@
       ...mapState({})
     },
     async mounted() {
-      await this.renderTemplatePage();
+      this.renderTemplatePage();
     },
     methods: {
       /**
@@ -69,24 +69,36 @@
       async renderTemplatePage() {
         const layout = await config.layoutAc(this.$route.params.id);
         let page = [];
-        let that = this;
+        let self = this;
         Promise.all(JSON.parse(layout.componentSections).map(function (item, i) {
           return new Promise(function (resolve, reject) {
             resolve(config.component(item.componentType, item.componentId))
           }).then(res => page[i] = res)
         })).then(function (data) {
           let processData = config.processPage(layout, page)
-          that.params = processData.params;
-          that.components = processData.components;
-          that.components.forEach(item => {
+          self.params = processData.params;
+          self.components = processData.components;
+          self.components.forEach(item => {
             if (item.componentType == 'GOODSBOX') {
               item['navActive'] = 0;
             }
           })
-          // that.loaded();
-          console.log(that.components, `[template] render template page success`)
+          // self.loaded();
+          console.log(self.components, `[template] render template page success`)
+          setTimeout(() => {
+          // 滚动
+          self.$refs.activityMain.addEventListener('scroll', self.dispatchScroll, false);
+          // 埋点
+          window.monitor && window.monitor.showLog(self);
+        }, 100);
         })
-      }
+      },
+      // 触发滚动
+    dispatchScroll () {
+      this.mainScrollTop = this.$refs.activityMain.scrollTop;
+      // console.log(this.$refs.homeMain.scrollTop)
+      window.monitor && window.monitor.showLog(this);
+    }
     }
   };
 
@@ -94,8 +106,19 @@
 
 <style lang="less">
   @import '../less/tool.less';
-  .homepage-main {
-    padding-bottom: 135/@rem;
+  .activity-main {
+    width: 750/@rem;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 20/@rem;
+  // z-index: 9;
+  background: #fff;
     .fontSize(24);
     .icon-nav {
       height: 480/@rem;

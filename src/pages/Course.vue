@@ -124,8 +124,13 @@
   @import "../assets/style/base/util";
   @rem: 75rem;
   .column-page {
-    height: 100%;
-    position: relative;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .page-content {
