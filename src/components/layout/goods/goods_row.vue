@@ -1,5 +1,5 @@
 <template>
-  <div class="row goods-row-box" @click="routeToCourse(goods)">
+  <div class="row goods-row-box" @click="routeToCourse(goods, getMonitor())" :monitor-log="getMonitor()">
     <div class="por" >
       <img class="goods-image"   v-lazy="goods.lateralCover || goods.verticalCover || 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png'" />
     </div>
@@ -21,16 +21,15 @@
       <div class="bottom-bar row-between">
         <span class="xs muted line1" v-if="!goods.price">{{goods.playTimes + '人已听'}}</span>
         <span class="xs muted line1" v-else>{{goods.buyTimes + '人已购'}}</span>
-        <button type="primary" plain hover-class="none" class="btn-icon" @click.stop="routeByIconAction(goods)" v-if="goods.price && goods.checkPower">
+        <button type="primary" plain hover-class="none" class="btn-icon" @click.stop="routeByIconAction(goods, getMonitor())" v-if="goods.price && goods.checkPower" :monitor-log="getMonitor()">
           <i class="iconfont icon-bofang2"></i>{{goods.fetchText}}
         </button>
-        <button type="primary" plain hover-class="none" class="btn-icon" @click.stop="routeByIconAction(goods)" v-if="!goods.price">
+        <button type="primary" plain hover-class="none" class="btn-icon" @click.stop="routeByIconAction(goods, getMonitor())" v-if="!goods.price" :monitor-log="getMonitor()">
           <i class="iconfont icon-bofang2"></i>{{goods.fetchText}}
         </button>
-        <button type="primary" plain hover-class="none" class="btn-fetch" @click.stop="routeByIconAction(goods)" v-if="goods.price && !goods.checkPower">{{goods.fetchText}}</button>
+        <button type="primary" plain hover-class="none" class="btn-fetch" @click.stop="routeByIconAction(goods, getMonitor())" v-if="goods.price && !goods.checkPower" :monitor-log="getMonitor()">{{goods.fetchText}}</button>
       </div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -50,8 +49,8 @@
       }
     },
     methods: {
-      imgRrr() {
-        console.log(this.goods)
+      getMonitor () {
+        return JSON.stringify({'dcm': 'goods_row','dpm': '1.1.1','url': '1111'});
       }
     },
     mixins: [router]

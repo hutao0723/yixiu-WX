@@ -64,11 +64,11 @@ export default {
     }
   },
   mounted() {
+    store.commit({ type: 'setReferer', referer: '' });  // 设置来源路径为空
     store.dispatch('set_AudioElement', this.$refs.audio);
     store.commit('setPlaying')
   },
   beforeDestroy () {
-    // store.commit('pause')
   }
 };
 </script>

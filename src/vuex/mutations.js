@@ -64,5 +64,10 @@ export default {
 		// 设置音乐停止播放状态
 		setPlaying (state) {
 			state.playing = false;
-		}
+		},
+	// 曝光参数设置
+	    // 设置referer
+	    setReferer (state, obj) {
+	    	state.referer = obj.referer;
+	    }
 }

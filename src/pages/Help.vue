@@ -1,5 +1,5 @@
 <template>
-  <div class="store-main">
+  <div class="help-main">
     <div class="help-box">
       <img :src="imageUrl" class="info-icon" />
       <div class="info-text">{{username}}</div>

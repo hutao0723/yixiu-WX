@@ -1,5 +1,5 @@
 <template>
-  <div class="blank-bar" :style="{width: blankWidth,height: blankHeight,background: param.blankFillColor,margin: '0 auto'}">
+  <div class="blank-bar" :style="{width: blankWidth,height: blankHeight,background: param.blankFillColor,margin: '0 auto'}" :monitor-log="getMonitor()">
   </div>
 </template>
 <script>
@@ -18,6 +18,9 @@
     async mounted () {
     },
     methods: {
+      getMonitor () {
+        return JSON.stringify({'dcm': 'blank','dpm': '1.1.1','url': '1111'});
+      }
     },
     mixins: []
   }

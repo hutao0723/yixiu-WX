@@ -1,7 +1,7 @@
 <template>
-  <div class="cart-main">
+  <div class="cart-main" ref="cartMain">
     <div class="page-list" v-show="!noData">
-      <div class="item" v-for="(item,index) in cartList" :key="index" @click="routeToCourse(item)">
+      <div class="item" v-for="(item,index) in cartList" :key="index" @click="routeToCourse(item)" :monitor-log="getMonitor()">
         <div class="item-img" v-show="item.lateralCover" :style="{backgroundImage: `url(${item.lateralCover})`}"></div>
         <div class="item-img-small" v-show="!item.lateralCover&&item.verticalCover" :style="{backgroundImage: `url(${item.verticalCover})`}"></div>
         <div class="item-img" v-show="!item.lateralCover&&!item.verticalCover" :style="{backgroundImage: `url('//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
@@ -47,8 +47,15 @@
     watch: {
       data: {}
     },
-    mounted() {
-      this.getList()
+    async mounted() {
+      await this.getList();
+      let self = this;
+      setTimeout(() => {
+          // 滚动
+          self.$refs.cartMain.addEventListener('scroll', self.dispatchScroll, false);
+          // 埋点
+          window.monitor && window.monitor.showLog(self);
+        }, 100);
     },
     computed: {},
     methods: {
@@ -87,6 +94,15 @@
         let m = Math.floor((result / 60 % 60));
         let s = Math.floor((result % 60));
         return result = m + "分" + s + "秒";
+      },
+      getMonitor () {
+        return JSON.stringify({'dcm': 'cart','dpm': '1.1.1','url': '1111'});
+      },
+      // 触发滚动
+      dispatchScroll () {
+        this.mainScrollTop = this.$refs.cartMain.scrollTop;
+        // console.log(this.$refs.homeMain.scrollTop)
+        window.monitor && window.monitor.showLog(this);
       }
     },
     components: {

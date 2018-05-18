@@ -3,12 +3,11 @@
     <router-view></router-view>
     <bnav></bnav>
   </div>
-    
 </template>
 
 <script>
 // import store from '../vuex/store'
-import bnav from 'components/layout/Nav';
+import bnav from 'components/basic/Nav';
 export default {
   components: {
     bnav

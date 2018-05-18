@@ -1,5 +1,5 @@
 <template>
-  <div class="row goods-nopic-box" @click.stop="routeByIconAction(goods)">
+  <div class="row goods-nopic-box" @click.stop="routeByIconAction(goods, getMonitor())" :monitor-log="getMonitor()">
     <div class="main-box row">
       <!--左边栏-->
       <div class="left-bar row-between on-play">
@@ -31,6 +31,9 @@
     mounted(){
     },
     methods: {
+      getMonitor () {
+        return JSON.stringify({'dcm': 'nopic','dpm': '1.1.1','url': '1111'});
+      }
     },
     mixins: [router]
   }

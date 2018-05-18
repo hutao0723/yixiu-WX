@@ -1,13 +1,13 @@
 <template>
-  <div class="title-bar" @click="routeByBlockAction(param)">
-    <div class="main-box row-between title-padding" v-if="param.layout === 'BASE'" monitor-log="dcm:1.0.0.1">
+  <div class="title-bar">
+    <div class="main-box row-between title-padding" v-if="param.layout === 'BASE'" @click="routeByBlockAction(param,getMonitor())" :monitor-log="getMonitor()">
       <span class="xxxl hard weight">{{param.titleName}}</span>
       <div class=" row-center" v-if="param.subTitle">
         <span class="nm weak row-center">{{param.subTitle}}</span>
         <div class="column-center"><i class="iconfont icon-more "></i></div>
       </div>
     </div>
-    <div class="main-box row-center border-more" v-if="param.layout == 'CENTER'" monitor-log="dcm:1.0.0.1">
+    <div class="main-box row-center border-more" v-if="param.layout == 'CENTER'" @click="routeByBlockAction(param,getMonitor())" :monitor-log="getMonitor()">
       <span class="nm weak row-center">{{param.subTitle || ''}}</span>
       <div class="column-center"><i class="iconfont icon-more "></i></div>
     </div>
@@ -19,10 +19,12 @@
     props: {
       param: {}
     },
-    mounted () {
-      
+    mounted () {  
     },
     methods: {
+      getMonitor () {
+        return JSON.stringify({'dcm': this.param.titleName,'dpm': '1.1.1','url': '1111'});
+      }
     },
     mixins: [router]
   }

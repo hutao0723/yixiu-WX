@@ -1,6 +1,6 @@
 <template>
-  <div class="column goods-grid-three-box" @click="routeToCourse(goods)">
-    <div class="icon-fetch column-center" v-if="!goods.price || goods.checkPower || goods.watchable" @click.stop="routeByIconAction(goods)">
+  <div class="column goods-grid-three-box" @click="routeToCourse(goods)"  :monitor-log="getMonitor()">
+    <div class="icon-fetch column-center" v-if="!goods.price || goods.checkPower || goods.watchable" @click.stop="routeByIconAction(goods)" :monitor-log="getMonitor()">
       <i class="iconfont icon-bofang"></i>
     </div>
     <!--图片-->
@@ -22,7 +22,11 @@
     props: {
       goods: {}
     },
-    methods: {},
+    methods: {
+      getMonitor () {
+        return JSON.stringify({'dcm': 'goods_three','dpm': '1.1.1','url': '1111'});
+      }
+    },
     mixins: [router]
   }
 </script>

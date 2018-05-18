@@ -31,5 +31,7 @@ export default {
 	// 音乐的播放时长
 	musicDuration: 0,
 	// 音乐是否在加载
-	musicLoadStart: false
+	musicLoadStart: false,
+	// 曝光参数相关
+	referer: ''
 };

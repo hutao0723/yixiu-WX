@@ -23,5 +23,8 @@ export default {
 	},
 	play_Ended ({commit}) {
 		commit('playEnded')
+	},
+	set_Referer ({commit}, obj) {
+		commit('setReferer')
 	}
 };
