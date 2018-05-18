@@ -36,7 +36,7 @@ Vue.use(VueLazyload, {
     }
   }
 });
-Vue.http.headers.common['tk'] = 'ZEnrPP8wBUNhjtKEZGh3k1cGeWc9pdjH5X9CQQH4HQLGwbYytZJ1rQdbEd26ZjnsXcRf9cRHvCP9t9ezCWWZepHjejbGsea9QCXfNNTdaeNrmx6TXWbFNCAFFYHtJHaEfX9LHgREpHPCd3aH4ctawwpkr';
+// Vue.http.headers.common['tk'] = 'ZEnrPP8wBUNhjtKEZGh3k1cGeWc9pdjH5X9CQQH4HQLGwbYytZJ1rQdbEd26ZjnsXcRf9cRHvCP9t9ezCWWZepHjejbGsea9QCXfNNTdaeNrmx6TXWbFNCAFFYHtJHaEfX9LHgREpHPCd3aH4ctawwpkr';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
@@ -46,7 +46,7 @@ Vue.http.interceptors.push((request, next) => {
     // response.body = '...';
     if (response.data.code == '000001') {
       const url = encodeURIComponent('/' + window.location.href.split('/').slice(3).join('/'));
-      // location.href = "/loginH5?dbredirect=" + url;
+      location.href = "/loginH5?dbredirect=" + url;
     }
     return response;
   });
