@@ -11,22 +11,22 @@
     <div class="goods-box">
       <!--横向单个布局-->
       <div class="row-box column" v-if="param.layout == 'ROW'">
-        <RowItem v-for="(item, index) in  param.tabs[param.navActive?param.navActive:0].goods" :goods.sync="item" :index.sync="index" />
+        <RowItem v-for="(item, index) in  param.tabs[param.navActive?param.navActive:0].goods" :goods.sync="item" :param.sync="param" :index.sync="index" />
       </div>
 
       <!--横向广告栏布局-->
       <div class="nopic-box column" v-if="param.layout == 'NOPIC'">
-        <NopicItem v-for="(item, index) in  param.tabs[param.navActive?param.navActive:0].goods" :goods.sync="item" />
+        <NopicItem v-for="(item, index) in  param.tabs[param.navActive?param.navActive:0].goods" :goods.sync="item" :param.sync="param" />
       </div>
 
       <!--横向两个布局-->
       <div class="grid-two-box row-between" v-if="param.layout == 'GRID_2'">
-        <GridTwoItem v-for="(item, index) in  param.tabs[param.navActive?param.navActive:0].goods" :goods.sync="item" />
+        <GridTwoItem v-for="(item, index) in  param.tabs[param.navActive?param.navActive:0].goods" :goods.sync="item" :param.sync="param" />
       </div>
 
       <!--横向三个布局-->
       <div class="grid-three-box row-around" v-if="param.layout == 'GRID_3'">
-        <GridThreeItem v-for="(item, index) in  param.tabs[param.navActive?param.navActive:0].goods" :goods.sync="item" />
+        <GridThreeItem v-for="(item, index) in  param.tabs[param.navActive?param.navActive:0].goods" :goods.sync="item" :param.sync="param" />
       </div>
     </div>
 

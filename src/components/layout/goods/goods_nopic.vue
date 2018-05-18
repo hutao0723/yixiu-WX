@@ -1,5 +1,5 @@
 <template>
-  <div class="row goods-nopic-box" @click.stop="routeByIconAction(goods, getMonitor())" :monitor-log="getMonitor()">
+  <div class="row goods-nopic-box" @click.stop="routeByIconAction(goods, getMonitor())" :monitor-log="getMonitor({id:goods.courseId,type:4,area: '4-' + param.layout + '-'})">
     <div class="main-box row">
       <!--左边栏-->
       <div class="left-bar row-between on-play">
@@ -23,17 +23,24 @@
   import router from '../../../mixins/router';
   export default {
     props: {
-      goods: {}
+      goods: {},
+      param: {},
     },
     computed: {
       ...mapState(['audio'])
     },
     mounted(){
+      console.log(222,this.goods)
+      console.log(333,this.param)
     },
     methods: {
-      getMonitor () {
-        return JSON.stringify({'dcm': 'nopic','dpm': '1.1.1','url': '1111'});
-      }
+      getMonitor(obj) {
+        // item tabindex dpmc
+        return JSON.stringify({
+          'dcm': '8001.'+ obj.id + obj.type?obj.type:0 + '.0',
+          'dpm': 'appId.801.' + obj.area + '.0',
+        });
+      },
     },
     mixins: [router]
   }
