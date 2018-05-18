@@ -84,6 +84,15 @@
       },
     },
     methods: {
+      // 获取monitor
+      getMonitor(id,type,area) {
+
+        // item tabindex dpmc
+        return JSON.stringify({
+          'dcm': '8001.'+ id + type?type:0 + '0',
+          'dpm': 'appId.801' + area,
+        });
+      },
       // 获取详情
       async getColumnDetail(id) {
         // let self = this;
@@ -107,6 +116,7 @@
           imgUrl: obj.lateralCover || obj.verticalCover ||
             '//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }
+
         this.wxShare(msg)
       },
       async getPay() {
@@ -151,7 +161,7 @@
       /* background-size: 100% 100%; */
       background-attachment: fixed;
     }
-    .header-img-small{
+    .header-img-small {
       .pos(272, 50);
       .size(206, 276);
     }
