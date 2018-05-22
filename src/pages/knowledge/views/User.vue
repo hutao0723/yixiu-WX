@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import AudioBar from 'components/basic/Audio_Bar';
+import AudioBar from '../components/basic/Audio_Bar';
 import access from '../mixins/accessHandler';
-import Share from 'components/basic/Share';
+import Share from '../components/basic/Share';
 
 export default {
   components: {

@@ -29,7 +29,7 @@
 </template>
 
 <script>
-  import AudioBar from 'components/basic/Audio_Bar';
+  import AudioBar from '../components/basic/Audio_Bar';
   import order from '../api/order';
   import router from '../mixins/router';
   import access from '../mixins/accessHandler';

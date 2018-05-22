@@ -66,7 +66,7 @@
   import store from '../vuex/store'
   import order from '../api/order'
   import router from '../mixins/router';
-  import AudioBar from 'components/basic/Audio_Bar';
+  import AudioBar from '../components/basic/Audio_Bar';
   import access from '../mixins/accessHandler';
 
   export default {

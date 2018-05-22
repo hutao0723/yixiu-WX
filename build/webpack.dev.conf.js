@@ -1,3 +1,4 @@
+var path = require('path')
 var utils = require('./utils')
 var webpack = require('webpack')
 var config = require('../config')
@@ -10,6 +11,28 @@ var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
   baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
 })
+
+// ----- HtmlWebpackPlugin ----- //
+var glob = require('glob');
+var files = glob.sync('./src/pages/*/main.js');
+var pluginList = [];
+
+// 匹配入口文件
+files.forEach(function(f) {
+  var mainName = /.*\/(pages\/.*?\/main)\.js/.exec(f)[1]; // 得到pages/mobile/main.js这样的文件名
+  var mainPath = mainName.split('main')[0]; // 得到pages/mobile/这样的文件名
+  var fileName = mainPath.split('/')[1];
+
+  // HtmlWebpackPlugin 队列 - 负责插入js和css
+  var plug = new HtmlWebpackPlugin({
+    filename: fileName + '.html',
+    // chunks: ['vendors', fileName],
+    template: path.resolve(__dirname, '../src/' + mainPath + 'index.html'),
+    inject: true
+  });
+  // 插件
+  pluginList.push(plug);
+});
 
 module.exports = merge(baseWebpackConfig, {
   module: {
@@ -25,11 +48,6 @@ module.exports = merge(baseWebpackConfig, {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: 'index.html',
-      inject: true
-    }),
     new FriendlyErrorsPlugin()
-  ]
+  ].concat(pluginList)
 })

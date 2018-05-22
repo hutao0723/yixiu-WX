@@ -62,14 +62,14 @@
 </template>
 
 <script>
-import router from '../../../mixins/router';
-import store from '../../../vuex/store';
-import play from '../../../api/play';
-import order from '../../../api/order';
+import router from '../mixins/router';
+import store from '../vuex/store';
+import play from '../api/play';
+import order from '../api/order';
 import { mapState } from 'vuex'
-import range from 'components/basic/Range'
-import Share from 'components/basic/Share';
-import access from '../../../mixins/accessHandler';
+import range from '../components/basic/Range'
+import Share from '../components/basic/Share';
+import access from '../mixins/accessHandler';
 
 export default {
   data () {
@@ -141,7 +141,7 @@ export default {
 };
 </script>
 <style lang="less">
-@import '../../../less/variable';
+@import '../less/variable';
  .audio-page{
     position: fixed;
     top: 0;

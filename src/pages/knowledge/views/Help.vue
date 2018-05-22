@@ -21,7 +21,7 @@
 
 <script>
   import order from '../api/order';
-  import AudioBar from 'components/basic/Audio_Bar';
+  import AudioBar from '../components/basic/Audio_Bar';
   import access from '../mixins/accessHandler';
   export default {
     components: {

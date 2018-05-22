@@ -10,7 +10,7 @@ export default new Router({
       redirect: '/index',
       component: function (resolve) {
         require.ensure([], function () {
-          resolve(require('pages/Index'));
+          resolve(require('../views/Index'));
         }, 'index');
       }
     },
@@ -20,14 +20,14 @@ export default new Router({
       redirect: '/index/home',
       component: function (resolve) {
         require.ensure([], function () {
-          resolve(require('pages/Index'));
+          resolve(require('../views/Index'));
         }, 'index');
       },
       children: [{
         path: '/index/home',
         component: function (resolve) {
           require.ensure([], function () {
-            resolve(require('pages/Home'));
+            resolve(require('../views/Home'));
           }, 'home');
         }
       },
@@ -35,7 +35,7 @@ export default new Router({
         path: '/index/cart',
         component: function (resolve) {
           require.ensure([], function () {
-            resolve(require('pages/Cart'));
+            resolve(require('../views/Cart'));
           }, 'cart');
         }
       },
@@ -43,44 +43,17 @@ export default new Router({
         path: '/index/user',
         component: function (resolve) {
           require.ensure([], function () {
-            resolve(require('pages/User'));
+            resolve(require('../views/User'));
           }, 'user');
         }
       }
       ]
     },
-    // {
-    //   name: 'home',
-    //   path: '/home',
-    //   component: function (resolve) {
-    //     require.ensure([], function () {
-    //       resolve(require('pages/Home'));
-    //     }, 'home');
-    //   }
-    // },
-    // {
-    //   name: 'cart',
-    //   path: '/cart',
-    //   component: function (resolve) {
-    //     require.ensure([], function () {
-    //       resolve(require('pages/Cart'));
-    //     }, 'cart');
-    //   }
-    // },
-    // {
-    //   name: 'user',
-    //   path: '/user',
-    //   component: function (resolve) {
-    //     require.ensure([], function () {
-    //       resolve(require('pages/User'));
-    //     }, 'user');
-    //   }
-    // },
     {
       path: '/help',
       component: function (resolve) {
         require.ensure([], function () {
-          resolve(require('../pages/Help'));
+          resolve(require('../views/Help'));
         }, 'help');
       }
     },
@@ -88,7 +61,7 @@ export default new Router({
       path: '/activity/:id',
       component: function (resolve) {
         require.ensure([], function () {
-          resolve(require('../pages/Activity'));
+          resolve(require('../views/Activity'));
         }, 'activity');
       }
     },
@@ -96,7 +69,7 @@ export default new Router({
       path: '/column/:columnId',
       component: function (resolve) {
         require.ensure([], function () {
-          resolve(require('../pages/Column'));
+          resolve(require('../views/Column'));
         }, 'column');
       }
     },
@@ -104,7 +77,7 @@ export default new Router({
       path: '/course/:courseId',
       component: function (resolve) {
         require.ensure([], function () {
-          resolve(require('../pages/Course'));
+          resolve(require('../views/Course'));
         }, 'course');
       }
     },
@@ -112,7 +85,7 @@ export default new Router({
       path: '/audio/index',
       component: function (resolve) {
         require.ensure([], function () {
-          resolve(require('../pages/components/audio/Index'));
+          resolve(require('../views/AudioIndex'));
         }, 'audio_index');
       }
     },
@@ -120,7 +93,7 @@ export default new Router({
       path: '/audio/list',
       component: function (resolve) {
         require.ensure([], function () {
-          resolve(require('../pages/components/audio/List'));
+          resolve(require('../views/AudioList'));
         }, 'audio_list');
       }
     }
