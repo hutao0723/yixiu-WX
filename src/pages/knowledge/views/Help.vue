@@ -21,7 +21,8 @@
 
 <script>
   import order from '../api/order';
-  import AudioBar from 'components/basic/Audio_Bar';
+  import AudioBar from '../components/basic/Audio_Bar';
+  import access from '../mixins/accessHandler';
   export default {
     components: {
       AudioBar
@@ -38,7 +39,7 @@
       this.wxShare()
     },
     mounted() {
-      window.monitor && window.monitor.showLog(this);
+      // window.monitor && window.monitor.showLog(this);
       // const arr = ['previewImage', 'onMenuShareAppMessage', 'onMenuShareTimeline']
       // const res = await order.getApiRules(arr);
     },
@@ -50,7 +51,8 @@
       onFlock() {
         order.wxPreview('https://yun.duiba.com.cn/yoofans/images/201804/miniapp/ask-que2.png');
       },
-    }
+    },
+    mixins: [access]
   };
 
 </script>

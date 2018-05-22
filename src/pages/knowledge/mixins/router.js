@@ -1,6 +1,6 @@
   import store from '../vuex/store'
   import play from '../api/play'
-  import { clickHandler } from '../components/utils/clickHandler';
+  // import { clickHandler } from '../components/utils/clickHandler';
   export default {
       
     methods: {

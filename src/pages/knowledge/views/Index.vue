@@ -7,7 +7,7 @@
 
 <script>
 // import store from '../vuex/store'
-import bnav from 'components/basic/Nav';
+import bnav from '../components/basic/Nav';
 export default {
   components: {
     bnav

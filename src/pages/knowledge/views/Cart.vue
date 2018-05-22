@@ -29,10 +29,10 @@
 </template>
 
 <script>
-  import AudioBar from 'components/basic/Audio_Bar';
+  import AudioBar from '../components/basic/Audio_Bar';
   import order from '../api/order';
   import router from '../mixins/router';
-  // import bnav from 'components/layout/Nav';
+  import access from '../mixins/accessHandler';
   
   export default {
     data() {
@@ -50,12 +50,12 @@
     async mounted() {
       await this.getList();
       let self = this;
-      setTimeout(() => {
-          // 滚动
-          self.$refs.cartMain.addEventListener('scroll', self.dispatchScroll, false);
-          // 埋点
-          window.monitor && window.monitor.showLog(self);
-        }, 100);
+      // setTimeout(() => {
+      //     // 滚动
+      //     self.$refs.cartMain.addEventListener('scroll', self.dispatchScroll, false);
+      //     // 埋点
+      //     window.monitor && window.monitor.showLog(self);
+      //   }, 100);
     },
     computed: {},
     methods: {
@@ -108,7 +108,7 @@
     components: {
       AudioBar
     },
-    mixins: [router]
+    mixins: [router, access]
   };
 
 </script>

@@ -1,6 +1,6 @@
 <template>
-  <div class="column-page">
-    <div class="page-header">
+  <div class="course-main" ref='courseMain'>
+    <div class="page-header" :monitor-log="getMonitor()">
       <div class="header-img" v-show="detailObj.lateralCover" :style="{backgroundImage: `url(${detailObj.lateralCover})`}"></div>
       <div class="header-img-small" v-show="!detailObj.lateralCover&&detailObj.verticalCover" :style="{backgroundImage: `url(${detailObj.verticalCover})`}"></div>
       <div class="header-img" v-show="!detailObj.lateralCover&&!detailObj.verticalCover" :style="{backgroundImage: `url('//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
@@ -8,52 +8,22 @@
       <div class="header-name">
         <span v-if="detailObj.price>0">{{detailObj.buyTimes}}人已购</span>
         <span v-else>{{detailObj.playTimes}}人已听</span>
-        <span v-if="courseList.length > 0"> | 共{{courseList.length}}节</span>
+        <span> | 时长{{detailObj.timeLength | formatTimeText}}</span>
       </div>
     </div>
     <div class="page-title">
       <div class="title-main">{{detailObj.title}}</div>
       <div class="title-sub">{{detailObj.subTitle}}</div>
     </div>
-    <div class="page-tab" v-show="courseList.length > 0">
-      <div class="clearfix">
-        <div class="tab-left tab" :class="{ active: tabActive}" @click="tabActive = true">专栏详情</div>
-        <div class="tab-right tab" :class="{ active: !tabActive}" @click="tabActive = false">课程目录</div>
-      </div>
-    </div>
-    <div class="page-list" v-show="!tabActive">
-      <div class="list-nav">
-        <div class="nav-title">内容</div>
-        <div class="nav-sort" @click="reverseList">
-          <i class="iconfont icon-sort" v-show="!reverseTs">&#xe685;</i>
-          <i class="iconfont icon-sort" v-show="reverseTs">&#xe684;</i>
-          {{reverseTs?'倒序':'正序'}}</div>
-      </div>
-      <div class="list-content">
-        <div class="item" v-for="(item,index) in courseList" :key="index" @click="playClick(detailObj.id, item.id, false)">
-          <i class="iconfont icon-play active" v-if="audio.courseId == item.id">
-            <img class="" src="../images/audio.svg" />
-          </i>
-          <i class="iconfont icon-play" v-else>&#xe617;</i>
-          <span class="item-title">
-            <span class="item-audition" v-if="item.watchable  == 1 && detailObj.powerLevel == 0">试听</span>
-            <span :class="{active:audio.courseId == item.id}">{{item.title}}</span>
-          </span>
-          <span class="item-time">
-            <i class="iconfont icon-time">&#xe62d;</i>{{item.timeLength | formatTime}}
-          </span>
-          <span class="item-date">{{item.publishTime | formatDate}}</span>
-          <i class="iconfont icon-ispay" v-show="item.powerLevel == 0 && item.price > 0">&#xe60c;</i>
-        </div>
-      </div>
-    </div>
     <div class="page-content" v-show="tabActive">
       <div v-html="detailObj.detail"></div>
     </div>
-    <div class="page-btn" v-if="btnActive != 2">
-      <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" @click.stop="playClick(detailObj.id, '', true)">免费试听</a>
+    <div class="page-btn">
+      <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" @click.stop="playClick('', detailObj.id, true)">免费试听</a>
       <a href="javascript:void(0)" class="btn-small btn" v-if="btnActive == 1" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
       <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 0" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
+      <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 2" @click.stop="playClick('', detailObj.id, false)">播放</a>
+
     </div>
     <AudioBar/>
   </div>
@@ -63,33 +33,33 @@
   import {
     mapState
   } from 'vuex';
-  import store from '../vuex/store'
-  import order from '../api/order'
+  import store from '../vuex/store';
+  import order from '../api/order';
   import router from '../mixins/router';
-  import AudioBar from 'components/basic/Audio_Bar';
-
+  import AudioBar from '../components/basic/Audio_Bar';
+  import access from '../mixins/accessHandler';
   export default {
     data() {
       return {
         detailObj: {},
         tabActive: true,
         btnActive: 1,
-        courseList: [],
-        reverseTs: false,
-
+        courseList: []
       }
     },
     computed: {
       ...mapState(['audio', 'playing', 'currentTime', 'musicDuration']),
     },
-    mounted() {
-      // this.$store.dispatch('setWhichpage', '首页');
-      // // 返回登录页面
-      // if (!this.isLogin) {
-      //   this.$router.push({ path: '/login' });
-      // }
-      this.getColumnDetail(this.$route.params.columnId)
-      this.getColumnList(this.$route.params.columnId)
+
+    async mounted() {
+      await this.getColumnDetail(this.$route.params.courseId);
+      let self = this;
+      // setTimeout(() => {
+      //     // 滚动
+      //     self.$refs.courseMain.addEventListener('scroll', self.dispatchScroll, false);
+      //     // 埋点
+      //     window.monitor && window.monitor.showLog(self);
+      //   }, 100);
     },
     filters: {
       // 时长
@@ -116,27 +86,32 @@
         return m + '-' + d;
       },
     },
-    created() {
-
-    },
     methods: {
+      // 获取monitor
+      getMonitor(id,type,area) {
+
+        // item tabindex dpmc
+        return JSON.stringify({
+          'dcm': '8001.'+ id + type?type:0 + '0',
+          'dpm': 'appId.801' + area,
+        });
+      },
       // 获取详情
       async getColumnDetail(id) {
         // let self = this;
-        // const url = `/api/column/get`;
-        // this.$http.get(url, { params: { columnId: id } }).then(res => {
+        // const url = `/api/course/get`;
+        // this.$http.get(url, { params: { courseId: id } }).then(res => {
         //   self.detailObj = res.data.data
         // });
-        let obj = await order.getColumnDetail(id)
+        let obj = await order.getCourseDetail(id)
         if (obj.powerLevel == 1 || obj.price == 0) {
           this.btnActive = 2;
-        } else if (obj.watchable == 1) {
+        } else if (obj.freeTime > 0) {
           this.btnActive = 1;
         } else {
           this.btnActive = 0;
         }
         this.detailObj = obj
-
         const msg = {
           title: obj.title,
           desc: obj.subTitle,
@@ -144,41 +119,33 @@
           imgUrl: obj.lateralCover || obj.verticalCover ||
             '//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }
-        this.wxShare(msg)
 
-      },
-      // 获取详情
-      async getColumnList(id) {
-        // let self = this;
-        // const url = `/api/column/getCourses`;
-        // this.$http.get(url, { params: { columnId: id } }).then(res => {
-        //   self.courseList = res.data.data
-        //   console.log(res.data.data)
-        // });
-        let obj = await order.getColumnList(id)
-        this.courseList = obj
+        this.wxShare(msg)
       },
       async getPay() {
-        let obj = await order.buy(this.detailObj.id, 2)
+        let obj = await order.buy(this.detailObj.id, 1)
       },
-      goAudition() {},
-      // 排序
-      reverseList() {
-        this.courseList = this.courseList.reverse();
-        this.reverseTs = !this.reverseTs;
-      },
+      // 触发滚动
+      dispatchScroll () {
+        this.mainScrollTop = this.$refs.courseMain.scrollTop;
+        // console.log(this.$refs.homeMain.scrollTop)
+        window.monitor && window.monitor.showLog(this);
+      }
+    },
+    beforeDestroy () {
+      this.$refs.courseMain.removeEventListener('scroll', this.dispatchScroll, false);
     },
     components: {
       AudioBar
     },
-    mixins: [router]
+    mixins: [router, access]
   };
 
 </script>
 <style lang="less">
   @import "../assets/style/base/util";
   @rem: 75rem;
-  .column-page {
+  .course-main {
     position: absolute;
     left: 0;
     top: 0;
@@ -193,10 +160,10 @@
     background: #fff;
     img {
       width: 100% !important;
-      -webkit-overflow-scrolling: touch!important;
+      -webkit-overflow-scrolling: touch !important;
     }
     div {
-      -webkit-overflow-scrolling: touch!important;
+      -webkit-overflow-scrolling: touch !important;
     }
   }
 
@@ -211,7 +178,7 @@
       /* background-size: 100% 100%; */
       background-attachment: fixed;
     }
-    .header-img-small{
+    .header-img-small {
       .pos(272, 50);
       .size(206, 276);
     }
@@ -256,13 +223,8 @@
     }
   }
 
-  .page-list {
-    background: #fff;
-  }
-
   .page-tab {
     padding: 0 30/@rem;
-    background: #fff;
     .clearfix {
       border-bottom: 1/@rem solid #e5e5e5;
     }
@@ -317,7 +279,6 @@
         text-align: center;
         color: #fff;
         border-radius: 50%;
-        background: #FF3E44;
       }
       .icon-svn {
         background: #ff3e44;
@@ -344,9 +305,6 @@
           display: inline-block;
           color: #fff;
           background: #FF3E44;
-        }
-        .active {
-          color: #FF3E44;
         }
         .red {
           color: #FF3E44;
@@ -414,12 +372,6 @@
       background: rgba(216, 216, 216, 1);
       background: linear-gradient(90deg, rgba(255, 80, 72, 1), rgba(255, 99, 77, 1));
     }
-  }
-
-  .icon-sort,
-  .icon-ispay,
-  .icon-time {
-    font-size: 24/@rem;
   }
 
 </style>

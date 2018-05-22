@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import AudioBar from 'components/basic/Audio_Bar';
-// import bnav from 'components/layout/Nav';
-import Share from 'components/basic/Share';
+import AudioBar from '../components/basic/Audio_Bar';
+import access from '../mixins/accessHandler';
+import Share from '../components/basic/Share';
 
 export default {
   components: {
@@ -50,7 +50,7 @@ export default {
     },
   mounted () {
     this.getUserInfo();
-    window.monitor && window.monitor.showLog(this);
+    // window.monitor && window.monitor.showLog(this);
   },
   methods: {
     // share: function () {
@@ -85,7 +85,8 @@ export default {
         }
       });
     }
-  }
+  },
+  mixins: [access]
 };
 </script>
 

@@ -22,11 +22,11 @@
 <script>
 import config from '../api/config';
 // import bnav from 'components/layout/Nav';
-import AudioBar from 'components/basic/Audio_Bar';
-import SwiperBar from 'components/layout/swiper_bar';
-import TitleBar from 'components/layout/title_bar';
-import GoodsBox from 'components/layout/goods_box';
-import BlankBar from 'components/layout/blank_bar';
+import AudioBar from '../components/basic/Audio_Bar';
+import SwiperBar from '../components/layout/swiper_bar';
+import TitleBar from '../components/layout/title_bar';
+import GoodsBox from '../components/layout/goods_box';
+import BlankBar from '../components/layout/blank_bar';
 import access from '../mixins/accessHandler';
 import { mapState } from 'vuex';
 export default {
@@ -76,13 +76,13 @@ export default {
         })
         // self.loaded();
         console.log(self.components,`[template] render template page success`)
-        // 同步事件
-      setTimeout(() => {
-          // 滚动
-          self.$refs.homeMain.addEventListener('scroll', self.dispatchScroll, false);
-          // 埋点
-          window.monitor && window.monitor.showLog(self);
-        }, 100);
+        // 埋点
+      // setTimeout(() => {
+      //     // 滚动
+      //     self.$refs.homeMain.addEventListener('scroll', self.dispatchScroll, false);
+      //     // 埋点
+      //     window.monitor && window.monitor.showLog(self);
+      //   }, 100);
       })
     },
     // 触发滚动

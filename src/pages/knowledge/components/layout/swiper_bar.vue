@@ -11,7 +11,7 @@
 </template>
 <script>
   import router from '../../mixins/router';
-  import { Swipe, SwipeItem } from 'components/swipe';
+  import { Swipe, SwipeItem } from '../swipe';
   export default {
     components: {
       Swipe,

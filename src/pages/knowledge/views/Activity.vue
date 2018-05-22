@@ -19,12 +19,12 @@
 
 <script>
   import config from '../api/config';
-  import AudioBar from 'components/basic/Audio_Bar';
-  import SwiperBar from 'components/layout/swiper_bar';
-  import TitleBar from 'components/layout/title_bar';
-  import GoodsBox from 'components/layout/goods_box';
-  import BlankBar from 'components/layout/blank_bar';
-  // import loading from 'components/layout/Loading';
+  import AudioBar from '../components/basic/Audio_Bar';
+  import SwiperBar from '../components/layout/swiper_bar';
+  import TitleBar from '../components/layout/title_bar';
+  import GoodsBox from '../components/layout/goods_box';
+  import BlankBar from '../components/layout/blank_bar';
+  import access from '../mixins/accessHandler';
   import {
     mapState
   } from 'vuex';
@@ -85,12 +85,12 @@
           })
           // self.loaded();
           console.log(self.components, `[template] render template page success`)
-          setTimeout(() => {
-          // 滚动
-          self.$refs.activityMain.addEventListener('scroll', self.dispatchScroll, false);
-          // 埋点
-          window.monitor && window.monitor.showLog(self);
-        }, 100);
+        //   setTimeout(() => {
+        //   // 滚动
+        //   self.$refs.activityMain.addEventListener('scroll', self.dispatchScroll, false);
+        //   // 埋点
+        //   window.monitor && window.monitor.showLog(self);
+        // }, 100);
         })
       },
       // 触发滚动
@@ -99,7 +99,8 @@
       // console.log(this.$refs.homeMain.scrollTop)
       window.monitor && window.monitor.showLog(this);
     }
-    }
+    },
+    mixins: [access]
   };
 
 </script>
