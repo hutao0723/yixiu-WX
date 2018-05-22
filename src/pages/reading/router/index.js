@@ -11,7 +11,7 @@ export default new Router({
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../views/read/Index'));
-        }, 'read');
+        }, 'reading_read');
       }
     },
     {
@@ -21,14 +21,14 @@ export default new Router({
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../views/read/Index'));
-        }, 'read');
+        }, 'reading_read');
       },
       children: [{
         path: '/read/home',
         component: function (resolve) {
           require.ensure([], function () {
             resolve(require('../views/read/Home'));
-          }, 'home');
+          }, 'reading_home');
         }
       }
       ]
@@ -38,7 +38,7 @@ export default new Router({
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../views/card/Card'));
-        }, 'card');
+        }, 'reading_card');
       }
     },
     {
@@ -46,7 +46,7 @@ export default new Router({
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../views/card/Comment'));
-        }, 'comment');
+        }, 'reading_comment');
       }
     },
     {
@@ -54,7 +54,7 @@ export default new Router({
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../views/opinion/Opinion'));
-        }, 'opinion');
+        }, 'reading_opinion');
       }
     },
     {
@@ -62,7 +62,7 @@ export default new Router({
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../views/user/user'));
-        }, 'user');
+        }, 'reading_user');
       }
     },
     {
@@ -70,7 +70,7 @@ export default new Router({
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../views/audio/Index'));
-        }, 'audio_index');
+        }, 'reading_audioindex');
       }
     },
     {
@@ -78,7 +78,7 @@ export default new Router({
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../views/audio/List'));
-        }, 'audio_list');
+        }, 'reading_audiolist');
       }
     }
   ]
