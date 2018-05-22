@@ -26,6 +26,7 @@ import { mapState } from 'vuex';
 import store from '../../../vuex/store';
 import order from '../../../api/order';
 import play from '../../../api/play';
+import access from '../../../mixins/accessHandler';
 export default {
   computed: {
     ...mapState(['audio'])
@@ -68,7 +69,8 @@ export default {
       play.startAudio(this.audio.columnId,item.id,'init');
       this.$router.go(-1);
     }
-    }
+  },
+  mixins: [access]
   };
 </script>
 <style lang="less">

@@ -28,7 +28,7 @@
 
 <script>
 import AudioBar from 'components/basic/Audio_Bar';
-// import bnav from 'components/layout/Nav';
+import access from '../mixins/accessHandler';
 import Share from 'components/basic/Share';
 
 export default {
@@ -85,7 +85,8 @@ export default {
         }
       });
     }
-  }
+  },
+  mixins: [access]
 };
 </script>
 

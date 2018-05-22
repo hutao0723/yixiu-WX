@@ -13,7 +13,7 @@
        * 处理跳转到播放列表页
        */
     },
-    created() {
+    mounted() {
       this.entryTime = new Date().getTime();
       this.url = window.location.href;
       this.referer = store.getters.getReferer;
@@ -24,7 +24,7 @@
           stayTime = this.outTime - this.entryTime,
           action = referer == '' ? 'entry' : 0,
           url = this.url;
-      store.commit({ type: 'setReferer', referer: window.location.href });  // 设置来源路径
+      store.commit({ type: 'setReferer', referer: this.url });  // 设置来源路径
       http.post('/embed/access',{stayTime, action, url, referer}).then((res) => {
         // 埋点成功
       }, (res) => {

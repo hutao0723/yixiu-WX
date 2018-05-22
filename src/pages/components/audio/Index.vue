@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page">
+  <div class="audio-main">
     <div class="audio-page">
       <div class=" banner">
         <img class="course-img" :src="audio.verticalCover" v-if="audio.verticalCover && ! audio.lateralCover"/>
@@ -8,7 +8,7 @@
         <span class="xl strong line1 detail-word">{{audio.title}}</span>
       </div>
       <div class="controler column-between">
-        <div class="slider-bar">
+        <div class="slider-bar" :monitor-log="getMonitor('803.1')">
           <!--播放器进度条-->
           <range  ball-width="30" :canDrag="audio.powerLevel"/>
           <div class="row-between timer">
@@ -17,13 +17,16 @@
           </div>
         </div>
         <div class="row-between control-bar">
-          <button type="primary" class="btn-switch" @click="audioPrev">
+          <button type="primary" class="btn-switch" @click="audioPrev" :monitor-log="getMonitor('803.3')">
             <i class="iconfont icon-shangyiqu" :style="{color: `${!audio.isPrev ? '#FF9E9A' : '#FF5349'}`}"></i>
           </button>
-          <button type="primary" class="btn-play" @click="togglePlay">
-            <i class="iconfont" :class="playing ? 'icon-bofangqi-zanting' : 'icon-bofang'"></i>
+          <button type="primary" class="btn-play" @click="togglePlay" :monitor-log="getMonitor('803.2.1')" v-if="!playing">
+            <i class="iconfont icon-bofang"></i>
           </button>
-          <button type="primary" class="btn-switch" @click="audioNext">
+          <button type="primary" class="btn-play" @click="togglePlay" :monitor-log="getMonitor('803.2.2')" v-if="playing">
+            <i class="iconfont icon-bofangqi-zanting"></i>
+          </button>
+          <button type="primary" class="btn-switch" @click="audioNext" :monitor-log="getMonitor('803.4')">
             <i class="iconfont icon-xiayiqu" :style="{color: `${!audio.isNext ? '#FF9E9A' : '#FF5349'}`}"></i>
           </button>
         </div>
@@ -32,20 +35,20 @@
             <span class="remind nm " v-if="!audio.musicTryEnd && audio.columnId">试听免费课程，购买后收听完整专栏</span>
             <span class="remind nm " v-if="!audio.musicTryEnd && !audio.columnId">免费试听前{{audio.watchable}}秒，购买后收听完整版</span>
             <span class="remind nm " v-if="audio.musicTryEnd">试听结束，购买后收听完整版</span>
-            <button type="primary" class="btn-fetch row-center" @click="goPay">
+            <button type="primary" class="btn-fetch row-center" @click="goPay" :monitor-log="getMonitor('803.5.1')">
               直接购买
             </button>
           </div>
           <div class="row-around table" style="">
-            <button type="primary" class="column-around btn-bottom" @click="routeToCourse(audio)">
+            <button type="primary" class="column-around btn-bottom" @click="routeToCourse(audio)" :monitor-log="getMonitor('803.10.1')">
               <i class="iconfont icon-detail"></i>
               <span class="xxs weak">详情</span>
             </button>
-            <button type="primary" class="column-around btn-bottom" @click="shareToggle = true">
+            <button type="primary" class="column-around btn-bottom" @click="shareToggle = true" :monitor-log="getMonitor('803.10.2')">
               <i class="iconfont icon-share1"></i>
               <span class="xxs weak">分享</span>
             </button>
-            <button type="primary"  class="column-around btn-bottom" @click="routeToAudioList()">
+            <button type="primary"  class="column-around btn-bottom" @click="routeToAudioList()" :monitor-log="getMonitor('803.10.3')">
               <i class="iconfont icon-list"></i>
               <span class="xxs weak">播放列表</span>
             </button>
@@ -66,6 +69,7 @@ import order from '../../../api/order';
 import { mapState } from 'vuex'
 import range from 'components/basic/Range'
 import Share from 'components/basic/Share';
+import access from '../../../mixins/accessHandler';
 
 export default {
   data () {
@@ -97,8 +101,16 @@ export default {
       store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
       store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title);
     }
+    window.monitor && window.monitor.showLog(this);
   },
   methods: {
+    // 获取monitor
+    getMonitor(dpm) {
+      return JSON.stringify({
+        'dcm': '8001.',
+        'dpm': dpm,
+      });
+    },
     success(){
       this.shareToggle = false;
     },
@@ -125,7 +137,7 @@ export default {
     }
   },
   components:{ range,Share },
-  mixins: [router]
+  mixins: [router, access]
 };
 </script>
 <style lang="less">

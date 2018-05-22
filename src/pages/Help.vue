@@ -22,6 +22,7 @@
 <script>
   import order from '../api/order';
   import AudioBar from 'components/basic/Audio_Bar';
+  import access from '../mixins/accessHandler';
   export default {
     components: {
       AudioBar
@@ -50,7 +51,8 @@
       onFlock() {
         order.wxPreview('https://yun.duiba.com.cn/yoofans/images/201804/miniapp/ask-que2.png');
       },
-    }
+    },
+    mixins: [access]
   };
 
 </script>

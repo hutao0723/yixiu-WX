@@ -24,7 +24,7 @@
   import TitleBar from 'components/layout/title_bar';
   import GoodsBox from 'components/layout/goods_box';
   import BlankBar from 'components/layout/blank_bar';
-  // import loading from 'components/layout/Loading';
+  import access from '../mixins/accessHandler';
   import {
     mapState
   } from 'vuex';
@@ -99,7 +99,8 @@
       // console.log(this.$refs.homeMain.scrollTop)
       window.monitor && window.monitor.showLog(this);
     }
-    }
+    },
+    mixins: [access]
   };
 
 </script>

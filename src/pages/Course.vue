@@ -1,6 +1,6 @@
 <template>
-  <div class="column-page">
-    <div class="page-header">
+  <div class="course-main" ref='courseMain'>
+    <div class="page-header" :monitor-log="getMonitor()">
       <div class="header-img" v-show="detailObj.lateralCover" :style="{backgroundImage: `url(${detailObj.lateralCover})`}"></div>
       <div class="header-img-small" v-show="!detailObj.lateralCover&&detailObj.verticalCover" :style="{backgroundImage: `url(${detailObj.verticalCover})`}"></div>
       <div class="header-img" v-show="!detailObj.lateralCover&&!detailObj.verticalCover" :style="{backgroundImage: `url('//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
@@ -37,6 +37,7 @@
   import order from '../api/order';
   import router from '../mixins/router';
   import AudioBar from 'components/basic/Audio_Bar';
+  import access from '../mixins/accessHandler';
   export default {
     data() {
       return {
@@ -50,13 +51,15 @@
       ...mapState(['audio', 'playing', 'currentTime', 'musicDuration']),
     },
 
-    mounted() {
-      // this.$store.dispatch('setWhichpage', '首页');
-      // // 返回登录页面
-      // if (!this.isLogin) {
-      //   this.$router.push({ path: '/login' });
-      // }
-      this.getColumnDetail(this.$route.params.courseId)
+    async mounted() {
+      await this.getColumnDetail(this.$route.params.courseId);
+      let self = this;
+      setTimeout(() => {
+          // 滚动
+          self.$refs.courseMain.addEventListener('scroll', self.dispatchScroll, false);
+          // 埋点
+          window.monitor && window.monitor.showLog(self);
+        }, 100);
     },
     filters: {
       // 时长
@@ -121,19 +124,28 @@
       },
       async getPay() {
         let obj = await order.buy(this.detailObj.id, 1)
+      },
+      // 触发滚动
+      dispatchScroll () {
+        this.mainScrollTop = this.$refs.courseMain.scrollTop;
+        // console.log(this.$refs.homeMain.scrollTop)
+        window.monitor && window.monitor.showLog(this);
       }
+    },
+    beforeDestroy () {
+      this.$refs.courseMain.removeEventListener('scroll', this.dispatchScroll, false);
     },
     components: {
       AudioBar
     },
-    mixins: [router]
+    mixins: [router, access]
   };
 
 </script>
 <style lang="less">
   @import "../assets/style/base/util";
   @rem: 75rem;
-  .column-page {
+  .course-main {
     position: absolute;
     left: 0;
     top: 0;
