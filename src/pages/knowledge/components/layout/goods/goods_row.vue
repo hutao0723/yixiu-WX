@@ -1,5 +1,5 @@
 <template>
-  <div class="row goods-row-box" @click="routeToCourse(goods, getMonitor())" :monitor-log="getMonitor()">
+  <div class="row goods-row-box" @click="routeToCourse(goods)" monitor-log="">
     <div class="por" >
       <img class="goods-image"   v-lazy="goods.lateralCover || goods.verticalCover || 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png'" />
     </div>
@@ -50,7 +50,7 @@
     },
     methods: {
       getMonitor () {
-        return JSON.stringify({'dcm': 'goods_row','dpm': '1.1.1','url': '1111'});
+        return JSON.stringify({});
       }
     },
     mixins: [router]
