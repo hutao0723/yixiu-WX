@@ -1,5 +1,5 @@
 <template>
-  <div class="row goods-nopic-box" @click.stop="routeByIconAction(goods, getMonitor())" :monitor-log="getMonitor({id:goods.courseId,type:4,area: '4-' + param.layout + '-'})">
+  <div class="row goods-nopic-box" @click.stop="routeByIconAction(goods)" monitor-log="">
     <div class="main-box row">
       <!--左边栏-->
       <div class="left-bar row-between on-play">
@@ -37,8 +37,6 @@
       getMonitor(obj) {
         // item tabindex dpmc
         return JSON.stringify({
-          'dcm': '8001.'+ obj.id + obj.type?obj.type:0 + '.0',
-          'dpm': 'appId.801.' + obj.area + '.0',
         });
       },
     },

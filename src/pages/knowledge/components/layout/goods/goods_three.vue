@@ -24,7 +24,7 @@
     },
     methods: {
       getMonitor () {
-        return JSON.stringify({'dcm': 'goods_three','dpm': '1.1.1','url': '1111'});
+        return JSON.stringify({});
       }
     },
     mixins: [router]
