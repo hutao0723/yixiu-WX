@@ -7,7 +7,7 @@ import VueCookie from 'vue-cookie';
 var infiniteScroll = require('vue-infinite-scroll');
 Vue.use(infiniteScroll);
 
-import './assets/style/main.less';
+// import './less/base.less';
 Vue.use(VueCookie);
 Vue.use(VueResource);
 // vue-resource配置项
@@ -20,9 +20,9 @@ import {
 setDPR();
 remChange();
 
-// monitor 埋点
-import { monitorHandler } from './components/utils/monitorHandler';
-monitorHandler();
+// // monitor 埋点
+// import { monitorHandler } from './components/utils/monitorHandler';
+// monitorHandler();
 
 // lazyload 图片懒加载
 import VueLazyload from 'vue-lazyload';
