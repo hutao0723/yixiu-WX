@@ -101,7 +101,7 @@ export default {
       store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
       store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title);
     }
-    window.monitor && window.monitor.showLog(this);
+    // window.monitor && window.monitor.showLog(this);
   },
   methods: {
     // 获取monitor

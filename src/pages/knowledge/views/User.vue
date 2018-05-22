@@ -50,7 +50,7 @@ export default {
     },
   mounted () {
     this.getUserInfo();
-    window.monitor && window.monitor.showLog(this);
+    // window.monitor && window.monitor.showLog(this);
   },
   methods: {
     // share: function () {

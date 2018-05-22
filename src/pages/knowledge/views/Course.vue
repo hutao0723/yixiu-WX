@@ -54,12 +54,12 @@
     async mounted() {
       await this.getColumnDetail(this.$route.params.courseId);
       let self = this;
-      setTimeout(() => {
-          // 滚动
-          self.$refs.courseMain.addEventListener('scroll', self.dispatchScroll, false);
-          // 埋点
-          window.monitor && window.monitor.showLog(self);
-        }, 100);
+      // setTimeout(() => {
+      //     // 滚动
+      //     self.$refs.courseMain.addEventListener('scroll', self.dispatchScroll, false);
+      //     // 埋点
+      //     window.monitor && window.monitor.showLog(self);
+      //   }, 100);
     },
     filters: {
       // 时长

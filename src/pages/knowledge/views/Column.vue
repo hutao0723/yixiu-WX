@@ -87,12 +87,12 @@
       await this.getColumnDetail(this.$route.params.columnId)
       await this.getColumnList(this.$route.params.columnId)
       let self = this;
-      setTimeout(() => {
-          // 滚动
-          self.$refs.columnMain.addEventListener('scroll', self.dispatchScroll, false);
-          // 埋点
-          window.monitor && window.monitor.showLog(self);
-        }, 100);
+      // setTimeout(() => {
+      //     // 滚动
+      //     self.$refs.columnMain.addEventListener('scroll', self.dispatchScroll, false);
+      //     // 埋点
+      //     window.monitor && window.monitor.showLog(self);
+      //   }, 100);
     },
     filters: {
       // 时长

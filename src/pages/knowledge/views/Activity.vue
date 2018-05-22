@@ -85,12 +85,12 @@
           })
           // self.loaded();
           console.log(self.components, `[template] render template page success`)
-          setTimeout(() => {
-          // 滚动
-          self.$refs.activityMain.addEventListener('scroll', self.dispatchScroll, false);
-          // 埋点
-          window.monitor && window.monitor.showLog(self);
-        }, 100);
+        //   setTimeout(() => {
+        //   // 滚动
+        //   self.$refs.activityMain.addEventListener('scroll', self.dispatchScroll, false);
+        //   // 埋点
+        //   window.monitor && window.monitor.showLog(self);
+        // }, 100);
         })
       },
       // 触发滚动
