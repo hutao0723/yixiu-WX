@@ -61,8 +61,24 @@ export default new Router({
       path: '/user',
       component: function (resolve) {
         require.ensure([], function () {
-          resolve(require('../views/user/user'));
+          resolve(require('../views/user/User'));
         }, 'reading_user');
+      }
+    },
+    {
+      path: '/journey',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/user/Journey'));
+        }, 'reading_journey');
+      }
+    },
+    {
+      path: '/lecturer',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/user/Lecturer'));
+        }, 'reading_lecturer');
       }
     },
     {
