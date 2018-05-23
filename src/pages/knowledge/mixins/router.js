@@ -33,7 +33,7 @@
        */
        playClick(columnId, courseId, isTry) {
          play.startAudio(columnId,courseId,'init');
-         store.commit('play');
+         // store.commit('play');
          if (isTry) this.$router.push(`/audio/index`);
        },
       /**
@@ -50,12 +50,12 @@
             if (checkPower || !price) {
               // 播放
               play.startAudio(columnId,courseId,'init')
-              store.commit('play');
+              // store.commit('play');
             } else {
               if (watchable) {
                 // 试听
                 play.startAudio(columnId,courseId,'init')
-                store.commit('play');
+                // store.commit('play');
                 this.$router.push(`/audio/index`);
               } else {
                 // 购买
@@ -68,12 +68,12 @@
             if (checkPower || !price) {
               // 播放
               play.startAudio(columnId,courseId,'init')
-              store.commit('play');
+              // store.commit('play');
             } else {
               if (watchable) {
                 // 试听
                 play.startAudio(columnId,courseId,'init')
-                store.commit('play');
+                // store.commit('play');
                 this.$router.push(`/audio/index`);
               } else {
                 // 购买
