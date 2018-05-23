@@ -39,6 +39,8 @@
       this.wxShare()
     },
     mounted() {
+      this.setTitle('帮助中心')
+      
       // window.monitor && window.monitor.showLog(this);
       // const arr = ['previewImage', 'onMenuShareAppMessage', 'onMenuShareTimeline']
       // const res = await order.getApiRules(arr);

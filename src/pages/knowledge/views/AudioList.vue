@@ -3,7 +3,8 @@
     <div v-for="item in list">
       <div class="audio-item row-between" @click="playAudio(item)">
         <div class="row-center" :class="!(audio.courseId === item.id) ? 'icon-paused' : 'icon-play'">
-          <img class="wave-icon" src="../images/audio.svg" v-if="audio.courseId == item.id" />
+          <!-- <img class="wave-icon" src="../images/audio.svg" v-if="audio.courseId == item.id" /> -->
+          <i class="iconfont icon-wave" v-if="audio.courseId == item.id" />
           <i class="iconfont icon-bofang" v-else></i>
         </div>
         <div class="content-bar column-between">
@@ -63,6 +64,7 @@ export default {
         }
         this.wxShare(msg)
     },3000)
+    this.setTitle('播放列表')
   },
   methods: {
     playAudio(item) {

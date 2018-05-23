@@ -5,11 +5,13 @@ export default {
 			state.audio.musicTryEnd = false
 			state.playing = true
 			state.audioelement.play()
+			// if (state.audio.powerLevel && state.audio.price) play.syncProgress(state.audio.columnId,state.audio.courseId,state.currentTime)
 		},
 		// 暂停设置
 		pause (state) {
 			state.playing = false
 			state.audioelement.pause()
+			// if (state.audio.powerLevel && state.audio.price) play.syncProgress(state.audio.columnId,state.audio.courseId,state.currentTime)
 		},
 		togglePlay (state) {
 			if (state.playing) {

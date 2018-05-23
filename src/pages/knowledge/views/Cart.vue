@@ -20,7 +20,7 @@
     <div class="page-none" v-show="noData">
       <img src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/zanwushuju.png" class="none-img" />
       <p class="none-text">暂无数据</p>
-      <a href="javascript:void(0)" class="none-btn">去逛逛</a>
+      <a href="javascript:void(0)" class="none-btn" @click="goHome">去逛逛</a>
     </div>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0" ></div>
     <AudioBar/>
@@ -56,6 +56,7 @@
       //     // 埋点
       //     window.monitor && window.monitor.showLog(self);
       //   }, 100);
+      this.setTitle('已购')
     },
     computed: {},
     methods: {
@@ -97,6 +98,9 @@
       },
       getMonitor () {
         return JSON.stringify({'dcm': 'cart','dpm': '1.1.1','url': '1111'});
+      },
+      goHome () {
+        this.$router.push('index/home')
       },
       // 触发滚动
       dispatchScroll () {

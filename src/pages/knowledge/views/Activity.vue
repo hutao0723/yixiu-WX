@@ -55,6 +55,7 @@
         imgUrl: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
       }
       this.wxShare(msg)
+      this.setTitle('一修读书')
     },
     computed: {
       ...mapState({})
