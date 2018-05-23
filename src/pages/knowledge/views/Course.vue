@@ -60,6 +60,7 @@
       //     // 埋点
       //     window.monitor && window.monitor.showLog(self);
       //   }, 100);
+      
     },
     filters: {
       // 时长
@@ -112,6 +113,20 @@
           this.btnActive = 0;
         }
         this.detailObj = obj
+
+        document.setTitle = function (t) {
+        document.title = t;
+        var i = document.createElement('iframe');
+        i.src = '//m.baidu.com/favicon.ico';
+        i.style.display = 'none';
+        i.onload = function () {
+          setTimeout(function () {
+            i.remove();
+          }, 9)
+        }
+        document.body.appendChild(i);
+      }
+      document.setTitle(this.detailObj.title)
         const msg = {
           title: obj.title,
           desc: obj.subTitle,
@@ -171,12 +186,12 @@
     .size(750, 400);
     position: relative;
     .header-img {
+      display: block;
       width: 100%;
       height: 100%;
-      display: block;
+      background-size: 100% auto;
       background-repeat: no-repeat;
-      /* background-size: 100% 100%; */
-      background-attachment: fixed;
+      overflow: hidden;
     }
     .header-img-small {
       .pos(272, 50);

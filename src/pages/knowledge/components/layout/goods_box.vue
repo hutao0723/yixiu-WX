@@ -176,7 +176,7 @@
   .category-wrapper2,
   .category-wrapper3,
   .category-wrapper4 {
-  width: 750/@rem;
+    width: 750/@rem;
     .type-box {
       padding: 0;
       &:last-child {
