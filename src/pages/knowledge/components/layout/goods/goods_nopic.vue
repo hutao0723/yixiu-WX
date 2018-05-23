@@ -11,7 +11,8 @@
       </div>
       <!--右边栏-->
       <div class="right-bar">
-        <span class="xs week line1 c999">{{goods.duration}}</span>
+        <span class="xs week line1 c999" v-if="goods.courseId">{{goods.duration}}</span>
+        <span class="xs week line1 c999" v-if="goods.columnId">共{{goods.courseNum}}节</span>
       </div>
     </div>
   </div>
