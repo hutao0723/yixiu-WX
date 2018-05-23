@@ -50,6 +50,7 @@ export default {
     },
   mounted () {
     this.getUserInfo();
+      this.setTitle('个人中心')
     // window.monitor && window.monitor.showLog(this);
   },
   methods: {

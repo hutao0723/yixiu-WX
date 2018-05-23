@@ -113,19 +113,8 @@
         }
         this.detailObj = obj
 
-        document.setTitle = function (t) {
-        document.title = t;
-        var i = document.createElement('iframe');
-        i.src = '//m.baidu.com/favicon.ico';
-        i.style.display = 'none';
-        i.onload = function () {
-          setTimeout(function () {
-            i.remove();
-          }, 9)
-        }
-        document.body.appendChild(i);
-      }
-      document.setTitle(this.detailObj.title)
+        
+      this.setTitle(this.detailObj.title)
         const msg = {
           title: obj.title,
           desc: obj.subTitle,
@@ -164,8 +153,8 @@
     left: 0;
     top: 0;
     bottom: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
+    // overflow-x: hidden;
+    // overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     z-index: 1000
   }

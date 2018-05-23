@@ -36,7 +36,7 @@
           </i>
           <i class="iconfont icon-play" v-else>&#xe617;</i>
           <span class="item-title">
-            <span class="item-audition" v-if="item.watchable  == 1 && detailObj.powerLevel == 0">试听</span>
+            <span class="item-audition" v-if="item.watchable  == 1 && detailObj.powerLevel == 0 && item.price > 0">试听</span>
             <span :class="{active:audio.courseId == item.id}">{{item.title}}</span>
           </span>
           <span class="item-time">
@@ -150,19 +150,8 @@
           this.btnActive = 0;
         }
         this.detailObj = obj
-        document.setTitle = function (t) {
-        document.title = t;
-        var i = document.createElement('iframe');
-        i.src = '//m.baidu.com/favicon.ico';
-        i.style.display = 'none';
-        i.onload = function () {
-          setTimeout(function () {
-            i.remove();
-          }, 9)
-        }
-        document.body.appendChild(i);
-      }
-      document.setTitle(this.detailObj.title)
+        
+      this.setTitle(this.detailObj.title)
         const msg = {
           title: obj.title,
           desc: obj.subTitle,
@@ -218,8 +207,8 @@
     left: 0;
     top: 0;
     bottom: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
+    /* overflow-x: hidden;
+    overflow-y: auto; */
     -webkit-overflow-scrolling: touch;
   }
 
