@@ -7,7 +7,7 @@
         <div class="column-center"><i class="iconfont icon-more "></i></div>
       </div>
     </div>
-    <div class="main-box row-center border-more" v-if="param.layout == 'CENTER'" @click="routeByBlockAction(param)" :monitor-log="getMonitor()">
+    <div class="main-box row-center border-more" v-if="param.layout == 'CENTER' && param.subTitle" @click="routeByBlockAction(param)" :monitor-log="getMonitor()">
       <span class="nm weak row-center">{{param.subTitle || ''}}</span>
       <div class="column-center"><i class="iconfont icon-more "></i></div>
     </div>

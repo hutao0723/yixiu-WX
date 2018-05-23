@@ -31,8 +31,6 @@
       ...mapState(['audio'])
     },
     mounted(){
-      console.log(222,this.goods)
-      console.log(333,this.param)
     },
     methods: {
       getMonitor(obj) {
