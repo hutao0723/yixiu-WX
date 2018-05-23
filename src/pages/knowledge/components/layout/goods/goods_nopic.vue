@@ -4,7 +4,8 @@
       <!--左边栏-->
       <div class="left-bar row-between on-play">
         <div class="icon-fecth column-center" :class="(audio.columnId === goods.columnId || audio.courseId === goods.courseId) ? 'icon-play' : 'icon-paused'">
-          <img class="" src="https://yun.dui88.com/youfen/images/audio.svg" v-if="audio.columnId === goods.columnId || audio.courseId === goods.courseId" />
+          <!-- <img class="" src="https://yun.dui88.com/youfen/images/audio.svg" v-if="(audio.columnId === goods.columnId || audio.courseId === goods.courseId) && playing" /> -->
+          <i class="iconfont icon-wave" v-if="(audio.columnId === goods.columnId || audio.courseId === goods.courseId)"></i>
           <i class="iconfont icon-bofang" v-else></i>
         </div>
         <span class="nm line1 title" :class="(audio.columnId === goods.columnId || audio.courseId === goods.courseId) ? 'soft' : 'strong'">{{goods.title}}</span>
@@ -28,7 +29,7 @@
       param: {},
     },
     computed: {
-      ...mapState(['audio'])
+      ...mapState(['audio', 'playing'])
     },
     mounted(){
     },
