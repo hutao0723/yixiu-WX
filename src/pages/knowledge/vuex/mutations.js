@@ -5,13 +5,11 @@ export default {
 			state.audio.musicTryEnd = false
 			state.playing = true
 			state.audioelement.play()
-			// if (state.audio.powerLevel && state.audio.price) play.syncProgress(state.audio.columnId,state.audio.courseId,state.currentTime)
 		},
 		// 暂停设置
 		pause (state) {
 			state.playing = false
 			state.audioelement.pause()
-			// if (state.audio.powerLevel && state.audio.price) play.syncProgress(state.audio.columnId,state.audio.courseId,state.currentTime)
 		},
 		togglePlay (state) {
 			if (state.playing) {
@@ -21,7 +19,11 @@ export default {
 				state.playing = true
 				state.audioelement.play()
 			};
-			if (state.audio.powerLevel && state.audio.price) play.syncProgress(state.audio.columnId,state.audio.courseId,state.currentTime)
+			if (state.audio.columnId) {
+				    if (state.audio.powerLevel) play.syncProgress(state.audio.columnId,state.audio.courseId,state.currentTime)
+				} else {
+					if (state.audio.powerLevel && state.audio.price) play.syncProgress(state.audio.columnId,state.audio.courseId,state.currentTime)
+				}
 		},
 		// 更新音乐数据
 		setAudio (state, obj) {
@@ -43,7 +45,11 @@ export default {
 			if (state.audio.isNext) {
 				play.startAudio(state.audio.columnId, state.audio.courseId, 'next')
 			} else {
-				if (state.audio.powerLevel && state.audio.price) play.syncProgress(state.audio.columnId,state.audio.courseId,state.currentTime)
+				if (state.audio.columnId) {
+				    if (state.audio.powerLevel) play.syncProgress(state.audio.columnId,state.audio.courseId,state.currentTime)
+				} else {
+					if (state.audio.powerLevel && state.audio.price) play.syncProgress(state.audio.columnId,state.audio.courseId,state.currentTime)
+				}
 				state.audioelement.load()
 				state.audioelement.pause()
 			}	

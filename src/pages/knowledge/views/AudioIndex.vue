@@ -116,6 +116,11 @@ export default {
       this.shareToggle = false;
     },
     audioPrev () {
+      if (this.audio.columnId) {
+        if (this.audio.powerLevel) play.syncProgress(this.audio.columnId,this.audio.courseId,store.getters.getCurrentTime)
+      } else {
+        if (this.audio.powerLevel && this.audio.price) play.syncProgress(this.audio.columnId,this.audio.courseId,store.getters.getCurrentTime)
+      }
       play.startAudio(this.audio.columnId, this.audio.courseId, 'prev')
     },  
     togglePlay() {
@@ -124,6 +129,11 @@ export default {
       }
     },
     audioNext (){
+      if (this.audio.columnId) {
+        if (this.audio.powerLevel) play.syncProgress(this.audio.columnId,this.audio.courseId,store.getters.getCurrentTime)
+      } else {
+        if (this.audio.powerLevel && this.audio.price) play.syncProgress(this.audio.columnId,this.audio.courseId,store.getters.getCurrentTime)
+      }
       play.startAudio(this.audio.columnId, this.audio.courseId, 'next')
     },
     goPay(){

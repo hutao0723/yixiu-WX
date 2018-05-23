@@ -118,7 +118,6 @@
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding-top: 20/@rem;
   // z-index: 9;
   background: #fff;
     .fontSize(24);
