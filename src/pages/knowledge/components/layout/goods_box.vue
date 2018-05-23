@@ -156,35 +156,27 @@
 
 
 .category-wrapper2 {
-  width: 600/@rem;
-  padding-left: 150/@rem;
   .type-box {
-    width: 160/@rem;
-    margin-right: 140/@rem;
+    width: 375/@rem;
   }
 }
 
 .category-wrapper3 {
-  width: 675/@rem;
-  padding-left: 75/@rem;
   .type-box {
-    width: 160/@rem;
-    margin-right: 65/@rem;
+    width: 250/@rem;
   }
 }
 
 .category-wrapper4 {
-  width: 720/@rem;
-  padding-left: 30/@rem;
   .type-box {
-    width: 160/@rem;
-    margin-right: 20/@rem;
+    width: 187.5/@rem;
   }
 }
 
   .category-wrapper2,
   .category-wrapper3,
   .category-wrapper4 {
+  width: 750/@rem;
     .type-box {
       padding: 0;
       &:last-child {
