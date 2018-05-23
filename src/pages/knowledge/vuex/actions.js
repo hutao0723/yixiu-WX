@@ -18,6 +18,9 @@ export default {
 	play_Prev ({commit}) {
 		commit('playPrev')
 	},
+	play ({commit}) {
+		commit('play')
+	},
 	play_Index ({commit}, obj) {
 		commit('playIndex', obj)
 	},

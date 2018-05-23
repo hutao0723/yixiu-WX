@@ -23,7 +23,6 @@
       <a href="javascript:void(0)" class="btn-small btn" v-if="btnActive == 1" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
       <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 0" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
       <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 2" @click.stop="playClick('', detailObj.id, false)">播放</a>
-
     </div>
     <AudioBar/>
   </div>
@@ -157,6 +156,7 @@
     // overflow-x: hidden;
     // overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    z-index: 1000
   }
 
   .page-content {
@@ -164,10 +164,10 @@
     background: #fff;
     img {
       width: 100% !important;
-      -webkit-overflow-scrolling: touch !important;
+      // -webkit-overflow-scrolling: touch !important;
     }
     div {
-      -webkit-overflow-scrolling: touch !important;
+      // -webkit-overflow-scrolling: touch !important;
     }
   }
 
