@@ -43,7 +43,7 @@
             <i class="iconfont icon-time">&#xe62d;</i>{{item.timeLength | formatTime}}
           </span>
           <span class="item-date">{{item.publishTime | formatDate}}</span>
-          <i class="iconfont icon-ispay" v-show="item.powerLevel == 0 && item.price > 0">&#xe60c;</i>
+          <i class="iconfont icon-ispay" v-show="item.powerLevel == 0 && item.price > 0 && item.watchable  == 0">&#xe60c;</i>
         </div>
       </div>
     </div>
@@ -93,6 +93,8 @@
       //     // 埋点
       //     window.monitor && window.monitor.showLog(self);
       //   }, 100);
+
+      
     },
     filters: {
       // 时长
@@ -124,11 +126,11 @@
     },
     methods: {
       // 获取monitor
-      getMonitor(id,type,area) {
+      getMonitor(id, type, area) {
 
         // item tabindex dpmc
         return JSON.stringify({
-          'dcm': '8001.'+ id + type?type:0 + '0',
+          'dcm': '8001.' + id + type ? type : 0 + '0',
           'dpm': 'appId.801' + area,
         });
       },
@@ -148,7 +150,19 @@
           this.btnActive = 0;
         }
         this.detailObj = obj
-
+        document.setTitle = function (t) {
+        document.title = t;
+        var i = document.createElement('iframe');
+        i.src = '//m.baidu.com/favicon.ico';
+        i.style.display = 'none';
+        i.onload = function () {
+          setTimeout(function () {
+            i.remove();
+          }, 9)
+        }
+        document.body.appendChild(i);
+      }
+      document.setTitle(this.detailObj.title)
         const msg = {
           title: obj.title,
           desc: obj.subTitle,
@@ -180,13 +194,13 @@
         this.reverseTs = !this.reverseTs;
       },
       // 触发滚动
-      dispatchScroll () {
+      dispatchScroll() {
         this.mainScrollTop = this.$refs.columnMain.scrollTop;
         // console.log(this.$refs.homeMain.scrollTop)
         window.monitor && window.monitor.showLog(this);
       }
     },
-    beforeDestroy () {
+    beforeDestroy() {
       this.$refs.columnMain.removeEventListener('scroll', this.dispatchScroll, false);
     },
     components: {
@@ -214,10 +228,10 @@
     background: #fff;
     img {
       width: 100% !important;
-      -webkit-overflow-scrolling: touch!important;
+      -webkit-overflow-scrolling: touch !important;
     }
     div {
-      -webkit-overflow-scrolling: touch!important;
+      -webkit-overflow-scrolling: touch !important;
     }
   }
 
@@ -225,14 +239,14 @@
     .size(750, 400);
     position: relative;
     .header-img {
+      display: block;
       width: 100%;
       height: 100%;
-      display: block;
+      background-size: 100% auto;
       background-repeat: no-repeat;
-      /* background-size: 100% 100%; */
-      background-attachment: fixed;
+      overflow: hidden;
     }
-    .header-img-small{
+    .header-img-small {
       .pos(272, 50);
       .size(206, 276);
     }
@@ -334,7 +348,6 @@
         .pos(14, 52);
         .size(54, 54);
         .text(20, 54);
-        background: #aaa;
         text-align: center;
         color: #fff;
         border-radius: 50%;
