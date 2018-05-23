@@ -56,6 +56,7 @@
       //     // 埋点
       //     window.monitor && window.monitor.showLog(self);
       //   }, 100);
+      this.setTitle('已购')
     },
     computed: {},
     methods: {

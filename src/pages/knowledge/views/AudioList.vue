@@ -63,6 +63,7 @@ export default {
         }
         this.wxShare(msg)
     },3000)
+    this.setTitle('播放列表')
   },
   methods: {
     playAudio(item) {
