@@ -1,11 +1,17 @@
 <template>
   <div class="swiper-bar">
-    <Swipe class="index_banner my-swipe" :auto="5000" v-if="param.tabs.length" :showIndicators="param.tabs && param.tabs.length > 1">
-      <Swipe-item v-for="(item, index) in param.tabs" class="slide" :class="'slide' + index">
-        <a href="javascript:;" @click="routeByBlockAction(item)">
-          <img v-lazy="item.pictureUrl || 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/front-page-swiper.png'" >
+    <Swipe class="index_banner my-swipe">
+      <swipeItem v-for="(item, index) in param"  class="slide" :class="'slide' + index">
+        <a href="javascript:;" class="swiper-train">
+          <div class="journal">
+            <div class="clearfix">
+              <div class="journal-title fl">{{item.title}}</div>
+              <div class="journal-number fr">{{item.journey}}期</div>
+            </div>
+            <div class="journal-content">{{item.content}}</div>
+          </div>
         </a>
-      </Swipe-item>
+      </swipeItem>
     </Swipe>
   </div>
 </template>
@@ -18,17 +24,50 @@
       SwipeItem
     },
     props: {
-      param: Object
+      param: Array
     },
     methods: {
+      success(item) {
+        console.log(item);
+      }
     },
     mixins: [router]
   };
 </script>
 <style lang="less">
-@import url('../../assets/style/base/tool.less');
+@import '../../less/variable';
+@import '../../less/base';
+@import '../../less/icon';
   .swiper-bar{
-    height: 280/@rem;
+    height: 260/@rem;
+    width: 730/@rem;
     border-radius:10/@rem;
+  }
+  .swiper-train{
+    background:rgba(255,229,85,1);
+    box-shadow: 0 2/@rem 4/@rem 0 rgba(215,215,215,0.5);
+    border-radius: 30/@rem ;
+  }
+  .journal{
+    padding: 40/@rem;
+    box-sizing: border-box;
+    .journal-title{
+      font-weight: bold;
+      .fontSize(50);
+      color: @color-strong;
+    }
+    .journal-number{
+      width:100/@rem;
+      text-align: center;
+      height: 30/@rem;
+      border-left: 3/@rem solid #333;
+      margin-top: 25/@rem;
+    }
+    .journal-content{
+      margin-top: 20/@rem;
+      font-weight: bold;
+      .fontSize(26);
+      color: @color-major;
+    }
   }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="user">
     <div class="person-main">
       <div class="person-box">
         <div class="info">
@@ -12,7 +12,7 @@
               <div class="text">坚持打卡</div>
             </li>
             <li>
-              <div><span class="word">{{minute}}</span>分钟</div>
+              <div><span class="word">{{minute}}</span>{{time}}</div>
               <div class="text">累计精听</div>
             </li>
             <li>
@@ -27,7 +27,7 @@
               <i class="iconfont icon-recom person-icon"></i>
           </div>
       </div>
-      <router-link :to="{ path: '/help' }">
+      <router-link :to="{ path: '/journey' }">
         <div class="bgfff">
           <div class="person-h90 row mt20 border" >
             <div class="icon-box share column-center">
@@ -37,7 +37,7 @@
           </div>
         </div>
       </router-link>
-      <router-link :to="{ path: '/help' }">
+      <router-link :to="{ path: '/shelf' }">
         <div class="bgfff">
           <div class="person-h90 row border">
             <div class="icon-box share column-center">
@@ -47,7 +47,7 @@
           </div>
         </div>
       </router-link>
-      <router-link :to="{ path: '/help' }">
+      <router-link :to="{ path: '/lecturer' }">
         <div class="bgfff">
           <div class="person-h90 row" >
             <div class="icon-box share column-center">
@@ -66,9 +66,9 @@
           <div class="row ft32 ml30" @click="contactToggle = true">联系客服</div>
         </div>
       </div>
-      
     </div>
     <Contact v-show="contactToggle" v-on:success="success"/>
+    <bnav></bnav>
   </div>
 
 </template>
@@ -76,19 +76,25 @@
 <script>
 import { mapState } from 'vuex';
 import Contact from '../../components/basic/Contact';
+import bnav from '../../components/basic/Nav';
+// import store from '../vuex/store';
+import user from '../../api/user';
 export default {
   components: {
-    Contact
+    Contact,bnav
   },
   data () {
     return {
       data: {},
       contactToggle: false,
+
       imageUrl: 'https://yun.dui88.com/yoofans/images/201804/miniapp/help-center.png',
       personname: '哈哈',
+
       day: 13,
       minute: 120,
       book: 14,
+      time: "分钟",
       recommendUrl: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=768904644,500415380&fm=27&gp=0.jpg'
     };
   },
@@ -97,11 +103,34 @@ export default {
   },
   created() {
     },
-  mounted () {
+  async mounted () {
+    this.getUserInfo();
+    await this.getNumberInfo();
   },
   methods: {
+    // 联系客服
     success(){
       this.contactToggle = false;
+    },
+    // 获取用户信息
+    getUserInfo () {
+      this.$http.get('/user/getUserInfo').then(res => {
+        let resp = res.data
+        // console.log(resp.data)
+        if (resp.success) {
+          this.personname = resp.data.nickname;
+          this.imageUrl = resp.data.headimgurl;
+        } else {
+          console.log("获取用户信息失败")
+        }
+      })
+    },
+    async getNumberInfo (){
+      let objs = await user.getNumber(1);
+      this.day = objs.day;
+      this.minute = objs.minute > 999?(objs.minute/60).toFixed(1): objs.minute;
+      this.time = objs.minute > 999?"小时": "分钟";
+      this.book = objs.book;
     }
   }
 };
@@ -111,10 +140,15 @@ export default {
 @import '../../less/variable';
 @import '../../less/base';
 @import '../../less/icon';
-
-.person-main {
+// #app{
+//   background:rgba(244,244,244,1);
+// }
+.user{
   background:rgba(244,244,244,1);
-  height: 1334/@rem;
+  height: 100%;
+}
+.person-main {
+  
   .person-box{
     width: 750/@rem;
     height: 336/@rem; 

@@ -40,7 +40,7 @@ export default {
 @import '../../less/base';
 @import '../../less/icon';
 .lecturer-main{
-  margin: 70/@rem 0;
+  padding: 70/@rem 0 0 0;
   .title{
     text-align: center;
     .fontSize(40);
