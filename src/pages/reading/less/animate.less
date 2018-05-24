@@ -1,0 +1,109 @@
+
+// 动画效果
+/* 淡入-从下向上 .3s */
+.a-fadeinB {
+  animation: fadeinB .1s ease-out 0s backwards;
+  .transformStyle();
+}
+.keyframes(all, fadeinB, {
+  0% {
+    transform: translate(0, -20/@rem);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+});
+
+/* 淡入-从下向上 .3s */
+.a-fadeinT {
+  animation: fadeinT .3s ease-out 0s backwards;
+  .transformStyle();
+}
+.keyframes(all, fadeinT, {
+  0% {
+    opacity: 0;
+    transform: translate(0, 20/@rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+});
+
+/* 淡入-从上向下 .3s */
+.a-fadeinTX {
+  animation: fadeinTX .3s ease-out 0s backwards;
+  .transformStyle();
+}
+.keyframes(all, fadeinTX, {
+  0% {
+    opacity: 0;
+    transform: translate(0, -20/@rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+});
+
+/* 淡入-从上向下-小幅度 .3s */
+.a-fadeinS {
+  animation: fadeinS .3s ease-out 0s backwards;
+  .transformStyle();
+}
+.keyframes(all, fadeinS, {
+  0% {
+    opacity: .85;
+    transform: translate(0, -5/@rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+});
+
+
+// 旋转
+.rotate180 {
+  transition: all .3s;
+  transform: rotate(180deg);
+}
+.rotate360 {
+  transition: all .3s;
+  transform: rotate(360deg);
+}
+
+// 动画
+.keyframes (@prefix,@name,@content) when (@prefix=def) {
+  @keyframes @name {
+    @content();
+  }
+}
+.keyframes (@prefix,@name,@content) when (@prefix=moz) {
+  @-moz-keyframes @name {
+    @content();
+  }
+}
+.keyframes (@prefix,@name,@content) when (@prefix=o) {
+  @-o-keyframes @name {
+    @content();
+  }
+}
+.keyframes (@prefix,@name,@content) when (@prefix=webkit) {
+  @-webkit-keyframes  @name {
+    @content();
+  }
+}
+.keyframes (@prefix,@name,@content) when (@prefix=all) {
+  .keyframes(moz,@name,@content);
+  .keyframes(o,@name,@content);
+  .keyframes(webkit,@name,@content);
+  .keyframes(def,@name,@content);
+}
+.transformStyle() {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform: preserve-3d;
+  -ms-transform: preserve-3d;
+  -o-transform: preserve-3d;
+}

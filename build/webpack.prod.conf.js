@@ -22,7 +22,7 @@ files.forEach(function(f) {
   // HtmlWebpackPlugin 队列 - 负责插入js和css
   var plug = new HtmlWebpackPlugin({
     filename: fileName + '.html',
-    // chunks: ['vendors', fileName],
+    chunks: [fileName],
     template: path.resolve(__dirname, '../src/' + mainPath + 'index.html'),
     inject: true
   });
@@ -80,6 +80,7 @@ var webpackConfig = merge(baseWebpackConfig, {//merge连接webpack基本配置�
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
+      chunks: ['vendor'],
       minChunks: function (module, count) {
         // any required modules inside node_modules are extracted to vendor
         return (
