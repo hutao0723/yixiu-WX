@@ -85,9 +85,9 @@
     computed: {
       ...mapState(['audio', 'playing', 'currentTime', 'musicDuration']),
     },
-    async mounted() {
-      await this.getColumnDetail(this.$route.params.columnId)
-      await this.getColumnList(this.$route.params.columnId)
+    mounted() {
+      this.getColumnDetail(this.$route.params.columnId)
+      this.getColumnList(this.$route.params.columnId)
       let self = this;
       window.addEventListener("popstate", function (e) { //回调函数中实现需要的功能
         if(!self.referer){
