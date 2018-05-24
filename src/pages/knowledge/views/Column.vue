@@ -4,7 +4,7 @@
     <div class="page-header" :monitor-log="getMonitor()">
       <div class="header-img" v-show="detailObj.lateralCover" :style="{backgroundImage: `url(${detailObj.lateralCover})`}"></div>
       <div class="header-img-small" v-show="!detailObj.lateralCover&&detailObj.verticalCover" :style="{backgroundImage: `url(${detailObj.verticalCover})`}"></div>
-      <div class="header-img" v-show="!detailObj.lateralCover&&!detailObj.verticalCover" :style="{backgroundImage: `url('//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
+      <div class="header-img" v-show="!detailObj.lateralCover&&!detailObj.verticalCover" :style="{backgroundImage: `url('https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
       <div class="header-name-bg"></div>
       <div class="header-name">
         <span v-if="detailObj.price>0">{{detailObj.buyTimes}}人已购</span>
@@ -159,7 +159,7 @@
           desc: obj.subTitle,
           link: window.location.href,
           imgUrl: obj.lateralCover || obj.verticalCover ||
-            '//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
+            'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }
         this.wxShare(msg)
 

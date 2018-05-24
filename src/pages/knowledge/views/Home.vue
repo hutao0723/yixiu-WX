@@ -50,11 +50,10 @@
       ...mapState({})
     },
     created() {
-      this.wxShare()
     },
     mounted() {
+      this.wxShare(false)
       this.renderTemplatePage();
-
     },
     methods: {
       /**

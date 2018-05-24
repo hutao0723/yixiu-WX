@@ -46,11 +46,11 @@ export default {
     };
   },
   created() {
-      this.wxShare()
     },
   mounted () {
     this.getUserInfo();
-      this.setTitle('个人中心')
+      this.wxShare(false);
+      this.setTitle('个人中心');
     // window.monitor && window.monitor.showLog(this);
   },
   methods: {
