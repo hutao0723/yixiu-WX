@@ -1,0 +1,22 @@
+<svg width="44" height="48" viewBox="0 0 44 100" xmlns="http://www.w3.org/2000/svg" fill="#fff">
+    <g transform="matrix(1 0 0 -1 0 80)">
+        <rect x="0" width="8" height="48" rx="3">
+            <animate attributeName="height"
+                 begin="0s" dur="0.8s"
+                 values="48;32;16;32;48;" calcMode="linear"
+                 repeatCount="indefinite" />
+        </rect>
+        <rect x="18" width="8" height="32" rx="3">
+            <animate attributeName="height"
+                 begin="0s" dur="0.8s"
+                 values="32;48;32;16;32;" calcMode="linear"
+                 repeatCount="indefinite" />
+        </rect>
+        <rect x="36" width="8" height="16" rx="3">
+            <animate attributeName="height"
+                 begin="0s" dur="0.8s"
+                 values="16;32;48;32;16;" calcMode="linear"
+                 repeatCount="indefinite" />
+        </rect>
+    </g>
+</svg>

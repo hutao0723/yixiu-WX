@@ -26,7 +26,7 @@ files.forEach(function(f) {
   // HtmlWebpackPlugin 队列 - 负责插入js和css
   var plug = new HtmlWebpackPlugin({
     filename: fileName + '.html',
-    // chunks: ['vendors', fileName],
+    chunks: ['vendors', fileName],
     template: path.resolve(__dirname, '../src/' + mainPath + 'index.html'),
     inject: true
   });

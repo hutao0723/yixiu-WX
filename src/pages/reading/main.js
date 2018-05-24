@@ -7,7 +7,7 @@ import VueCookie from 'vue-cookie';
 var infiniteScroll = require('vue-infinite-scroll');
 Vue.use(infiniteScroll);
 
-import './assets/style/main.less';
+// import './less/base.less';
 Vue.use(VueCookie);
 Vue.use(VueResource);
 // vue-resource配置项
@@ -20,11 +20,9 @@ import {
 setDPR();
 remChange();
 
-// monitor 埋点
-import {
-  monitorHandler
-} from './components/utils/monitorHandler';
-monitorHandler();
+// // monitor 埋点
+// import { monitorHandler } from './components/utils/monitorHandler';
+// monitorHandler();
 
 // lazyload 图片懒加载
 import VueLazyload from 'vue-lazyload';
@@ -38,7 +36,7 @@ Vue.use(VueLazyload, {
     }
   }
 });
-// Vue.http.headers.common['tk'] = '8JdDYohmSwEXXZUEwtaziTsauTC8taF7MxmT9UUeuCdYFdq2ZXRhW327VLakuKVEeWPe7aHp4pgQxm1SWXXyQHadZUurKPKczeoGyFLHXSoWp11BCxwTGLNhoyDiRGra15JATc8DrKNaQj4DVFCCU5qu';
+Vue.http.headers.common['tk'] = '8JdDYohmSwEXXZUEwtaziTsauTC8taF7MxmT9UUeuCdYFdq2ZXRhW327VLakuKVEeWPe7aHp4pgQxm1SWXXyQHadZUurKPKczeoGyFLHXSoWp11BCxwTGLNhoyDiRGra15JATc8DrKNaQj4DVFCCU5qu';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
@@ -48,23 +46,11 @@ Vue.http.interceptors.push((request, next) => {
     // response.body = '...';
     if (response.data.code == '000001') {
       const url = encodeURIComponent('/' + window.location.href.split('/').slice(3).join('/'));
-      location.href = "/loginH5?dbredirect=" + url;
+      // location.href = "/loginH5?dbredirect=" + url;
     }
     return response;
   });
 });
-Vue.prototype.setTitle = function (t) {
-    document.title = t;
-    var i = document.createElement('iframe');
-    i.src = '//m.baidu.com/favicon.ico';
-    i.style.display = 'none';
-    i.onload = function () {
-      setTimeout(function () {
-        i.remove();
-      }, 9)
-    }
-    document.body.appendChild(i);
-}
 
 Vue.prototype.wxShare = function (msg) {
   console.log(msg)
@@ -73,16 +59,13 @@ Vue.prototype.wxShare = function (msg) {
   // const url = encodeURIComponent(window.location.href.split('#')[0]);
   // const url = location.href.split('#')[0];
 
-  let obj = {}
   if (!msg) {
-    obj = {
+    msg = {
       title: '一修读书', // 分享标题
       desc: '在这里发现更好的自己', // 分享描述
-      link: 'http://k.youfen666dev.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
+      link: 'http://k.youfen666dev.com/#/home/index', // 分享链接 默认以当前链接
       imgUrl: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
     }
-  }else{s
-    obj = msg
   }
   const urlData = `/wechat/getJsapiSignature`;
   const url = location.href.split("#")[0];
@@ -95,7 +78,7 @@ Vue.prototype.wxShare = function (msg) {
     var Data = res.data.data;
     // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，
     wx.config({
-      debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
       appId: Data.appid, // 必填，公众号的唯一标识
       timestamp: Number(Data.timestamp), // 必填，生成签名的时间戳
       nonceStr: Data.noncestr, // 必填，生成签名的随机串

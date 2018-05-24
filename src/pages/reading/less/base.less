@@ -1,0 +1,345 @@
+@import "./variable";
+@import "./animate";
+@import "./icon";
+@rem: 75rem;
+
+html, body, div, span, object, iframe,h1, h2, h3, h4, h5, h6, p, pre,a, acronym, address, big, 
+cite, code, em, img, small, strike, strong, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label,
+legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, 
+figure, figcaption, footer, header, hgroup, menu, nav, output, section, audio, video {
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  color: #333;
+  background: #fff;
+  font-family: Helvetica Neue,Tahoma,Arial,PingFangSC-Regular,Hiragino Sans GB,Microsoft Yahei,sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+  overflow-x: hidden;
+  font-size: 24/@rem;
+}
+#app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+div{
+  -webkit-overflow-scrolling : touch;
+
+}
+
+li {
+  list-style: none;
+}
+
+button {
+  padding: 0;
+}
+// 正常链接 未访问
+a:active {
+  text-decoration: none;
+}
+// 默认不显示下划线，保持页面简洁
+ins, a {
+  color: #333;
+  text-decoration: none;
+}
+button, input, select, textarea {
+  font-size: 100%;
+}
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+input {
+  border-radius: 0;
+  -webkit-appearance: none;
+}
+:focus {
+  outline: 0;
+}
+::-webkit-scrollbar{
+  display: none;
+}
+
+.fr {
+  float: right;
+}
+
+.fl {
+  float: left;
+}
+
+.clearfix:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+// 隐藏
+.hidden {
+  display: none!important;
+}
+
+// 垂直居中
+.v-md {
+  vertical-align: middle;
+}
+
+.ell {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.flex_align {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+// margin
+.mt10 {
+  margin-top: 10/@rem;
+}
+.mt20 {
+  margin-top: 20/@rem;
+}
+.mb10 {
+  margin-bottom: 10/@rem;
+}
+.mb20 {
+  margin-bottom: 20/@rem;
+}
+// bg-black 黑底
+.bg-black {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 10;
+}
+
+//******外边距原子样式******/
+.mr10{margin-right: 10/@rem}
+.mr20{margin-right: 20/@rem}
+.ml10{margin-left: 10/@rem}
+.ml20{margin-left: 20/@rem}
+.mt10{margin-top: 10/@rem}
+.mt20{margin-top: 20/@rem}
+.mb10{margin-bottom: 10/@rem}
+.mb20{margin-bottom: 20/@rem}
+
+
+//******通用样式******/
+ .template-box,.audio-page{
+  span, div {
+     font-size: @text-nm;
+       color: @color-primary;
+     }
+}
+div{
+-webkit-overflow-scrolling : touch;
+}
+
+.form {
+  span,div{
+    font-size: @text-form;
+  }
+}
+
+span.white{color:#FFF}
+span.muted,input.muted,div.muted{color: @color-muted}
+span.weak{color: @color-weak}
+span.primary{color: @color-primary}
+span.hard{color: @color-hard}
+span.warm{color: @color-warm}
+span.soft{color: @color-soft}
+span.strong{color: @color-strong}
+span.white{color: @color-white}
+
+span.xl{font-size: @text-xl}
+span.xxl{font-size: @text-xxl}
+span.xxxl{font-size: @text-xxxl}
+span.lg{font-size: @text-lg}
+span.sm{font-size: @text-sm}
+span.xs{font-size: @text-xs}
+span.xxs{font-size: @text-xxs}
+
+span.inline{
+  text-overflow: ellipsis;
+  word-break:keep-all;
+  white-space:nowrap;
+  overflow:hidden;
+}
+span.cancel{
+  font-size: @text-sm;
+  color: @color-muted;
+  text-decoration: line-through;
+}
+
+div.bg-white{background-color: white}
+
+//******布局样式******/
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.row-center{
+  .row;
+  justify-content: center;
+}
+.row-between {
+  .row;
+  justify-content: space-between;
+}
+.row-around {
+  .row;
+  justify-content: space-around;
+}
+.row-end {
+  .row;
+  justify-content: flex-end;
+}
+.column {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.column-center{
+  .column;
+  align-items: center;
+}
+.column-around{
+ .column;
+  align-items: center;
+  justify-content: space-around;
+}
+.column-between{
+ .column;
+  align-items: center;
+  justify-content: space-between;
+}
+.container{
+  .column;
+}
+.fixed-bottom{
+  position: fixed;
+  bottom: 0;
+}
+
+//******间隔******/
+.hr{
+  width: 100%;
+  height: 6/@rem;
+}
+.h-gap{
+  width: 100%;
+  height: 10px;
+}
+
+.tab-border{
+  position: fixed;
+  height: 1px;
+  width: 100%;
+  background-color: #E6E8EB;
+  bottom: 0;
+}
+
+
+/** 重新定义按钮 **/
+button{
+  margin: 0;
+  padding: 0;
+}
+/*主要按钮*/
+button[type="primary"]{
+  background-color: @color-warm;
+}
+button[type="primary"][plain]{
+  color: #FFFFFF;
+  border-color: @color-warm;
+  background-color: @color-warm;
+}
+/*分享按钮*/
+button.pain-btn[open-type="share"]{
+  background-color: transparent;
+  line-height: normal;
+  padding: 0;
+  margin: 0;
+}
+button.pain-btn[open-type="share"]::after {
+  border:none;
+}
+/** 按钮面板样式 **/
+.btn-panel {
+  background: #fff;
+  border-top: 1/@rem solid #e5e5e5;
+  border-bottom: 1/@rem solid #e5e5e5;
+  margin-top: 10px;
+  overflow: hidden;
+  padding: 30/@rem;
+  width: 690/@rem;
+}
+.btn-panel-bottom{
+  position: fixed;
+  bottom: 0;
+}
+/** loading样式 **/
+.loading-wrap{
+  height: 100%;
+  position: relative;
+}
+.loading-icon{
+  width: 60px;
+  height: 50px;
+}
+
+/** 单双行样式 **/
+.line1 {
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.line2 {
+  width: 100%;
+  display: -webkit-box;
+  overflow: hidden;
+  /*下列auto字样的不可刪除*/
+  /* autoprefixer: off */
+  -webkit-box-orient: vertical;
+  /* autoprefixer: on */
+  -webkit-line-clamp: 2;
+}
+
+.fontSize(@px) {
+  font-size: @px/@rem;
+}
