@@ -76,6 +76,7 @@
             }
           })
           self.setTitle(self.params.navigation.pageTitle)
+          self.wxShare(false)
         })
       },
       // 触发滚动

@@ -54,8 +54,6 @@
         link: window.location.href, // 分享链接 默认以当前链接
         imgUrl: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
       }
-      this.wxShare(msg)
-      this.setTitle('一修读书')
     },
     computed: {
       ...mapState({})
@@ -84,14 +82,9 @@
               item['navActive'] = 0;
             }
           })
-          // self.loaded();
-          console.log(self.components, `[template] render template page success`)
-        //   setTimeout(() => {
-        //   // 滚动
-        //   self.$refs.activityMain.addEventListener('scroll', self.dispatchScroll, false);
-        //   // 埋点
-        //   window.monitor && window.monitor.showLog(self);
-        // }, 100);
+          self.wxShare(false)
+          self.setTitle('一修读书')
+        
         })
       },
       // 触发滚动
