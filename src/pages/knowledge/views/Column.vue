@@ -90,7 +90,7 @@
       this.getColumnList(this.$route.params.columnId)
       pushHistory();
       window.addEventListener("popstate", function (e) {
-        if (!this.referer) {
+        if (!self.referer) {
           location.href = 'http://k.youfen666test.com/knowledge.html#/index/home'; //在这里指定其返回的地址
         }
          
