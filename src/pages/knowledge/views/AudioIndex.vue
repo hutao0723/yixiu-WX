@@ -91,7 +91,7 @@ export default {
       const msg = {
           title: this.audio.title,
           desc: this.audio.subTitle,
-          link: this.audio.courseId ? 'http://k.youfen666test.com/knowledge.html#/course/' + this.audio.courseId:false ||this.audio.columnId ? 'http://k.youfen666test.com/knowledge.html#/column/' + this.audio.columnId:false ,
+          link: this.audio.courseId ? 'http://k.youfen666dev.com/knowledge.html#/course/' + this.audio.courseId:false ||this.audio.columnId ? 'http://k.youfen666dev.com/knowledge.html#/column/' + this.audio.columnId:false ,
           imgUrl: this.audio.lateralCover || this.audio.verticalCover ||
             'https:https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }

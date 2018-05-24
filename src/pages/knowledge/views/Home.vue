@@ -75,11 +75,12 @@
             }
           })
           self.setTitle(self.params.navigation.pageTitle)
+          console.log(processData.params)
           const msg = {
             title: processData.params.navigation.pageTitle || '一修读书', // 分享标题
             desc: processData.params.shareConfig.shareDescribe || '在这里发现更好的自己', // 分享描述
-            link: 'http://k.youfen666test.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
-            imgUrl: processData.params.shareConfig.sharePictureUrl || 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
+            link: 'http://k.youfen666dev.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
+            imgUrl: 'https:' + processData.params.shareConfig.sharePictureUrl || 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
           }
 
           self.wxShare(msg)

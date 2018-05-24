@@ -51,18 +51,20 @@
       }
     },
     computed: {
-      ...mapState(['audio', 'playing', 'currentTime', 'musicDuration']),
+      ...mapState(['audio', 'playing', 'currentTime', 'musicDuration','referer']),
+    },
+    created() {
+      
     },
 
     async mounted() {
+      let self = this;
       await this.getColumnDetail(this.$route.params.courseId);
-      // const msg = {
-      //   title: '一修读书', // 分享标题
-      //   desc: '在这里发现更好的自己', // 分享描述
-      //   link: window.location.href, // 分享链接 默认以当前链接
-      //   imgUrl: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
-      // }
-      // this.wxShare(msg)
+      window.addEventListener("popstate", function (e) { //回调函数中实现需要的功能
+        if(!self.referer){
+          location.href = 'http://k.youfen666dev.com/knowledge.html#/index/home'; //在这里指定其返回的地址
+        }
+      }, false);
     },
     filters: {
       // 时长
