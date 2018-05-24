@@ -51,10 +51,10 @@
       }
     },
     computed: {
-      ...mapState(['audio', 'playing', 'currentTime', 'musicDuration','referer']),
+      ...mapState(['audio', 'playing', 'currentTime', 'musicDuration', 'referer']),
     },
     created() {
-      
+
     },
 
     mounted() {
@@ -63,17 +63,19 @@
 
       pushHistory();
       window.addEventListener("popstate", function (e) {
-        location.href = 'http://k.youfen666test.com/knowledge.html#/index/home'; //在这里指定其返回的地址
-         
+        if (!this.referer) {
+          location.href = 'http://k.youfen666test.com/knowledge.html#/index/home'; //在这里指定其返回的地址
+        }
       }, false);
+
       function pushHistory() {
         var state = {
-          title: "title",
-          url: "#"
+          title: "一修读书",
+          url: "http://k.youfen666test.com/knowledge.html#/index/home"
         };
-        window.history.pushState(state, "title", "#");
+        window.history.pushState(state, "一修读书", "http://k.youfen666test.com/knowledge.html#/index/home");
       }
-      
+
     },
     filters: {
       // 时长
