@@ -4,7 +4,7 @@
       <div class="item" v-for="(item,index) in cartList" :key="index" @click="routeToCourse(item)" :monitor-log="getMonitor()">
         <div class="item-img" v-show="item.lateralCover" :style="{backgroundImage: `url(${item.lateralCover})`}"></div>
         <div class="item-img-small" v-show="!item.lateralCover&&item.verticalCover" :style="{backgroundImage: `url(${item.verticalCover})`}"></div>
-        <div class="item-img" v-show="!item.lateralCover&&!item.verticalCover" :style="{backgroundImage: `url('//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
+        <div class="item-img" v-show="!item.lateralCover&&!item.verticalCover" :style="{backgroundImage: `url('https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
         <span class="item-title">{{item.title}}</span>
         <span class="item-sub" v-if="item.subTitle">{{item.subTitle}}</span>
         <span class="item-new" v-if="item.latestSubTitle">最新：{{item.latestSubTitle}}</span>
@@ -49,14 +49,8 @@
     },
     async mounted() {
       await this.getList();
-      let self = this;
-      // setTimeout(() => {
-      //     // 滚动
-      //     self.$refs.cartMain.addEventListener('scroll', self.dispatchScroll, false);
-      //     // 埋点
-      //     window.monitor && window.monitor.showLog(self);
-      //   }, 100);
-      this.setTitle('已购')
+      this.wxShare(false);
+      this.setTitle('已购');
     },
     computed: {},
     methods: {
