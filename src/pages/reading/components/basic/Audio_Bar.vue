@@ -3,8 +3,8 @@
     <div class="audio-controler row"  @click="goAudioPage"> 
       <div class="right-bar row-around" style="background-repeat:no-repeat;background-size:100% 100%;" 
       :style="{backgroundImage:`url(${audioData.coverImgUrl ? audioData.coverImgUrl : baseImg}`}" >
-        <div class="icon-play column-center" :class="!playing ? 'line' : 'mask'">
-          <i class="iconfont icon-bofang" v-if="!playing"></i>
+        <div class="icon-play column-center" :class="!readplaying ? 'line' : 'mask'">
+          <i class="iconfont icon-bofang" v-if="!readplaying"></i>
           <img class="" src="../../images/audio.svg" v-else/>
         </div>
       </div>
@@ -43,11 +43,11 @@ import { mapState } from 'vuex';
       };
     },
     computed: {
-      ...mapState(['audio','playing'])
+      ...mapState(['readaudio','readplaying'])
     },
     methods: {
       goAudioPage: function() {
-        if (!this.audio.src) {
+        if (!this.readaudio.src) {
           this.notice = true;
           this.animation = true;
         } else {

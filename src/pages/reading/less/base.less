@@ -173,15 +173,16 @@ div{
   }
 }
 
-span.white{color:#FFF}
+span.main{color: @color-main}
+span.white{color: @color-white}
 span.muted,input.muted,div.muted{color: @color-muted}
 span.weak{color: @color-weak}
 span.primary{color: @color-primary}
-span.hard{color: @color-hard}
 span.warm{color: @color-warm}
 span.soft{color: @color-soft}
 span.strong{color: @color-strong}
 span.white{color: @color-white}
+span.black{color: @color-black}
 
 span.xl{font-size: @text-xl}
 span.xxl{font-size: @text-xxl}
@@ -254,24 +255,6 @@ div.bg-white{background-color: white}
   bottom: 0;
 }
 
-//******间隔******/
-.hr{
-  width: 100%;
-  height: 6/@rem;
-}
-.h-gap{
-  width: 100%;
-  height: 10px;
-}
-
-.tab-border{
-  position: fixed;
-  height: 1px;
-  width: 100%;
-  background-color: #E6E8EB;
-  bottom: 0;
-}
-
 
 /** 重新定义按钮 **/
 button{
@@ -280,12 +263,12 @@ button{
 }
 /*主要按钮*/
 button[type="primary"]{
-  background-color: @color-warm;
+  background-color: @color-white;
 }
 button[type="primary"][plain]{
   color: #FFFFFF;
-  border-color: @color-warm;
-  background-color: @color-warm;
+  border-color: @color-white;
+  background-color: @color-white;
 }
 /*分享按钮*/
 button.pain-btn[open-type="share"]{
@@ -296,29 +279,6 @@ button.pain-btn[open-type="share"]{
 }
 button.pain-btn[open-type="share"]::after {
   border:none;
-}
-/** 按钮面板样式 **/
-.btn-panel {
-  background: #fff;
-  border-top: 1/@rem solid #e5e5e5;
-  border-bottom: 1/@rem solid #e5e5e5;
-  margin-top: 10px;
-  overflow: hidden;
-  padding: 30/@rem;
-  width: 690/@rem;
-}
-.btn-panel-bottom{
-  position: fixed;
-  bottom: 0;
-}
-/** loading样式 **/
-.loading-wrap{
-  height: 100%;
-  position: relative;
-}
-.loading-icon{
-  width: 60px;
-  height: 50px;
 }
 
 /** 单双行样式 **/

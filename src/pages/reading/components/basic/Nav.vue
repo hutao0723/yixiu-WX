@@ -1,7 +1,7 @@
 <template>
   <div class="bottom-nav">
     <ul>
-      <li v-for="(item, index) in navlist">
+      <li v-for="(item, index) in navlist" :style="readMission ? 'width: 25%;' : 'width: 33.3%;'">
         <router-link :to="item.router">
           <p>
             <i class="iconfont" :class="item.icon"></i>
@@ -13,32 +13,81 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
   export default {
     data () {
       return {
-        navlist: [
-          {
-            title: '阅读',
-            icon: 'icon-shouye',
-            router: '/read/home'
-          },
-          {
-            title: '打卡',
-            icon: 'icon-yigou1',
-            router: '/card'
-          },
-          {
-            title: '观点',
-            icon: 'icon-yigou1',
-            router: '/opinion'
-          },
-          {
-            title: '我的',
-            icon: 'icon-wode',
-            router: '/user'
-          }
-        ]
+        // readMission: true,
+        // navlist: [
+        //   {
+        //     title: '阅读',
+        //     icon: 'icon-shouye',
+        //     router: '/read/home'
+        //   },
+        //   {
+        //     title: '打卡',
+        //     icon: 'icon-yigou1',
+        //     router: '/card'
+        //   },
+        //   {
+        //     title: '观点',
+        //     icon: 'icon-yigou1',
+        //     router: '/opinion'
+        //   },
+        //   {
+        //     title: '我的',
+        //     icon: 'icon-wode',
+        //     router: '/user'
+        //   }
+        // ]
       };
+    },
+    computed: {
+      ...mapState(['readMission']),
+      navlist () {
+        if (this.readMission) {
+          return [
+            {
+              title: '阅读',
+              icon: 'icon-shouye',
+              router: '/read/home'
+            },
+            {
+              title: '打卡',
+              icon: 'icon-yigou1',
+              router: '/card'
+            },
+            {
+              title: '观点',
+              icon: 'icon-yigou1',
+              router: '/opinion'
+            },
+            {
+              title: '我的',
+              icon: 'icon-wode',
+              router: '/user'
+            }
+          ]
+        } else {
+          return [
+            {
+              title: '阅读',
+              icon: 'icon-shouye',
+              router: '/read/home'
+            },
+            {
+              title: '观点',
+              icon: 'icon-yigou1',
+              router: '/opinion'
+            },
+            {
+              title: '我的',
+              icon: 'icon-wode',
+              router: '/user'
+            }
+          ]
+        }
+      }
     }
   };
 </script>
@@ -57,7 +106,6 @@
     font-size: 22/@rem;
     ul {
       li{
-        width: 25%;
         display: inline-block;
         text-align: center;
         p{
