@@ -173,8 +173,6 @@
     /* position: relative;  */
     img {
       width: 100% !important;
-
-
     }
   }
 
