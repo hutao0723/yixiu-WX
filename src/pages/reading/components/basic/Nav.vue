@@ -2,11 +2,11 @@
   <div class="bottom-nav">
     <ul>
       <li v-for="(item, index) in navlist" :style="readMission ? 'width: 25%;' : 'width: 33.3%;'">
-        <router-link :to="item.router">
+        <router-link :to="item.path">
           <p>
-            <i class="iconfont" :class="item.icon"></i>
+            <i class="iconfont" :class="item.path === $route.path ? item.active : item.icon"></i>
           </p>
-          <p>{{item.title}}</p>
+          <p :class="item.path === $route.path ? 'active' : ''">{{item.title}}</p>
         </router-link>
       </li>
     </ul>
@@ -17,29 +17,6 @@ import { mapState } from 'vuex'
   export default {
     data () {
       return {
-        // readMission: true,
-        // navlist: [
-        //   {
-        //     title: '阅读',
-        //     icon: 'icon-shouye',
-        //     router: '/read/home'
-        //   },
-        //   {
-        //     title: '打卡',
-        //     icon: 'icon-yigou1',
-        //     router: '/card'
-        //   },
-        //   {
-        //     title: '观点',
-        //     icon: 'icon-yigou1',
-        //     router: '/opinion'
-        //   },
-        //   {
-        //     title: '我的',
-        //     icon: 'icon-wode',
-        //     router: '/user'
-        //   }
-        // ]
       };
     },
     computed: {
@@ -50,22 +27,26 @@ import { mapState } from 'vuex'
             {
               title: '阅读',
               icon: 'icon-shouye',
-              router: '/read/home'
+              active: 'icon-shouye active',
+              path: '/index/home'
             },
             {
               title: '打卡',
               icon: 'icon-yigou1',
-              router: '/card'
+              active: 'icon-shouye active',
+              path: '/index/card'
             },
             {
               title: '观点',
               icon: 'icon-yigou1',
-              router: '/opinion'
+              active: 'icon-shouye active',
+              path: '/index/opinion'
             },
             {
               title: '我的',
               icon: 'icon-wode',
-              router: '/user'
+              active: 'icon-shouye active',
+              path: '/index/user'
             }
           ]
         } else {
@@ -73,17 +54,20 @@ import { mapState } from 'vuex'
             {
               title: '阅读',
               icon: 'icon-shouye',
-              router: '/read/home'
+              active: 'icon-shouye active',
+              path: '/index/home'
             },
             {
               title: '观点',
               icon: 'icon-yigou1',
-              router: '/opinion'
+              active: 'icon-shouye active',
+              path: '/index/opinion'
             },
             {
               title: '我的',
               icon: 'icon-wode',
-              router: '/user'
+              active: 'icon-shouye active',
+              path: '/index/user'
             }
           ]
         }
@@ -110,12 +94,13 @@ import { mapState } from 'vuex'
         text-align: center;
         p{
           line-height: 34/@rem;
+          color: #B3B3B3;
         }
         i{
           font-size: 32/@rem;
         }
-        .router-link-active{
-          color: #FF3E44;
+        .active{
+          color: #222222 !important;
         }
       }
     }
