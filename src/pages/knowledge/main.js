@@ -67,7 +67,7 @@ Vue.prototype.setTitle = function (t) {
 }
 
 Vue.prototype.wxShare = function (msg) {
-
+console.log(msg)
   const urlData = `/wechat/getJsapiSignature`;
   const url = location.href.split("#")[0];
 

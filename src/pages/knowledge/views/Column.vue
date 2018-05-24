@@ -162,8 +162,6 @@
             'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }
         this.wxShare(msg)
-        console.log(22,this)
-
       },
       // 获取详情
       async getColumnList(id) {
