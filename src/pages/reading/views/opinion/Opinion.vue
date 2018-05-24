@@ -1,16 +1,13 @@
 <template>
   <div class="opinion-main">
     观点广场
-    <bnav></bnav>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import bnav from '../../components/basic/Nav';
 export default {
   components: {
-    bnav
   },
   data () {
     return {

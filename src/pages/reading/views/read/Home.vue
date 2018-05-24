@@ -1,17 +1,16 @@
 <template>
   <div class="home-main" ref="homeMain">
+    首页
     <AudioBar/>
-    <bnav></bnav>
   </div>
 </template>
 
 <script>
-import bnav from '../../components/basic/Nav';
 import AudioBar from '../../components/basic/Audio_Bar';
 import { mapState } from 'vuex';
 export default {
   components: {
-    AudioBar, bnav
+    AudioBar
   },
   data () {
     return {

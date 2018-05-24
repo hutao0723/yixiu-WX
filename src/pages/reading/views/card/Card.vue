@@ -1,16 +1,13 @@
 <template>
   <div class="card-main">
     打卡日历
-    <bnav></bnav>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import bnav from '../../components/basic/Nav';
 export default {
   components: {
-    bnav
   },
   data () {
     return {
