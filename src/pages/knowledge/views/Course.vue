@@ -56,14 +56,13 @@
 
     async mounted() {
       await this.getColumnDetail(this.$route.params.courseId);
-      let self = this;
-      // setTimeout(() => {
-      //     // 滚动
-      //     self.$refs.courseMain.addEventListener('scroll', self.dispatchScroll, false);
-      //     // 埋点
-      //     window.monitor && window.monitor.showLog(self);
-      //   }, 100);
-
+      const msg = {
+        title: '一修读书', // 分享标题
+        desc: '在这里发现更好的自己', // 分享描述
+        link: window.location.href, // 分享链接 默认以当前链接
+        imgUrl: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
+      }
+      this.wxShare(msg)
     },
     filters: {
       // 时长
@@ -119,15 +118,15 @@
 
 
         this.setTitle(this.detailObj.title)
-        const msg = {
-          title: obj.title,
-          desc: obj.subTitle,
-          link: window.location.href,
-          imgUrl: obj.lateralCover || obj.verticalCover ||
-            'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
-        }
+        // const msg = {
+        //   title: obj.title,
+        //   desc: obj.subTitle,
+        //   link: window.location.href,
+        //   imgUrl: obj.lateralCover || obj.verticalCover ||
+        //     'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
+        // }
 
-        this.wxShare(msg)
+        // this.wxShare(msg)
       },
       async getPay() {
         let obj = await order.buy(this.detailObj.id, 1)

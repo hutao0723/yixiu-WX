@@ -54,6 +54,7 @@
         link: window.location.href, // 分享链接 默认以当前链接
         imgUrl: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
       }
+          this.wxShare(msg)
     },
     computed: {
       ...mapState({})
@@ -82,7 +83,6 @@
               item['navActive'] = 0;
             }
           })
-          self.wxShare(false)
           self.setTitle('一修读书')
         
         })
