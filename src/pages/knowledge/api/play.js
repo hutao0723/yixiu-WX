@@ -83,7 +83,6 @@ export default class play extends base {
    */
   static async startAudio(columnId,courseId,action) {
     store.commit('play');
-    // if (courseId && store.getters.getAudioInfo.powerLevel && store.getters.getAudioInfo.price) this.syncProgress(columnId,courseId,store.getters.getCurrentTime)
     let audio = {};
     if ( action === 'init') audio =  await this.audioInit(columnId, courseId);
     if ( action === 'next') audio =  await this.audioNext(columnId, courseId);
