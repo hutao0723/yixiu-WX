@@ -1,5 +1,6 @@
 <template>
   <div class="column-main" ref='columnMain'>
+    <div class="page-test">
     <div class="page-header" :monitor-log="getMonitor()">
       <div class="header-img" v-show="detailObj.lateralCover" :style="{backgroundImage: `url(${detailObj.lateralCover})`}"></div>
       <div class="header-img-small" v-show="!detailObj.lateralCover&&detailObj.verticalCover" :style="{backgroundImage: `url(${detailObj.verticalCover})`}"></div>
@@ -36,19 +37,20 @@
           </i>
           <i class="iconfont icon-play" v-else>&#xe617;</i>
           <span class="item-title">
-            <span class="item-audition" v-if="item.watchable  == 1 && detailObj.powerLevel == 0 && item.price > 0">试听</span>
+            <span class="item-audition" v-if="item.watchable  == 1 && detailObj.powerLevel == 0 && detailObj.price > 0">试听</span>
             <span :class="{active:audio.courseId == item.id}">{{item.title}}</span>
           </span>
           <span class="item-time">
             <i class="iconfont icon-time">&#xe62d;</i>{{item.timeLength | formatTime}}
           </span>
           <span class="item-date">{{item.publishTime | formatDate}}</span>
-          <i class="iconfont icon-ispay" v-show="item.powerLevel == 0 && item.price > 0 && item.watchable  == 0">&#xe60c;</i>
+          <i class="iconfont icon-ispay" v-show="detailObj.powerLevel == 0  && item.watchable  == 0 ">&#xe60c;</i>
         </div>
       </div>
     </div>
     <div class="page-content" v-show="tabActive">
       <div v-html="detailObj.detail"></div>
+    </div>
     </div>
     <div class="page-btn" v-if="btnActive != 2">
       <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" @click.stop="playClick(detailObj.id, '', true)">免费试听</a>
@@ -202,25 +204,44 @@
 <style lang="less">
   @import "../assets/style/base/util";
   @rem: 75rem;
-  .column-main {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    /* overflow-x: hidden;
-    overflow-y: auto; */
+  body {
+    overflow: scroll;
     -webkit-overflow-scrolling: touch;
+  }
+
+  #app {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .course-main {
+    position: relative;
+    height: 100%;
   }
 
   .page-content {
     padding-bottom: 120/@rem;
     background: #fff;
+    /* position: relative;  */
     img {
       width: 100% !important;
-      -webkit-overflow-scrolling: touch !important;
+
+
     }
-    div {
-      -webkit-overflow-scrolling: touch !important;
+  }
+
+  .page-test {
+    height: 100%;
+    overflow: scroll;
+  }
+
+  .page-content {
+    padding-bottom: 120/@rem;
+    background: #fff;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    img {
+      width: 100% !important;
     }
   }
 
@@ -329,6 +350,7 @@
   .list-content {
     padding-bottom: 120/@rem;
     margin: 0 30/@rem;
+    
     .item {
       height: 157/@rem;
       position: relative;

@@ -1,23 +1,27 @@
 <template>
   <div class="course-main" ref='courseMain'>
-    <div class="page-header" :monitor-log="getMonitor()">
-      <div class="header-img" v-show="detailObj.lateralCover" :style="{backgroundImage: `url(${detailObj.lateralCover})`}"></div>
-      <div class="header-img-small" v-show="!detailObj.lateralCover&&detailObj.verticalCover" :style="{backgroundImage: `url(${detailObj.verticalCover})`}"></div>
-      <div class="header-img" v-show="!detailObj.lateralCover&&!detailObj.verticalCover" :style="{backgroundImage: `url('//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
-      <div class="header-name-bg"></div>
-      <div class="header-name">
-        <span v-if="detailObj.price>0">{{detailObj.buyTimes}}人已购</span>
-        <span v-else>{{detailObj.playTimes}}人已听</span>
-        <span> | 时长{{detailObj.timeLength | formatTimeText}}</span>
+    <div class="page-test">
+
+      <div class="page-header">
+        <div class="header-img" v-show="detailObj.lateralCover" :style="{backgroundImage: `url(${detailObj.lateralCover})`}"></div>
+        <div class="header-img-small" v-show="!detailObj.lateralCover&&detailObj.verticalCover" :style="{backgroundImage: `url(${detailObj.verticalCover})`}"></div>
+        <div class="header-img" v-show="!detailObj.lateralCover&&!detailObj.verticalCover" :style="{backgroundImage: `url('//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
+        <div class="header-name-bg"></div>
+        <div class="header-name">
+          <span v-if="detailObj.price>0">{{detailObj.buyTimes}}人已购</span>
+          <span v-else>{{detailObj.playTimes}}人已听</span>
+          <span> | 时长{{detailObj.timeLength | formatTimeText}}</span>
+        </div>
+      </div>
+      <div class="page-title">
+        <div class="title-main">{{detailObj.title}}</div>
+        <div class="title-sub">{{detailObj.subTitle}}</div>
+      </div>
+      <div class="page-content" v-show="tabActive">
+        <div v-html="detailObj.detail" v-cloak></div>
       </div>
     </div>
-    <div class="page-title">
-      <div class="title-main">{{detailObj.title}}</div>
-      <div class="title-sub">{{detailObj.subTitle}}</div>
-    </div>
-    <div class="page-content" v-show="tabActive">
-      <div v-html="detailObj.detail"></div>
-    </div>
+
     <div class="page-btn">
       <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" @click.stop="playClick('', detailObj.id, true)">免费试听</a>
       <a href="javascript:void(0)" class="btn-small btn" v-if="btnActive == 1" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
@@ -59,7 +63,7 @@
       //     // 埋点
       //     window.monitor && window.monitor.showLog(self);
       //   }, 100);
-      
+
     },
     filters: {
       // 时长
@@ -88,11 +92,11 @@
     },
     methods: {
       // 获取monitor
-      getMonitor(id,type,area) {
+      getMonitor(id, type, area) {
 
         // item tabindex dpmc
         return JSON.stringify({
-          'dcm': '8001.'+ id + type?type:0 + '0',
+          'dcm': '8001.' + id + type ? type : 0 + '0',
           'dpm': 'appId.801' + area,
         });
       },
@@ -113,8 +117,8 @@
         }
         this.detailObj = obj
 
-        
-      this.setTitle(this.detailObj.title)
+
+        this.setTitle(this.detailObj.title)
         const msg = {
           title: obj.title,
           desc: obj.subTitle,
@@ -129,13 +133,13 @@
         let obj = await order.buy(this.detailObj.id, 1)
       },
       // 触发滚动
-      dispatchScroll () {
+      dispatchScroll() {
         this.mainScrollTop = this.$refs.courseMain.scrollTop;
         // console.log(this.$refs.homeMain.scrollTop)
         window.monitor && window.monitor.showLog(this);
       }
     },
-    beforeDestroy () {
+    beforeDestroy() {
       this.$refs.courseMain.removeEventListener('scroll', this.dispatchScroll, false);
     },
     components: {
@@ -148,27 +152,35 @@
 <style lang="less">
   @import "../assets/style/base/util";
   @rem: 75rem;
-  .course-main {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    // overflow-x: hidden;
-    // overflow-y: auto;
+  body {
+    overflow: scroll;
     -webkit-overflow-scrolling: touch;
-    z-index: 1000
+  }
+
+  #app {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .course-main {
+    position: relative;
+    height: 100%;
   }
 
   .page-content {
     padding-bottom: 120/@rem;
     background: #fff;
+    /* position: relative;  */
     img {
       width: 100% !important;
-      // -webkit-overflow-scrolling: touch !important;
+
+
     }
-    div {
-      // -webkit-overflow-scrolling: touch !important;
-    }
+  }
+
+  .page-test {
+    height: 100%;
+    overflow: scroll;
   }
 
   .page-header {
@@ -348,6 +360,7 @@
     left: 0;
     text-align: center;
     background: #fff;
+    z-index: 9999;
     .btn {
       .pos(388, 22);
       .size(332, 76);
