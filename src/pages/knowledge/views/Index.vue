@@ -22,9 +22,6 @@ export default {
   mounted() {
     this.wxShare(false);
   },
-  beforeDestroy () {
-    // store.commit('pause')
-  }
 };
 </script>
 

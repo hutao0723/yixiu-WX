@@ -52,7 +52,6 @@
     created() {
     },
     mounted() {
-      this.wxShare(false)
       this.renderTemplatePage();
     },
     methods: {
@@ -77,15 +76,6 @@
             }
           })
           self.setTitle(self.params.navigation.pageTitle)
-          // self.loaded();
-          console.log(self.components, `[template] render template page success`)
-          // 埋点
-          // setTimeout(() => {
-          //     // 滚动
-          //     self.$refs.homeMain.addEventListener('scroll', self.dispatchScroll, false);
-          //     // 埋点
-          //     window.monitor && window.monitor.showLog(self);
-          //   }, 100);
         })
       },
       // 触发滚动

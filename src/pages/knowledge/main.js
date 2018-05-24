@@ -67,23 +67,7 @@ Vue.prototype.setTitle = function (t) {
 }
 
 Vue.prototype.wxShare = function (msg) {
-  // var link  = encodeURIComponent(link);
-  // const url = encodeURIComponent(location.href.split('#')[0]);// 当前url
-  // const url = encodeURIComponent(window.location.href.split('#')[0]);
-  // const url = location.href.split('#')[0];
 
-  let obj = {}
-  if (!msg) {
-    obj = {
-      title: '一修读书', // 分享标题
-      desc: '在这里发现更好的自己', // 分享描述
-      link: 'http://k.youfen666dev.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
-      imgUrl: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
-    }
-  } else {
-    obj = msg
-  }
-  console.log(obj)
   const urlData = `/wechat/getJsapiSignature`;
   const url = location.href.split("#")[0];
 
@@ -106,33 +90,25 @@ Vue.prototype.wxShare = function (msg) {
       // 所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，
       // 则可以直接调用，不需要放在ready函数中。
       wx.onMenuShareAppMessage({ // 分享给朋友
-        title: obj.title, // 分享标题
-        desc: obj.desc, // 分享描述
-        link: obj.link, // 分享链接 默认以当前链接
-        imgUrl: obj.imgUrl, // 分享图标
+        title: msg.title || '一修读书', // 分享标题
+        desc: msg.desc || '在这里发现更好的自己', // 分享描述
+        link: msg.link || 'http://k.youfen666dev.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
+        imgUrl: msg.imgUrl || 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
         // 用户确认分享后执行的回调函数
         success: function () {
 
         },
-        // 用户取消分享后执行的回调函数
-        cancel: function () {
-          console.log('分享到朋友取消');
-        }
       });
       //分享到朋友圈
       wx.onMenuShareTimeline({
-        title: msg.title, // 分享标题
-        desc: msg.desc, // 分享描述
-        link: msg.link, // 分享链接 默认以当前链接
-        imgUrl: msg.imgUrl, // 分享图标
+        title: msg.title || '一修读书', // 分享标题
+        desc: msg.desc || '在这里发现更好的自己', // 分享描述
+        link: msg.link || 'http://k.youfen666dev.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
+        imgUrl: msg.imgUrl || 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
         // 用户确认分享后执行的回调函数
         success: function () {
 
         },
-        // 用户取消分享后执行的回调函数
-        cancel: function () {
-          console.log('分享到朋友圈取消');
-        }
       });
     });
   });
