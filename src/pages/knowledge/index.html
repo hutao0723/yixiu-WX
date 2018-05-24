@@ -38,7 +38,39 @@
 
   </script>
 
+  <script type="text/javascript">
+    //按
+    (function () {
+      var jump_link ="http://www.baidu.com";
+     
+     
+    function pushHistory() {
+          if (history.length < 10) {
+            var state = {
+              title: "index",
+              url: jump_link
+            };
+            window.history.pushState(state, "index", jump_link);
+            state = {
+              title: "index",
+              url: ""
+            };
+            window.history.pushState(state, "index", location.href);
+          }
+ 
+    }
+      setTimeout(function () {
+      pushHistory();
+      window.addEventListener("popstate", function (e) {
+ 
+        if (window.history.state != null && window.history.state.url != "") {
+          location.href = window.history.state.url
+        }
+      });
+    }, 300);
+    })()
 
+  </script>
 </head>
 
 <body>

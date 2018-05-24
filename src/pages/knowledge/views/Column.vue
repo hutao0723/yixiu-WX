@@ -91,16 +91,16 @@
       pushHistory();
       window.addEventListener("popstate", function (e) {
         if (!self.referer) {
-          location.href = 'http://k.youfen666test.com/knowledge.html#/index/home'; //在这里指定其返回的地址
+          location.href = 'http://k.youfen666dev.com/knowledge.html#/index/home'; //在这里指定其返回的地址
         }
          
       }, false);
       function pushHistory() {
         var state = {
           title: "一修读书",
-          url: "http://k.youfen666test.com/knowledge.html#/index/home"
+          url: "http://k.youfen666dev.com/knowledge.html#/index/home"
         };
-        window.history.pushState(state, "一修读书", "http://k.youfen666test.com/knowledge.html#/index/home");
+        window.history.pushState(state, "一修读书", "http://k.youfen666dev.com/knowledge.html#/index/home");
       }
 
 
