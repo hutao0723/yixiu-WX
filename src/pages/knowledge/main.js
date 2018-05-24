@@ -73,13 +73,16 @@ Vue.prototype.wxShare = function (msg) {
   // const url = encodeURIComponent(window.location.href.split('#')[0]);
   // const url = location.href.split('#')[0];
 
+  let obj = {}
   if (!msg) {
-    msg = {
+    obj = {
       title: '一修读书', // 分享标题
       desc: '在这里发现更好的自己', // 分享描述
       link: 'http://k.youfen666dev.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
       imgUrl: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
     }
+  }else{s
+    obj = msg
   }
   const urlData = `/wechat/getJsapiSignature`;
   const url = location.href.split("#")[0];
