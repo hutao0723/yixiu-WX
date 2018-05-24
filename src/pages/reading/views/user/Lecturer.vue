@@ -12,6 +12,7 @@
 <script>
 import { mapState } from 'vuex';
 import bnav from '../../components/basic/Nav';
+import user from '../../api/user';
 export default {
   components: {
     bnav
@@ -28,9 +29,15 @@ export default {
   },
   created() {
     },
-  mounted () {
+  async mounted () {
+    await this.getLecturerInfo();
   },
   methods: {
+    async getLecturerInfo (){
+      let objs = await user.getLecturer(1);
+      this.name = objs.name;
+      this.codeUrl = objs.codeUrl;
+    }
   }
 };
 </script>

@@ -91,9 +91,9 @@ export default {
       imageUrl: 'https://yun.dui88.com/yoofans/images/201804/miniapp/help-center.png',
       personname: '哈哈',
 
-      day: 13,
-      minute: 120,
-      book: 14,
+      day: 0,
+      minute: 0,
+      book: 0,
       time: "分钟",
       recommendUrl: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=768904644,500415380&fm=27&gp=0.jpg'
     };

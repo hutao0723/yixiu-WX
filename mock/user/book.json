@@ -1,0 +1,27 @@
+{
+    "success": true,
+    "data": {
+        "content":[
+            {   
+                "id":1,
+                "bookUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
+                "bookName": "今天的网红经济今天的网红经济今天的网红经济"
+            },
+            {
+                "id":2,
+                "bookUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
+                "bookName": "今天的网红经济今天的网红经济今天的网红经济"
+            },
+            {
+                "id":3,
+                "bookUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
+                "bookName": "今天的网红经济今天的网红经济今天的网红经济"
+            },
+            { 
+                "id":1,
+                "bookUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
+                "bookName": "今天的网红经济今天的网红经济今天的网红经济"
+            }
+          ]
+    }
+}

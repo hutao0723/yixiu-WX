@@ -15,6 +15,31 @@ var setOnline = [
     name: 'number',
     type: 'get',
     url: '/user/getNumberInfo'
+  },
+  { 
+    name: 'journeyList',
+    type: 'get',
+    url: '/user/getJourneyList'
+  },
+  { 
+    name: 'journeyList',
+    type: 'get',
+    url: '/user/getThumbUp'
+  },
+  { 
+    name: 'lecturer',
+    type: 'get',
+    url: '/user/getLecturer'
+  },
+  { 
+    name: 'swiper',
+    type: 'get',
+    url: '/user/getSwipeList'
+  },
+  { 
+    name: 'book',
+    type: 'get',
+    url: '/user/getBookList'
   }
 ];
 

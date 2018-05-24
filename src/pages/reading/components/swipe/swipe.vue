@@ -3,11 +3,10 @@
     <div class="mint-swipe-items-wrap" ref="wrap">
       <slot></slot>
     </div>
-    <div class="mint-swipe-indicators" v-show="showIndicators">
-      <div class="mint-swipe-indicator"
-           v-for="(page, $index) in pages"
-           :class="{ 'is-active': $index === index }"></div>
-    </div>
+    <!-- <div class="mint-swipe-indicators" v-show="showIndicators">
+      <div class="mint-swipe-indicator"  v-for="(page, $index) in pages" :class="{ 'is-active': $index === index }">
+      </div>
+    </div> -->
   </div>
 </template>
 
@@ -206,6 +205,8 @@
             addClass(newPage, 'is-active');
 
             this.index = newIndex;
+            this.$emit("indexChange",newIndex) 
+            
           }
 
           if (prevPage) {
@@ -401,13 +402,13 @@
     mounted () {
       this.ready = true;
 
-      if (this.auto > 0) {
-        this.timer = setInterval(() => {
-          if (!this.dragging && !this.animating) {
-            this.next();
-          }
-        }, this.auto);
-      }
+      // if (this.auto > 0) {
+      //   this.timer = setInterval(() => {
+      //     if (!this.dragging && !this.animating) {
+      //       this.next();
+      //     }
+      //   }, this.auto);
+      // }
 
       this.reInitPages();
 
@@ -457,7 +458,7 @@
     transform: translateZ(0)
   }
   .mint-swipe-item{
-    padding: 0 30/@rem;
+    padding: 0 30/@rem 0 36/@rem;
     display: inline-block;
     box-sizing: border-box;
   }

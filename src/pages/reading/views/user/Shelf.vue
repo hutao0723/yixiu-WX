@@ -1,62 +1,14 @@
 <template>
   <div>
     <div class="shelf-main" >
-      <div v-for="(item, index) in components">
-        <SwiperBar :param.sync="item" />
+      <div v-for="(item, index) in swipeList">
+        <SwiperBar :param.sync="item" @newSwiperIndex="success"/>
       </div>
-      <div class="book-table">
+      <div class="book-table" v-for="(item, index) in bookList">
         <div class="book-cover">
-          <img :src="bookUrl">
+          <img :src="item.bookUrl">
         </div>
-        <div class="book-name line2">《{{bookName}}》</div>
-      </div>
-      <div class="book-table">
-        <div class="book-cover">
-          <img :src="bookUrl">
-        </div>
-        <div class="book-name line2">《{{bookName}}》</div>
-      </div>
-      <div class="book-table">
-        <div class="book-cover">
-          <img :src="bookUrl">
-        </div>
-        <div class="book-name line2">《{{bookName}}》</div>
-      </div>
-      <div class="book-table">
-        <div class="book-cover">
-          <img :src="bookUrl">
-        </div>
-        <div class="book-name line2">《{{bookName}}》</div>
-      </div>
-      <div class="book-table">
-        <div class="book-cover">
-          <img :src="bookUrl">
-        </div>
-        <div class="book-name line2">《{{bookName}}》</div>
-      </div>
-      <div class="book-table">
-        <div class="book-cover">
-          <img :src="bookUrl">
-        </div>
-        <div class="book-name line2">《{{bookName}}》</div>
-      </div>
-      <div class="book-table">
-        <div class="book-cover">
-          <img :src="bookUrl">
-        </div>
-        <div class="book-name line2">《{{bookName}}》</div>
-      </div>
-      <div class="book-table">
-        <div class="book-cover">
-          <img :src="bookUrl">
-        </div>
-        <div class="book-name line2">《{{bookName}}》</div>
-      </div>
-      <div class="book-table">
-        <div class="book-cover">
-          <img :src="bookUrl">
-        </div>
-        <div class="book-name line2">《{{bookName}}》</div>
+        <div class="book-name line2">《{{item.bookName}}》</div>
       </div>
     </div>
   </div>
@@ -66,6 +18,7 @@
 <script>
 import { mapState } from 'vuex';
 import SwiperBar from '../../components/layout/swiper_bar';
+import user from '../../api/user';
 
 export default {
   components: {
@@ -76,22 +29,8 @@ export default {
       data: {},
       bookUrl: "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
       bookName: "今天的网红经济今天的网红经济今天的网红经济",
-      components: {
-        tabs: [
-            {
-                "pictureUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
-                "title": "30天读书魔鬼训练营",
-                "journey": 102,
-                "content": "读书是通往梦想的一个途径，读一本好书，让我们 得以明净如水，开阔视野，丰富阅历，益于人生。"
-            // },
-            // {
-            //     "pictureUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
-            //     "title": "30天读书魔鬼训练营",
-            //     "journey": 102,
-            //     "content": "读书是通往梦想的一个途径，读一本好书，让我们 得以明净如水，开阔视野，丰富阅历，益于人生。"
-            }
-          ]
-      }
+      swipeList: [],
+      bookList: []
     }
   },
   computed: {
@@ -99,9 +38,22 @@ export default {
   },
   created() {
     },
-  mounted () {
+  async mounted () {
+    await this.getSwipeInfo()
   },
   methods: {
+    async getSwipeInfo() {
+      let id = 1
+      let objs = await user.getSwipeList(id);
+      this.swipeList = [objs.content]
+    },
+    async success (index){
+      console.log(index)
+      // 往期书架id
+      let id = index
+      let objs = await user.getBookList(id);
+      this.bookList = objs.content
+    }
     
   }
 }

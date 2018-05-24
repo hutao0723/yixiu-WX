@@ -1,18 +1,21 @@
 <template>
   <div class="journey-main">
-    <div class="module">
-      <div class="date">{{dateTime}}</div>
+    <div class="module" v-for="(item, $index) in journeyList">
+      <div class="date">{{item.dateTime}}</div>
       <div class="text-box">
-        <div class="text-journal"><span>{{titleName}}</span>
+        <div class="text-journal"><span>{{item.titleName}}</span>
           <router-link :to="{ path: '/lecturer' }"><span class="look">查看证书></span></router-link>
         </div>
         <div class="text-container clearfix">
-          <div class="content">{{contentText}}</div>
-          <div class="clearfix book">
-            <div class="fl book-img"><img :src="imageUrl"></div>
+          <div class="container">
+            <div class="content" ref="cheight">{{item.contentText}}</div>
+            <div class="expand-collapse"></div>
+          </div>
+            <div class="clearfix book">
+            <div class="fl book-img"><img :src="item.imageUrl"></div>
             <div class="book-content">
-              <div class="book-title">《{{bookname}}》</div>
-              <div class="book-writer">{{writor}}</div>
+              <div class="book-title">《{{item.bookname}}》</div>
+              <div class="book-writer">{{item.writor}}</div>
             </div>
           </div>
           <div class="row operate fr">
@@ -20,40 +23,10 @@
               <i class="iconfont icon-help"></i>
             </div>
             <div class="row">
-              <span class="operate-num">{{number}}</span>
+              <span class="operate-num">{{item.number}}</span>
             </div>
-            <div class="column-center">
-              <i class="iconfont zan icon-help"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="module">
-      <div class="date">{{dateTime}}</div>
-      <div class="text-box">
-        <div class="text-journal"><span>{{titleName}}</span>
-          <router-link :to="{ path: '/lecturer' }"><span class="look">查看证书></span></router-link>
-        </div>
-        <div class="text-container clearfix">
-          <div class="content">{{contentText}}</div>
-          <div class="letter">全部/收起</div>
-          <div class="clearfix book">
-            <div class="fl book-img"><img :src="imageUrl"></div>
-            <div class="book-content">
-              <div class="book-title">《{{bookname}}》</div>
-              <div class="book-writer">{{writor}}</div>
-            </div>
-          </div>
-          <div class="row operate fr">
-            <div class="column-center operate-share">
-              <i class="iconfont icon-help"></i>
-            </div>
-            <div class="row">
-              <span class="operate-num">{{number}}</span>
-            </div>
-            <div class="column-center">
-              <i class="iconfont  icon-help"></i>
+            <div class="column-center" @click="thumbsUp(item.zanStatus)">
+              <i class="iconfont icon-help" :class="(item.zanStatus === 0) ? '':'zan' "></i>
             </div>
           </div>
         </div>
@@ -64,29 +37,55 @@
 
 <script>
 import { mapState } from 'vuex';
+import user from '../../api/user';
 export default {
   components: {
   },
   data () {
     return {
       data: {},
-      dateTime: '2018.05.20',
-      titleName: "100天魔鬼读书训练营36期毕业",
-      contentText: "我们曾经都是文艺青年，而原来文艺青年们，现在都已经不玩儿憔悴了。所以她有圆圆脸，我有小肚腩。以为拼尽全力，就能杀进红尘，但从前我们不知道，红是世界的，尘是自己的，没有阳光的季节。 ",
-      imageUrl: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=768904644,500415380&fm=27&gp=0.jpg',
-      bookname: "追风筝的人",
-      writor: "卡勒德·胡赛尼",
-      number: 16
+      contentHeight: 130,
+      journeyList:[
+        {
+          "dateTime": '2018.05.20',
+          "titleName": "100天魔鬼读书训练营36期毕业",
+          "contentText": "我们曾经都是文艺青年，而原来文艺青年们，现在都已经不玩儿憔悴了。所以她有圆圆脸，我有小肚腩。以为拼尽全力，就能杀进红尘，但从前我们不知道，红是世界的，尘是自己的，没有阳光的季节。 ",
+          "imageUrl": 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=768904644,500415380&fm=27&gp=0.jpg',
+          "bookname": "追风筝的人",
+          "writor": "卡勒德·胡赛尼",
+          "number": 16
+        }
+      ]
     };
   },
   computed: {
     ...mapState({})
   },
   created() {
-    },
-  mounted () {
+  },
+  async mounted () {
+    await this.getJourneyInfo();
+    this.showAll();
+    // this.init();
   },
   methods: {
+    async getJourneyInfo (){
+      let objs = await user.getJourneyList(1);
+      this.journeyList = objs.content;
+    },
+    async thumbsUp(status) {
+      let objs = await user.getThumbUp(status);
+      this.journeyList = objs.content;
+    },
+    init() {  
+      // const self = this;  
+      // this.journeyList.forEach(item=>{
+      //   item['checked'] = true;
+      // })
+    },
+    showAll() {
+      
+    }
   }
 };
 </script>
@@ -146,7 +145,7 @@ export default {
         .fontSize(30);
         line-height: 42/@rem;
         letter-spacing: 1/@rem;
-        max-height: 130/@rem;
+        //max-height: 130/@rem;
         overflow: hidden;
         &:first-letter{
           .fontSize(44)
@@ -157,6 +156,41 @@ export default {
         color: #4A669D;
         padding-top: 14/@rem;
       }
+      // .collapse .content::after{
+      //       content: ' ... ';
+      //       position: absolute;
+      //       right: 0;
+      //       bottom: 0;
+      //       background: linear-gradient(to right, transparent, #ffffff 50%);
+      //       padding-left: 20px;
+      //   }
+
+        .collapse .expand-collapse::after{
+            content: '展开';
+            display: block;
+            color: #4A669D;
+            width: 100%;
+            text-align: left;
+            .fontSize(26);
+            margin-top: 10/@rem;
+        }
+
+        .expand .expand-collapse::after{
+            content: '收缩';
+            display: block;
+            color: #4A669D;
+            width: 100%;
+            text-align: left;
+            .fontSize(26);
+            margin-top: 10/@rem; 
+        }
+
+        .collapse .content{
+            overflow: hidden;
+            height: 130/@rem;
+            padding: 0;
+            margin: 0;
+        }
       .book{
         margin-top: 16/@rem;
         border-top: 1/@rem solid #D6D6D6;

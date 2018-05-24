@@ -1,6 +1,6 @@
 <template>
   <div class="swiper-bar">
-    <Swipe class="index_banner my-swipe">
+    <Swipe class="index_banner my-swipe" @indexChange='newChangeSwiper'>
       <swipeItem v-for="(item, index) in param"  class="slide" :class="'slide' + index">
         <a href="javascript:;" class="swiper-train">
           <div class="journal">
@@ -19,6 +19,11 @@
   import router from '../../mixins/router';
   import { Swipe, SwipeItem } from '../swipe';
   export default {
+    data () {
+    return {
+      
+    };
+  },
     components: {
       Swipe,
       SwipeItem
@@ -26,9 +31,21 @@
     props: {
       param: Array
     },
+    mounted () {
+      this.newChangeSwiper()
+    },
     methods: {
       success(item) {
         console.log(item);
+      },
+      
+      newChangeSwiper(index){
+        if(index == undefined){
+          index = 0
+        }
+        if (this.param && this.param.length){
+          this.$emit("newSwiperIndex",this.param[index].id)
+        }
       }
     },
     mixins: [router]
@@ -40,7 +57,7 @@
 @import '../../less/icon';
   .swiper-bar{
     height: 260/@rem;
-    width: 730/@rem;
+    // width: 730/@rem;
     border-radius:10/@rem;
   }
   .swiper-train{
