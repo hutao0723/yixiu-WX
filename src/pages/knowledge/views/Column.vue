@@ -213,7 +213,7 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  .course-main {
+  .column-main {
     position: relative;
     height: 100%;
   }
