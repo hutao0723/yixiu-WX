@@ -88,6 +88,10 @@
     mounted() {
       this.getColumnDetail(this.$route.params.columnId)
       this.getColumnList(this.$route.params.columnId)
+
+      if (this.$route.params.isbuy) {
+        this.tabActive = false
+      }
     },
     filters: {
       // 时长
@@ -126,6 +130,18 @@
           'dcm': '8001.' + id + type ? type : 0 + '0',
           'dpm': 'appId.801' + area,
         });
+      },
+      playAudio(obj) {
+        // 专栏已购买
+        if (this.detailObj.powerLevel == 1) {
+          playClick(this.detailObj.id, obj.id, false)
+        } else if (obj.watchable > 0) {
+          // 未购买并可试听
+          this.playClick(this.detailObj.id, obj.id, true)
+        } else {
+          // 未购买并不可试听
+          this.getPay()
+        }
       },
       // 获取详情
       async getColumnDetail(id) {
@@ -194,9 +210,9 @@
 <style lang="less">
   @import "../assets/style/base/util";
   @rem: 75rem;
-  
 
-  
+
+
 
   .column-main {
     overflow: scroll;
@@ -350,7 +366,7 @@
         border-radius: 50%;
         background: #AAAAAA;
       }
-      .icon-bgred{
+      .icon-bgred {
         background: #ff3e44;
       }
       .icon-svn {
