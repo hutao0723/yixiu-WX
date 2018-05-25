@@ -180,7 +180,7 @@ export default {
         width: 360/@rem;
         height: 468/@rem;
         display: block;
-        margin: 40/@rem auto 0;
+        margin: 60/@rem auto 0;
         box-shadow: -5/@rem 0/@rem 10/@rem 4/@rem rgba(225,225,225,0.5);
         border-radius: 10/@rem;
       }
@@ -197,6 +197,7 @@ export default {
         text-align: center;
         display: block;
         bottom: 45/@rem;
+        font-weight: bold;
       }
     }
     .controler{
@@ -282,7 +283,7 @@ export default {
           border: none;
           .iconfont{
             width: 36/@rem;
-            height: 36/@rem;
+            height: 16/@rem;
             font-size: 36/@rem;
             color: #666666;
           }

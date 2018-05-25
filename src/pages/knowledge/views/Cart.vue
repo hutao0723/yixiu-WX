@@ -14,7 +14,7 @@
           <span class="red mr20">{{item.playbackProgress && item.timeLength ? (item.percent + '%') : '未收听'}}</span>{{item.timeLengthText}}
         </span>
         <a href="javascript:void(0)" class="item-btn" @click.stop="playClick(item.columnId, item.courseId, false)">
-          <i class="iconfont icon-play"></i>播放</a>
+          <i class="iconfont icon-bofang2"></i>播放</a>
       </div>
     </div>
     <div class="page-none" v-show="noData">
@@ -155,7 +155,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         width: 450/@rem;
-
+        font-weight: bold;
       }
       .item-sub {
         .pos(235, 77);
@@ -190,7 +190,7 @@
       }
       .item-btn {
         .size(100, 40);
-        .text(24, 40);
+        .text(28, 40);
         text-align: center;
         border-radius: 45/@rem;
         color: #FF464A;
@@ -199,6 +199,9 @@
         right: 0;
         bottom: 35/@rem;
       }
+      .iconfont{
+          font-size: 28/@rem;
+        }
     }
   }
 

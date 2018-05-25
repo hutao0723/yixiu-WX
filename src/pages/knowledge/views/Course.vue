@@ -213,6 +213,7 @@
     padding: 30/@rem 24/@rem;
     .title-main {
       font-size: 34/@rem;
+      font-weight: bold;
       line-height: 48/@rem;
       max-height: 96/@rem;
       color: #333;

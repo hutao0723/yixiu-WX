@@ -3,12 +3,12 @@
     <div class="main-box row-between title-padding" v-if="param.layout === 'BASE'" @click="routeByBlockAction(param)" :monitor-log="getMonitor()">
       <span class="xxxl hard weight">{{param.titleName}}</span>
       <div class=" row-center" v-if="param.subTitle">
-        <span class="nm weak row-center">{{param.subTitle}}</span>
+        <span class="nm weak row-center mr10">{{param.subTitle}}</span>
         <div class="column-center"><i class="iconfont icon-more "></i></div>
       </div>
     </div>
     <div class="main-box row-center border-more" v-if="param.layout == 'CENTER' && param.subTitle" @click="routeByBlockAction(param)" :monitor-log="getMonitor()">
-      <span class="nm weak row-center">{{param.subTitle || ''}}</span>
+      <span class="nm weak row-center mr10">{{param.subTitle || ''}}</span>
       <div class="column-center"><i class="iconfont icon-more "></i></div>
     </div>
   </div>
