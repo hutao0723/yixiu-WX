@@ -75,6 +75,7 @@
     .goods-image{
       width: 100%;
       height: 230/@rem;
+      pointer-events: none;
     }
     .main-box{
       width: 100%;
