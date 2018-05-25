@@ -1,9 +1,9 @@
 <template>
   <div class="home-main" ref="homeMain">
 
-    <div class="home-tab">
+    <div class="home-tab clearfix">
       <div class="item">
-        <span>简介</span>
+        <span class="active">简介</span>
       </div>
       <div class="item">
         <span>课程</span>
@@ -13,7 +13,7 @@
     <div class="home-review">
       <h2>学员观点</h2>
       <div class="item" v-for="(item,index) in reviewList" :key="index">
-        <img :src="item.headerImg" alt="" class="book-header">
+        <img :src="item.headerImg" alt="" class="item-header">
         <div class="item-name">{{item.name}}</div>
         <div class="item-periods">{{item.periods}}</div>
         <div class="item-content">{{item.content}}</div>
@@ -70,7 +70,7 @@
 <style lang="less">
   @import '../../less/variable';
   @import '../../less/util';
-  
+
   .home-main {
     width: 750/@rem;
     height: 100%;
@@ -81,22 +81,88 @@
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    padding-top: 20/@rem; // z-index: 9;
     background: #fff;
     font-size: 24/@rem;
     .icon-nav {
       height: 480/@rem;
       border: 1px solid #ccc;
     }
-    .home-tab{
-      .item{
+    .home-tab {
+      .item {
         width: 50%;
         float: left;
-        span{
-          .size(126,102)
-          .text()
+        text-align: center;
+        span {
+          .size(126, 102);
+          .text(44, 102);
+          display: inline-block;
+          text-align: center;
+          color: #bbb;
+        }
+        .active {
+          color: #333;
+          border-bottom: 6/@rem solid #333;
         }
       }
+    }
+    .home-review {
+      h2 {
+        .text(40, 120);
+        color: #333;
+        text-align: center;
+      }
+      .item{
+        position: relative;
+        height: 560/@rem;
+        .item-header{
+          .size(64,64);
+          .pos(30,40);
+          border-radius: 50%;
+          overflow: hidden;
+        }
+        .item-name{
+          .pos(118,36);
+          .text(30,42);
+          color: #333;
+          padding-right: 62/@rem;
+        }
+        .item-periods{
+          .pos(118,82);
+          .text(24,33);
+          color: #666;
+          padding-right: 62/@rem;
+        }
+        .item-content{
+          .pos(118,130);
+          font-size: 30/@rem;
+          line-height: 42/@rem;
+          color: #666;
+          padding-right: 62/@rem;
+        }
+        .item-book{
+          .size(596,148);
+          .pos(118,318);
+          position: relative;
+          background: #eee;
+          border-radius: 4/@rem;
+          .book-img{
+            .pos(30,13);
+            .size(80,112);
+            border: 5/@rem solid #fff;
+          }
+          .book-name{
+            .pos(120,25);
+            .text(30,42);
+            color: #555;
+          }
+          .book-author{
+            .pos(134,75);
+            .text(26,37);
+            color: #666;
+          }
+        }
+      }
+      
     }
   }
 
