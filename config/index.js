@@ -6,8 +6,9 @@ module.exports = {
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'assets',
-    assetsPublicPath: './',
+    assetsSubDirectory: 'knowledge',
+    assetsPublicPath: '//yun.dui88.com/yoofans/',
+    //yun.dui88.com/yoofans/konwledge
     productionSourceMap: false, // 设为true生成map可以作调试
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
@@ -28,9 +29,46 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/datainter/dataFillServlet': {
-            target: 'http://115.236.12.122:8080'
+      '/floor': {
+        // 测试环境
+        target: 'https://k.youfen666test.com',  // 接口域名
+        changeOrigin: true,  //是否跨域
+        // pathRewrite: {
+        //   '': ''   //需要rewrite重写的,
+        // }
+      },
+      '/api': {
+        // 测试环境
+        target: 'https://k.youfen666test.com',  // 接口域名
+        changeOrigin: true,  //是否跨域
+        pathRewrite: {
+          '/api': 'https://k.youfen666test.com'   //需要rewrite重写的,
         }
+      },
+      '/course': {
+        // 测试环境
+        target: 'https://k.youfen666test.com',  // 接口域名
+        changeOrigin: true,  //是否跨域
+        // pathRewrite: {
+        //   '': ''   //需要rewrite重写的,
+        // }
+      },
+      '/column': {
+        // 测试环境
+        target: 'https://k.youfen666test.com',  // 接口域名
+        changeOrigin: true,  //是否跨域
+        // pathRewrite: {
+        //   '': ''   //需要rewrite重写的,
+        // }
+      },
+      '/userItem': {
+        // 测试环境
+        target: 'https://k.youfen666test.com',  // 接口域名
+        changeOrigin: true,  //是否跨域
+        // pathRewrite: {
+        //   '': ''   //需要rewrite重写的,
+        // }
+      },
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

@@ -8,6 +8,28 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var env = config.build.env //{NODE_ENV: '"production"'}
 
+// ----- HtmlWebpackPlugin ----- //
+var glob = require('glob');
+var files = glob.sync('./src/pages/*/main.js');
+var pluginList = [];
+
+// 匹配入口文件
+files.forEach(function(f) {
+  var mainName = /.*\/(pages\/.*?\/main)\.js/.exec(f)[1]; // 得到pages/mobile/main.js这样的文件名
+  var mainPath = mainName.split('main')[0]; // 得到pages/mobile/这样的文件名
+  var fileName = mainPath.split('/')[1];
+
+  // HtmlWebpackPlugin 队列 - 负责插入js和css
+  var plug = new HtmlWebpackPlugin({
+    filename: fileName + '.html',
+    chunks: [fileName],
+    template: path.resolve(__dirname, '../src/' + mainPath + 'index.html'),
+    inject: true
+  });
+  // 插件
+  pluginList.push(plug);
+});
+
 var webpackConfig = merge(baseWebpackConfig, {//merge连接webpack基本配置与本文件的配置
   module: {
     rules: utils.styleLoaders({
@@ -18,8 +40,8 @@ var webpackConfig = merge(baseWebpackConfig, {//merge连接webpack基本配置�
   devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
     path: config.build.assetsRoot,
-    filename: utils.assetsPath('js/[name].[chunkhash].js'),
-    chunkFilename: utils.assetsPath('js/[name].[chunkhash].js')
+    filename: utils.assetsPath('js/[name].v1.js'),
+    chunkFilename: utils.assetsPath('js/[name].v1.js')
     // filename: utils.assetsPath('js/[name]_debug.js'), // debug 模式
     // chunkFilename: utils.assetsPath('js/[name]_debug.js') // debug 模式
   },
@@ -36,28 +58,29 @@ var webpackConfig = merge(baseWebpackConfig, {//merge连接webpack基本配置�
     }),
     // extract css into its own file
     new ExtractTextPlugin({
-      filename: utils.assetsPath('css/[name].[chunkhash].css')
+      filename: utils.assetsPath('css/[name].v1.css')
     }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
-    new HtmlWebpackPlugin({
-      filename: config.build.index,
-      template: 'index.html',
-      inject: true,
-      minify: {
-        removeComments: true
-        // collapseWhitespace: true
-        // removeAttributeQuotes: true
-        // more options:
-        // https://github.com/kangax/html-minifier#options-quick-reference
-      },
-      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: 'dependency'
-    }),
+    // new HtmlWebpackPlugin({
+    //   filename: config.build.index,
+    //   template: 'index.html',
+    //   inject: true,
+    //   minify: {
+    //     removeComments: true
+    //     // collapseWhitespace: true
+    //     // removeAttributeQuotes: true
+    //     // more options:
+    //     // https://github.com/kangax/html-minifier#options-quick-reference
+    //   },
+    //   // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+    //   chunksSortMode: 'dependency'
+    // }),
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
+      chunks: ['vendor'],
       minChunks: function (module, count) {
         // any required modules inside node_modules are extracted to vendor
         return (
@@ -75,7 +98,7 @@ var webpackConfig = merge(baseWebpackConfig, {//merge连接webpack基本配置�
       name: 'manifest',
       chunks: ['vendor']
     })
-  ]
+  ].concat(pluginList)
 })
 
 if (config.build.productionGzip) {

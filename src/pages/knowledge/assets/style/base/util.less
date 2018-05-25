@@ -1,0 +1,59 @@
+@rem: 75rem;
+
+//设置宽高
+.size(@width: 1, @height: 1) {
+  width: @width*1/@rem;
+  height: @height*1/@rem;
+}
+
+//设置背景图片
+.bgi(@src) {
+  background-image: url(@src);
+  background-repeat: no-repeat;
+  background-size: 100% 100%; 
+} 
+
+//设置段落
+.text(@fontsize, @height: @fontsize, @lineheight: @height) {
+  font-size: @fontsize*1/@rem;
+  height: @height*1/@rem;
+  line-height: @lineheight*1/@rem;
+}
+
+//清除浮动
+.clearfix {
+  &::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+//垂直水平居中
+.middle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.flexmiddle{
+  display: flex;
+            display: -webkit-flex;
+            align-items: center;
+}
+
+//水平居中
+.center{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+//绝对定位
+.pos(@left:1,@top:1){
+  position: absolute;
+  left: @left*1/@rem;
+  top: @top*1/@rem;
+}
+
+
+

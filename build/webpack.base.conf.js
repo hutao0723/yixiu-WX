@@ -20,10 +20,24 @@ if (process.env.NODE_ENV === 'production') {
   publicPath = config.dev.assetsPublicPath;
 }
 
+// ----- 动态查找所有入口entry文件 ----- //
+var glob = require('glob');
+var files = glob.sync('./src/pages/*/main.js');
+var entryList = {};
+
+// 匹配入口文件
+files.forEach(function(f) {
+  var mainName = /.*\/(pages\/.*?\/main)\.js/.exec(f)[1]; // 得到pages/mobile/main.js这样的文件名
+  var mainPath = mainName.split('main')[0]; // 得到pages/mobile/这样的文件名
+  var fileName = mainPath.split('/')[1];
+
+  // 记录入口文件
+  entryList[fileName] = f;
+});
+
+// './src/pages/knowledge/main.js'
 module.exports = {
-  entry: {
-    app: './src/main.js'
-  },
+  entry: entryList,
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -44,16 +58,16 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.(js|vue)$/,
-        // loader: 'happypack/loader?id=eslint',
-        loader: 'eslint-loader',
-        enforce: 'pre',
-        include: [resolve('src'), resolve('test')],
-        options: {
-          formatter: require('eslint-friendly-formatter')
-        }
-      },
+      // {
+      //   test: /\.(js|vue)$/,
+      //   // loader: 'happypack/loader?id=eslint',
+      //   loader: 'eslint-loader',
+      //   enforce: 'pre',
+      //   include: [resolve('src'), resolve('test')],
+      //   options: {
+      //     formatter: require('eslint-friendly-formatter')
+      //   }
+      // },
       {
         test: /\.vue$/,
         loader: 'vue-loader',

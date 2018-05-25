@@ -1,0 +1,14 @@
+{
+    "success": true,
+    "data": {
+        "id": 57,
+        "pageId": 1,
+        "titleName": "测试标题",
+        "componentType": "TITLE",
+        "fillType": "",
+        "linkType": 1,
+        "showTitle": 1,
+        "layout": "BASE",
+        "linkDataJson": {"publishTime":"2018-04-19 12:00:00","gmtModified":"2018-04-19 10:21:10","courseType":2,"address":{"name":"10003.mp3","url":"knowledge/1524104430807"},"playTimes":0,"gmtCreate":"2018-04-19 10:21:10","title":"434","lecturerId":1,"timeLength":43,"subTitle":"434","rate":1000,"price":12000,"freeTime":22,"buyTimes":0,"id":114,"status":0}
+    }
+}
