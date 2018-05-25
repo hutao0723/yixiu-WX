@@ -1,21 +1,21 @@
-<svg width="44" height="48" viewBox="0 0 44 100" xmlns="http://www.w3.org/2000/svg" fill="#fff">
+<svg width="44" height="64" viewBox="0 0 44 100" xmlns="http://www.w3.org/2000/svg" fill="#fff">
     <g transform="matrix(1 0 0 -1 0 80)">
-        <rect x="0" width="8" height="48" rx="3">
+        <rect x="0" width="12" height="64" rx="3">
             <animate attributeName="height"
                  begin="0s" dur="0.8s"
-                 values="48;32;16;32;48;" calcMode="linear"
+                 values="64;42;24;42;64;" calcMode="linear"
                  repeatCount="indefinite" />
         </rect>
-        <rect x="18" width="8" height="32" rx="3">
+        <rect x="18" width="12" height="42" rx="3">
             <animate attributeName="height"
                  begin="0s" dur="0.8s"
-                 values="32;48;32;16;32;" calcMode="linear"
+                 values="42;64;42;24;42;" calcMode="linear"
                  repeatCount="indefinite" />
         </rect>
-        <rect x="36" width="8" height="16" rx="3">
+        <rect x="36" width="12" height="24" rx="3">
             <animate attributeName="height"
                  begin="0s" dur="0.8s"
-                 values="16;32;48;32;16;" calcMode="linear"
+                 values="24;42;64;42;24;" calcMode="linear"
                  repeatCount="indefinite" />
         </rect>
     </g>

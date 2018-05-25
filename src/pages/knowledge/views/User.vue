@@ -5,11 +5,11 @@
           <img :src="imageUrl" class="info-icon" />
           <div class="info-text">{{username}}</div>
       </div>
-      <div class="mtr20 user-h110 row" >
+      <div class="mtr20 user-h110 row" @click="shareToggle = true">
         <div class="icon-box share column-center">
           <i class="iconfont icon-recom user-icon"></i>
         </div>
-        <div class="row ft32 ml30" @click="shareToggle = true">推荐给好友</div>
+        <div class="row ft32 ml30">推荐给好友</div>
       </div>
       <router-link :to="{ path: '/help' }">
         <div class="mtr20 user-h110 row">

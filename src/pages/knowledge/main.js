@@ -80,7 +80,7 @@ Vue.prototype.wxShare = function (msg) {
       link: 'http://k.youfen666dev.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
       imgUrl: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
     }
-  }else{s
+  }else{
     obj = msg
   }
   console.log(obj)

@@ -67,6 +67,7 @@
             item['timeLengthText'] = this.secondToDate(item.timeLength);
             let percent = Math.floor((+item.playbackProgress ? +item.playbackProgress : 0) / +item.timeLength * 100);
             item['percent'] = percent > 100 ? 100 : percent;
+            item.checkPower = true;
           });
           if (!this.cartList.length) {
             this.cartList = obj;
