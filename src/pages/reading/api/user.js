@@ -7,9 +7,12 @@ export default class user extends base {
    * 获取页面的数字信息
    */
   static async getNumber(userId) {
+    let params = {
+      userId: userId
+    }
     const url = `/user/getNumberInfo`;
     const res = await this.get(url, {
-      userId
+      params
     });
     return res.data.data;
   }
@@ -20,9 +23,9 @@ export default class user extends base {
   static async getJourneyList(id) {
     let params = {
         id: id
-      }
+    }
     const url = `/user/getJourneyList`;
-    const res = await this.get(url, params);
+    const res = await this.get(url, {params});
     return res.data.data;
   }
 
@@ -45,9 +48,13 @@ export default class user extends base {
    * 获取老师信息
    */
   static async getLecturer(id) {
+    let params = {};
+      params = {
+        id: id
+      }
     const url = `/user/getLecturer`;
     const res = await this.get(url, {
-      id
+      params
     });
     return res.data.data;
   }
@@ -56,9 +63,13 @@ export default class user extends base {
    * 获取banner
    */
   static async getSwipeList(id) {
+    let params = {};
+      params = {
+        id: id
+      }
     const url = `/user/getSwipeList`;
     const res = await this.get(url, {
-      id
+      params
     });
     return res.data.data;
   }

@@ -8,19 +8,12 @@
         </div>
         <div class="text-container clearfix">
           <div class="container">
-            <div class="content" ref="cheight">{{item.contentText}}</div>
-            <div class="expand-collapse"></div>
-          </div>
-          <!-- <section class="block">
-            <input type="checkbox">
-            <div class="case-block">
-              <div>展开</div>
-              <div>收起</div>
+            <div class="content" ref="cheight" :class="item.expand?'h131':''">{{item.contentText}}</div>
+            <div v-if="item.line"> 
+              <div class="letter" v-if="(item.letter == 1 )&& (item.expand)" @click.stop="handleChange(item)">全部</div>
+              <div class="letter" v-if="(item.letter == 2 )&& (!item.expand)" @click.stop="handleChange(item)">收起</div>
             </div>
-            <div class="detail">
-              <div>{{item.contentText}}</div>
-            </div> -->
-          </section>
+          </div>
           <div class="clearfix book">
             <div class="fl book-img"><img :src="item.imageUrl"></div>
             <div class="book-content">
@@ -35,7 +28,7 @@
             <div class="row">
               <span class="operate-num">{{item.number}}</span>
             </div>
-            <div class="column-center" @click="thumbsUp(item.zanStatus)">
+            <div class="column-center" @click.stop="thumbsUp(item)">
               <i class="iconfont icon-help" :class="(item.zanStatus === 0) ? '':'zan' "></i>
             </div>
           </div>
@@ -55,7 +48,8 @@ export default {
     return {
       data: {},
       // contentHeight: 130,
-      journeyList:[]
+      journeyList: [],
+      expandStatus: []
     };
   },
   computed: {
@@ -65,7 +59,6 @@ export default {
   },
   async mounted () {
     await this.getJourneyInfo();
-    this.showAll();
     this.init();
   },
   methods: {
@@ -73,19 +66,46 @@ export default {
       let objs = await user.getJourneyList(1);
       this.journeyList = objs.content;
     },
-    async thumbsUp(status) {
-      let objs = await user.getThumbUp(status);
-      this.journeyList = objs.content;
+    thumbsUp(row) {
+      // let objs = user.getThumbUp(row.ZanStatus);
+      // if(objs.success){
+      //   row.row.ZanStatus = !row.ZanStatus
+      // }
+      console.log("点赞")
+      
     },
     init() {  
-      // const self = this;  
-      // this.journeyList.forEach((item,index)=>{
-      //   this.$refs.cheight[0].getBoundingClientRect().height
-      // })
-      // console.log(this.$refs.cheight[0].getBoundingClientRect().height)
-    },
-    showAll() {
+      this.journeyList.forEach((item,index)=>{
+        let multiple = 750/document.body.clientWidth;
+        // 131为三行字体的高度
+        let originalOffsetY = 131/multiple;
+        let valueHeight = this.$refs.cheight[index].getBoundingClientRect().height;
+        if(valueHeight > originalOffsetY){
+          // line属性是否展示全部收起这个容器
+          this.$set(this.journeyList[index],'line', true)
+          // letter初始化展示收起的的状态默认是全部为1，收起是2
+          this.$set(this.journeyList[index],'letter', 1)
+          // 全部和收起默认是true的状态显示
+          this.$set(this.journeyList[index],'expand', true)
+          // 全部都为展开的状态
+          this.expandStatus[item.id] = true
+        }else{
+          // line属性是否展示全部收起这个属性
+          this.$set(this.journeyList[index],'line', false)
+        }
+        
+      })
       
+    },
+    handleChange(row){
+      if(this.expandStatus[row.id] == true){
+        this.expandStatus[row.id] = !row.expand
+        this.$set(row,'letter', 2)
+      }else{
+        this.expandStatus[row.id] = !row.expand
+        this.$set(row,'letter', 1)
+      }
+      this.$set(row,'expand', this.expandStatus[row.id])
     }
   }
 };
@@ -155,43 +175,9 @@ export default {
       .letter{
         .fontSize(26);
         color: #4A669D;
+        width: 55/@rem;
         padding-top: 14/@rem;
       }
-      // .collapse .content::after{
-      //       content: ' ... ';
-      //       position: absolute;
-      //       right: 0;
-      //       bottom: 0;
-      //       background: linear-gradient(to right, transparent, #ffffff 50%);
-      //       padding-left: 20px;
-      //   }
-
-        // .collapse .expand-collapse::after{
-        //     content: '展开';
-        //     display: block;
-        //     color: #4A669D;
-        //     width: 100%;
-        //     text-align: left;
-        //     .fontSize(26);
-        //     margin-top: 10/@rem;
-        // }
-
-        // .expand .expand-collapse::after{
-        //     content: '收缩';
-        //     display: block;
-        //     color: #4A669D;
-        //     width: 100%;
-        //     text-align: left;
-        //     .fontSize(26);
-        //     margin-top: 10/@rem; 
-        // }
-
-        // .collapse .content{
-        //     overflow: hidden;
-        //     height: 130/@rem;
-        //     padding: 0;
-        //     margin: 0;
-        // }
       .book{
         margin-top: 16/@rem;
         border-top: 1/@rem solid #D6D6D6;
@@ -235,6 +221,12 @@ export default {
         .zan{
           color:rgba(255,76,76,1);
         }
+      }
+      .h131{
+        height: 131/@rem;
+      }
+      .hauto{
+        height:auto;
       }
     }
   }
