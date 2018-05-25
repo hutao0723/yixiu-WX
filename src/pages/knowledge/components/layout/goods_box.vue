@@ -121,7 +121,7 @@
   }
 .g-tabbar{
   white-space: nowrap;
-  height: 98/@rem;
+  height: 100px;
   width: 100%;
   background-color: #fff;
   position: relative;
