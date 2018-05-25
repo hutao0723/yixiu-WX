@@ -69,6 +69,7 @@
       if (!!(window.history && history.pushState)) {
         const jumpType = GetUrlParam("jumpType")
         const jumpId = GetUrlParam("jumpId")
+        console.log(jumpType,jumpId)
         if (jumpType && jumpId) {
           var stateObj = {};
           window.history.pushState(stateObj, '详情页', 'knowledge.html#/' + jumpType + '/' + jumpId);
