@@ -1,5 +1,5 @@
 <template>
-  <div class="course-main" ref='courseMain'>
+  <div class="course-main" ref='courseMain' v-cloak>
     <div class="page-test">
 
       <div class="page-header">
@@ -121,7 +121,7 @@
         const msg = {
           title: obj.title,
           desc: obj.subTitle,
-          link: 'http://k.youfen666test.com/knowledge.html#/home/index?jumpType=course&jumpId=' + obj.id,
+          link: 'http://k.youfen666dev.com/knowledge.html#/home/index?jumpType=course&jumpId=' + obj.id,
           imgUrl: obj.lateralCover || obj.verticalCover ||
             'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }

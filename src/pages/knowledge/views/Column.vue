@@ -1,5 +1,5 @@
 <template>
-  <div class="column-main" ref='columnMain'>
+  <div class="column-main" ref='columnMain' v-cloak>
     <div class="page-test">
       <div class="page-header" :monitor-log="getMonitor()">
         <div class="header-img" v-show="detailObj.lateralCover" :style="{backgroundImage: `url(${detailObj.lateralCover})`}"></div>
@@ -31,7 +31,7 @@
             {{reverseTs?'倒序':'正序'}}</div>
         </div>
         <div class="list-content">
-          <div class="item" v-for="(item,index) in courseList" :key="index" @click="playClick(detailObj.id, item.id, false)">
+          <div class="item" v-for="(item,index) in courseList" :key="index" @click="playAudio(detailObj.id, item.id, false)">
             <i class="iconfont icon-play icon-bgred active icon-wave" v-if="audio.courseId == item.id">
               <!-- <img class="" src="../images/audio.svg" /> -->
             </i>
@@ -88,8 +88,7 @@
     mounted() {
       this.getColumnDetail(this.$route.params.columnId)
       this.getColumnList(this.$route.params.columnId)
-
-      if (this.$route.params.isbuy) {
+      if (this.$route.query.isBuy) {
         this.tabActive = false
       }
     },
@@ -134,7 +133,7 @@
       playAudio(obj) {
         // 专栏已购买
         if (this.detailObj.powerLevel == 1) {
-          playClick(this.detailObj.id, obj.id, false)
+          this.playClick(this.detailObj.id, obj.id, false)
         } else if (obj.watchable > 0) {
           // 未购买并可试听
           this.playClick(this.detailObj.id, obj.id, true)
@@ -164,7 +163,7 @@
         const msg = {
           title: obj.title,
           desc: obj.subTitle,
-          link: 'http://k.youfen666test.com/knowledge.html#/home/index?jumpType=column&jumpId=' + obj.id,
+          link: 'http://k.youfen666dev.com/knowledge.html#/home/index?jumpType=column&jumpId=' + obj.id,
           imgUrl: obj.lateralCover || obj.verticalCover ||
             'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }
