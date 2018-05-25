@@ -49,10 +49,8 @@
     computed: {
       ...mapState({})
     },
-    created() {
-    },
+    created() {},
     mounted() {
-      this.wxShare(false)
       this.renderTemplatePage();
     },
     methods: {
@@ -77,15 +75,15 @@
             }
           })
           self.setTitle(self.params.navigation.pageTitle)
-          // self.loaded();
-          console.log(self.components, `[template] render template page success`)
-          // 埋点
-          // setTimeout(() => {
-          //     // 滚动
-          //     self.$refs.homeMain.addEventListener('scroll', self.dispatchScroll, false);
-          //     // 埋点
-          //     window.monitor && window.monitor.showLog(self);
-          //   }, 100);
+          console.log(processData.params)
+          const msg = {
+            title: processData.params.navigation.pageTitle || '一修读书', // 分享标题
+            desc: processData.params.shareConfig.shareDescribe || '在这里发现更好的自己', // 分享描述
+            link: 'http://k.youfen666test.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
+            imgUrl: processData.params.shareConfig.sharePictureUrl?'https:' + processData.params.shareConfig.sharePictureUrl: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
+          }
+
+          self.wxShare(msg)
         })
       },
       // 触发滚动

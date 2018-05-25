@@ -38,25 +38,15 @@
     created() {
     },
     mounted() {
-      this.wxShare({
-      title: '一修读书', // 分享标题
-      desc: '在这里发现更好的自己', // 分享描述
-      link: 'http://k.youfen666dev.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
-      imgUrl: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
-    })
       this.setTitle('帮助中心')
-      
-      // window.monitor && window.monitor.showLog(this);
-      // const arr = ['previewImage', 'onMenuShareAppMessage', 'onMenuShareTimeline']
-      // const res = await order.getApiRules(arr);
     },
     methods: {
       // 预览
       onImage() {
-        order.wxPreview('https://yun.duiba.com.cn/yoofans/images/201804/miniapp/ask-que.png');
+        order.wxPreview('https://yun.dui88.com/youfen/images/ask-que3.png');
       },
       onFlock() {
-        order.wxPreview('https://yun.duiba.com.cn/yoofans/images/201804/miniapp/ask-que2.png');
+        order.wxPreview('https://yun.dui88.com/youfen/images/ask-que4.png');
       },
     },
     mixins: [access]

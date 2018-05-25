@@ -1,5 +1,5 @@
 <template>
-  <div class="course-main" ref='courseMain'>
+  <div class="course-main" ref='courseMain' v-cloak>
     <div class="page-test">
 
       <div class="page-header">
@@ -53,17 +53,14 @@
     computed: {
       ...mapState(['audio', 'playing', 'currentTime', 'musicDuration']),
     },
+    created() {
 
-    async mounted() {
-      await this.getColumnDetail(this.$route.params.courseId);
+    },
+
+    mounted() {
       let self = this;
-      // setTimeout(() => {
-      //     // 滚动
-      //     self.$refs.courseMain.addEventListener('scroll', self.dispatchScroll, false);
-      //     // 埋点
-      //     window.monitor && window.monitor.showLog(self);
-      //   }, 100);
-
+      this.getColumnDetail(this.$route.params.courseId);
+      
     },
     filters: {
       // 时长
@@ -119,10 +116,12 @@
 
 
         this.setTitle(this.detailObj.title)
+
+        console.log(obj)
         const msg = {
           title: obj.title,
           desc: obj.subTitle,
-          link: window.location.href,
+          link: 'http://k.youfen666test.com/knowledge.html#/home/index?jumpType=course&jumpId=' + obj.id,
           imgUrl: obj.lateralCover || obj.verticalCover ||
             'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }
@@ -152,17 +151,12 @@
 <style lang="less">
   @import "../assets/style/base/util";
   @rem: 75rem;
-  body {
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  #app {
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
+  
+  
 
   .course-main {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
     position: relative;
     height: 100%;
   }

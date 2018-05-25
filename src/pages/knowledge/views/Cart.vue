@@ -49,7 +49,6 @@
     },
     async mounted() {
       await this.getList();
-      this.wxShare(false);
       this.setTitle('已购');
     },
     computed: {},
