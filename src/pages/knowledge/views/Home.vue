@@ -14,15 +14,11 @@
       <BlankBar v-if="item.componentType == 'BLANK'" :param.sync="item" />
     </div>
     <div style="height: 2rem"></div>
-    <AudioBar/>
-    <!-- <bnav></bnav> -->
   </div>
 </template>
 
 <script>
   import config from '../api/config';
-  // import bnav from 'components/layout/Nav';
-  import AudioBar from '../components/basic/Audio_Bar';
   import SwiperBar from '../components/layout/swiper_bar';
   import TitleBar from '../components/layout/title_bar';
   import GoodsBox from '../components/layout/goods_box';
@@ -33,7 +29,6 @@
   } from 'vuex';
   export default {
     components: {
-      AudioBar,
       TitleBar,
       SwiperBar,
       BlankBar,

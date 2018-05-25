@@ -23,13 +23,10 @@
       <a href="javascript:void(0)" class="none-btn" @click="goHome">去逛逛</a>
     </div>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0" ></div>
-    <AudioBar/>
-    <!-- <bnav></bnav> -->
   </div>
 </template>
 
 <script>
-  import AudioBar from '../components/basic/Audio_Bar';
   import order from '../api/order';
   import router from '../mixins/router';
   import access from '../mixins/accessHandler';
@@ -104,7 +101,6 @@
       }
     },
     components: {
-      AudioBar
     },
     mixins: [router, access]
   };
