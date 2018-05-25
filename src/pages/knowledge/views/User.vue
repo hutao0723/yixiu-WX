@@ -20,21 +20,17 @@
         </div>
       </router-link>
     </div>
-    <AudioBar/>
-    <!-- <bnav></bnav> -->
     <Share v-show="shareToggle" v-on:success="success" />
   </div>
 </template>
 
 <script>
-  import AudioBar from '../components/basic/Audio_Bar';
   import access from '../mixins/accessHandler';
   import Share from '../components/basic/Share';
 
   export default {
     components: {
-      AudioBar,
-      Share,
+      Share
     },
     data() {
       return {
