@@ -11,7 +11,17 @@
             <div class="content" ref="cheight">{{item.contentText}}</div>
             <div class="expand-collapse"></div>
           </div>
-            <div class="clearfix book">
+          <!-- <section class="block">
+            <input type="checkbox">
+            <div class="case-block">
+              <div>展开</div>
+              <div>收起</div>
+            </div>
+            <div class="detail">
+              <div>{{item.contentText}}</div>
+            </div> -->
+          </section>
+          <div class="clearfix book">
             <div class="fl book-img"><img :src="item.imageUrl"></div>
             <div class="book-content">
               <div class="book-title">《{{item.bookname}}》</div>
@@ -44,18 +54,8 @@ export default {
   data () {
     return {
       data: {},
-      contentHeight: 130,
-      journeyList:[
-        {
-          "dateTime": '2018.05.20',
-          "titleName": "100天魔鬼读书训练营36期毕业",
-          "contentText": "我们曾经都是文艺青年，而原来文艺青年们，现在都已经不玩儿憔悴了。所以她有圆圆脸，我有小肚腩。以为拼尽全力，就能杀进红尘，但从前我们不知道，红是世界的，尘是自己的，没有阳光的季节。 ",
-          "imageUrl": 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=768904644,500415380&fm=27&gp=0.jpg',
-          "bookname": "追风筝的人",
-          "writor": "卡勒德·胡赛尼",
-          "number": 16
-        }
-      ]
+      // contentHeight: 130,
+      journeyList:[]
     };
   },
   computed: {
@@ -66,7 +66,7 @@ export default {
   async mounted () {
     await this.getJourneyInfo();
     this.showAll();
-    // this.init();
+    this.init();
   },
   methods: {
     async getJourneyInfo (){
@@ -79,9 +79,10 @@ export default {
     },
     init() {  
       // const self = this;  
-      // this.journeyList.forEach(item=>{
-      //   item['checked'] = true;
+      // this.journeyList.forEach((item,index)=>{
+      //   this.$refs.cheight[0].getBoundingClientRect().height
       // })
+      // console.log(this.$refs.cheight[0].getBoundingClientRect().height)
     },
     showAll() {
       
@@ -165,32 +166,32 @@ export default {
       //       padding-left: 20px;
       //   }
 
-        .collapse .expand-collapse::after{
-            content: '展开';
-            display: block;
-            color: #4A669D;
-            width: 100%;
-            text-align: left;
-            .fontSize(26);
-            margin-top: 10/@rem;
-        }
+        // .collapse .expand-collapse::after{
+        //     content: '展开';
+        //     display: block;
+        //     color: #4A669D;
+        //     width: 100%;
+        //     text-align: left;
+        //     .fontSize(26);
+        //     margin-top: 10/@rem;
+        // }
 
-        .expand .expand-collapse::after{
-            content: '收缩';
-            display: block;
-            color: #4A669D;
-            width: 100%;
-            text-align: left;
-            .fontSize(26);
-            margin-top: 10/@rem; 
-        }
+        // .expand .expand-collapse::after{
+        //     content: '收缩';
+        //     display: block;
+        //     color: #4A669D;
+        //     width: 100%;
+        //     text-align: left;
+        //     .fontSize(26);
+        //     margin-top: 10/@rem; 
+        // }
 
-        .collapse .content{
-            overflow: hidden;
-            height: 130/@rem;
-            padding: 0;
-            margin: 0;
-        }
+        // .collapse .content{
+        //     overflow: hidden;
+        //     height: 130/@rem;
+        //     padding: 0;
+        //     margin: 0;
+        // }
       .book{
         margin-top: 16/@rem;
         border-top: 1/@rem solid #D6D6D6;

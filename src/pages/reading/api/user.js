@@ -30,9 +30,13 @@ export default class user extends base {
    * 获取点赞状态
    */
   static async getThumbUp(status) {
+    let params = {};
+      params = {
+        status: status
+      }
     const url = `/user/getJourneyList`;
     const res = await this.get(url, {
-      status
+      params
     });
     return res.data.data;
   }
@@ -62,10 +66,14 @@ export default class user extends base {
   /**
    * 根据banner获取列表
    */
-  static async getBookList({id}) {
+  static async getBookList(id) {
+    let params = {}
+    params = {
+      id: id
+    }
     const url = `/user/getBookList`;
     const res = await this.get(url, {
-      id
+      params
     });
     return res.data.data;
   }

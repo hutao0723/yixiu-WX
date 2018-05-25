@@ -103,9 +103,9 @@ export default {
   },
   created() {
     },
-  async mounted () {
+  mounted () {
     this.getUserInfo();
-    await this.getNumberInfo();
+    this.getNumberInfo();
   },
   methods: {
     // 联系客服
