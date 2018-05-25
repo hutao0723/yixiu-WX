@@ -128,7 +128,7 @@ export default {
       } else {
         if (this.audio.powerLevel && this.audio.price) play.syncProgress(this.audio.columnId,this.audio.courseId,store.getters.getCurrentTime)
       }
-      play.startAudio(this.audio.columnId, this.audio.courseId, 'prev')
+      if (this.audio.isPrev) play.startAudio(this.audio.columnId, this.audio.courseId, 'prev')
     },  
     togglePlay() {
       if (!this.audio.musicTryEnd) {
@@ -141,7 +141,7 @@ export default {
       } else {
         if (this.audio.powerLevel && this.audio.price) play.syncProgress(this.audio.columnId,this.audio.courseId,store.getters.getCurrentTime)
       }
-      play.startAudio(this.audio.columnId, this.audio.courseId, 'next')
+      if (this.audio.isNext) play.startAudio(this.audio.columnId, this.audio.courseId, 'next')
     },
     goPay(){
         order.buy(this.audio.columnId?this.audio.columnId:this.audio.courseId, this.audio.columnId?2:1)

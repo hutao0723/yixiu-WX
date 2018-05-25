@@ -119,7 +119,7 @@ import { mapState } from 'vuex';
     border-radius: 18/@rem 18/@rem 0 0; 
     position: fixed;
     bottom: -540/@rem;
-    z-index: 1001;
+    z-index: 1000!important;
     &.showin{
       animation: moveup 1s forwards;
       -moz-animation: moveup 1s forwards; 

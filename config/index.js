@@ -24,7 +24,7 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 8666,
+    port: 8699,
     autoOpenBrowser: false, // 自动打开浏览器
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
