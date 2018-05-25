@@ -86,7 +86,8 @@ export default {
       return this.timerFomart(this.musicDuration)
     }
   },
-  mounted () {
+  async mounted () {
+    let self = this;
     setTimeout(()=>{
       const msg = {
           title: this.audio.title,
@@ -98,6 +99,12 @@ export default {
         this.wxShare(msg)
     },3000)
     if (!store.getters.getAudioElement.getAttribute('src')) {
+      let src = await play.getAudioUrl(this.audio.columnId, this.audio.courseId);
+      this.audio.src = src;
+      store.commit({
+        type: 'setAudio',
+        audio: self.audio
+      });
       store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
       store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title);
     }
