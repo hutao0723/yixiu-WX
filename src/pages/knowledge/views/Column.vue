@@ -31,7 +31,7 @@
             {{reverseTs?'倒序':'正序'}}</div>
         </div>
         <div class="list-content">
-          <div class="item" v-for="(item,index) in courseList" :key="index" @click="playAudio(detailObj.id, item.id, false)">
+          <div class="item" v-for="(item,index) in courseList" :key="index" @click="playAudio(item)">
             <i class="iconfont icon-play icon-bgred active icon-wave" v-if="audio.courseId == item.id">
               <!-- <img class="" src="../images/audio.svg" /> -->
             </i>
