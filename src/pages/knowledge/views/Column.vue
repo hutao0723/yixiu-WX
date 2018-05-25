@@ -91,16 +91,16 @@
       pushHistory();
       window.addEventListener("popstate", function (e) {
         if (!self.referer) {
-          location.href = 'http://k.youfen666dev.com/knowledge.html#/index/home'; //在这里指定其返回的地址
+          location.href = 'http://k.youfen666test.com/knowledge.html#/index/home'; //在这里指定其返回的地址
         }
          
       }, false);
       function pushHistory() {
         var state = {
           title: "一修读书",
-          url: "http://k.youfen666dev.com/knowledge.html#/index/home"
+          url: "http://k.youfen666test.com/knowledge.html#/index/home"
         };
-        window.history.pushState(state, "一修读书", "http://k.youfen666dev.com/knowledge.html#/index/home");
+        window.history.pushState(state, "一修读书", "http://k.youfen666test.com/knowledge.html#/index/home");
       }
 
 
@@ -164,7 +164,7 @@
         const msg = {
           title: obj.title,
           desc: obj.subTitle,
-          link: 'http://k.youfen666dev.com/knowledge.html#/home/index?jumpType=column&jumpId=' + obj.columnId,
+          link: 'http://k.youfen666test.com/knowledge.html#/home/index?jumpType=column&jumpId=' + obj.columnId,
           imgUrl: obj.lateralCover || obj.verticalCover ||
             'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }
