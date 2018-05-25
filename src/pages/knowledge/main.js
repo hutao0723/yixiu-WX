@@ -91,7 +91,7 @@ Vue.prototype.wxShare = function (msg) {
       wx.onMenuShareAppMessage({ // 分享给朋友
         title: msg.title || '一修读书', // 分享标题
         desc: msg.desc || '在这里发现更好的自己', // 分享描述
-        link: msg.link || 'http://k.youfen666test.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
+        link: msg.link || 'http://k.youfen666.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
         imgUrl: msg.imgUrl || 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
         // 用户确认分享后执行的回调函数
         success: function () {
@@ -102,7 +102,7 @@ Vue.prototype.wxShare = function (msg) {
       wx.onMenuShareTimeline({
         title: msg.title || '一修读书', // 分享标题
         desc: msg.desc || '在这里发现更好的自己', // 分享描述
-        link: msg.link || 'http://k.youfen666test.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
+        link: msg.link || 'http://k.youfen666.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
         imgUrl: msg.imgUrl || 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
         // 用户确认分享后执行的回调函数
         success: function () {

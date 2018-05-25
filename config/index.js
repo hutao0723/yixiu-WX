@@ -31,7 +31,7 @@ module.exports = {
     proxyTable: {
       '/floor': {
         // 测试环境
-        target: 'https://k.youfen666test.com',  // 接口域名
+        target: 'https://k.youfen666.com',  // 接口域名
         changeOrigin: true,  //是否跨域
         // pathRewrite: {
         //   '': ''   //需要rewrite重写的,
@@ -39,15 +39,15 @@ module.exports = {
       },
       '/api': {
         // 测试环境
-        target: 'https://k.youfen666test.com',  // 接口域名
+        target: 'https://k.youfen666.com',  // 接口域名
         changeOrigin: true,  //是否跨域
         pathRewrite: {
-          '/api': 'https://k.youfen666test.com'   //需要rewrite重写的,
+          '/api': 'https://k.youfen666.com'   //需要rewrite重写的,
         }
       },
       '/course': {
         // 测试环境
-        target: 'https://k.youfen666test.com',  // 接口域名
+        target: 'https://k.youfen666.com',  // 接口域名
         changeOrigin: true,  //是否跨域
         // pathRewrite: {
         //   '': ''   //需要rewrite重写的,
@@ -55,7 +55,7 @@ module.exports = {
       },
       '/column': {
         // 测试环境
-        target: 'https://k.youfen666test.com',  // 接口域名
+        target: 'https://k.youfen666.com',  // 接口域名
         changeOrigin: true,  //是否跨域
         // pathRewrite: {
         //   '': ''   //需要rewrite重写的,
@@ -63,7 +63,7 @@ module.exports = {
       },
       '/userItem': {
         // 测试环境
-        target: 'https://k.youfen666test.com',  // 接口域名
+        target: 'https://k.youfen666.com',  // 接口域名
         changeOrigin: true,  //是否跨域
         // pathRewrite: {
         //   '': ''   //需要rewrite重写的,
