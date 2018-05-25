@@ -54,8 +54,7 @@ export default new Router({
             resolve(require('../views/user/User'));
           }, 'reading_user');
         }
-      }
-      ]
+      }]
     },
     {
       path: '/comment',
