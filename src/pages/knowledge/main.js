@@ -38,7 +38,7 @@ Vue.use(VueLazyload, {
     }
   }
 });
-Vue.http.headers.common['tk'] = '8JdDYohmSwEXXZUEwtaziTsauTxjgpj2GjS8RiFUXSEvxbd2EZrTs9DDKYmxeBswgz3qUKkbiceg5MuioeJ64rZbeZeFPULetEm76VaysnGYBnfiuboxcwcCPjgkZ7qD9J6WVcFVJiSZC4yJEfJkTmDr';
+// Vue.http.headers.common['tk'] = '8JdDYohmSwEXXZUEwtaziTsauTxjgpj2GjS8RiFUXSEvxbd2EZrTs9DDKYmxeBswgz3qUKkbiceg5MuioeJ64rZbeZeFPULetEm76VaysnGYBnfiuboxcwcCPjgkZ7qD9J6WVcFVJiSZC4yJEfJkTmDr';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
@@ -48,7 +48,7 @@ Vue.http.interceptors.push((request, next) => {
     // response.body = '...';
     if (response.data.code == '000001') {
       const url = encodeURIComponent('/' + window.location.href.split('/').slice(3).join('/'));
-      // location.href = "/loginH5?dbredirect=" + url;
+      location.href = "/loginH5?dbredirect=" + url;
     }
     return response;
   });
@@ -91,7 +91,7 @@ Vue.prototype.wxShare = function (msg) {
       wx.onMenuShareAppMessage({ // 分享给朋友
         title: msg.title || '一修读书', // 分享标题
         desc: msg.desc || '在这里发现更好的自己', // 分享描述
-        link: msg.link || 'http://k.youfen666dev.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
+        link: msg.link || 'http://k.youfen666test.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
         imgUrl: msg.imgUrl || 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
         // 用户确认分享后执行的回调函数
         success: function () {
@@ -102,7 +102,7 @@ Vue.prototype.wxShare = function (msg) {
       wx.onMenuShareTimeline({
         title: msg.title || '一修读书', // 分享标题
         desc: msg.desc || '在这里发现更好的自己', // 分享描述
-        link: msg.link || 'http://k.youfen666dev.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
+        link: msg.link || 'http://k.youfen666test.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
         imgUrl: msg.imgUrl || 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
         // 用户确认分享后执行的回调函数
         success: function () {
