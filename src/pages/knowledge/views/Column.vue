@@ -163,7 +163,7 @@
         const msg = {
           title: obj.title,
           desc: obj.subTitle,
-          link: 'http://k.youfen666.com/knowledge.html#/home/index?jumpType=column&jumpId=' + obj.id,
+          link: 'http://k.youfen666dev.com/knowledge.html#/home/index?jumpType=column&jumpId=' + obj.id,
           imgUrl: obj.lateralCover || obj.verticalCover ||
             'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }
