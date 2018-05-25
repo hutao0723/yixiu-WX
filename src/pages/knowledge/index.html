@@ -41,7 +41,7 @@
   <script type="text/javascript">
     function GetUrlParam(paraName) {　　　　
       var url = document.location.toString();　　　　
-      var arrObj = url.split("?");
+      var arrObj = url.split("index?");
 
       　　　　
       if (arrObj.length > 1) {　　　　　　
@@ -69,6 +69,7 @@
       if (!!(window.history && history.pushState)) {
         const jumpType = GetUrlParam("jumpType")
         const jumpId = GetUrlParam("jumpId")
+        console.log(jumpType,jumpId)
         if (jumpType && jumpId) {
           var stateObj = {};
           window.history.pushState(stateObj, '详情页', 'knowledge.html#/' + jumpType + '/' + jumpId);

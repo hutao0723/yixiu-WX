@@ -51,7 +51,7 @@
       }
     },
     computed: {
-      ...mapState(['audio', 'playing', 'currentTime', 'musicDuration', 'referer']),
+      ...mapState(['audio', 'playing', 'currentTime', 'musicDuration']),
     },
     created() {
 
@@ -117,11 +117,11 @@
 
         this.setTitle(this.detailObj.title)
 
-
+        console.log(obj)
         const msg = {
           title: obj.title,
           desc: obj.subTitle,
-          link: 'http://k.youfen666dev.com/knowledge.html#/home/index?jumpType=course&jumpId=' + obj.courseId,
+          link: 'http://k.youfen666dev.com/knowledge.html#/home/index?jumpType=course&jumpId=' + obj.id,
           imgUrl: obj.lateralCover || obj.verticalCover ||
             'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }
