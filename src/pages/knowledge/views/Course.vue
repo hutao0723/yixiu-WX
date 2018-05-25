@@ -121,7 +121,7 @@
         const msg = {
           title: obj.title,
           desc: obj.subTitle,
-          link: 'http://k.youfen666dev.com/knowledge.html#/home/index?jumpType=course&jumpId=' + obj.id,
+          link: 'http://k.youfen666test.com/knowledge.html#/home/index?jumpType=course&jumpId=' + obj.id,
           imgUrl: obj.lateralCover || obj.verticalCover ||
             'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }
@@ -151,17 +151,12 @@
 <style lang="less">
   @import "../assets/style/base/util";
   @rem: 75rem;
-  body {
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  #app {
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
+  
+  
 
   .course-main {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
     position: relative;
     height: 100%;
   }

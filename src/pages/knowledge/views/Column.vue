@@ -32,7 +32,7 @@
         </div>
         <div class="list-content">
           <div class="item" v-for="(item,index) in courseList" :key="index" @click="playClick(detailObj.id, item.id, false)">
-            <i class="iconfont icon-play active icon-wave" v-if="audio.courseId == item.id">
+            <i class="iconfont icon-play icon-bgred active icon-wave" v-if="audio.courseId == item.id">
               <!-- <img class="" src="../images/audio.svg" /> -->
             </i>
             <i class="iconfont icon-play" v-else>&#xe617;</i>
@@ -88,6 +88,10 @@
     mounted() {
       this.getColumnDetail(this.$route.params.columnId)
       this.getColumnList(this.$route.params.columnId)
+
+      if (this.$route.params.isbuy) {
+        this.tabActive = false
+      }
     },
     filters: {
       // 时长
@@ -127,6 +131,18 @@
           'dpm': 'appId.801' + area,
         });
       },
+      playAudio(obj) {
+        // 专栏已购买
+        if (this.detailObj.powerLevel == 1) {
+          playClick(this.detailObj.id, obj.id, false)
+        } else if (obj.watchable > 0) {
+          // 未购买并可试听
+          this.playClick(this.detailObj.id, obj.id, true)
+        } else {
+          // 未购买并不可试听
+          this.getPay()
+        }
+      },
       // 获取详情
       async getColumnDetail(id) {
         // let self = this;
@@ -148,7 +164,7 @@
         const msg = {
           title: obj.title,
           desc: obj.subTitle,
-          link: 'http://k.youfen666dev.com/knowledge.html#/home/index?jumpType=column&jumpId=' + obj.id,
+          link: 'http://k.youfen666test.com/knowledge.html#/home/index?jumpType=column&jumpId=' + obj.id,
           imgUrl: obj.lateralCover || obj.verticalCover ||
             'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }
@@ -194,17 +210,13 @@
 <style lang="less">
   @import "../assets/style/base/util";
   @rem: 75rem;
-  body {
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
 
-  #app {
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
+
+
 
   .column-main {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
     position: relative;
     height: 100%;
   }
@@ -352,7 +364,10 @@
         text-align: center;
         color: #fff;
         border-radius: 50%;
-        background: #FF3E44;
+        background: #AAAAAA;
+      }
+      .icon-bgred {
+        background: #ff3e44;
       }
       .icon-svn {
         background: #ff3e44;
