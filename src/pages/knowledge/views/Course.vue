@@ -151,17 +151,12 @@
 <style lang="less">
   @import "../assets/style/base/util";
   @rem: 75rem;
-  body {
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  #app {
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
+  
+  
 
   .course-main {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
     position: relative;
     height: 100%;
   }

@@ -32,7 +32,7 @@
         </div>
         <div class="list-content">
           <div class="item" v-for="(item,index) in courseList" :key="index" @click="playClick(detailObj.id, item.id, false)">
-            <i class="iconfont icon-play active icon-wave" v-if="audio.courseId == item.id">
+            <i class="iconfont icon-play icon-bgred active icon-wave" v-if="audio.courseId == item.id">
               <!-- <img class="" src="../images/audio.svg" /> -->
             </i>
             <i class="iconfont icon-play" v-else>&#xe617;</i>
@@ -194,17 +194,13 @@
 <style lang="less">
   @import "../assets/style/base/util";
   @rem: 75rem;
-  body {
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
+  
 
-  #app {
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
+  
 
   .column-main {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
     position: relative;
     height: 100%;
   }
@@ -352,7 +348,10 @@
         text-align: center;
         color: #fff;
         border-radius: 50%;
-        background: #FF3E44;
+        background: #AAAAAA;
+      }
+      .icon-bgred{
+        background: #ff3e44;
       }
       .icon-svn {
         background: #ff3e44;
