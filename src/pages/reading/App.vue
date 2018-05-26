@@ -12,7 +12,6 @@ import store from './vuex/store'
 export default {
   data () {
     return {
-      info: {}
     }
   },
   methods: {
@@ -26,22 +25,18 @@ export default {
         type: 'set_CurrentTime',
         time: Math.floor(this.$refs.audio.currentTime)
       })
-      if (!store.getters.getAudioInfo.powerLevel && Math.floor(this.$refs.audio.currentTime) == store.getters.getAudioInfo.watchable) {
-        store.commit('pause');
-        store.commit('setMusicTryEnd');
-      }
     },
     // 可以播放事件
     musicCanPlay () {
       store.dispatch({
-        type: 'set_MusicDuration',
+        type: 'set_ReadDuration',
         duration: Math.floor(this.$refs.audio.duration)
       })
       store.commit({
-        type: 'setMusicLoadStart',
+        type: 'setReadLoadStart',
         isloadstart: false
       })
-      // if (this.$refs.audio.currentTime === 0) this.$refs.audio.currentTime = store.getters.getAudioInfo.playbackProgress;
+      if (this.$refs.audio.currentTime === 0) this.$refs.audio.currentTime = store.getters.getAudioInfo.playbackProgress;
     },
     // 音乐处于播放状态
     musicOnPlaying () {
@@ -58,7 +53,7 @@ export default {
     // 音乐加载
     loadStart () {
       store.commit({
-        type: 'setMusicLoadStart',
+        type: 'setReadLoadStart',
         isloadstart: true
       })
     }

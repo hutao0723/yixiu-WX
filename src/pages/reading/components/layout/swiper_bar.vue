@@ -1,16 +1,17 @@
 <template>
   <div class="swiper-bar">
-    <Swipe class="index_banner my-swipe" @indexChange='newChangeSwiper'>
+    <Swipe class="index_banner my-swipe" @indexChange='newChangeSwiper' :showIndicators="true">
       <swipeItem v-for="(item, index) in param"  class="slide" :class="'slide' + index">
         <a href="javascript:;" class="swiper-train">
           <div class="journal">
             <div class="clearfix">
               <div class="journal-title fl">{{item.title}}</div>
-              <div class="journal-number fr">{{item.journey}}期</div>
+              <div class="journal-number fr">{{item.stageNum}}期</div>
             </div>
-            <div class="journal-content">{{item.content}}</div>
+            <div class="journal-content">{{item.briefer}}</div>
           </div>
         </a>
+        <!-- <div class="yellow" ref="yellow"></div> -->
       </swipeItem>
     </Swipe>
   </div>
@@ -64,6 +65,16 @@
     background:rgba(255,229,85,1);
     box-shadow: 0 2/@rem 4/@rem 0 rgba(215,215,215,0.5);
     border-radius: 30/@rem ;
+  }
+  .yellow{
+    position: absolute;
+    right:0;
+    top: 0;
+    width: 30/@rem;
+    background-color: yellow;
+    height: 260/@rem;
+    border-top-left-radius: 30/@rem;
+    border-top-right-radius: 30/@rem;
   }
   .journal{
     padding: 40/@rem;

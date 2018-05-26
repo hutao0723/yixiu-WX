@@ -8,9 +8,7 @@ export default class play extends base {
    */
   static async getAudioUrl(courseId) {
     const url = `/course/getAccessUrl`;
-      let params = {
-        courseId: courseId
-      }
+    let params = { courseId }
     const res = await this.get(url, {params});
     return res.body.data;
   }
@@ -39,62 +37,72 @@ export default class play extends base {
   /**
    * 获取课程详情
    */
-  static async getReadDetail(courseId) {
+  static async getReadDetail(readId, courseId) {
     const url = `/readBookCourse/courseDetail`;
-      let params = {
-        courseId: courseId
-      }
+    let params = { readId, courseId }
     const res = await this.get(url, {params});
     return res.body.data;
+  }
+
+  /**
+   * 获取播放列表
+   */
+  static async getReadList(readId) {
+    const url = `/read/getReadPlanCourseList`;
+    let params = { readId };
+    const res = await this.get(url, {params});
+    let readList = res.body.data;
+    readList.forEach((item) => {
+        item.duration = this.fmtTime(+item.timeLength);
+        let percent = Math.floor((+item.playbackProgress ? +item.playbackProgress : 0) / +item.timeLength * 100);
+        item.percent = (percent > 100 ? 100 : percent) + "%";
+      })
+    let readIds = readList.map(item => {
+      return item.id
+    });
+    store.commit({ type: 'setReadIds', readIds: readIds });
+    store.commit({ type: 'setReadList', readList: readList });
   } 
 
   /**
    * 初始化音频
    */
-  static  audioInit(columnId,courseId) {
-    let cat =  list.getVideoList(columnId,courseId);
-    return  cat.getVideoMsg();
-  }
-  
-  /**
-   * 下一曲音频
-   */
-  static  audioNext(columnId,courseId) {
-    let cat = list.getVideoList(columnId,courseId);
-    return cat.getNext(courseId);
-  }
-  
-  /**
-   * 上一曲音频
-   */
-  static  audioPrev(columnId,courseId) {
-    let cat = list.getVideoList(columnId,courseId);
-    return cat.getPrev(courseId);
-  }
-  
-  /**
-   * 更新并播放音频
-   */
-  static async startAudio(columnId,courseId,action) {
-    if (courseId && store.getters.getAudioInfo.powerLevel && store.getters.getAudioInfo.price) this.syncProgress(columnId,courseId,store.getters.getCurrentTime)
-    let audio = {};
-    if ( action === 'init') audio =  await this.audioInit(columnId, courseId);
-    if ( action === 'next') audio =  await this.audioNext(columnId, courseId);
-    if ( action === 'prev') audio =  await this.audioPrev(columnId, courseId);
-    let colId = audio.columnId,
-        couId = audio.courseId;
-    audio.src = await this.getAudioUrl(colId, couId);
-    // audio.src = 'http://mp3.qqmusic.cc/yq/208662441.mp3'
-    store.commit({
-      type: 'setAudio',
-      audio: audio
-    });
+  static async audioInit(readId, courseId, refresh) {
+    store.commit('play');
+    if (refresh) await this.getReadList(readId);
+    let readAudio = await this.getReadDetail(readId, courseId);
+    readAudio.index = store.getters.getReadIds.indexOf(courseId);
+    readAudio.isPrev = readAudio.index == 0 ? false : true;
+    readAudio.isNext = readAudio.index == (store.getters.getReadIds.length - 1) ? false : true;
+    readAudio.src = await this.getAudioUrl(courseId);
+    store.commit({ type: 'setAudio', readAudio: readAudio });
     this.syncPlaytimes(store.getters.getAudioInfo.courseId);
     store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
     store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
     // 这里，很迷
     store.commit('play');
   }
+  
+  /**
+   * 下一曲音频
+   */
+  static audioNext() {
+    play.syncProgress(store.getters.getAudioInfo.courseId, store.getters.getCurrentTime)
+    let courseId = store.getters.getReadIds[(store.getters.getAudioInfo.index + 1)],
+        readId = store.getters.getAudioInfo.readId;
+    this.audioInit(readId, courseId, false)
+  }
+  
+  /**
+   * 上一曲音频
+   */
+  static audioPrev() {
+    play.syncProgress(store.getters.getAudioInfo.courseId, store.getters.getCurrentTime)
+    let courseId = store.getters.getReadIds[(store.getters.getAudioInfo.index - 1)],
+        readId = store.getters.getAudioInfo.readId;
+    this.audioInit(readId, courseId, false)
+  }
+  
 
   /**
    * 时间格式化

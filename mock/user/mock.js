@@ -6,25 +6,22 @@
  */
 var fs = require('fs');
 var setOnline = [
+  // 获取统计数据我和老师微信账号
   { 
     name: 'userInfo',
     type: 'get',
-    url: '/user/getUserInfo'
+    url: '/user/stat/detail'
   },
-  { 
-    name: 'number',
-    type: 'get',
-    url: '/user/getNumberInfo'
-  },
+  // 我的历程列表
   { 
     name: 'journeyList',
     type: 'get',
-    url: '/user/getJourneyList'
+    url: '/user/read/journey'
   },
   { 
-    name: 'journeyList',
+    name: 'success',
     type: 'get',
-    url: '/user/getThumbUp'
+    url: '/comment/praise'
   },
   { 
     name: 'lecturer',
@@ -34,12 +31,12 @@ var setOnline = [
   { 
     name: 'swiper',
     type: 'get',
-    url: '/user/getSwipeList'
+    url: '/readBook/bookList'
   },
   { 
     name: 'book',
     type: 'get',
-    url: '/user/getBookList'
+    url: '/read/past'
   }
 ];
 

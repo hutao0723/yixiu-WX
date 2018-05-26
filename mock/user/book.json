@@ -1,27 +1,29 @@
+
 {
-    "success": true,
-    "data": {
-        "content":[
-            {   
-                "id":1,
-                "bookUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
-                "bookName": "今天的网红"
-            },
-            {
-                "id":2,
-                "bookUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
-                "bookName": "今天的网红经济今天的网红经济今天的网红经济"
-            },
-            {
-                "id":3,
-                "bookUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
-                "bookName": "追风筝的人"
-            },
-            { 
-                "id":4,
-                "bookUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
-                "bookName": "今天的网红经济"
-            }
-          ]
+  "code": "string",
+  "data": [
+    {
+      "id": 1,
+      "imgUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
+      "lockStatus": false,
+      "readId": 1,
+      "title": "今天的网红"
+    },
+    {
+      "id": 2,
+      "imgUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
+      "lockStatus": false,
+      "readId": 2,
+      "title": "今天的网红书籍课程名称"
+    },
+    {
+      "id": 3,
+      "imgUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
+      "lockStatus": false,
+      "readId": 3,
+      "title": "今天的网红"
     }
+  ],
+  "desc": "string",
+  "success": true
 }

@@ -1,8 +1,18 @@
 {
-    "success": true,
-    "data": {
-        "id": 57,
-        "nickname": "测试标题",
-        "headimgurl": "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=768904644,500415380&fm=27&gp=0.jpg"
-    }
+  "code": "string",
+  "data": {
+    "books": 10,
+    "clocks": 100,
+    "followOfficialAccount": false,
+    "listens": 10,
+    "loginDays": 10,
+    "readState": 10,
+    "teacherWxNumber": "老师微信",
+    "teacherWxQrcodeUrl": "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=834282135,3059144775&fm=27&gp=0.jpg",
+    "userHeadImgUrl": "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=768904644,500415380&fm=27&gp=0.jpg",
+    "userId": 1,
+    "userNickname": "我的名字"
+  },
+  "desc": "string",
+  "success": true
 }
