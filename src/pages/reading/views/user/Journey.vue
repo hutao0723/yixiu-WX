@@ -3,18 +3,18 @@
     <div class="module" v-for="(item, $index) in journeyList">
       <div class="date">{{item.releaseTime}}</div>
       <div class="text-box">
-        <div class="text-journal"><span>{{item.readName}}{{item.readStageNum}}期</span>
+        <div class="text-journal" v-if="item.diplomaImgUrl"><span>{{item.readName}}{{item.readStageNum}}期毕业</span>
           <router-link :to="{ path: '/lecturer' }"><span class="look">查看证书></span></router-link>
         </div>
         <div class="text-container clearfix">
           <div class="container">
-            <div class="content" ref="cheight" :class="item.expand?'h131':''">{{item.content}}</div>
+            <div  class="content" ref="cheight" :class="item.expand?'h131':''">{{item.content}}</div>
             <div v-if="item.line"> 
               <div class="letter" v-if="(item.letter == 1 )&& (item.expand)" @click.stop="handleChange(item)">全部</div>
               <div class="letter" v-if="(item.letter == 2 )&& (!item.expand)" @click.stop="handleChange(item)">收起</div>
             </div>
           </div>
-          <div class="clearfix book btop">
+          <div class="clearfix book" :class="item.content?'btop':''">
             <div class="fl book-img"><img :src="item.courseUrl"></div>
             <div class="book-content">
               <div class="book-title">《{{item.courseTitle}}》</div>
