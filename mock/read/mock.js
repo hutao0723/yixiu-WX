@@ -6,37 +6,15 @@
  */
 var fs = require('fs');
 var setOnline = [
-  // 获取统计数据我和老师微信账号
   { 
-    name: 'userInfo',
+    name: 'playList',
     type: 'get',
-    url: '/user/stat/detail'
-  },
-  // 我的历程列表
-  { 
-    name: 'journeyList',
-    type: 'get',
-    url: '/user/read/journey'
+    url: '/read/getReadPlanCourseList'
   },
   { 
-    name: 'success',
+    name: 'readDetail',
     type: 'get',
-    url: '/comment/praise'
-  },
-  { 
-    name: 'lecturer',
-    type: 'get',
-    url: '/user/getLecturer'
-  },
-  { 
-    name: 'swiper',
-    type: 'get',
-    url: '/readBook/bookList'
-  },
-  { 
-    name: 'book',
-    type: 'get',
-    url: '/read/past'
+    url: '/readBookCourse/courseDetail'
   }
 ];
 
@@ -49,7 +27,7 @@ for (var i = 0, len = setOnline.length; i < len; i++) {
     var name = setOnline[i].name;
 
     exports[name] = function(req, res) {
-      fs.readFile('./mock/user/' + name + '.json', function(err, data) {
+      fs.readFile('./mock/read/' + name + '.json', function(err, data) {
         if (err) throw err;
         
         res.json(JSON.parse(data));

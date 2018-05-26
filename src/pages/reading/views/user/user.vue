@@ -23,15 +23,15 @@
       </div>
       <div class="mt20 recommend bgfff">
           <img :src="recommendUrl">
-          <div class="icon-box share column-center jiantou">
-              <i class="iconfont icon-recom person-icon"></i>
+          <div class="icon-tri share column-center jiantou">
+              <i class="iconfont ear-icon ear-icon"></i>
           </div>
       </div>
       <router-link :to="{ path: '/journey' }">
         <div class="bgfff">
           <div class="person-h90 row mt20 border" >
             <div class="icon-box share column-center">
-              <i class="iconfont icon-recom person-icon"></i>
+              <i class="iconfont icon-clock person-icon"></i>
             </div>
             <div class="row ft32 ml30">我的历程</div>
           </div>
@@ -41,7 +41,7 @@
         <div class="bgfff">
           <div class="person-h90 row border">
             <div class="icon-box share column-center">
-              <i class="iconfont icon-recom person-icon"></i>
+              <i class="iconfont icon-booklist person-icon"></i>
             </div>
             <div class="row ft32 ml30">往期书架</div>
           </div>
@@ -51,7 +51,7 @@
         <div class="bgfff">
           <div class="person-h90 row" >
             <div class="icon-box share column-center">
-              <i class="iconfont icon-recom person-icon"></i>
+              <i class="iconfont icon-user person-icon"></i>
             </div>
             <div class="row ft32 ml30">我的老师</div>
           </div>
@@ -61,7 +61,7 @@
       <div class="bgfff" @click="contactToggle = true">
         <div class="person-h90 row mt20" >
           <div class="icon-box share column-center">
-            <i class="iconfont icon-recom person-icon"></i>
+            <i class="iconfont icon-ear person-icon"></i>
           </div>
           <div class="row ft32 ml30" @click="contactToggle = true">联系客服</div>
         </div>
@@ -95,6 +95,7 @@ export default {
       minute: 0,
       book: 0,
       time: "分钟",
+      // 分享
       recommendUrl: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=768904644,500415380&fm=27&gp=0.jpg'
     };
   },
@@ -104,33 +105,26 @@ export default {
   created() {
     },
   mounted () {
-    this.getUserInfo();
-    this.getNumberInfo();
+    this.getNumberInfo()
   },
   methods: {
     // 联系客服
     success(){
       this.contactToggle = false;
     },
-    // 获取用户信息
-    getUserInfo () {
-      this.$http.get('/user/getUserInfo').then(res => {
-        let resp = res.data
-        // console.log(resp.data)
-        if (resp.success) {
-          this.personname = resp.data.nickname;
-          this.imageUrl = resp.data.headimgurl;
+    async getNumberInfo (){
+      let objs = await user.getInfo();
+        if (objs.success) {
+          this.day = objs.data.clocks;
+          this.minute = objs.data.listens > 999?(objs.data.listens/60).toFixed(1): objs.data.listens;
+          this.time = objs.data.listens > 999?"小时": "分钟";
+          this.book = objs.data.books;
+          this.personname = objs.data.userNickname;
+          this.imageUrl = objs.data.userHeadImgUrl;
         } else {
           console.log("获取用户信息失败")
         }
-      })
-    },
-    async getNumberInfo (){
-      let objs = await user.getNumber(1);
-      this.day = objs.day;
-      this.minute = objs.minute > 999?(objs.minute/60).toFixed(1): objs.minute;
-      this.time = objs.minute > 999?"小时": "分钟";
-      this.book = objs.book;
+     
     }
   }
 };
@@ -234,19 +228,22 @@ export default {
     border-bottom: 1/@rem solid #e5e5e5;
   }
   .icon-box{
-    width: 30/@rem;
-    height: 30/@rem;
+    width: 34/@rem;
+    height: 34/@rem;
+  }
+  .icon-tri{
+    width: 34/@rem;
+    height: 34/@rem;
+    background: #fff;
     border-radius: 50%;
-    &.share{
-      background:rgba(255,78,81,1);
-    }
-    &.help{
-      background:rgba(65,164,255,1);
-    }
   }
   .person-icon{
-    color:#fff;
-    .fontSize(26);
+    color: #414141;
+    .fontSize(34);
+  }
+  .ear-icon{
+    color: #414141;
+    .fontSize(34);
   }
 }
 
