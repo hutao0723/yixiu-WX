@@ -9,8 +9,8 @@ export default {
 	set_CurrentTime ({commit}, obj) {
 		commit('setCurrentTime', obj)
 	},
-	set_MusicDuration ({commit}, obj) {
-		commit('setMusicDuration', obj)
+	set_ReadDuration ({commit}, obj) {
+		commit('setReadDuration', obj)
 	},
 	play_Next ({commit}) {
 		commit('playNext')

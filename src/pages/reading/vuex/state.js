@@ -5,29 +5,14 @@ export default {
 	// 是否有在读课程
 	readMission: true,
 	// audio信息
-	readaudio: {
-		columnId: '',
-		courseId: '',
-		current: '',
-		isNext: '',
-		isPrev: '',
-		lateralCover:"",
-		lecturerId: '',
-		lecturerName: '',
-		playbackProgress: '',
-		powerLevel: '',
-		src: "",
-		timeLength: '',
-		title: "",
-		verticalCover: "",
-		watchable: ''
+	readAudio: {
 	},
 	// 是否正在播放
-	readplaying: false,
+	readPlaying: false,
 	// 是否正在加载
-	readwaiting: false,
+	readWaiting: false,
 	// 当前播放的时间
-	readcurrentTime: 0,
+	readCurrentTime: 0,
 	// 音乐的播放时长
 	readDuration: 0,
 	// 音乐是否在加载

@@ -26,26 +26,26 @@ import { mapState } from 'vuex'
           return [
             {
               title: '阅读',
-              icon: 'icon-shouye',
-              active: 'icon-shouye active',
+              icon: 'icon-book',
+              active: 'icon-book active',
               path: '/index/home'
             },
             {
               title: '打卡',
-              icon: 'icon-yigou1',
-              active: 'icon-shouye active',
+              icon: 'icon-date',
+              active: 'icon-date active',
               path: '/index/card'
             },
             {
               title: '观点',
-              icon: 'icon-yigou1',
-              active: 'icon-shouye active',
+              icon: 'icon-opinion',
+              active: 'icon-opinion active',
               path: '/index/opinion'
             },
             {
               title: '我的',
-              icon: 'icon-wode',
-              active: 'icon-shouye active',
+              icon: 'icon-user',
+              active: 'icon-user active',
               path: '/index/user'
             }
           ]
@@ -53,20 +53,20 @@ import { mapState } from 'vuex'
           return [
             {
               title: '阅读',
-              icon: 'icon-shouye',
-              active: 'icon-shouye active',
+              icon: 'icon-book',
+              active: 'icon-book active',
               path: '/index/home'
             },
             {
               title: '观点',
-              icon: 'icon-yigou1',
-              active: 'icon-shouye active',
+              icon: 'icon-opinion',
+              active: 'icon-opinion active',
               path: '/index/opinion'
             },
             {
               title: '我的',
-              icon: 'icon-wode',
-              active: 'icon-shouye active',
+              icon: 'icon-user',
+              active: 'icon-user active',
               path: '/index/user'
             }
           ]

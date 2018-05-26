@@ -1,18 +1,12 @@
 <template>
-  <div class="home-main" ref="homeMain" >
-    <span @click="play" style="display: block">首页</span>
-    <AudioBar/>
+  <div class="article-main">
+    文稿
   </div>
 </template>
 
 <script>
-import AudioBar from '../../components/basic/Audio_Bar';
 import { mapState } from 'vuex';
-import play from '../../api/play'
 export default {
-  components: {
-    AudioBar
-  },
   data () {
     return {
     };
@@ -25,16 +19,13 @@ export default {
   mounted () {
   },
   methods: {
-    play() {
-      play.audioInit(1,181,true)
-    }
   }
 };
 </script>
 
 <style lang="less">
 @import '../../less/variable';
-.home-main {
+.article-main {
   width: 750/@rem;
   height: 100%;
   position: absolute;
@@ -45,13 +36,8 @@ export default {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding-top: 20/@rem;
-  // z-index: 9;
   background: #fff;
   font-size: 24/@rem;
-  .icon-nav{
-    height: 480/@rem;
-    border: 1px solid #ccc;
-  }
 }
 </style>
 

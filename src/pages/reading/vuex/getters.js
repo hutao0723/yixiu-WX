@@ -3,17 +3,17 @@ export default {
     // 获取audio元素
 	getAudioElement: state => state.audioelement,
 	// 获取audio信息
-	getAudioInfo: state => state.audio,
+	getAudioInfo: state => state.readAudio,
+	// 获取播放列表ids
+	getReadIds: state => state.readIds,
 	// 获取音乐是否播放
-	getIsPlaying: state => state.playing,
+	getIsPlaying: state => state.readPlaying,
 	// 获取音乐是否加载
-	getIsWaiting: state => state.waiting,
-	// 获取播放类型
-	getMusicPlayType: state => state.playType,
+	getIsWaiting: state => state.readWaiting,
 	// 获取当前的播放进度
-	getCurrentTime: state => state.currentTime,
+	getCurrentTime: state => state.readCurrentTime,
 	// 获取音乐的播放时长
-	getMusicDuration: state => state.musicDuration,
+	getMusicDuration: state => state.readDuration,
 	// 获取来源页面referer
 	getReferer: state => state.referer
 };
