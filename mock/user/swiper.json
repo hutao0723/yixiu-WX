@@ -1,0 +1,35 @@
+{
+    "success": true,
+    "data": {
+        "content":[
+            {   
+                "id": 11,
+                "pictureUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
+                "title": "30天读书魔鬼训练营",
+                "journey": 102,
+                "content": "读书是通往梦想的一个途径，读一本好书，让我们 得以明净如水，开阔视野，丰富阅历，益于人生。"
+            },
+            {
+                "id": 22,
+                "pictureUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
+                "title": "60天读书计划训练营",
+                "journey": 30,
+                "content": "读书是通往梦想的一个途径，读一本好书，让我们 得以明净如水，开阔视野，丰富阅历，益于人生。"
+            },
+            {
+                "id":33,
+                "pictureUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
+                "title": "啊哈哈哈哈哈啊哈哈",
+                "journey": 30,
+                "content": "读书是通往梦想的一个途径，读一本好书，让我们 得以明净如水，开阔视野，丰富阅历，益于人生。"
+            },
+            { 
+                "id":44,
+                "pictureUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
+                "title": "啊哈哈好滴吧诶诶",
+                "journey": 30,
+                "content": "读书是通往梦想的一个途径，读一本好书，让我们 得以明净如水，开阔视野，丰富阅历，益于人生。"
+            }
+          ]
+    }
+}

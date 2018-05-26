@@ -81,6 +81,14 @@ export default new Router({
       }
     },
     {
+      path: '/shelf',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/user/Shelf'));
+        }, 'reading_shelf');
+      }
+    },
+    {
       path: '/audio/index',
       component: function (resolve) {
         require.ensure([], function () {
