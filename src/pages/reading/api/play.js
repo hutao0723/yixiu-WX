@@ -6,19 +6,11 @@ export default class play extends base {
   /**
    * 获取音频地址
    */
-  static async getAudioUrl(columnId, courseId) {
+  static async getAudioUrl(courseId) {
     const url = `/course/getAccessUrl`;
-    let params = {};
-    if (columnId) {
-      params = {
-        columnId: columnId,
+      let params = {
         courseId: courseId
       }
-    } else {
-      params = {
-        courseId: courseId
-      }
-    }
     const res = await this.get(url, {params});
     return res.body.data;
   }
@@ -35,24 +27,26 @@ export default class play extends base {
   /**
    * 同步播放进度
    */
-  static async syncProgress(columnId, courseId, current) {
-    let params = {};
-    if (columnId) {
-      params = {
-        itemId: columnId,
-        currentColumnCourseId: courseId,
-        playbackProgress: current
-      }
-    } else {
-      params = {
-        itemId: courseId,
-        playbackProgress: current
-      }
+  static async syncProgress(courseId, current) {
+    let params = {
+      itemId: courseId,
+      playbackProgress: current
     }
     const url = `/userItem/progress`;
-    const isOk = await this.post(url, params);
-    return isOk;
+    this.post(url, params);
   }
+
+  /**
+   * 获取课程详情
+   */
+  static async getReadDetail(courseId) {
+    const url = `/readBookCourse/courseDetail`;
+      let params = {
+        courseId: courseId
+      }
+    const res = await this.get(url, {params});
+    return res.body.data;
+  } 
 
   /**
    * 初始化音频
