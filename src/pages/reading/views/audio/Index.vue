@@ -2,10 +2,10 @@
   <div class="audio-main">
     <div class="audio-page">
       <div class=" banner">
-        <img class="course-img" :src="audio.verticalCover" v-if="audio.verticalCover && ! audio.lateralCover"/>
-        <img class="course-img-lateral" :src="audio.lateralCover" v-if="audio.lateralCover"/>
-        <img class="course-img-lateral" src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png" v-if="!audio.lateralCover && !audio.verticalCover"/>
-        <span class="xl black line1 detail-word">{{audio.title}}</span>
+        <img class="course-img" :src="readAudio.verticalCover" v-if="readAudio.verticalCover && ! readAudio.lateralCover"/>
+        <img class="course-img-lateral" :src="readAudio.lateralCover" v-if="readAudio.lateralCover"/>
+        <img class="course-img-lateral" src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png" v-if="!readAudio.lateralCover && !readAudio.verticalCover"/>
+        <span class="xl black line1 detail-word">{{readAudio.title}}</span>
       </div>
       <div class="controler column-between">
         <div class="slider-bar">
@@ -17,20 +17,20 @@
           </div>
         </div>
         <div class="row-between control-bar">
-          <button type="primary" class="column-around btn-bottom" @click="routeToCourse(audio)">
-            <i class="iconfont icon-detail"></i>
+          <button type="primary" class="column-around btn-bottom" @click="routeToArticle">
+            <i class="iconfont icon-page"></i>
             <span class="xxs primary">文稿</span>
           </button>
           <button type="primary" class="btn-switch" @click="audioPrev">
-            <i class="iconfont icon-shangyiqu" :style="{color: `${!audio.isPrev ? '#343434' : '#919191'}`}"></i>
+            <i class="iconfont icon-prev" :style="{color: `${readAudio.isPrev ? '#343434' : '#919191'}`}"></i>
           </button>
           <button type="primary" class="btn-play" @click="togglePlay">
-            <i class="iconfont" :class="playing ? 'icon-bofangqi-zanting' : 'icon-bofang'" ></i>
+            <i class="iconfont" :class="readPlaying ? 'icon-share' : 'icon-play'" ></i>
           </button>
           <button type="primary" class="btn-switch" @click="audioNext">
-            <i class="iconfont icon-xiayiqu" :style="{color: `${!audio.isNext ? '#343434' : '#919191'}`}"></i>
+            <i class="iconfont icon-next" :style="{color: `${readAudio.isNext ? '#343434' : '#919191'}`}"></i>
           </button>
-          <button type="primary"  class="column-around btn-bottom" @click="routeToAudioList()">
+          <button type="primary"  class="column-around btn-bottom" @click="routeToList">
             <i class="iconfont icon-list"></i>
             <span class="xxs primary">播放列表</span>
           </button>
@@ -45,71 +45,57 @@
 </template>
 
 <script>
-import router from '../../mixins/router';
 import store from '../../vuex/store';
 import play from '../../api/play';
-import order from '../../api/order';
 import { mapState } from 'vuex'
 import range from '../../components/basic/Range'
-import Share from '../../components/basic/Share';
 import access from '../../mixins/accessHandler';
 
 export default {
   data () {
     return {
-      shareToggle: false,
     };
   },
   computed: {
-    ...mapState(['audio','playing','currentTime','musicDuration']),
+    ...mapState(['readAudio','readPlaying','readCurrentTime','readDuration']),
     current() {
-      return this.timerFomart(this.currentTime)
+      return this.timerFomart(this.readCurrentTime)
     },
     duration() {
-      return this.timerFomart(this.musicDuration)
+      return this.timerFomart(this.readDuration)
     }
   },
   mounted () {
-    setTimeout(()=>{
-      const msg = {
-          title: this.audio.title,
-          desc: this.audio.subTitle,
-          link: this.audio.courseId ? 'http://k.youfen666dev.com/#/course/' + this.audio.courseId:false ||this.audio.columnId ? 'http://k.youfen666dev.com/#/column/' + this.audio.columnId:false ,
-          imgUrl: this.audio.lateralCover || this.audio.verticalCover ||
-            'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
-        }
-        this.wxShare(msg)
-    },3000)
+    // setTimeout(()=>{
+    //   const msg = {
+    //       title: this.readAudio.title,
+    //       desc: this.readAudio.subTitle,
+    //       link: this.readAudio.courseId ? 'http://k.youfen666dev.com/#/course/' + this.readAudio.courseId:false ||this.readAudio.columnId ? 'http://k.youfen666dev.com/#/column/' + this.readAudio.columnId:false ,
+    //       imgUrl: this.readAudio.lateralCover || this.readAudio.verticalCover ||
+    //         'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
+    //     }
+    //     this.wxShare(msg)
+    // },3000)
     if (!store.getters.getAudioElement.getAttribute('src')) {
       store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
       store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title);
     }
   },
   methods: {
-    // 获取monitor
-    getMonitor(dpm) {
-      return JSON.stringify({
-        'dcm': '8001.',
-        'dpm': dpm,
-      });
-    },
-    success(){
-      this.shareToggle = false;
-    },
     audioPrev () {
-      play.startAudio(this.audio.columnId, this.audio.courseId, 'prev')
+      if (this.readAudio.isPrev) play.audioPrev()
     },  
     togglePlay() {
-      if (!this.audio.musicTryEnd) {
-        store.commit('togglePlay');
-      }
+      store.commit('togglePlay');
     },
     audioNext (){
-      play.startAudio(this.audio.columnId, this.audio.courseId, 'next')
+      if (this.readAudio.isNext) play.audioNext()
     },
-    goPay(){
-        order.buy(this.audio.columnId?this.audio.columnId:this.audio.courseId, this.audio.columnId?2:1)
-      
+    routeToArticle () {
+      this.$router.push('/audio/article');
+    },
+    routeToList () {
+      this.$router.push('/audio/list');
     },
     timerFomart (time) {
       if (isNaN(time)) return '00:00';
@@ -118,8 +104,8 @@ export default {
       return mm + ':' + ss;
     }
   },
-  components:{ range,Share },
-  mixins: [router, access]
+  components:{ range},
+  mixins: [access]
 };
 </script>
 <style lang="less">

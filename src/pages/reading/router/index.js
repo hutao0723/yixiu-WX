@@ -103,6 +103,14 @@ export default new Router({
           resolve(require('../views/audio/List'));
         }, 'reading_audiolist');
       }
+    },
+    {
+      path: '/audio/article',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/audio/Article'));
+        }, 'reading_audioarticle');
+      }
     }
   ]
 });
