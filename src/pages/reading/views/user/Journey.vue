@@ -14,7 +14,7 @@
               <div class="letter" v-if="(item.letter == 2 )&& (!item.expand)" @click.stop="handleChange(item)">收起</div>
             </div>
           </div>
-          <div class="clearfix book">
+          <div class="clearfix book btop">
             <div class="fl book-img"><img :src="item.courseUrl"></div>
             <div class="book-content">
               <div class="book-title">《{{item.courseTitle}}》</div>
@@ -23,13 +23,13 @@
           </div>
           <div class="row operate fr">
             <div class="column-center operate-share">
-              <i class="iconfont icon-help"></i>
+              <i class="iconfont icon-share"></i>
             </div>
             <div class="row">
               <span class="operate-num">{{item.praiseCount}}</span>
             </div>
             <div class="column-center" @click.stop="thumbsUp(item)">
-              <i class="iconfont icon-help" :class="item.userPraise ? 'zan':'' "></i>
+              <i class="iconfont icon-heart" :class="(item.userPraise==0) ? '':'zan' "></i>
             </div>
           </div>
         </div>
@@ -74,8 +74,12 @@ export default {
       }
       
     },
-    thumbsUp(row) {
-      console.log("点赞")
+    async thumbsUp(row) {
+      let objs = await user.getThumbUp(row.userPraise);
+      if (objs.success) {
+      }else{
+        console.log("获取数据失败")
+      }
       
     },
     init() {  
@@ -165,6 +169,7 @@ export default {
       line-height: 83/@rem;
       box-sizing: border-box;
       padding-left: 22/@rem;
+      margin-bottom: 30/@rem;
       .fontSize(30);
       .look{
         color: #FF4C4C;
@@ -177,7 +182,7 @@ export default {
       border-radius: 8/@rem;
       padding: 25/@rem 35/@rem 25/@rem 29/@rem ;
       box-sizing: border-box;
-      margin-top: 30/@rem;
+      
       .content{
         .fontSize(30);
         line-height: 42/@rem;
@@ -196,7 +201,6 @@ export default {
       }
       .book{
         margin-top: 16/@rem;
-        border-top: 1/@rem solid #D6D6D6;
         margin-bottom: 17/@rem;
         padding-top: 24/@rem;
         padding-left: 5/@rem;
@@ -243,6 +247,9 @@ export default {
       }
       .hauto{
         height:auto;
+      }
+      .btop{
+        border-top: 1/@rem solid #D6D6D6;
       }
     }
   }

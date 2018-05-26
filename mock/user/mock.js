@@ -16,12 +16,12 @@ var setOnline = [
   { 
     name: 'journeyList',
     type: 'get',
-    url: '/comment/findPageByUser'
+    url: '/user/read/journey'
   },
   { 
-    name: 'journeyList',
+    name: 'success',
     type: 'get',
-    url: '/user/getThumbUp'
+    url: '/comment/praise'
   },
   { 
     name: 'lecturer',

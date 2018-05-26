@@ -23,15 +23,15 @@
       </div>
       <div class="mt20 recommend bgfff">
           <img :src="recommendUrl">
-          <div class="icon-box share column-center jiantou">
-              <i class="iconfont icon-recom person-icon"></i>
+          <div class="icon-tri share column-center jiantou">
+              <i class="iconfont ear-icon ear-icon"></i>
           </div>
       </div>
       <router-link :to="{ path: '/journey' }">
         <div class="bgfff">
           <div class="person-h90 row mt20 border" >
             <div class="icon-box share column-center">
-              <i class="iconfont icon-recom person-icon"></i>
+              <i class="iconfont icon-clock person-icon"></i>
             </div>
             <div class="row ft32 ml30">我的历程</div>
           </div>
@@ -41,7 +41,7 @@
         <div class="bgfff">
           <div class="person-h90 row border">
             <div class="icon-box share column-center">
-              <i class="iconfont icon-recom person-icon"></i>
+              <i class="iconfont icon-booklist person-icon"></i>
             </div>
             <div class="row ft32 ml30">往期书架</div>
           </div>
@@ -51,7 +51,7 @@
         <div class="bgfff">
           <div class="person-h90 row" >
             <div class="icon-box share column-center">
-              <i class="iconfont icon-recom person-icon"></i>
+              <i class="iconfont icon-user person-icon"></i>
             </div>
             <div class="row ft32 ml30">我的老师</div>
           </div>
@@ -61,7 +61,7 @@
       <div class="bgfff" @click="contactToggle = true">
         <div class="person-h90 row mt20" >
           <div class="icon-box share column-center">
-            <i class="iconfont icon-recom person-icon"></i>
+            <i class="iconfont icon-ear person-icon"></i>
           </div>
           <div class="row ft32 ml30" @click="contactToggle = true">联系客服</div>
         </div>
@@ -228,19 +228,22 @@ export default {
     border-bottom: 1/@rem solid #e5e5e5;
   }
   .icon-box{
-    width: 30/@rem;
-    height: 30/@rem;
+    width: 34/@rem;
+    height: 34/@rem;
+  }
+  .icon-tri{
+    width: 34/@rem;
+    height: 34/@rem;
+    background: #fff;
     border-radius: 50%;
-    &.share{
-      background:rgba(255,78,81,1);
-    }
-    &.help{
-      background:rgba(65,164,255,1);
-    }
   }
   .person-icon{
-    color:#fff;
-    .fontSize(26);
+    color: #414141;
+    .fontSize(34);
+  }
+  .ear-icon{
+    color: #414141;
+    .fontSize(34);
   }
 }
 

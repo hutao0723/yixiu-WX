@@ -16,7 +16,7 @@ export default class user extends base {
    * 获取历程列表
    */
   static async getJourneyList() {
-    const url = `/comment/findPageByUser`;
+    const url = `/user/read/journey`;
     const res = await this.get(url);
     return res.data;
   }
