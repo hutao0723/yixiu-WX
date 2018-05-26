@@ -27,6 +27,7 @@
           <span>作者</span>
           <!--<span class="book-btn">查看</span>-->
           <span class="book-btn" @click="goComment()">写想法</span>
+          <!--<span class="book-btn" >去打卡</span>-->
         </div>
       </div>
       <div style="clear: both"></div>
@@ -65,6 +66,30 @@
     methods: {
       changeFlag(msg){
         this.noticeFlag = msg;
+      },
+      //打卡日历
+      getClockCalendar(){
+        let _this = this;
+        _this.$http.get('/user/read/clockCalendar? readId='+12).then(res=>{
+          let resp = res.data;
+          console.log(resp)
+        })
+      },
+      //打卡状态，评论状态
+      getClockState(){
+        let _this = this;
+        _this.$http.get('/user/read/clockState? readId='+12 +'&&courseId='+1).then(res=>{
+          let resp = res.data;
+          console.log(resp)
+        })
+      },
+      //获取缺卡天数
+      getLackClock(){
+        let _this = this;
+        _this.$http.get('/user/read/lackClock? readId='+12).then(res=>{
+          let resp = res.data;
+          console.log(resp)
+        })
       },
       goComment(){
         //发表想法

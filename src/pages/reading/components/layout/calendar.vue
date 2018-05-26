@@ -74,6 +74,8 @@
         this._month = _month;
         this.today = today;
         this.calculateEmptyGrids(cur_year, cur_month);
+        //获取当前年份 月份
+        console.log(cur_year,cur_month)
         /**调用计算空格子*/
         this.calculateDays(cur_year, cur_month);
       },
@@ -84,7 +86,9 @@
         }
         this.days[index].isClick=true;
       },
-      getThisMonthDays(year, month) {
+      getThisMonthDays(year, month) { //获取当月天数
+        console.log("getThisMonthDaysgetThisMonthDaysgetThisMonthDays")
+        console.log(year,month)
         return new Date(year, month, 0).getDate();
       },
       getFirstDayOfWeek(year, month) {
@@ -107,6 +111,7 @@
         }
       },
       calculateDays(year, month) {
+        console.log(year)
         let _this = this;
         let days = [];
         let thisMonthDays = this.getThisMonthDays(year, month);
