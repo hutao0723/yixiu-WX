@@ -95,6 +95,7 @@ export default {
       minute: 0,
       book: 0,
       time: "分钟",
+      // 分享
       recommendUrl: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=768904644,500415380&fm=27&gp=0.jpg'
     };
   },
@@ -104,33 +105,26 @@ export default {
   created() {
     },
   mounted () {
-    this.getUserInfo();
-    this.getNumberInfo();
+    this.getNumberInfo()
   },
   methods: {
     // 联系客服
     success(){
       this.contactToggle = false;
     },
-    // 获取用户信息
-    getUserInfo () {
-      this.$http.get('/user/getUserInfo').then(res => {
-        let resp = res.data
-        // console.log(resp.data)
-        if (resp.success) {
-          this.personname = resp.data.nickname;
-          this.imageUrl = resp.data.headimgurl;
+    async getNumberInfo (){
+      let objs = await user.getInfo();
+        if (objs.success) {
+          this.day = objs.data.clocks;
+          this.minute = objs.data.listens > 999?(objs.data.listens/60).toFixed(1): objs.data.listens;
+          this.time = objs.data.listens > 999?"小时": "分钟";
+          this.book = objs.data.books;
+          this.personname = objs.data.userNickname;
+          this.imageUrl = objs.data.userHeadImgUrl;
         } else {
           console.log("获取用户信息失败")
         }
-      })
-    },
-    async getNumberInfo (){
-      let objs = await user.getNumber(1);
-      this.day = objs.day;
-      this.minute = objs.minute > 999?(objs.minute/60).toFixed(1): objs.minute;
-      this.time = objs.minute > 999?"小时": "分钟";
-      this.book = objs.book;
+     
     }
   }
 };

@@ -6,9 +6,9 @@
       </div>
       <div class="book-table" v-for="(item, index) in bookList">
         <div class="book-cover">
-          <img :src="item.bookUrl">
+          <img :src="item.imgUrl">
         </div>
-        <div class="book-name line2">《{{item.bookName}}》</div>
+        <div class="book-name line2">《{{item.title}}》</div>
       </div>
     </div>
   </div>
@@ -43,16 +43,23 @@ export default {
   },
   methods: {
     async getSwipeInfo() {
-      let id = 1
-      let objs = await user.getSwipeList(id);
-      this.swipeList = [objs.content]
+      let objs = await user.getSwipeList();
+      console.log(objs);
+      if (objs.success) {
+        this.swipeList = [objs.data.content]
+      } else {
+        console.log("获取数据失败")
+      }
     },
-    async success (index){
-      console.log(index)
-      // 往期书架id
-      let id = index
-      let objs = await user.getBookList(id);
-      this.bookList = objs.content
+    async success (readId){
+      console.log(readId)
+      let objs = await user.getBookList(readId);
+      if (objs.success) {
+        this.bookList = objs.data
+      } else {
+        console.log("获取数据失败")
+      }
+      
     }
     
   }

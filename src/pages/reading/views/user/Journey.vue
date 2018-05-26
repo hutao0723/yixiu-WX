@@ -1,24 +1,24 @@
 <template>
   <div class="journey-main">
     <div class="module" v-for="(item, $index) in journeyList">
-      <div class="date">{{item.dateTime}}</div>
+      <div class="date">{{item.releaseTime}}</div>
       <div class="text-box">
-        <div class="text-journal"><span>{{item.titleName}}</span>
+        <div class="text-journal"><span>{{item.readName}}{{item.readStageNum}}期</span>
           <router-link :to="{ path: '/lecturer' }"><span class="look">查看证书></span></router-link>
         </div>
         <div class="text-container clearfix">
           <div class="container">
-            <div class="content" ref="cheight" :class="item.expand?'h131':''">{{item.contentText}}</div>
+            <div class="content" ref="cheight" :class="item.expand?'h131':''">{{item.content}}</div>
             <div v-if="item.line"> 
               <div class="letter" v-if="(item.letter == 1 )&& (item.expand)" @click.stop="handleChange(item)">全部</div>
               <div class="letter" v-if="(item.letter == 2 )&& (!item.expand)" @click.stop="handleChange(item)">收起</div>
             </div>
           </div>
           <div class="clearfix book">
-            <div class="fl book-img"><img :src="item.imageUrl"></div>
+            <div class="fl book-img"><img :src="item.courseUrl"></div>
             <div class="book-content">
-              <div class="book-title">《{{item.bookname}}》</div>
-              <div class="book-writer">{{item.writor}}</div>
+              <div class="book-title">《{{item.courseTitle}}》</div>
+              <div class="book-writer">{{item.courseAuthor}}</div>
             </div>
           </div>
           <div class="row operate fr">
@@ -26,10 +26,10 @@
               <i class="iconfont icon-help"></i>
             </div>
             <div class="row">
-              <span class="operate-num">{{item.number}}</span>
+              <span class="operate-num">{{item.praiseCount}}</span>
             </div>
             <div class="column-center" @click.stop="thumbsUp(item)">
-              <i class="iconfont icon-help" :class="(item.zanStatus === 0) ? '':'zan' "></i>
+              <i class="iconfont icon-help" :class="item.userPraise ? 'zan':'' "></i>
             </div>
           </div>
         </div>
@@ -63,18 +63,23 @@ export default {
   },
   methods: {
     async getJourneyInfo (){
-      let objs = await user.getJourneyList(1);
-      this.journeyList = objs.content;
+      let objs = await user.getJourneyList();
+      if (objs.success) {
+        this.journeyList = objs.data.content;
+        this.journeyList.forEach((item,index)=>{
+          this.journeyList[index].releaseTime = this.formatDateNew(item.releaseTime)
+        })
+      }else{
+        console.log("获取数据失败")
+      }
+      
     },
     thumbsUp(row) {
-      // let objs = user.getThumbUp(row.ZanStatus);
-      // if(objs.success){
-      //   row.row.ZanStatus = !row.ZanStatus
-      // }
       console.log("点赞")
       
     },
     init() {  
+      if(!this.journeyList) return
       this.journeyList.forEach((item,index)=>{
         let multiple = 750/document.body.clientWidth;
         // 131为三行字体的高度
@@ -95,7 +100,18 @@ export default {
         }
         
       })
-      
+    },
+    formatDateNew(date) {
+      if (!date) return '';
+      if (typeof date !== 'object') {
+        date = new Date(date);
+      }
+      let year = date.getFullYear();
+      let month = date.getMonth() + 1;
+      let day = date.getDate();
+      month = ('0' + month).slice(-2);
+      day = ('0' + day).slice(-2);
+      return year + '-' + month + '-' + day;
     },
     handleChange(row){
       if(this.expandStatus[row.id] == true){
