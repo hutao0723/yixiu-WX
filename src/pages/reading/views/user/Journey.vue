@@ -28,7 +28,7 @@
             <div class="row">
               <span class="operate-num">{{item.praiseCount}}</span>
             </div>
-            <div class="column-center" @click.stop="thumbsUp(item)">
+            <div class="column-center" @click.stop="thumbsUp(item,$index)">
               <i class="iconfont icon-heart" :class="(item.userPraise==0) ? '':'zan' "></i>
             </div>
           </div>
@@ -74,9 +74,16 @@ export default {
       }
       
     },
-    async thumbsUp(row) {
-      let objs = await user.getThumbUp(row.userPraise);
+    async thumbsUp(row,index) {
+      let praise = row.userPraise == 0 ? 1 : 0
+      let objs = await user.getThumbUp(praise,row.id);
       if (objs.success) {
+        if(praise){
+          this.journeyList[index].praiseCount += 1
+        }else{
+          this.journeyList[index].praiseCount -= 1
+        }
+          this.journeyList[index].userPraise = praise
       }else{
         console.log("获取数据失败")
       }
