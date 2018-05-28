@@ -2,11 +2,11 @@
   <div class="contact">
     <div class="pop-mask"></div>
     <div class="container">
-      <div class="icon-tri share column-center">
+      <div class="icon-tri share column-center" @click="close()">
           <i class="iconfont icon-close ear-icon"></i>
       </div>
-      <img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=768904644,500415380&fm=27&gp=0.jpg">
-      <div class="btn" @click="know">我知道了</div>
+      <img src="https://yun.duiba.com.cn/yoofans/images/201805/read/diploma.png">
+      <div class="btn" @click="know">查收证书</div>
     </div>
   </div>
 </template>
@@ -21,6 +21,9 @@
       };
     },
     methods: {
+      close() {
+        console.log('关闭')
+      }
       know() {
         this.$emit("success")
       }

@@ -5,7 +5,7 @@
         <a href="javascript:;" class="swiper-train">
           <div class="journal">
             <div class="clearfix">
-              <div class="journal-title fl">{{item.title}}</div>
+              <div class="journal-title fl line1">{{item.title}}</div>
               <div class="journal-number fr">{{item.stageNum}}期</div>
             </div>
             <div class="journal-content">{{item.briefer}}</div>
@@ -80,6 +80,7 @@
     padding: 40/@rem;
     box-sizing: border-box;
     .journal-title{
+      width: 460/@rem;
       font-weight: bold;
       .fontSize(50);
       color: @color-strong;

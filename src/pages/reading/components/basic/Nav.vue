@@ -2,11 +2,11 @@
   <div class="bottom-nav">
     <ul>
       <li v-for="(item, index) in navlist" :style="readMission ? 'width: 25%;' : 'width: 33.3%;'">
-        <router-link :to="item.path">
+        <router-link :to="item.path" :class="item.path === $route.path ? 'active' : ''">
           <p>
             <i class="iconfont" :class="item.path === $route.path ? item.active : item.icon"></i>
           </p>
-          <p :class="item.path === $route.path ? 'active' : ''">{{item.title}}</p>
+          <p >{{item.title}}</p>
         </router-link>
       </li>
     </ul>
@@ -27,25 +27,25 @@ import { mapState } from 'vuex'
             {
               title: '阅读',
               icon: 'icon-book',
-              active: 'icon-book active',
+              active: 'icon-book active tag',
               path: '/index/home'
             },
             {
               title: '打卡',
               icon: 'icon-date',
-              active: 'icon-date active',
+              active: 'icon-date active tag',
               path: '/index/card'
             },
             {
               title: '观点',
               icon: 'icon-opinion',
-              active: 'icon-opinion active',
+              active: 'icon-opinion active tag',
               path: '/index/opinion'
             },
             {
               title: '我的',
               icon: 'icon-user',
-              active: 'icon-user active',
+              active: 'icon-user active tag',
               path: '/index/user'
             }
           ]
@@ -101,6 +101,20 @@ import { mapState } from 'vuex'
         }
         .active{
           color: #222222 !important;
+          position: relative;
+        }
+        .tag{
+          &:after {
+            content: '';
+            width: 28/@rem;
+            height: 8/@rem;
+            border-radius: 100%;
+            background-color: @color-main;
+            position: absolute;
+            bottom: 4/@rem;
+            left: 6/@rem;
+            z-index: 11;
+          }
         }
       }
     }

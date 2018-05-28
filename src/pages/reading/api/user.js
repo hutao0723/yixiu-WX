@@ -37,15 +37,30 @@ export default class user extends base {
     return res.data;
   }
 
+
   /**
-   * 获取banner
+   * 获取banner获取列表
    */
-  static async getBookList(id) {
+  static async getSwipeList() {
+    let params = {};
+      params = {
+        pageNum: 1,
+        pageSize: 20
+      }
+    const url = `/read/past`;
+    const res = await this.get(url,{params});
+    return res.data;
+  }
+
+  /**
+   * 根据banner列表获取数据getDiplomaImage
+   */
+  static async getBookList(readId) {
     let params = {}
     params = {
-      id: id
+      readId: readId
     }
-    const url = `/read/past`;
+    const url = `/readBook/bookList`;
     const res = await this.get(url, {
       params
     });
@@ -53,16 +68,37 @@ export default class user extends base {
   }
 
   /**
-   * 根据banner获取列表
+   * 获取书籍的天数
    */
-  static async getSwipeList(readId) {
-    let params = {};
-      params = {
-        readId: readId
-      }
-    const url = `/readBook/bookList`;
-    const res = await this.get(url,{params});
+  static async getdayNum(bookId) {
+    let params = {}
+    params = {
+      bookId: bookId
+    }
+    const url = `/readBookCourse/courseList`;
+    const res = await this.get(url, {
+      params
+    });
     return res.data;
   }
+
+
+
+  /**
+   * 获取证书图片
+   */
+  static async getDiplomaImage(courseId) {
+    let params = {}
+    params = {
+      courseId: courseId
+    }
+    const url = `/user/stat/detail`;
+    const res = await this.get(url, {
+      params
+    });
+    return res.data;
+  }
+
+
 }
 

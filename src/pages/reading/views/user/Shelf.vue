@@ -1,15 +1,27 @@
 <template>
   <div>
     <div class="shelf-main" >
-      <div v-for="(item, index) in swipeList">
-        <SwiperBar :param.sync="item" @newSwiperIndex="success"/>
-      </div>
-      <div class="book-table" v-for="(item, index) in bookList">
-        <div class="book-cover">
-          <img :src="item.imgUrl">
+      <div v-if="!noData">
+        <div v-for="(item, index) in swipeList">
+          <SwiperBar :param.sync="item" @newSwiperIndex="success"/>
         </div>
-        <div class="book-name line2">《{{item.title}}》</div>
+        <div class="book-table" v-for="(item, index) in bookList" >
+          <div @click="getdayNumInfo(item.id)">
+            <div class="book-cover">
+              <img :src="item.imgUrl">
+            </div>
+            <div class="book-name line2">{{item.title}}</div>
+          </div>
+        </div>
       </div>
+      <div v-else>
+        <div class="no-book">
+          <div class="book-container">
+            <img src="https://yun.dui88.com/yoofans/images/201804/miniapp/help-center.png">
+          </div>
+          <div class="book-word">啊哦，暂无图书哦</div>
+        </div>
+      </div>  
     </div>
   </div>
 
@@ -27,6 +39,9 @@ export default {
   data () {
     return {
       data: {},
+
+      noData: false,
+
       bookUrl: "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
       bookName: "今天的网红经济今天的网红经济今天的网红经济",
       swipeList: [],
@@ -44,22 +59,36 @@ export default {
   methods: {
     async getSwipeInfo() {
       let objs = await user.getSwipeList();
-      console.log(objs);
       if (objs.success) {
+        if (objs.data.content && objs.data.content.length) {
+          this.noData = false;
+        }else{
+          this.noData = true;
+        }
         this.swipeList = [objs.data.content]
+        
       } else {
         console.log("获取数据失败")
       }
     },
+    // 获取书籍列表
     async success (readId){
-      console.log(readId)
       let objs = await user.getBookList(readId);
       if (objs.success) {
         this.bookList = objs.data
       } else {
         console.log("获取数据失败")
-      }
-      
+      }  
+    },
+    // 获取弹框列表
+    async getdayNumInfo (bookId) {
+      let objs = await user.getdayNum(bookId);
+      console.log(objs)
+      if (objs.success) {
+        
+      } else {
+        console.log("获取数据失败")
+      }  
     }
     
   }
@@ -97,5 +126,20 @@ export default {
     line-height: 33/@rem;
   }
 }
+.no-book{
+  .book-container{
+    img{
+      width: 310/@rem;
+      height: 310/@rem;
+      display: block;
+      margin: 100/@rem auto 60/@rem;
+    }
+  }
+  .book-word{
+    text-align: center;
+    .fontSize(30)
+  }
+}
+
 </style>
 

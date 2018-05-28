@@ -82,6 +82,14 @@ export default new Router({
       }
     },
     {
+      path: '/look',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/user/Look'));
+        }, 'reading_look');
+      }
+    },
+    {
       path: '/shelf',
       component: function (resolve) {
         require.ensure([], function () {
@@ -111,6 +119,14 @@ export default new Router({
         require.ensure([], function () {
           resolve(require('../views/audio/Article'));
         }, 'reading_audioarticle');
+      }
+    },
+    {
+      path: '/poster',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/poster/poster'));
+        }, 'reading_poster');
       }
     }
   ]
