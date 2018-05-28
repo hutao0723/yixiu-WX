@@ -1,21 +1,21 @@
 <template>
   <div class="comment-main">
     <div class="book-book">
-      <div class="book-img"></div>
+      <div class="book-img">
+        <img :src="courseDetail.courseUrl" alt="">
+      </div>
       <div class="book-detail">
-        <div class="book-title">《这是一本书就是这么有意思》</div>
+        <div class="book-title">{{courseDetail.courseTitle}}</div>
         <div class="book-author">
-          <span>作者</span>
-          <!--<span class="book-btn">查看</span>-->
-          <span class="book-btn" @click="goComment()">写想法</span>
+          <span>{{courseDetail.author}}</span>
         </div>
       </div>
       <div style="clear: both"></div>
     </div>
     <div class="comment-box">
-      <textarea placeholder="写下对这本书的感想和收获吧"></textarea>
+      <textarea placeholder="写下对这本书的感想和收获吧" v-model="content"></textarea>
     </div>
-    <div class="sub-comment">提交并打卡</div>
+    <div class="sub-comment" @click="subComment()">提交并打卡</div>
   </div>
 </template>
 
@@ -27,6 +27,8 @@
     },
     data () {
       return {
+        courseDetail:'',
+        content:''
       };
     },
     computed: {
@@ -35,8 +37,26 @@
     created() {
     },
     mounted () {
+      this.courseDetail = JSON.parse(this.$route.params.data) ;
+      //this.courseDetail = JSON.parse(this.$route.query.data) ;
+      console.log(this.courseDetail)
     },
     methods: {
+      subComment(){
+        console.log(this.content)
+
+        let params={
+          content:'',
+          clockDate:'',
+          readId:'',
+          courseId:'',
+          dayNum:''
+        }
+        this.$http.post('/api/user/read/clock',JSON.stringify(params)).then(res=>{
+          let resp = res.data;
+          //_this.courseDetail = res.data;
+        })
+      },
     }
   };
 </script>
@@ -70,8 +90,12 @@
         width:122/@rem;
         height:165/@rem;
         margin-right: 18/@rem;
-        background: pink;
         float: left;
+        img{
+          width:100%;
+          height:100%;
+          display:inline-block;
+        }
       }
       .book-detail{
         padding-top: 10/@rem;
