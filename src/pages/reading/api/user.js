@@ -64,5 +64,20 @@ export default class user extends base {
     const res = await this.get(url,{params});
     return res.data;
   }
+
+  /**
+   * 获取书籍的天数
+   */
+  static async getdayNum(bookId) {
+    let params = {}
+    params = {
+      bookId: bookId
+    }
+    const url = `/readBookCourse/courseList`;
+    const res = await this.get(url, {
+      params
+    });
+    return res.data;
+  }
 }
 

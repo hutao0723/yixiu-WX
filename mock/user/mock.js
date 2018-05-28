@@ -24,11 +24,6 @@ var setOnline = [
     url: '/comment/praise'
   },
   { 
-    name: 'lecturer',
-    type: 'get',
-    url: '/user/getLecturer'
-  },
-  { 
     name: 'swiper',
     type: 'get',
     url: '/readBook/bookList'
@@ -37,6 +32,11 @@ var setOnline = [
     name: 'book',
     type: 'get',
     url: '/read/past'
+  },
+  { 
+    name: 'dayNum',
+    type: 'get',
+    url: '/readBookCourse/courseList'
   }
 ];
 

@@ -111,6 +111,14 @@ export default new Router({
           resolve(require('../views/audio/Article'));
         }, 'reading_audioarticle');
       }
+    },
+    {
+      path: '/poster',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/poster/poster'));
+        }, 'reading_poster');
+      }
     }
   ]
 });
