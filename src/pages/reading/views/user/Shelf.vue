@@ -74,7 +74,7 @@ export default {
     playAudio(readId,courseId){
       play.audioInit(readId,courseId,true)
       // 跳转到播放页
-      // this.$router.push("/audio/Index/" + readId + "/"+ courseId);
+      this.$router.push("/audio/Index");
     },
     async getSwipeInfo() {
       let objs = await user.getSwipeList();

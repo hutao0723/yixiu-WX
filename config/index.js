@@ -29,46 +29,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/read': {
-        // 测试环境
-        target: 'http://172.31.50.240:9106',  // 接口域名
-        changeOrigin: true,  //是否跨域
-        // pathRewrite: {
-        //   '': ''   //需要rewrite重写的,
-        // }
-      },
-      '/readBook': {
-        // 测试环境
-        target: 'http://172.31.50.240:9106',  // 接口域名
-        changeOrigin: true,  //是否跨域
-        // pathRewrite: {
-        //   '': ''   //需要rewrite重写的,
-        // }
-      },
-      '/readBookCourse': {
-        // 测试环境
-        target: 'http://172.31.50.240:9106',  // 接口域名
-        changeOrigin: true,  //是否跨域
-        // pathRewrite: {
-        //   '': ''   //需要rewrite重写的,
-        // }
-      },
-      // '/user': {
-      //   // 测试环境
-      //   target: 'http://172.31.10.130:9106',  // 接口域名
-      //   changeOrigin: true,  //是否跨域
-      //   // pathRewrite: {
-      //   //   '': ''   //需要rewrite重写的,
-      //   // }
-      // },
-      // '/comment': {
-      //   // 测试环境
-      //   target: 'http://172.31.10.130:9106',  // 接口域名
-      //   changeOrigin: true,  //是否跨域
-      //   // pathRewrite: {
-      //   //   '': ''   //需要rewrite重写的,
-      //   // }
-      // },
+
         '/api': {
           // 测试环境
           target: 'http://172.31.10.130:9106',  // 接口域名
@@ -77,6 +38,47 @@ module.exports = {
             '/api': '/'   //需要rewrite重写的,
           }
         },
+
+        // '/read': {
+      //   // 测试环境
+      //   target: 'http://172.31.50.240:9106',  // 接口域名
+      //   changeOrigin: true,  //是否跨域
+      //   // pathRewrite: {
+      //   //   '': ''   //需要rewrite重写的,
+      //   // }
+      // },
+      // '/readBook': {
+      //   // 测试环境
+      //   target: 'http://172.31.50.240:9106',  // 接口域名
+      //   changeOrigin: true,  //是否跨域
+      //   // pathRewrite: {
+      //   //   '': ''   //需要rewrite重写的,
+      //   // }
+      // },
+      // '/readBookCourse': {
+      //   // 测试环境
+      //   target: 'http://172.31.50.240:9106',  // 接口域名
+      //   changeOrigin: true,  //是否跨域
+      //   // pathRewrite: {
+      //   //   '': ''   //需要rewrite重写的,
+      //   // }
+      // },
+      '/user': {
+        // 测试环境
+        target: 'http://172.31.10.130:9106',  // 接口域名
+        changeOrigin: true,  //是否跨域
+        // pathRewrite: {
+        //   '': ''   //需要rewrite重写的,
+        // }
+      },
+      '/comment': {
+        // 测试环境
+        target: 'http://172.31.10.130:9106',  // 接口域名
+        changeOrigin: true,  //是否跨域
+        // pathRewrite: {
+        //   '': ''   //需要rewrite重写的,
+        // }
+      },
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
