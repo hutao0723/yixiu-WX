@@ -1,5 +1,6 @@
 <template>
   <div class="home-main" ref="homeMain">
+    <div @click="play">播放</div>
     <!-- 未买课 -->
     <div class="home-box" v-if="courseObj.status == 0">
       <div class="home-tab clearfix">
@@ -104,13 +105,14 @@
         <div class="alert-btn" @click="alertToggle = false;">取消</div>
       </div>
     </div>
-
+    
     <AudioBar/>
   </div>
 </template>
 
 <script>
   import AudioBar from '../../components/basic/Audio_Bar';
+  import play from '../../api/play'
   import {
     mapState
   } from 'vuex';
@@ -193,7 +195,11 @@
     },
     created() {},
     mounted() {},
-    methods: {}
+    methods: {
+      play() {
+        play.audioInit(28, 196, true)
+      }
+    }
   };
 
 </script>

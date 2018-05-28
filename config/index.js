@@ -29,41 +29,57 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/floor': {
-        // 测试环境
-        target: 'https://k.youfen666dev.com',  // 接口域名
-        changeOrigin: true,  //是否跨域
-        // pathRewrite: {
-        //   '': ''   //需要rewrite重写的,
-        // }
-      },
-      '/api': {
-        // 测试环境
-        target: 'https://k.youfen666dev.com',  // 接口域名
-        changeOrigin: true,  //是否跨域
-        pathRewrite: {
-          '/api': 'https://k.youfen666dev.com'   //需要rewrite重写的,
-        }
-      },
+      // '/floor': {
+      //   // 测试环境
+      //   target: 'https://k.youfen666dev.com',  // 接口域名
+      //   changeOrigin: true,  //是否跨域
+      //   // pathRewrite: {
+      //   //   '': ''   //需要rewrite重写的,
+      //   // }
+      // },
+      // '/api': {
+      //   // 测试环境
+      //   target: 'https://k.youfen666dev.com',  // 接口域名
+      //   changeOrigin: true,  //是否跨域
+      //   pathRewrite: {
+      //     '/api': 'https://k.youfen666dev.com'   //需要rewrite重写的,
+      //   }
+      // },
       '/course': {
         // 测试环境
-        target: 'https://k.youfen666dev.com',  // 接口域名
+        target: 'http://172.31.51.213:9106',  // 接口域名
         changeOrigin: true,  //是否跨域
         // pathRewrite: {
         //   '': ''   //需要rewrite重写的,
         // }
       },
-      '/column': {
+      // // '/column': {
+      // //   // 测试环境
+      // //   target: 'https://k.youfen666dev.com',  // 接口域名
+      // //   changeOrigin: true,  //是否跨域
+      // //   // pathRewrite: {
+      // //   //   '': ''   //需要rewrite重写的,
+      // //   // }
+      // // },
+      // // '/userItem': {
+      // //   // 测试环境
+      // //   target: 'https://k.youfen666dev.com',  // 接口域名
+      // //   changeOrigin: true,  //是否跨域
+      // //   // pathRewrite: {
+      // //   //   '': ''   //需要rewrite重写的,
+      // //   // }
+      // // },
+      '/read': {
         // 测试环境
-        target: 'https://k.youfen666dev.com',  // 接口域名
+        target: 'http://172.31.51.213:9106',  // 接口域名
         changeOrigin: true,  //是否跨域
         // pathRewrite: {
         //   '': ''   //需要rewrite重写的,
         // }
       },
-      '/userItem': {
+      '/readBookCourse': {
         // 测试环境
-        target: 'https://k.youfen666dev.com',  // 接口域名
+        target: 'http://172.31.51.213:9106',  // 接口域名
         changeOrigin: true,  //是否跨域
         // pathRewrite: {
         //   '': ''   //需要rewrite重写的,

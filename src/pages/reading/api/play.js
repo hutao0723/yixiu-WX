@@ -6,9 +6,10 @@ export default class play extends base {
   /**
    * 获取音频地址
    */
-  static async getAudioUrl(courseId) {
+  static async getAudioUrl(readId,courseId) {
     const url = `/course/getAccessUrl`;
-    let params = { courseId }
+    let courseType = 3;
+    let params = { readId,courseId,courseType}
     const res = await this.get(url, {params});
     return res.body.data;
   }
@@ -56,6 +57,7 @@ export default class play extends base {
         item.duration = this.fmtTime(+item.timeLength);
         let percent = Math.floor((+item.playbackProgress ? +item.playbackProgress : 0) / +item.timeLength * 100);
         item.percent = (percent > 100 ? 100 : percent) + "%";
+        item.readId = readId;
       })
     let readIds = readList.map(item => {
       return item.id
@@ -74,7 +76,7 @@ export default class play extends base {
     readAudio.index = store.getters.getReadIds.indexOf(courseId);
     readAudio.isPrev = readAudio.index == 0 ? false : true;
     readAudio.isNext = readAudio.index == (store.getters.getReadIds.length - 1) ? false : true;
-    readAudio.src = await this.getAudioUrl(courseId);
+    readAudio.src = await this.getAudioUrl(readId,courseId);
     store.commit({ type: 'setAudio', readAudio: readAudio });
     this.syncPlaytimes(store.getters.getAudioInfo.courseId);
     store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
