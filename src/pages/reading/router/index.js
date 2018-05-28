@@ -81,7 +81,7 @@ export default new Router({
       }
     },
     {
-      path: '/look',
+      path: '/look/:courseId',
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../views/user/Look'));

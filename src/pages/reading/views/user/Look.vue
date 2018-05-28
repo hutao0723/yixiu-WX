@@ -22,7 +22,8 @@
         methods: {
             // 获取证书图片
             async getImage (){
-                let courseId = this.$route.query.courseId
+                let courseId = this.$route.params.courseId
+                console.log(courseId)
                 let objs = await user.getDiplomaImage(courseId);
                 if (objs.success) {
                   this.diplomaUrl = objs.data.userHeadImgUrl;

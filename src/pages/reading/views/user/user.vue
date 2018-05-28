@@ -9,15 +9,15 @@
       </div>
       <ul class="number clearfix row-around">
             <li class="column">
-              <div><span class="word">{{day}}</span>天</div>
+              <div><span class="word">{{day ? day : 0}}</span>天</div>
               <div class="text">坚持打卡</div>
             </li>
             <li class="column">
-              <div><span class="word">{{minute}}</span>{{time}}</div>
+              <div><span class="word">{{minute ? minute : 0}}</span>{{time}}</div>
               <div class="text">累计精听</div>
             </li>
             <li class="column">
-              <div><span class="word">{{book}}</span>本</div>
+              <div><span class="word">{{book ? book : 0}}</span>本</div>
               <div class="text">累计阅读</div>
             </li>
         </ul>
