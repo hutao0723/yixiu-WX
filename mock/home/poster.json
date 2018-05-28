@@ -1,0 +1,29 @@
+{
+	"code": 200,
+	"desc": "",
+	"success": true,
+	"data": {
+		"books":"100",								
+		"clocks":"50",								
+		"content": "测试数据测试数据测试数据测试数据",	
+		"courseAuthor":"测试", 						
+		"courseId":"8975",							
+		"courseSubTitle":"课程副标题",				
+		"courseTitle":"课程标题 ",					
+		"courseUrl": "" ,							
+		"dayNum":"12", 								
+		"id": 99,									
+		"listens":500, 								
+		"loginDays": 10,							
+		"praiseCount":100, 							
+		"readId":"88888",								
+		"readName":"阅读表", 						
+		"readStageNum": "阅读期数" ,					
+		"releaseTime": "2018-02-02",				
+		"shareImgUrl": "" ,						
+		"userId": "88" ,							
+		"userImgUrl": "" ,							
+		"userNickname": "用户昵称" ,					
+		"userPraise" : true						
+	}
+}

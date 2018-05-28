@@ -4,11 +4,13 @@
       <div v-for="(item, index) in swipeList">
         <SwiperBar :param.sync="item" @newSwiperIndex="success"/>
       </div>
-      <div class="book-table" v-for="(item, index) in bookList">
-        <div class="book-cover">
-          <img :src="item.imgUrl">
+      <div class="book-table" v-for="(item, index) in bookList" >
+        <div @click="getdayNumInfo(item.id)">
+          <div class="book-cover">
+            <img :src="item.imgUrl">
+          </div>
+          <div class="book-name line2">《{{item.title}}》</div>
         </div>
-        <div class="book-name line2">《{{item.title}}》</div>
       </div>
     </div>
   </div>
@@ -44,22 +46,30 @@ export default {
   methods: {
     async getSwipeInfo() {
       let objs = await user.getSwipeList();
-      console.log(objs);
       if (objs.success) {
         this.swipeList = [objs.data.content]
       } else {
         console.log("获取数据失败")
       }
     },
+    // 获取书籍列表
     async success (readId){
-      console.log(readId)
       let objs = await user.getBookList(readId);
       if (objs.success) {
         this.bookList = objs.data
       } else {
         console.log("获取数据失败")
-      }
-      
+      }  
+    },
+    // 获取弹框列表
+    async getdayNumInfo (bookId) {
+      let objs = await user.getdayNum(bookId);
+      console.log(objs)
+      if (objs.success) {
+        
+      } else {
+        console.log("获取数据失败")
+      }  
     }
     
   }

@@ -1,5 +1,6 @@
 <template>
   <div class="home-main" ref="homeMain">
+    <div @click="play">播放</div>
     <!-- 未买课 -->
     <div class="home-box">
       <div class="home-tab clearfix">
@@ -121,13 +122,14 @@
         <div class="alert-bg" @click="alertToggle = false;"></div>
       </div>
     </div>
-
+    
     <AudioBar/>
   </div>
 </template>
 
 <script>
   import AudioBar from '../../components/basic/Audio_Bar';
+  import play from '../../api/play'
   import {
     mapState
   } from 'vuex';
