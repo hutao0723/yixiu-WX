@@ -109,8 +109,9 @@
       },
       getDate(msg){
         let _this = this
-        console.log(msg)
-        _this.dayNum = msg.dayNum;
+        if(msg.dayNum){
+          _this.dayNum = msg.dayNum;
+        }
         _this.courseId = msg.courseId;
         _this.getCourseDetail(msg.date)
       },
@@ -120,14 +121,6 @@
         _this.$http.get('/api/user/read/clockCalendar?readId='+this.readId).then(res=>{
           let resp = res.data;
          // _this.c_date = res.data;
-          console.log(resp)
-        })
-      },
-      //打卡状态，评论状态
-      getClockState(){
-        let _this = this;
-        _this.$http.get('/api/user/read/clockState? readId='+12 +'&&courseId='+1).then(res=>{
-          let resp = res.data;
           console.log(resp)
         })
       },
@@ -150,8 +143,8 @@
       goComment(data){
         let detail = JSON.stringify(data);
         //发表想法
-        //this.$router.push({name:'comment',params:{data:detail}})
-        this.$router.push('/comment?data='+ detail)
+        this.$router.push({name:'comment',params:{data:detail}})
+        //this.$router.push('/comment?data='+ detail)
       }
     }
   };

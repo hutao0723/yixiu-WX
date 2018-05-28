@@ -37,8 +37,8 @@
     created() {
     },
     mounted () {
-      //this.courseDetail = JSON.parse(this.$route.params.data) ;
-      this.courseDetail = JSON.parse(this.$route.query.data) ;
+      this.courseDetail = JSON.parse(this.$route.params.data) ;
+      //this.courseDetail = JSON.parse(this.$route.query.data) ;
       console.log(this.courseDetail)
     },
     methods: {
