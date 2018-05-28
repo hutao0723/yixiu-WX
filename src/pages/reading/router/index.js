@@ -58,6 +58,7 @@ export default new Router({
     },
     {
       path: '/comment',
+      name:'comment',
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../views/card/Comment'));
