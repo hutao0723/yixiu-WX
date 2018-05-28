@@ -6,7 +6,7 @@
           <SwiperBar :param.sync="item" @newSwiperIndex="success"/>
         </div>
         <div class="book-table" v-for="(item, index) in bookList" >
-          <div @click="getdayNumInfo(item.id)">
+          <div @click="getdayNumInfo(item.id,item.readId)">
             <div class="book-cover">
               <img :src="item.imgUrl">
             </div>
@@ -26,7 +26,7 @@
         <div class="alert-top">
           <h3>{{bookName}}</h3>
           <div class="clearfix book-box" >
-            <div class="item" v-for="(item,index) in dayNumList.length" :key="index">{{item}}</div>
+            <div class="item" v-for="(item,index) in dayNumList" :key="index" @click.stop="playAudio(item.readId,item.courseId)">{{index+1}}</div>
           </div>
         </div>
         <div class="alert-btn" @click="alertToggle = false;">取消</div>
@@ -40,6 +40,7 @@
 <script>
 import { mapState } from 'vuex';
 import SwiperBar from '../../components/layout/swiper_bar';
+import play from '../../api/play'
 import user from '../../api/user';
 
 export default {
@@ -70,6 +71,11 @@ export default {
     await this.getSwipeInfo()
   },
   methods: {
+    playAudio(readId,courseId){
+      play.audioInit(readId,courseId,true)
+      // 跳转到播放页
+      // this.$router.push("/audio/Index/" + readId + "/"+ courseId);
+    },
     async getSwipeInfo() {
       let objs = await user.getSwipeList();
       if (objs.success) {
@@ -94,8 +100,8 @@ export default {
       }  
     },
     // 获取弹框列表
-    async getdayNumInfo (bookId) {
-      let objs = await user.getdayNum(bookId);
+    async getdayNumInfo (bookId,readId) {
+      let objs = await user.getdayNum(bookId,readId);
       if (objs.success) {
         this.dayNumList = objs.data
         this.alertToggle = true

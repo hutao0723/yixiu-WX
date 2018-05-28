@@ -70,10 +70,11 @@ export default class user extends base {
   /**
    * 获取书籍的天数
    */
-  static async getdayNum(bookId) {
+  static async getdayNum(bookId,readId) {
     let params = {}
     params = {
-      bookId: bookId
+      bookId: bookId,
+      readId: readId
     }
     const url = `/readBookCourse/courseList`;
     const res = await this.get(url, {
