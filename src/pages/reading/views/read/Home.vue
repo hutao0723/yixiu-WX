@@ -1,8 +1,8 @@
 <template>
   <div class="home-main" ref="homeMain">
-    <div @click="play">播放</div>
+    <!-- <div @click="play">播放</div> -->
     <!-- 未买课 -->
-    <div class="home-box">
+    <div class="home-box" v-if="pageStatus == 1">
       <div class="home-tab clearfix">
         <div class="item" @click="tabActive=true">
           <span :class="{ active: tabActive}">简介</span>
@@ -36,12 +36,12 @@
 
           </div>
         </div>
-        <div class="home-bottom">去选课程</div>
+        <div class="home-bottom" @click="tabActive = false">去选课程</div>
       </div>
 
       <div v-show="!tabActive">
         <div class="home-course">
-          <div class="item" v-for="(item,index) in courseList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
+          <div class="item" v-for="(item,index) in readList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
             @click="selectCourse(item)">
             <div class="item-box">
               <div class="item-top">
@@ -65,7 +65,7 @@
       </div>
 
     </div>
-    <div class="home-wechat" v-if="pageStatus == 5">
+    <div class="home-wechat" v-if="pageStatus == 2">
       <p class="text-a">
         <i></i>您已成功报名</p>
       <p class="text-b">长按识别二维码</p>
@@ -77,8 +77,8 @@
     <div class="home-nonevent" v-if="pageStatus == 3">
       <div class="nonevent-box">
         <p class="text-a">您已成功报名</p>
-        <p class="text-b">「 {{courseObj.name}} 」</p>
-        <p class="text-c">{{courseDetail.beginDate}}(开学，倒计时{{courseObj.date}}天</p>
+        <p class="text-b">「 {{courseDetail.title}} 」</p>
+        <p class="text-c">{{courseDetail.beginDate}}({{courseDetail.beginDateWeek}})开学，倒计时{{courseDetail.userReadState.days}}天</p>
       </div>
       <p class="text-d">长按识别二维码添加老师微信</p>
       <p class="text-e">因添加学员较多，老师会在3个工作日内通过，请耐心等待~</p>
@@ -88,41 +88,42 @@
       <p class="text-h">关注微信公众号【一修读书】，点击</br>菜单栏“我的老师”添加</p>
     </div>
 
-    <div class="home-already" v-if="pageStatus == 0">
+    <div class="home-already" v-if="pageStatus == 4">
       <h2>今日学习
-        <span> | 第{{alreadyObj.nowDay}}/{{alreadyObj.totalDay}}天</span>
+        <span> | 第{{todayBookDetail.days}}/{{todayBookDetail.totalDays}}天</span>
       </h2>
       <div class="already-book">
-        <img src="" alt="" class="book-img">
-        <div class="book-name">{{alreadyObj.name}}</div>
-        <div class="book-msg">{{alreadyObj.msg}}</div>
+        <img :src="todayBookDetail.courseUrl" alt="" class="book-img">
+        <div class="book-name">《{{todayBookDetail.courseTitle}}》</div>
+        <div class="book-msg">{{todayBookDetail.courseSubTitle}}</div>
         <div class="book-btn">播放
-          <i></i>
+          <i class="iconfont icon-bofang"></i>
         </div>
       </div>
       <h2>我的书架
-        <span> | 缺卡{{alreadyObj.lockDay}}天</span>
+        <span> | 缺卡{{todayBookDetail.lackClockDays}}天</span>
       </h2>
       <div class="already-list clearfix">
-        <div class="item" v-for="(item,index) in alreadyObj.list" :key="index" @click="alertToggle = true;">
-          <div class="item-lock">
-            <img src="" alt="" class="item-img">
+        <div class="item" v-for="(item,index) in historyBookList" :key="index" @click="getCourseList(item.id)">
+          <div class="item-box">
+            <img :src="item.imgUrl" alt="" class="item-img">
+            <div class="item-lock" v-if="item.lockStatus"><i class="iconfont icon-lock"></i></div>
           </div>
-          <div class="item-name">{{item.name}}</div>
+          <div class="item-name">{{item.title}}</div>
         </div>
       </div>
       <div class="already-alert" v-show="alertToggle">
         <div class="alert-top">
           <h3>{{bookName}}</h3>
           <div class="clearfix">
-            <div class="item" v-for="(item,index) in 6" :key="index" :class="{none: index >4}">{{item}}</div>
+            <div class="item" v-for="(item,index) in courseList" :key="index" :class="{none: item.lockStatus}" @click="playAudio(item.courseId)">{{index+1}}</div>
           </div>
         </div>
         <div class="alert-btn" @click="alertToggle = false;">取消</div>
         <div class="alert-bg" @click="alertToggle = false;"></div>
       </div>
     </div>
-    
+
     <AudioBar/>
   </div>
 </template>
@@ -140,31 +141,7 @@
     data() {
       return {
         reviewList: [],
-        courseList: [{
-          name: '情商高手+好口才训练营',
-          num: '3',
-          date: '5-18',
-          peoNum: '233',
-          text1: '名人教你说话之道',
-          text2: '怎么优雅、友好地拒绝别人',
-          text3: '做生活中的高情商者、职场中的优雅人士',
-        }, {
-          name: '情商高手+好口才训练营',
-          num: '3',
-          date: '5-18',
-          peoNum: '233',
-          text1: '名人教你说话之道',
-          text2: '怎么优雅、友好地拒绝别人',
-          text3: '做生活中的高情商者、职场中的优雅人士',
-        }, {
-          name: '情商高手+好口才训练营',
-          num: '3',
-          date: '5-18',
-          peoNum: '233',
-          text1: '名人教你说话之道',
-          text2: '怎么优雅、友好地拒绝别人',
-          text3: '做生活中的高情商者、职场中的优雅人士',
-        }],
+        readList: [],
         tabActive: true,
         courseObj: {
           status: 0,
@@ -204,6 +181,9 @@
         teacherWxName: '', // 老师名称
         teacherWxQrcodeUrl: '', // 老师微信二维码
         courseDetail: {}, // 课程详情
+        todayBookDetail: {}, // 今日书
+        historyBookList: [], // 历史书
+        courseList: [], // 书对应列表
       };
     },
     computed: {
@@ -265,13 +245,21 @@
       this.teacherWxQrcodeUrl = userState.data.teacherWxQrcodeUrl;
 
       this.courseDetail = await this.readDetail();
-      console.log(this.courseDetail)
+
+      // 4
+      this.getDetail();
+      this.getBookList();
+
 
 
 
 
     },
     methods: {
+      playAudio(id){
+        play.audioInit(28,id,true)
+        // 跳转到播放页
+      },
       selectCourse(item) {
         if (this.selectCourseId != item.readId && !item.purchased) {
           this.selectCourseId = item.readId;
@@ -335,7 +323,7 @@
         this.$http.get(url, {
           params
         }).then((res) => {
-          this.courseList = res.data.data;
+          this.readList = res.data.data;
           if (res.data.data.length > 0) {
             this.selectCourseId = res.data.data[0].readId
             this.selectCourseObj = res.data.data[0];
@@ -343,6 +331,56 @@
           }
         });
       },
+
+      getDetail() {
+        let self = this;
+        let params = {};
+        let newDate = new Date();
+        let n = newDate.getFullYear();
+        let m = newDate.getMonth() + 1;
+        if (m < 10) {
+          m = '0' + m
+        }
+        let d = newDate.getDate();
+        let date = n + '-' + m + '-' + d;
+        params = {
+          readId: 28,
+          date: date,
+        }
+        const url = `/api/readBookCourse/courseDetailByDate`;
+        this.$http.get(url, {
+          params
+        }).then((res) => {
+          this.todayBookDetail = res.data.data;
+        });
+      },
+      getBookList() {
+        let self = this;
+        let params = {};
+        params = {
+          readId: 28,
+        }
+        const url = `/api/readBook/bookList`;
+        this.$http.get(url, {
+          params
+        }).then((res) => {
+          this.historyBookList = res.data.data;
+        });
+      },
+      getCourseList(id) {
+        let self = this;
+        let params = {};
+        params = {
+          bookId: id,
+        }
+        const url = `/api/readBookCourse/courseList`;
+        this.$http.get(url, {
+          params
+        }).then((res) => {
+          this.courseList = res.data.data;
+          this.alertToggle = true;
+        });
+      }
 
 
 
@@ -486,8 +524,8 @@
       }
 
     }
-    .home-bottom{
-      .text(40,100);
+    .home-bottom {
+      .text(40, 100);
       position: fixed;
       left: 0;
       bottom: 0;
@@ -792,6 +830,10 @@
           border-radius: 50/@rem;
           text-align: center;
           color: #333;
+          .icon-bofang {
+            font-size: 30/@rem;
+            line-height: 54/@rem;
+          }
         }
       }
       .already-list {
@@ -800,14 +842,17 @@
         .item {
           float: left;
           margin-right: 70/@rem;
-          border-radius: 6/@rem;
           overflow: hidden;
           position: relative;
           width: 170/@rem;
+          .item-box{
+            position: relative;
+            border-radius: 6/@rem;
+            overflow: hidden;
+          }
           .item-img {
             .size(170, 240);
             display: block;
-            background: #000;
           }
           .item-name {
             font-size: 24/@rem;
@@ -817,8 +862,18 @@
             margin-bottom: 36/@rem;
           }
           .item-lock {
-            background: #000;
-            opacity: 0.6;
+            background:rgba(0,0,0,0.7);
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            text-align: center;
+            line-height: 240/@rem;
+          }
+          .icon-lock{
+            font-size: 30/@rem;
+            color: #fff;
           }
         }
         .item:nth-last-child(3) {
@@ -848,6 +903,7 @@
           left: 0;
           bottom: 88/@rem;
           z-index: 9999;
+          right: 0;
           h3 {
             .text(34, 40);
             text-align: center;
@@ -869,7 +925,7 @@
             background: #E6E6E6;
             color: #bababa;
           }
-          .item:nth-last-child(3) {
+          .item:nth-child(4n) {
             margin-right: 0;
           }
         }
