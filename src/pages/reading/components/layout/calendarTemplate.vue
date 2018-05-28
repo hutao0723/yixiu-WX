@@ -156,7 +156,6 @@
             }
           }
         }
-        console.log(days)
         this.days.push(days);
       }
     }

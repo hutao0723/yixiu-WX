@@ -103,7 +103,6 @@
       getReadDetail(){
         this.$http.get('/api/user/read/detail').then(res=>{
           let resp = res.data;
-          console.log(res)
           this.readDetail = res.data;
         })
       },
@@ -112,8 +111,10 @@
         if(msg.dayNum){
           _this.dayNum = msg.dayNum;
         }
+        if(msg.isRange){
+          _this.getCourseDetail(msg.date)
+        }
         _this.courseId = msg.courseId;
-        _this.getCourseDetail(msg.date)
       },
       //打卡日历
       getClockCalendar(){
@@ -121,7 +122,6 @@
         _this.$http.get('/api/user/read/clockCalendar?readId='+this.readId).then(res=>{
           let resp = res.data;
          // _this.c_date = res.data;
-          console.log(resp)
         })
       },
       //获取缺卡天数
@@ -129,7 +129,6 @@
         let _this = this;
         _this.$http.get('/api/user/read/lackClock? readId='+12).then(res=>{
           let resp = res.data;
-          console.log(resp)
         })
       },
       //打卡课程详情
