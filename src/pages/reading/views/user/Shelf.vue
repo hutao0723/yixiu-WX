@@ -25,8 +25,8 @@
       <div class="already-alert" v-show="alertToggle">
         <div class="alert-top">
           <h3>{{bookName}}</h3>
-          <div class="clearfix">
-            <div class="item" v-for="(item,index) in 6" :key="index" :class="{none: index >4}">{{item}}</div>
+          <div class="clearfix book-box" >
+            <div class="item" v-for="(item,index) in dayNumList.length" :key="index">{{item}}</div>
           </div>
         </div>
         <div class="alert-btn" @click="alertToggle = false;">取消</div>
@@ -57,7 +57,8 @@ export default {
       bookUrl: "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
       bookName: "今天的网红经济",
       swipeList: [],
-      bookList: []
+      bookList: [],
+      dayNumList: []
     }
   },
   computed: {
@@ -176,6 +177,9 @@ export default {
     left: 0;
     bottom: 88/@rem;
     z-index: 9999;
+    .book-box{
+      width: 680/@rem;
+    }
     h3 {
       .text(34, 40);
       text-align: center;
@@ -197,7 +201,7 @@ export default {
       background: #E6E6E6;
       color: #bababa;
     }
-    .item:nth-last-child(3) {
+    .item:nth-child(4n) {
       margin-right: 0;
     }
   }

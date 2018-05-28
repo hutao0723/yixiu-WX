@@ -87,12 +87,12 @@ export default class user extends base {
   /**
    * 获取证书图片
    */
-  static async getDiplomaImage(courseId) {
+  static async getDiplomaImage(readId) {
     let params = {}
     params = {
-      courseId: courseId
+      readId: readId
     }
-    const url = `/user/stat/detail`;
+    const url = `/user/read/diplomaImgUrl`;
     const res = await this.get(url, {
       params
     });

@@ -4,9 +4,9 @@
       <div class="module" v-for="(item, $index) in journeyList">
         <div class="date">{{item.releaseTime}}</div>
         <div class="text-box">
-          <div class="text-journal" v-if="item.diplomaImgUrl"><span>{{item.readName}}{{item.readStageNum}}期毕业</span>
+          <div class="text-journal" v-if="item.diploma"><span>{{item.readName}}{{item.readStageNum}}期毕业</span>
 
-            <router-link :to="{ path: '/look/' + item.courseId}"><span class="look">查看证书></span></router-link>
+            <router-link :to="{ path: '/look/' + item.readId}"><span class="look">查看证书></span></router-link>
           </div>
           <div class="text-container clearfix">
             <div class="container">
