@@ -22,6 +22,7 @@
           <div class="book-word">正式毕业后，可在往期书架中继续看书~</div>
         </div>
       </div>
+      
       <div class="already-alert" v-show="alertToggle">
         <div class="alert-top">
           <h3>{{bookName}}</h3>
@@ -59,7 +60,10 @@ export default {
       bookName: "今天的网红经济",
       swipeList: [],
       bookList: [],
-      dayNumList: []
+      dayNumList: [],
+
+      pageNum: 1,
+      pageSize: 12
     }
   },
   computed: {
@@ -92,7 +96,7 @@ export default {
     },
     // 获取书籍列表
     async success (readId){
-      let objs = await user.getBookList(readId);
+      let objs = await user.getBookList(readId,this.pageNum);
       if (objs.success) {
         this.bookList = objs.data
       } else {

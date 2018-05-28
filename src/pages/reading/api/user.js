@@ -55,10 +55,12 @@ export default class user extends base {
   /**
    * 根据banner列表获取数据getDiplomaImage
    */
-  static async getBookList(readId) {
+  static async getBookList(readId,pageNum) {
     let params = {}
     params = {
-      readId: readId
+      readId: readId,
+      pageNum: pageNum,
+      pageSize: 12
     }
     const url = `/readBook/bookList`;
     const res = await this.get(url, {
