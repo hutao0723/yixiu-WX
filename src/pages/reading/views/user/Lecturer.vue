@@ -31,8 +31,8 @@ export default {
     this.getLecturerInfo();
   },
   methods: {
-    getLecturerInfo (){
-      let objs = user.getInfo();
+    async getLecturerInfo (){
+      let objs = await user.getInfo();
         if (objs.success) {
           this.codeUrl = objs.data.teacherWxQrcodeUrl;
         } else {

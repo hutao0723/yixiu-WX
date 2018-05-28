@@ -1,35 +1,39 @@
 <template>
   <div class="journey-main">
-    <div class="module" v-for="(item, $index) in journeyList">
-      <div class="date">{{item.releaseTime}}</div>
-      <div class="text-box">
-        <div class="text-journal" v-if="item.diplomaImgUrl"><span>{{item.readName}}{{item.readStageNum}}期毕业</span>
-          <router-link :to="{ path: '/lecturer' }"><span class="look">查看证书></span></router-link>
-        </div>
-        <div class="text-container clearfix">
-          <div class="container">
-            <div  class="content" ref="cheight" :class="item.expand?'h131':''">{{item.content}}</div>
-            <div v-if="item.line"> 
-              <div class="letter" v-if="(item.letter == 1 )&& (item.expand)" @click.stop="handleChange(item)">全部</div>
-              <div class="letter" v-if="(item.letter == 2 )&& (!item.expand)" @click.stop="handleChange(item)">收起</div>
-            </div>
+    <div v-if="!noData">
+      <div class="module" v-for="(item, $index) in journeyList">
+        <div class="date">{{item.releaseTime}}</div>
+        <div class="text-box">
+          <div class="text-journal" v-if="item.diplomaImgUrl"><span>{{item.readName}}{{item.readStageNum}}期毕业</span>
+            <router-link :to="{ path: '/look',query:{courseId:item.courseId} }"><span class="look">查看证书></span></router-link>
           </div>
-          <div class="clearfix book" :class="item.content?'btop':''">
-            <div class="fl book-img"><img :src="item.courseUrl"></div>
-            <div class="book-content">
-              <div class="book-title">《{{item.courseTitle}}》</div>
-              <div class="book-writer">{{item.courseAuthor}}</div>
+          <div class="text-container clearfix">
+            <div class="container">
+              <div  class="content" ref="cheight" :class="item.expand?'h131':''">{{item.content}}</div>
+              <div v-if="item.line"> 
+                <div class="letter" v-if="(item.letter == 1 )&& (item.expand)" @click.stop="handleChange(item)">全部</div>
+                <div class="letter" v-if="(item.letter == 2 )&& (!item.expand)" @click.stop="handleChange(item)">收起</div>
+              </div>
             </div>
-          </div>
-          <div class="row operate fr">
-            <div class="column-center operate-share">
-              <i class="iconfont icon-share"></i>
+            <div class="clearfix book" :class="item.content?'btop':''">
+              <div class="fl book-img"><img :src="item.courseUrl"></div>
+              <div class="book-content">
+                <div class="book-title">{{item.courseTitle}}</div>
+                <div class="book-writer">{{item.courseAuthor}}</div>
+              </div>
             </div>
-            <div class="row">
-              <span class="operate-num">{{item.praiseCount}}</span>
-            </div>
-            <div class="column-center" @click.stop="thumbsUp(item,$index)">
-              <i class="iconfont icon-heart" :class="(item.userPraise==0) ? '':'zan' "></i>
+            <div class="row operate fr">
+              <router-link :to="{ path: '/poster/' + item.id}">
+                <div class="column-center operate-share">
+                  <i class="iconfont icon-share"></i>
+                </div>
+              </router-link>
+              <div class="row">
+                <span class="operate-num">{{item.praiseCount}}</span>
+              </div>
+              <div class="column-center" @click.stop="thumbsUp(item,$index)">
+                <i class="iconfont icon-heart" :class="(item.userPraise==0) ? '':'zan' "></i>
+              </div>
             </div>
           </div>
         </div>
@@ -48,6 +52,7 @@ export default {
     return {
       data: {},
       // contentHeight: 130,
+      noData: false,
       journeyList: [],
       expandStatus: []
     };
@@ -65,9 +70,14 @@ export default {
     async getJourneyInfo (){
       let objs = await user.getJourneyList();
       if (objs.success) {
-        this.journeyList = objs.data.content;
+        this.journeyList = objs.data;
+        if(!this.journeyList.length) {
+          this.noData = true
+          return
+        }
         this.journeyList.forEach((item,index)=>{
-          this.journeyList[index].releaseTime = this.formatDateNew(item.releaseTime)
+          // 获取时间
+          this.journeyList[index].releaseTime = item.releaseTime.substring(0,10)
         })
       }else{
         console.log("获取数据失败")
@@ -92,7 +102,10 @@ export default {
       
     },
     init() {  
-      if(!this.journeyList) return
+      if(!this.journeyList.length) {
+        this.noData = true
+        return
+      }
       this.journeyList.forEach((item,index)=>{
         let multiple = 750/document.body.clientWidth;
         // 131为三行字体的高度
@@ -237,6 +250,9 @@ export default {
       }
       .operate{
         color: #949494;
+        a{
+          color: #949494;
+        }
         .operate-share{
           margin-right: 30/@rem;
         }

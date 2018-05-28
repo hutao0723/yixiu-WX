@@ -6,25 +6,25 @@
             <div class="fl"><img :src="imageUrl" class="info-icon" /></div>
             <div class="info-text fl">{{personname}}</div>
         </div>
-        <ul class="number clearfix">
-            <li>
+      </div>
+      <ul class="number clearfix row-around">
+            <li class="column">
               <div><span class="word">{{day}}</span>天</div>
               <div class="text">坚持打卡</div>
             </li>
-            <li>
+            <li class="column">
               <div><span class="word">{{minute}}</span>{{time}}</div>
               <div class="text">累计精听</div>
             </li>
-            <li>
+            <li class="column">
               <div><span class="word">{{book}}</span>本</div>
               <div class="text">累计阅读</div>
             </li>
         </ul>
-      </div>
       <div class="mt20 recommend bgfff">
           <img :src="recommendUrl">
           <div class="icon-tri share column-center jiantou">
-              <i class="iconfont ear-icon ear-icon"></i>
+              <i class="iconfont ear-icon"></i>
           </div>
       </div>
       <router-link :to="{ path: '/journey' }">
@@ -96,7 +96,7 @@ export default {
       book: 0,
       time: "分钟",
       // 分享
-      recommendUrl: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=768904644,500415380&fm=27&gp=0.jpg'
+      recommendUrl: 'https://yun.duiba.com.cn/yoofans/images/201805/read/recommend.png'
     };
   },
   computed: {
@@ -118,7 +118,7 @@ export default {
           this.day = objs.data.clocks;
           this.minute = objs.data.listens > 999?(objs.data.listens/60).toFixed(1): objs.data.listens;
           this.time = objs.data.listens > 999?"小时": "分钟";
-          this.book = objs.data.books;
+          this.book = objs.data.books ? objs.data.books : 0;
           this.personname = objs.data.userNickname;
           this.imageUrl = objs.data.userHeadImgUrl;
         } else {
@@ -145,13 +145,11 @@ export default {
   
   .person-box{
     width: 750/@rem;
-    height: 336/@rem; 
     background: rgba(255,255,255,1);
     box-sizing: border-box;
-    padding: 54/@rem 68/@rem 25/@rem  68/@rem;
+    padding: 54/@rem 68/@rem 44/@rem  68/@rem;
     .info{
       height: 110/@rem;
-      margin-bottom: 44/@rem;
       .info-icon{
         height: 110/@rem;
         width: 110/@rem;
@@ -167,15 +165,18 @@ export default {
         line-height: 110/@rem;
       }
     }
-    ul.number {
+  }
+  ul.number {
       width: 100%;
+      background: #fff;
+      padding-bottom: 27/@rem;
       li{
-        
-        float: left;
+        width: 200/@rem;
+        text-align: center;
+        // float: left;
         &:first-child{
           margin-left: 20/@rem;
         }
-        margin-left: 120/@rem;
         .word{
           font-weight: bold;
           .fontSize(40);
@@ -188,7 +189,6 @@ export default {
         }
       }
     }
-  }
   .recommend{
     padding: 20/@rem 0;
     position: relative;
@@ -197,12 +197,12 @@ export default {
       width: 690/@rem;
       margin: 0 auto;
       display: block;
-      border-radius: 70/@rem;
     }
     .jiantou{
       position: absolute;
       top: 60/@rem;
       right: 60/@rem;
+      text-align: center;
     }
   }
   .person-h90{
@@ -243,7 +243,12 @@ export default {
   }
   .ear-icon{
     color: #414141;
-    .fontSize(34);
+    width: 9/@rem;
+    height: 9/@rem;
+    border-top: 2/@rem solid #414141;
+    border-right: 2/@rem solid #414141;
+    transform: rotate(45deg);
+    margin-left: -5/@rem;
   }
 }
 
