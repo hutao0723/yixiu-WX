@@ -83,7 +83,9 @@ export default {
         }else{
           this.journeyList[index].praiseCount -= 1
         }
-          this.journeyList[index].userPraise = praise
+        // await this.getJourneyInfo();
+        // this.init();
+        this.journeyList[index].userPraise = praise
       }else{
         console.log("获取数据失败")
       }
@@ -240,6 +242,7 @@ export default {
         }
         .operate-num{
           .fontSize(26);
+          width: 30/@rem;
           margin-right: 13/@rem;
         }
         .iconfont{
