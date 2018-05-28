@@ -5,7 +5,7 @@
         <img class="course-img" :src="readAudio.verticalCover" v-if="readAudio.verticalCover && ! readAudio.lateralCover"/>
         <img class="course-img-lateral" :src="readAudio.lateralCover" v-if="readAudio.lateralCover"/>
         <img class="course-img-lateral" src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png" v-if="!readAudio.lateralCover && !readAudio.verticalCover"/>
-        <span class="xl black line1 detail-word">{{readAudio.title}}</span>
+        <span class="xl black line1 detail-word">{{readAudio.courseTitle}}</span>
       </div>
       <div class="controler column-between">
         <div class="slider-bar">
@@ -25,7 +25,7 @@
             <i class="iconfont icon-prev" :style="{color: `${readAudio.isPrev ? '#343434' : '#919191'}`}"></i>
           </button>
           <button type="primary" class="btn-play" @click="togglePlay">
-            <i class="iconfont" :class="readPlaying ? 'icon-share' : 'icon-play'" ></i>
+            <i class="iconfont" :class="readPlaying ? 'icon-pause' : 'icon-play'" ></i>
           </button>
           <button type="primary" class="btn-switch" @click="audioNext">
             <i class="iconfont icon-next" :style="{color: `${readAudio.isNext ? '#343434' : '#919191'}`}"></i>
@@ -36,7 +36,7 @@
           </button>
         </div>
         <div class="bottom">
-           写想法
+           {{status.text}}
         </div>
       </div>
     </div> 
@@ -63,9 +63,29 @@ export default {
     },
     duration() {
       return this.timerFomart(this.readDuration)
+    },
+    status() {
+      if (!this.readAudio.clockState) {
+        return {
+          state: 1,
+          text: '去打卡'
+        }
+      } else {
+        if (!this.readAudio.commentState) {
+          return {
+            state: 2,
+            text: '写想法'
+          }
+        } else {
+          return {
+            state: 3,
+            text: '查看'
+          }
+        }
+      }
     }
   },
-  mounted () {
+  async mounted () {
     // setTimeout(()=>{
     //   const msg = {
     //       title: this.readAudio.title,
@@ -77,6 +97,9 @@ export default {
     //     this.wxShare(msg)
     // },3000)
     if (!store.getters.getAudioElement.getAttribute('src')) {
+      let readAudio = this.readAudio;
+      readAudio.src = await play.getAudioUrl(store.getters.getAudioInfo.readId, store.getters.getAudioInfo.courseId);
+      store.commit({ type: 'setAudio', readAudio: readAudio });
       store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
       store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title);
     }

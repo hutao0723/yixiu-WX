@@ -70,6 +70,15 @@ module.exports = {
         // }
       },
       
+      '/api': {
+        // 测试环境
+        target: 'http://172.31.10.130:9106',  // 接口域名
+        changeOrigin: true,  //是否跨域
+        pathRewrite: {
+          '/api': '/'   //需要rewrite重写的,
+        }
+      },
+
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

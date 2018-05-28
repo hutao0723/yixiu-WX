@@ -2,12 +2,12 @@
   <div class="audio-list">
     <div v-for="item in readList">
       <div class="audio-item row-between" @click="playAudio(item)">
-        <div class="row-center" :class="!(readAudio.courseId === item.id) ? 'icon-off' : 'icon-on'">
-          <img class="wave-icon" src="../../images/audio.svg" v-if="readAudio.courseId == item.id" />
-          <i class="iconfont icon-play" v-else></i>
+        <div class="row-center icon-on">
+          <!-- <img class="wave-icon" src="../../images/audio.svg" v-if="readAudio.courseId == item.id" /> -->
+          <i :class="readAudio.courseId == item.id ? 'iconfont icon-wave' : 'iconfont icon-play'"></i>
         </div>
         <div class="content-bar column-between">
-          <span class="lg line1" :class="!(readAudio.courseId === item.id) ? 'strong' : 'soft'">{{item.title}}</span>
+          <span class="lg line1 strong title">{{item.title}}</span>
           <div class="info-bar row-between">
             <div class="duration">
               <i class="iconfont icon-clock mr10"></i>
@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     playAudio(item) {
-      play.startAudio(this.audio.columnId,item.id,'init');
+      play.audioInit(item.readId, item.id, false);
       this.$router.go(-1);
     }
   },
@@ -77,36 +77,24 @@ export default {
       .icon-on {
         width: 54/@rem;
         height: 54/@rem;
-        background: @color-soft;
+        border: 1px solid @color-soft;
         border-radius: 50%;
-        .wave-icon {
-          width: 45/@rem
-        }
         .iconfont {
-          color: white;
+          color: @color-soft;
           font-size: 22/@rem;
         }
-        ;
+        .icon-wave {
+          color: @color-main;
+        }
       }
-      .icon-off {
-        width: 54/@rem;
-        height: 54/@rem;
-        background: rgba(170, 170, 170, 1);
-        box-shadow: 0px 2px 4px 0px rgba(214, 214, 214, 0.5);
-        border-radius: 50%;
-        .iconfont {
-          color: white;
-          font-size: 22/@rem;
-        }
-        ;
       }
       .content-bar {
         width: 626/@rem;
         height: 92/@rem;
         padding-left: 20/@rem;
         box-sizing: border-box;
-        text.onplay {
-          color: #fff
+        .title{
+          font-weight: bold;
         }
         .info-bar {
           width: 100%;
@@ -124,5 +112,4 @@ export default {
         }
       }
     }
-  }
 </style>

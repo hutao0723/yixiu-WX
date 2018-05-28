@@ -1,7 +1,8 @@
 <template>
   <div class="home-main" ref="homeMain">
+    <div @click="play">播放</div>
     <!-- 未买课 -->
-    <div class="home-box" v-if="courseObj.status == 0">
+    <div class="home-box">
       <div class="home-tab clearfix">
         <div class="item" @click="tabActive=true">
           <span :class="{ active: tabActive}">简介</span>
@@ -15,53 +16,69 @@
         <div class="home-review">
           <h2>学员观点</h2>
           <div class="item" v-for="(item,index) in reviewList" :key="index">
-            <img :src="item.headerImg" alt="" class="item-header">
-            <div class="item-name">{{item.name}}</div>
-            <div class="item-periods">{{item.periods}}</div>
-            <div class="item-content">{{item.content}}</div>
+            <img :src="item.userImgUrl" alt="" class="item-header">
+            <div class="item-name">{{item.userNickname}}</div>
+            <div class="item-periods">{{item.readName}}第{{item.readStageNum}}学员</div>
+            <div class="item-content">{{item.readName}}</div>
             <div class="item-book">
-              <img class="book-img" :src="item.bookImg" alt="">
-              <div class="book-name">《{{item.bookName}}》</div>
-              <div class="book-author">{{item.author}} 著</div>
+              <img class="book-img" :src="item.courseUrl" alt="">
+              <div class="book-name otw">{{item.courseTitle}}</div>
+              <div class="book-author otw">{{item.courseAuthor}} 著</div>
             </div>
-            <div class="item-praise">
-              <i></i>
+            <div class="item-bottom">
+              <span @click="getCommentPraise(item.id,item.userPraise)">
+                <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
+                <span class="fr">16</span>
+              </span>
+              <i class="iconfont icon-share fr"></i>
+              <span>{{item.releaseTime | timeTransition}}</span>
             </div>
-            <div class="item-transmit">
-              <i></i>
-            </div>
+
           </div>
         </div>
+        <div class="home-bottom">去选课程</div>
       </div>
 
       <div v-show="!tabActive">
         <div class="home-course">
-          <div class="item" v-for="(item,index) in courseList" :key="index" :class="{active: index == 0,none: index == 2}">
+          <div class="item" v-for="(item,index) in courseList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
+            @click="selectCourse(item)">
             <div class="item-box">
               <div class="item-top">
-                <div class="item-name">{{item.name}}</div>
-                <div class="item-msg">第{{item.num}}期 | {{item.date}}开课</div>
-                <div class="item-num">报名{{item.peoNum}}人</div>
-                <div class="item-btn">{{index == 0?'已选':'选择'}}</div>
+                <div class="item-name">{{item.title}}</div>
+                <div class="item-msg">第{{item.stageNum}}期 | {{item.beginDate}}({{item.beginDateWeek}})开课</div>
+                <div class="item-num">报名{{item.orderCount}}人</div>
+                <div class="item-btn">{{selectCourseId == 0?'选择':'已选'}}</div>
               </div>
               <div class="item-bottom">
-                <p>· {{item.text1}}</p>
-                <p>· {{item.text2}}</p>
-                <p>· {{item.text3}}</p>
+                <p v-html="item.briefer"></p>
               </div>
             </div>
+          </div>
+          <div class="home-btn">
+            <p>
+              <span class="text-del">{{selectCourseObj.costPrice}}</span>
+              <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>元</p>
+            <a href="javascriot:void(0)">立即购买</a>
           </div>
         </div>
       </div>
 
     </div>
+    <div class="home-wechat" v-if="pageStatus == 5">
+      <p class="text-a">
+        <i></i>您已成功报名</p>
+      <p class="text-b">长按识别二维码</p>
+      <p class="text-c">关注公众号，去等待开课</p>
+      <img src="" alt="">
+    </div>
 
     <!-- 未开课 -->
-    <div class="home-nonevent" v-if="courseObj.status == 1">
+    <div class="home-nonevent" v-if="pageStatus == 3">
       <div class="nonevent-box">
         <p class="text-a">您已成功报名</p>
         <p class="text-b">「 {{courseObj.name}} 」</p>
-        <p class="text-c">{{courseObj.date}}开学，倒计时{{courseObj.date}}天</p>
+        <p class="text-c">{{courseDetail.beginDate}}(开学，倒计时{{courseObj.date}}天</p>
       </div>
       <p class="text-d">长按识别二维码添加老师微信</p>
       <p class="text-e">因添加学员较多，老师会在3个工作日内通过，请耐心等待~</p>
@@ -71,13 +88,13 @@
       <p class="text-h">关注微信公众号【一修读书】，点击</br>菜单栏“我的老师”添加</p>
     </div>
 
-    <div class="home-already" v-if="courseObj.status == 2">
+    <div class="home-already" v-if="pageStatus == 0">
       <h2>今日学习
         <span> | 第{{alreadyObj.nowDay}}/{{alreadyObj.totalDay}}天</span>
       </h2>
       <div class="already-book">
         <img src="" alt="" class="book-img">
-        <div class="book-name">《{{alreadyObj.name}}》</div>
+        <div class="book-name">{{alreadyObj.name}}</div>
         <div class="book-msg">{{alreadyObj.msg}}</div>
         <div class="book-btn">播放
           <i></i>
@@ -91,26 +108,28 @@
           <div class="item-lock">
             <img src="" alt="" class="item-img">
           </div>
-          <div class="item-name">《{{item.name}}》</div>
+          <div class="item-name">{{item.name}}</div>
         </div>
       </div>
       <div class="already-alert" v-show="alertToggle">
         <div class="alert-top">
-          <h3>《{{bookName}}》</h3>
+          <h3>{{bookName}}</h3>
           <div class="clearfix">
             <div class="item" v-for="(item,index) in 6" :key="index" :class="{none: index >4}">{{item}}</div>
           </div>
         </div>
         <div class="alert-btn" @click="alertToggle = false;">取消</div>
+        <div class="alert-bg" @click="alertToggle = false;"></div>
       </div>
     </div>
-
+    
     <AudioBar/>
   </div>
 </template>
 
 <script>
   import AudioBar from '../../components/basic/Audio_Bar';
+  import play from '../../api/play'
   import {
     mapState
   } from 'vuex';
@@ -120,16 +139,7 @@
     },
     data() {
       return {
-        reviewList: [{
-          headerImg: '',
-          name: '木南岸那',
-          periods: '魔鬼训练营第3期',
-          content: '张老师讲的太好了阿斯顿撒张老师讲的太好了阿斯顿撒张老师讲的太好了阿斯顿撒张老师讲的太好了阿斯顿撒张老师讲的太好了阿斯顿撒张老师讲的太好了阿斯顿撒',
-          bookImg: '',
-          bookName: '遇见傻逼',
-          author: '的sa',
-          praiseNumber: '23',
-        }],
+        reviewList: [],
         courseList: [{
           name: '情商高手+好口才训练营',
           num: '3',
@@ -155,7 +165,7 @@
           text2: '怎么优雅、友好地拒绝别人',
           text3: '做生活中的高情商者、职场中的优雅人士',
         }],
-        tabActive: false,
+        tabActive: true,
         courseObj: {
           status: 0,
           name: '30天魔鬼训练营',
@@ -186,14 +196,157 @@
         },
         bookName: '今天的网红经济',
         alertToggle: false,
+
+        pageStatus: 0, // 页面状态
+
+        selectCourseId: 0, // 已选课程
+        selectCourseObj: {},
+        teacherWxName: '', // 老师名称
+        teacherWxQrcodeUrl: '', // 老师微信二维码
+        courseDetail: {}, // 课程详情
       };
     },
     computed: {
       ...mapState({})
     },
+    filters: {
+      // 时长
+      timeTransition: function (value) {
+
+        return value
+      },
+    },
     created() {},
-    mounted() {},
-    methods: {}
+    async mounted() {
+
+      let userState = await this.getThumbUp();
+      console.log(userState)
+      // 状态判断逻辑
+      if (userState.data) {
+        if (
+          userState.data.readState == 0
+        ) {
+          console.log('用户未购买')
+          this.pageStatus = 1;
+        }
+
+        if (
+          userState.data.readState != 0 && !userState.data.followOfficialAccount
+        ) {
+          console.log('用户购买未关注')
+          this.pageStatus = 2;
+          this.tabActive = userState.data.readState != 4
+        }
+
+        if (
+          userState.data.readState == 1 && userState.data.followOfficialAccount
+        ) {
+          console.log('用户购买已关注未开课')
+          this.pageStatus = 3;
+        }
+
+        if (
+          userState.data.readState == 2 && userState.data.followOfficialAccount
+        ) {
+          console.log('用户购买已关注已开课')
+          this.pageStatus = 4;
+        }
+
+      }
+
+
+      // 1
+      this.getCommentTop();
+      this.getReadList();
+      // 2
+
+      // 3
+      this.teacherWxName = userState.data.teacherWxName;
+      this.teacherWxQrcodeUrl = userState.data.teacherWxQrcodeUrl;
+
+      this.courseDetail = await this.readDetail();
+      console.log(this.courseDetail)
+
+
+
+
+    },
+    methods: {
+      selectCourse(item) {
+        if (this.selectCourseId != item.readId && !item.purchased) {
+          this.selectCourseId = item.readId;
+          this.selectCourseObj = item;
+        }
+      },
+      async readDetail() {
+        let self = this;
+        let params = {};
+        params = {}
+        const url = `/api/user/read/detail`;
+        const res = await this.$http.get(url, {
+          params
+        });
+        return res.data.data;
+      },
+      async getThumbUp() {
+        let self = this;
+        let params = {};
+        params = {
+
+        }
+        const url = `/api/user/read/state`;
+        const res = await this.$http.get(url, {
+          params
+        });
+        return res.data;
+      },
+
+      getCommentTop() {
+        let self = this;
+        let params = {};
+        params = {}
+        const url = `/api/comment/top`;
+        this.$http.get(url, {
+          params
+        }).then((res) => {
+          this.reviewList = res.data.data.content;
+
+        });
+      },
+      getCommentPraise(id, status) {
+        let self = this;
+        let params = {};
+        params = {
+          status: status ? 0 : 1,
+          commentId: id
+        }
+        const url = `/api/comment/praise`;
+        this.$http.get(url, {
+          params
+        }).then((res) => {
+          this.getCommentTop();
+        });
+      },
+      getReadList() {
+        let self = this;
+        let params = {};
+        params = {}
+        const url = `/api/read/readList`;
+        this.$http.get(url, {
+          params
+        }).then((res) => {
+          this.courseList = res.data.data;
+          if (res.data.data.length > 0) {
+            this.selectCourseId = res.data.data[0].readId
+            this.selectCourseObj = res.data.data[0];
+
+          }
+        });
+      },
+
+
+
+    }
   };
 
 </script>
@@ -237,6 +390,7 @@
       }
     }
     .home-review {
+      padding-bottom: 120/@rem;
       h2 {
         .text(40, 120);
         color: #333;
@@ -244,7 +398,8 @@
       }
       .item {
         position: relative;
-        height: 560/@rem;
+        /* height: 560/@rem; */
+        padding: 36/@rem 36/@rem 30/@rem 118/@rem;
         .item-header {
           .size(64, 64);
           .pos(30, 40);
@@ -253,52 +408,148 @@
           background: #000;
         }
         .item-name {
-          .pos(118, 36);
+          /* .pos(118, 36); */
           .text(30, 42);
           color: #333;
-          padding-right: 62/@rem;
         }
         .item-periods {
-          .pos(118, 82);
+          /* .pos(118, 82); */
           .text(24, 33);
           color: #666;
-          padding-right: 62/@rem;
+          margin-top: 4/@rem;
+          margin-bottom: 14/@rem;
         }
         .item-content {
-          .pos(118, 130);
+          /* .pos(118, 130); */
           font-size: 30/@rem;
           line-height: 42/@rem;
           color: #666;
-          padding-right: 62/@rem;
         }
         .item-book {
           .size(596, 148);
-          .pos(118, 318);
+          /* .pos(118, 318); */
           position: relative;
           background: #eee;
           border-radius: 4/@rem;
+          margin-top: 20/@rem;
+          margin-bottom: 35/@rem;
           .book-img {
             .pos(30, 13);
             .size(80, 112);
             border: 5/@rem solid #fff;
           }
           .book-name {
-            .pos(120, 25);
+            .pos(0, 25);
             .text(30, 42);
             color: #555;
+            width: 100%;
+            padding-left: 134/@rem;
+            padding-right: 10/@rem;
+            box-sizing: border-box;
+
           }
           .book-author {
-            .pos(134, 75);
+            .pos(0, 75);
             .text(26, 37);
             color: #666;
+            width: 100%;
+            padding-left: 134/@rem;
+            padding-right: 10/@rem;
+            box-sizing: border-box;
+          }
+        }
+        .item-bottom {
+          .size(22, 30);
+          /* position: absolute; */
+          /* bottom: 30/@rem; */
+          /* left: 0; */
+          width: 100%;
+          box-sizing: border-box;
+          .iconfont {
+            line-height: 30/@rem;
+            font-size: 24/@rem;
+            padding: 0 10/@rem
           }
         }
       }
+      .item:after {
+        content: '';
+        height: 1/@rem;
+        background: #eee;
+        margin-left: 118/@rem;
+        margin-right: 36/@rem;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 596/@rem;
+        box-sizing: border-box;
+      }
 
+    }
+    .home-bottom{
+      .text(40,100);
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      background: #FF4C4C;
+      color: #fff;
+      width: 100%;
+      z-index: 999;
+      text-align: center;
     }
     .home-course {
       background: #f1f1f1;
-      padding: 40/@rem 0;
+      padding: 40/@rem 0 120/@rem 0;
+      .home-btn {
+        .text(24, 100);
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        z-index: 999;
+        background: #fff;
+        color: #FF4C4C;
+        padding-left: 80/@rem;
+        padding-right: 386/@rem;
+        box-sizing: border-box;
+        text-align: right;
+        .text-del {
+          color: #777;
+          text-decoration: line-through;
+        }
+        .text-red {
+          font-size: 40/@rem;
+          margin-left: 20/@rem;
+          margin-right: 6/@rem;
+
+        }
+        a {
+          .size(360, 100);
+          .text(40, 100);
+          position: absolute;
+          right: 0;
+          top: 0;
+          background: #FF4C4C;
+          color: #fff;
+          text-align: center;
+        }
+      }
+      .item,
+      .item-name,
+      .item-box,
+      .item-top,
+      .item-msg,
+      .item-num,
+      .item-btn,
+      .item-bottom {
+        transition: all 0.5s;
+        -moz-transition: all 0.5s;
+        /* Firefox 4 */
+        -webkit-transition: all 0.5s;
+        /* Safari and Chrome */
+        -o-transition: all 0.5s;
+        /* Opera */
+      }
       .item {
         margin-bottom: 40/@rem;
         padding: 0 45/@rem;
@@ -339,7 +590,7 @@
           }
         }
         .item-bottom {
-          height: 220/@rem;
+          /* height: 220/@rem; */
           font-size: 28/@rem;
           line-height: 52/@rem;
           padding: 29/@rem 40/@rem;
@@ -347,6 +598,7 @@
           box-sizing: border-box;
         }
       }
+
       .active {
         padding: 0 20/@rem;
         .item-box {
@@ -379,12 +631,10 @@
           }
         }
         .item-bottom {
-          height: 230/@rem;
+          /* height: 230/@rem; */
           font-size: 30/@rem;
           line-height: 52/@rem;
           padding: 37/@rem 40/@rem;
-          background: #fff;
-          box-sizing: border-box;
         }
       }
       .none {
@@ -406,6 +656,34 @@
         .item-bottom {
           color: #999;
         }
+      }
+    }
+    .home-wechat {
+      .text-a {
+        .text(40, 56);
+        font-weight: bold;
+        text-align: center;
+        padding-top: 65/@rem;
+        color: #343434;
+      }
+      .text-b {
+        .text(88, 123);
+        font-weight: bold;
+        text-align: center;
+        padding-top: 17/@rem;
+        color: #343434;
+      }
+      .text-c {
+        .text(40, 56);
+        text-align: center;
+        padding-top: 24/@rem;
+        color: #666;
+      }
+      img {
+        .size(688, 688);
+        margin: 40/@rem auto;
+        background: #666;
+        display: block;
       }
     }
     .home-nonevent {
@@ -550,17 +828,26 @@
       .already-alert {
         position: fixed;
         left: 0;
-        bottom: 0;
         top: 0;
+        bottom: 0;
         right: 0;
         z-index: 999;
-        background:rgba(0,0,0,0.5);
+        .alert-bg {
+          position: fixed;
+          left: 0;
+          bottom: 0;
+          top: 0;
+          right: 0;
+          z-index: 999;
+          background: rgba(0, 0, 0, 0.5);
+        }
         .alert-top {
           padding: 26/@rem 35/@rem;
           background: #f5f5f8;
           position: absolute;
           left: 0;
           bottom: 88/@rem;
+          z-index: 9999;
           h3 {
             .text(34, 40);
             text-align: center;
@@ -590,6 +877,7 @@
         .alert-btn {
           .text(30, 88);
           position: absolute;
+          z-index: 9999;
           left: 0;
           bottom: 0;
           right: 0;
