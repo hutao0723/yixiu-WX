@@ -37,24 +37,23 @@
     created() {
     },
     mounted () {
-      this.courseDetail = JSON.parse(this.$route.params.data) ;
-      //this.courseDetail = JSON.parse(this.$route.query.data) ;
-      console.log(this.courseDetail)
+      //this.courseDetail = JSON.parse(this.$route.params.data) ;
+      this.courseDetail = JSON.parse(this.$route.query.data) ;
+
     },
     methods: {
       subComment(){
-        console.log(this.content)
-
+        let sub = this.courseDetail;
         let params={
-          content:'',
-          clockDate:'',
-          readId:'',
-          courseId:'',
-          dayNum:''
+          content:this.content,
+          //clockDate:sub.clockDate,
+          readId:sub.readId,
+          courseId:sub.courseId,
+          dayNum:sub.days
         }
-        this.$http.post('/api/user/read/clock',JSON.stringify(params)).then(res=>{
+        console.log(params)
+        this.$http.post('/api/user/read/clock',params,{emulateJSON: true}).then(res=>{
           let resp = res.data;
-          //_this.courseDetail = res.data;
         })
       },
     }
