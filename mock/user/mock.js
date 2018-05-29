@@ -10,7 +10,7 @@ var setOnline = [
   { 
     name: 'userInfo',
     type: 'get',
-    url: '/user/stat/detail'
+    url: '/user/read/state'
   },
   // 我的历程列表
   { 
