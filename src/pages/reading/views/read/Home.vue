@@ -21,7 +21,10 @@
             <div class="item-periods">{{item.readName}}第{{item.readStageNum}}学员</div>
             <div class="item-content">{{item.readName}}</div>
             <div class="item-book">
-              <img class="book-img" :src="item.courseUrl" alt="">
+              <div class="book-bg">
+                <img class="book-img" :src="item.courseUrl" alt="">
+              </div>
+
               <div class="book-name otw">{{item.courseTitle}}</div>
               <div class="book-author otw">{{item.courseAuthor}} 著</div>
             </div>
@@ -30,7 +33,7 @@
                 <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
                 <span class="fr">{{item.praiseCount}}</span>
               </span>
-              <router-link :to="{ path: '/poster/' + item.id}" tag="a" class="iconfont icon-share fr"></router-link>
+              <!-- <router-link :to="{ path: '/poster/' + item.id}" tag="a" class="iconfont icon-share fr"></router-link> -->
               <span>{{item.releaseTime| timeTransition}}</span>
             </div>
 
@@ -82,7 +85,9 @@
       </div>
       <p class="text-d">长按识别二维码添加老师微信</p>
       <p class="text-e">因添加学员较多，老师会在3个工作日内通过，请耐心等待~</p>
-      <img :src="courseDetail.userImgUrl" alt="">
+      <div class="ewm-bg">
+        <img :src="courseDetail.userImgUrl" alt="">
+      </div>
       <p class="text-f">美少女</p>
       <p class="text-g">微信添加老师后，你的专属老师会在课程</br>开始前邀请你进入对应班级群</p>
       <p class="text-h">关注微信公众号【一修读书】，点击</br>菜单栏“我的老师”添加</p>
@@ -135,7 +140,7 @@
   import play from '../../api/play';
   import order from '../../api/order';
   import store from '../../vuex/store';
-  
+
 
   import {
     mapState
@@ -219,7 +224,11 @@
     },
     created() {},
     async mounted() {
-      
+      console.log(this.$route.query)
+      // 如果是支付流程直接支付
+      if(this.$route.query.courseId){
+        order.buy(this.$route.query.courseId, 4)
+      }
       this.wxShare();
       let userState = await this.getThumbUp();
       console.log(userState)
@@ -232,9 +241,15 @@
           this.getCommentTop();
           this.getReadList();
           this.pageStatus = 0;
-          store.commit({type:'setBottomNavToggle',bottomNavToggle:false})
-          store.commit({type:'setBottomNavType',bottomNavType:false})
-          
+          store.commit({
+            type: 'setBottomNavToggle',
+            bottomNavToggle: false
+          })
+          store.commit({
+            type: 'setBottomNavType',
+            bottomNavType: false
+          })
+
         }
         if (
           userState.data.readState == 0
@@ -243,8 +258,14 @@
           this.getCommentTop();
           this.getReadList();
           this.pageStatus = 1;
-          store.commit({type:'setBottomNavToggle',bottomNavToggle:false})
-          store.commit({type:'setBottomNavType',bottomNavType:false})
+          store.commit({
+            type: 'setBottomNavToggle',
+            bottomNavToggle: false
+          })
+          store.commit({
+            type: 'setBottomNavType',
+            bottomNavType: false
+          })
         }
 
         if (
@@ -253,8 +274,14 @@
           console.log('用户购买未关注')
           this.pageStatus = 2;
           this.tabActive = userState.data.readState != 4
-          store.commit({type:'setBottomNavToggle',bottomNavToggle:false})
-          store.commit({type:'setBottomNavType',bottomNavType:false})
+          store.commit({
+            type: 'setBottomNavToggle',
+            bottomNavToggle: false
+          })
+          store.commit({
+            type: 'setBottomNavType',
+            bottomNavType: false
+          })
         }
 
         if (
@@ -266,8 +293,14 @@
 
           this.courseDetail = await this.readDetail();
           this.pageStatus = 3;
-          store.commit({type:'setBottomNavToggle',bottomNavToggle:true})
-          store.commit({type:'setBottomNavType',bottomNavType:false})
+          store.commit({
+            type: 'setBottomNavToggle',
+            bottomNavToggle: true
+          })
+          store.commit({
+            type: 'setBottomNavType',
+            bottomNavType: false
+          })
         }
 
         if (
@@ -277,8 +310,14 @@
           this.getDetail();
           this.getBookList();
           this.pageStatus = 4;
-          store.commit({type:'setBottomNavToggle',bottomNavToggle:true})
-          store.commit({type:'setBottomNavType',bottomNavType:true})
+          store.commit({
+            type: 'setBottomNavToggle',
+            bottomNavToggle: true
+          })
+          store.commit({
+            type: 'setBottomNavType',
+            bottomNavType: true
+          })
         }
 
         if (
@@ -288,26 +327,16 @@
           this.getCommentTop();
           this.getReadList();
           this.pageStatus = 1;
-          store.commit({type:'setBottomNavToggle',bottomNavToggle:true})
-          store.commit({type:'setBottomNavType',bottomNavType:false})
+          store.commit({
+            type: 'setBottomNavToggle',
+            bottomNavToggle: true
+          })
+          store.commit({
+            type: 'setBottomNavType',
+            bottomNavType: false
+          })
         }
       }
-
-
-      // 1
-
-      // 2
-
-      // 3
-
-
-      // 4
-
-
-
-
-
-
     },
     methods: {
       orderPay() {
@@ -327,7 +356,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/read/detail`;
+        const url = `/api/user/read/detail`;
         const res = await this.$http.get(url, {
           params
         });
@@ -339,7 +368,7 @@
         params = {
 
         }
-        const url = `/user/read/state`;
+        const url = `/api/user/read/state`;
         const res = await this.$http.get(url, {
           params
         });
@@ -350,7 +379,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/comment/top`;
+        const url = `/api/comment/top`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -365,7 +394,7 @@
           status: status ? 0 : 1,
           commentId: id
         }
-        const url = `/comment/praise`;
+        const url = `/api/comment/praise`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -376,7 +405,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/read/readList`;
+        const url = `/api/read/readList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -404,7 +433,7 @@
           readId: 28,
           date: date,
         }
-        const url = `/readBookCourse/courseDetailByDate`;
+        const url = `/api/readBookCourse/courseDetailByDate`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -417,7 +446,7 @@
         params = {
           readId: 28,
         }
-        const url = `/readBook/bookList`;
+        const url = `/api/readBook/bookList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -431,7 +460,7 @@
           readId: 28,
           bookId: id,
         }
-        const url = `/readBookCourse/courseList`;
+        const url = `/api/readBookCourse/courseList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -531,6 +560,7 @@
           border-radius: 4/@rem;
           margin-top: 20/@rem;
           margin-bottom: 35/@rem;
+          .book-bg {}
           .book-img {
             .pos(30, 13);
             .size(80, 112);
@@ -621,7 +651,7 @@
           margin-right: 6/@rem;
 
         }
-        .btn-pay{
+        .btn-pay {
           .size(360, 100);
           .text(40, 100);
           position: absolute;
@@ -780,7 +810,6 @@
       img {
         .size(688, 688);
         margin: 40/@rem auto;
-        background: #666;
         display: block;
       }
     }
@@ -791,38 +820,55 @@
       padding-bottom: 116/@rem;
       .nonevent-box {
         height: 290/@rem;
-        background: #FFE555;
+        background: url('http://yun.dui88.com/youfen/images/read_bg.png') no-repeat center;
         border-radius: 20/@rem;
         color: #333333;
         padding-top: 93/@rem;
         box-sizing: border-box;
         .text-a {
-          .text(50, 70);
+          .text(50,
+          70);
           font-weight: bold;
         }
         .text-b {
-          .text(28, 40);
+          .text(28,
+          40);
           margin-top: 10/@rem;
         }
         .text-c {
-          .text(30, 42);
+          .text(30,
+          42);
           margin-top: 15/@rem;
           font-weight: bold;
         }
       }
+      .ewm-bg {
+        background: url('http://yun.dui88.com/youfen/images/read_ewmborder.png') no-repeat center;
+        height: 326/@rem;
+        width: 326/@rem;
+        padding: 5/@rem;
+        img {
+          display: inline-block;
+          height: 300/@rem;
+          width: 300/@rem;
+        }
+      }
       .text-d {
-        .text(36, 50);
+        .text(36,
+        50);
         margin-top: 34/@rem;
         font-weight: bold;
         color: #116EBC;
       }
       .text-e {
-        .text(22, 30);
+        .text(22,
+        30);
         margin-top: 12/@rem;
         color: #666;
       }
       .text-f {
-        .text(36, 50);
+        .text(36,
+        50);
         font-weight: bold;
         color: #116EBC;
       }
@@ -849,7 +895,8 @@
     .home-already {
       padding: 0 36/@rem;
       h2 {
-        .text(50, 70);
+        .text(50,
+        70);
         margin-top: 40/@rem;
         margin-bottom: 30/@rem;
         span {
@@ -862,18 +909,23 @@
         border-radius: 20/@rem;
         position: relative;
         .book-img {
-          .pos(40, 30);
-          .size(170, 240);
+          .pos(40,
+          30);
+          .size(170,
+          240);
           border: 5/@rem solid #fff;
           box-sizing: border-box;
         }
         .book-name {
-          .pos(245, 30);
-          .text(30, 42);
+          .pos(245,
+          30);
+          .text(30,
+          42);
           color: #333;
         }
         .book-msg {
-          .pos(256, 86);
+          .pos(256,
+          86);
           font-size: 26/@rem;
           line-height: 36/@rem;
           color: #555;
@@ -883,9 +935,12 @@
           -webkit-box-orient: vertical;
         }
         .book-btn {
-          .pos(256, 218);
-          .size(160, 54);
-          .text(30, 54);
+          .pos(256,
+          218);
+          .size(160,
+          54);
+          .text(30,
+          54);
           background: #ffe555;
           border-radius: 50/@rem;
           text-align: center;
@@ -911,7 +966,8 @@
             overflow: hidden;
           }
           .item-img {
-            .size(170, 240);
+            .size(170,
+            240);
             display: block;
           }
           .item-name {
@@ -965,14 +1021,17 @@
           z-index: 9999;
           right: 0;
           h3 {
-            .text(34, 40);
+            .text(34,
+            40);
             text-align: center;
             margin-bottom: 60/@rem;
             font-weight: normal;
           }
           .item {
-            .size(140, 64);
-            .text(40, 64);
+            .size(140,
+            64);
+            .text(40,
+            64);
             text-align: center;
             color: #444;
             background: #FFE555;
@@ -991,7 +1050,8 @@
         }
 
         .alert-btn {
-          .text(30, 88);
+          .text(30,
+          88);
           position: absolute;
           z-index: 9999;
           left: 0;
