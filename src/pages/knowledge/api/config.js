@@ -89,6 +89,8 @@ export default class config extends base {
             };
             // 价格处理
             if (good.price) good.price = (+good.price / 100).toFixed(2);
+            // title处理
+            good.title = good.title.substr(0,20)
             // 音频时长处理
             good.duration = play.fmtTime(good.timeLength);
           });

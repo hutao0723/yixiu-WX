@@ -42,17 +42,6 @@ export default {
         let percent = Math.floor((+item.playbackProgress ? +item.playbackProgress : 0) / +item.timeLength * 100);
         item.percent = (percent > 100 ? 100 : percent) + "%";
       })
-      console.log(this.readList)
-    //   setTimeout(()=>{
-    //   const msg = {
-    //       title: this.audio.title,
-    //       desc: this.audio.subTitle,
-    //       link: this.audio.courseId ? 'http://k.youfen666dev.com/#/course/' + this.audio.courseId:false ||this.audio.columnId ? 'http://k.youfen666dev.com/#/column/' + this.audio.columnId:false ,
-    //       imgUrl: this.audio.lateralCover || this.audio.verticalCover ||
-    //         'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
-    //     }
-    //     this.wxShare(msg)
-    // },3000)
   },
   methods: {
     playAudio(item) {

@@ -1,29 +1,32 @@
 <template>
-  <div class="course-main" ref='courseMain'>
-    <div class="page-header" :monitor-log="getMonitor()">
-      <div class="header-img" v-show="detailObj.lateralCover" :style="{backgroundImage: `url(${detailObj.lateralCover})`}"></div>
-      <div class="header-img-small" v-show="!detailObj.lateralCover&&detailObj.verticalCover" :style="{backgroundImage: `url(${detailObj.verticalCover})`}"></div>
-      <div class="header-img" v-show="!detailObj.lateralCover&&!detailObj.verticalCover" :style="{backgroundImage: `url('//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
-      <div class="header-name-bg"></div>
-      <div class="header-name">
-        <span v-if="detailObj.price>0">{{detailObj.buyTimes}}人已购</span>
-        <span v-else>{{detailObj.playTimes}}人已听</span>
-        <span> | 时长{{detailObj.timeLength | formatTimeText}}</span>
+  <div class="course-main" ref='courseMain' v-cloak>
+    <div class="page-test">
+
+      <div class="page-header">
+        <div class="header-img" v-show="detailObj.lateralCover" :style="{backgroundImage: `url(${detailObj.lateralCover})`}"></div>
+        <div class="header-img-small" v-show="!detailObj.lateralCover&&detailObj.verticalCover" :style="{backgroundImage: `url(${detailObj.verticalCover})`}"></div>
+        <div class="header-img" v-show="!detailObj.lateralCover&&!detailObj.verticalCover" :style="{backgroundImage: `url('https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
+        <div class="header-name-bg"></div>
+        <div class="header-name">
+          <span v-if="detailObj.price>0">{{detailObj.buyTimes}}人已购</span>
+          <span v-else>{{detailObj.playTimes}}人已听</span>
+          <span> | 时长{{detailObj.timeLength | formatTimeText}}</span>
+        </div>
+      </div>
+      <div class="page-title">
+        <div class="title-main">{{detailObj.title}}</div>
+        <div class="title-sub">{{detailObj.subTitle}}</div>
+      </div>
+      <div class="page-content" v-show="tabActive">
+        <div v-html="detailObj.detail" v-cloak></div>
       </div>
     </div>
-    <div class="page-title">
-      <div class="title-main">{{detailObj.title}}</div>
-      <div class="title-sub">{{detailObj.subTitle}}</div>
-    </div>
-    <div class="page-content" v-show="tabActive">
-      <div v-html="detailObj.detail"></div>
-    </div>
+
     <div class="page-btn">
       <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" @click.stop="playClick('', detailObj.id, true)">免费试听</a>
       <a href="javascript:void(0)" class="btn-small btn" v-if="btnActive == 1" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
       <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 0" @click="getPay">立即购买：{{detailObj.price / 100}}元</a>
       <a href="javascript:void(0)" class="btn-big btn" v-if="btnActive == 2" @click.stop="playClick('', detailObj.id, false)">播放</a>
-
     </div>
     <AudioBar/>
   </div>
@@ -50,16 +53,14 @@
     computed: {
       ...mapState(['audio', 'playing', 'currentTime', 'musicDuration']),
     },
+    created() {
 
-    async mounted() {
-      await this.getColumnDetail(this.$route.params.courseId);
+    },
+
+    mounted() {
       let self = this;
-      // setTimeout(() => {
-      //     // 滚动
-      //     self.$refs.courseMain.addEventListener('scroll', self.dispatchScroll, false);
-      //     // 埋点
-      //     window.monitor && window.monitor.showLog(self);
-      //   }, 100);
+      this.getColumnDetail(this.$route.params.courseId);
+      
     },
     filters: {
       // 时长
@@ -88,18 +89,18 @@
     },
     methods: {
       // 获取monitor
-      getMonitor(id,type,area) {
+      getMonitor(id, type, area) {
 
         // item tabindex dpmc
         return JSON.stringify({
-          'dcm': '8001.'+ id + type?type:0 + '0',
+          'dcm': '8001.' + id + type ? type : 0 + '0',
           'dpm': 'appId.801' + area,
         });
       },
       // 获取详情
       async getColumnDetail(id) {
         // let self = this;
-        // const url = `/api/course/get`;
+        // const url = `/course/get`;
         // this.$http.get(url, { params: { courseId: id } }).then(res => {
         //   self.detailObj = res.data.data
         // });
@@ -112,12 +113,17 @@
           this.btnActive = 0;
         }
         this.detailObj = obj
+
+
+        this.setTitle(this.detailObj.title)
+
+        console.log(obj)
         const msg = {
           title: obj.title,
           desc: obj.subTitle,
-          link: window.location.href,
+          link: 'http://k.youfen666test.com/knowledge.html#/home/index?jumpType=course&jumpId=' + obj.id,
           imgUrl: obj.lateralCover || obj.verticalCover ||
-            '//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
+            'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }
 
         this.wxShare(msg)
@@ -126,13 +132,13 @@
         let obj = await order.buy(this.detailObj.id, 1)
       },
       // 触发滚动
-      dispatchScroll () {
+      dispatchScroll() {
         this.mainScrollTop = this.$refs.courseMain.scrollTop;
         // console.log(this.$refs.homeMain.scrollTop)
         window.monitor && window.monitor.showLog(this);
       }
     },
-    beforeDestroy () {
+    beforeDestroy() {
       this.$refs.courseMain.removeEventListener('scroll', this.dispatchScroll, false);
     },
     components: {
@@ -145,38 +151,40 @@
 <style lang="less">
   @import "../assets/style/base/util";
   @rem: 75rem;
+  
+  
+
   .course-main {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: scroll;
     -webkit-overflow-scrolling: touch;
+    position: relative;
+    height: 100%;
   }
 
   .page-content {
     padding-bottom: 120/@rem;
     background: #fff;
+    /* position: relative;  */
     img {
       width: 100% !important;
-      -webkit-overflow-scrolling: touch !important;
     }
-    div {
-      -webkit-overflow-scrolling: touch !important;
-    }
+  }
+
+  .page-test {
+    height: 100%;
+    overflow: scroll;
   }
 
   .page-header {
     .size(750, 400);
     position: relative;
     .header-img {
+      display: block;
       width: 100%;
       height: 100%;
-      display: block;
+      background-size: 100% auto;
       background-repeat: no-repeat;
-      /* background-size: 100% 100%; */
-      background-attachment: fixed;
+      overflow: hidden;
     }
     .header-img-small {
       .pos(272, 50);
@@ -205,6 +213,7 @@
     padding: 30/@rem 24/@rem;
     .title-main {
       font-size: 34/@rem;
+      font-weight: bold;
       line-height: 48/@rem;
       max-height: 96/@rem;
       color: #333;
@@ -344,6 +353,7 @@
     left: 0;
     text-align: center;
     background: #fff;
+    z-index: 9999;
     .btn {
       .pos(388, 22);
       .size(332, 76);

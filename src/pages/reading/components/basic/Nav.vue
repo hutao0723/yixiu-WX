@@ -1,7 +1,7 @@
 <template>
-  <div class="bottom-nav">
+  <div class="bottom-nav" v-if="bottomNavToggle">
     <ul>
-      <li v-for="(item, index) in navlist" :style="readMission ? 'width: 25%;' : 'width: 33.3%;'">
+      <li v-for="(item, index) in navlist" :style="bottomNavType ? 'width: 25%;' : 'width: 33.3%;'">
         <router-link :to="item.path" :class="item.path === $route.path ? 'active' : ''">
           <p>
             <i class="iconfont" :class="item.path === $route.path ? item.active : item.icon"></i>
@@ -20,9 +20,9 @@ import { mapState } from 'vuex'
       };
     },
     computed: {
-      ...mapState(['readMission']),
+      ...mapState(['bottomNavType','bottomNavToggle']),
       navlist () {
-        if (this.readMission) {
+        if (this.bottomNavType) {
           return [
             {
               title: '阅读',
@@ -84,9 +84,10 @@ import { mapState } from 'vuex'
     right: 0;
     left: 0;
     height: 70/@rem;
-    padding: 14/@rem 0;
+    padding: 15/@rem 0;
     background-color: #FFFFFF;
-    box-shadow: 0 -5/@rem 5/@rem 0 rgba(150, 150, 150, 0.1);
+    // box-shadow: 0 -5/@rem 5/@rem 0 rgba(150, 150, 150, 0.1);
+    border-top: 1/@rem solid #E5E5E5;
     font-size: 22/@rem;
     ul {
       li{

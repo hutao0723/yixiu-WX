@@ -21,7 +21,9 @@ setDPR();
 remChange();
 
 // monitor 埋点
-import { monitorHandler } from './components/utils/monitorHandler';
+import {
+  monitorHandler
+} from './components/utils/monitorHandler';
 monitorHandler();
 
 // lazyload 图片懒加载
@@ -36,7 +38,7 @@ Vue.use(VueLazyload, {
     }
   }
 });
-Vue.http.headers.common['tk'] = '8JdDYohmSwEXXZUEwtaziTsauTC8taF7MxmT9UUeuCdYFdq2ZXRhW327VLakuKVEeWPe7aHp4pgQxm1SWXXyQHadZUurKPKczeoGyFLHXSoWp11BCxwTGLNhoyDiRGra15JATc8DrKNaQj4DVFCCU5qu';
+// Vue.http.headers.common['tk'] = '8JdDYohmSwEXXZUEwtaziTsauTxjgpj2GjS8RiFUXSEvxbd2EZrTs9DDKYmxeBswgz3qUKkbiceg5MuioeJ64rZbeZeFPULetEm76VaysnGYBnfiuboxcwcCPjgkZ7qD9J6WVcFVJiSZC4yJEfJkTmDr';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
@@ -45,28 +47,39 @@ Vue.http.interceptors.push((request, next) => {
     // console.log(response);
     // response.body = '...';
     if (response.data.code == '000001') {
-      const url = encodeURIComponent('/' + window.location.href.split('/').slice(3).join('/'));
-      // location.href = "/loginH5?dbredirect=" + url;
+      let url = encodeURIComponent('/' + window.location.href.split('/').slice(3).join('/'));
+
+      if (url.indexOf("course") > 0) {
+        const jumpId = url.split("course/");
+        url = encodeURIComponent('/knowledge.html#/home/index?jumpType=course&jumpId=' + jumpId)
+      }
+      if (url.indexOf("column") > 0) {
+        const jumpId = url.split("column/");
+        url = encodeURIComponent('/knowledge.html#/home/index?jumpType=column&jumpId=' + jumpId)
+      }
+      if (url.indexOf("activity") > 0) {
+        const jumpId = url.split("activity/");
+        url = encodeURIComponent('/knowledge.html#/home/index?jumpType=activity&jumpId=' + jumpId)
+      }
+      location.href = "/loginH5?dbredirect=" + url;
     }
     return response;
   });
 });
+Vue.prototype.setTitle = function (t) {
+  document.title = t;
+  var i = document.createElement('iframe');
+  i.src = '//m.baidu.com/favicon.ico';
+  i.style.display = 'none';
+  i.onload = function () {
+    setTimeout(function () {
+      i.remove();
+    }, 9)
+  }
+  document.body.appendChild(i);
+}
 
 Vue.prototype.wxShare = function (msg) {
-  console.log(msg)
-  // var link  = encodeURIComponent(link);
-  // const url = encodeURIComponent(location.href.split('#')[0]);// 当前url
-  // const url = encodeURIComponent(window.location.href.split('#')[0]);
-  // const url = location.href.split('#')[0];
-
-  if (!msg) {
-    msg = {
-      title: '一修读书', // 分享标题
-      desc: '在这里发现更好的自己', // 分享描述
-      link: 'http://k.youfen666dev.com/#/home/index', // 分享链接 默认以当前链接
-      imgUrl: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
-    }
-  }
   const urlData = `/wechat/getJsapiSignature`;
   const url = location.href.split("#")[0];
 
@@ -85,38 +98,30 @@ Vue.prototype.wxShare = function (msg) {
       signature: Data.signature, // 必填，签名，见附录1
       jsApiList: ['onMenuShareAppMessage', 'onMenuShareTimeline', 'previewImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
     });
-  });
-  wx.ready(() => {
-    // 所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，
-    // 则可以直接调用，不需要放在ready函数中。
-    wx.onMenuShareAppMessage({ // 分享给朋友
-      title: msg.title, // 分享标题
-      desc: msg.desc, // 分享描述
-      link: msg.link, // 分享链接 默认以当前链接
-      imgUrl: msg.imgUrl, // 分享图标
-      // 用户确认分享后执行的回调函数
-      success: function () {
+    wx.ready(() => {
+      // 所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，
+      // 则可以直接调用，不需要放在ready函数中。
+      wx.onMenuShareAppMessage({ // 分享给朋友
+        title: msg.title || '一修读书', // 分享标题
+        desc: msg.desc || '在这里发现更好的自己', // 分享描述
+        link: msg.link || 'http://k.youfen666test.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
+        imgUrl: msg.imgUrl || 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
+        // 用户确认分享后执行的回调函数
+        success: function () {
 
-      },
-      // 用户取消分享后执行的回调函数
-      cancel: function () {
-        console.log('分享到朋友取消');
-      }
-    });
-    //分享到朋友圈
-    wx.onMenuShareTimeline({
-      title: msg.title, // 分享标题
-      desc: msg.desc, // 分享描述
-      link: msg.link, // 分享链接 默认以当前链接
-      imgUrl: msg.imgUrl, // 分享图标
-      // 用户确认分享后执行的回调函数
-      success: function () {
+        },
+      });
+      //分享到朋友圈
+      wx.onMenuShareTimeline({
+        title: msg.title || '一修读书', // 分享标题
+        desc: msg.desc || '在这里发现更好的自己', // 分享描述
+        link: msg.link || 'http://k.youfen666test.com/knowledge.html#/index/home', // 分享链接 默认以当前链接
+        imgUrl: msg.imgUrl || 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
+        // 用户确认分享后执行的回调函数
+        success: function () {
 
-      },
-      // 用户取消分享后执行的回调函数
-      cancel: function () {
-        console.log('分享到朋友圈取消');
-      }
+        },
+      });
     });
   });
 };

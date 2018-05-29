@@ -86,16 +86,6 @@ export default {
     }
   },
   async mounted () {
-    // setTimeout(()=>{
-    //   const msg = {
-    //       title: this.readAudio.title,
-    //       desc: this.readAudio.subTitle,
-    //       link: this.readAudio.courseId ? 'http://k.youfen666dev.com/#/course/' + this.readAudio.courseId:false ||this.readAudio.columnId ? 'http://k.youfen666dev.com/#/column/' + this.readAudio.columnId:false ,
-    //       imgUrl: this.readAudio.lateralCover || this.readAudio.verticalCover ||
-    //         'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
-    //     }
-    //     this.wxShare(msg)
-    // },3000)
     if (!store.getters.getAudioElement.getAttribute('src')) {
       let readAudio = this.readAudio;
       readAudio.src = await play.getAudioUrl(store.getters.getAudioInfo.readId, store.getters.getAudioInfo.courseId);

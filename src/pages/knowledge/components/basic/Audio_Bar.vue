@@ -83,15 +83,15 @@ import { mapState } from 'vuex';
     border-radius: 50%;
     box-shadow: 0px 8/@rem 10/@rem 0/@rem rgba(204,204,204,0.5);
     .icon-play{
-      width: 87/@rem;
+      width: 88/@rem;
       height: 87/@rem;
       border-radius: 50%;
       &.mask{
-        border: 3/@rem solid @color-white;
+        border: 2px solid @color-white;
         background:rgba(0,0,0,0.4753);
       }
       &.line{
-        border: 3/@rem solid #CBCBCB;
+        border: 2px solid #CBCBCB;
       }
       .iconfont{
         color: @color-white;
@@ -119,7 +119,7 @@ import { mapState } from 'vuex';
     border-radius: 18/@rem 18/@rem 0 0; 
     position: fixed;
     bottom: -540/@rem;
-    z-index: 1001;
+    z-index: 1000!important;
     &.showin{
       animation: moveup 1s forwards;
       -moz-animation: moveup 1s forwards; 

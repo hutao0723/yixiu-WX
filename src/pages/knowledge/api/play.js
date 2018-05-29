@@ -82,7 +82,7 @@ export default class play extends base {
    * 更新并播放音频
    */
   static async startAudio(columnId,courseId,action) {
-    if (courseId && store.getters.getAudioInfo.powerLevel && store.getters.getAudioInfo.price) this.syncProgress(columnId,courseId,store.getters.getCurrentTime)
+    store.commit('play');
     let audio = {};
     if ( action === 'init') audio =  await this.audioInit(columnId, courseId);
     if ( action === 'next') audio =  await this.audioNext(columnId, courseId);
@@ -99,6 +99,8 @@ export default class play extends base {
     store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
     store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
     // 这里，很迷
+    // store.commit('play');
+    // store.getters.getAudioElement.play()
     store.commit('play');
   }
 

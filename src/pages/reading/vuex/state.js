@@ -4,6 +4,10 @@ export default {
 	audioelement: '',
 	// 是否有在读课程
 	readMission: true,
+	// 是否有在读课程
+	bottomNavType: true,
+	// 是否有在读课程
+	bottomNavToggle: true,
 	// audio信息
 	readAudio: {
 	},

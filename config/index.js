@@ -6,7 +6,7 @@ module.exports = {
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'assets',
+    assetsSubDirectory: 'knowledge',
     assetsPublicPath: './',
     //yun.dui88.com/yoofans/konwledge
     productionSourceMap: false, // 设为true生成map可以作调试
@@ -24,7 +24,7 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 8666,
+    port: 8699,
     autoOpenBrowser: false, // 自动打开浏览器
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
