@@ -12,10 +12,12 @@
           <div class="dateView" v-for="(item3,index) in days[index1]" :key="index" @click="clickDay(index1,index,item3)">
             <a href="javascript:;" >
               <div class="datesView" :class="[
-              {'isClock':item3.isClock},
+              {'isClock':item3.isClock&&item3.afterToday},
               {'isClick':item3.isClick},
-              {'isNotClock':item3.isRange&&!item3.isClock},
-              {'borderClick':item3.isClock&&item3.isClick||!item3.isClock&&item3.isClick}]">
+              {'isToday':item3.isToday&&item3.isClick},
+              {'isRange':item3.isRange},
+              {'isNotClock':item3.isRange&&!item3.isClock&&item3.afterToday},
+              {'borderClick':item3.afterToday&&item3.isClick}]">
                 <template v-if="_month == item1.cur_month&&index == today-1">今</template>
                 <template v-else>{{item3.index+1}}</template>
               </div>
@@ -52,8 +54,13 @@
     },
     mounted: function () {
 
-      this.setNowDate();
     },
+    watch: {
+      calendarDate (){
+        this.setNowDate()
+      }
+    },
+
     created: function () {
 
     },
@@ -81,6 +88,8 @@
           }
         }
         _this.caledarArr = caledarArr
+        console.log(caledarArr)
+
         /**月 */
         this.nowYear = cur_year;
         this.nowMonth = cur_month;
@@ -97,18 +106,26 @@
           this.calculateEmptyGrids(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
           /**调用计算空格子*/
           this.calculateDays(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
+
+          if(_this.caledarArr[i].cur_month==_this._month){ //默认选中当天
+            console.log(_this.days[i][_this.today-1])
+            _this.clickDay(i,_this.today-1,_this.days[i][_this.today-1])
+          }
         }
 
       },
 
       clickDay: function (index1,index,item) { //点击态
-        this.$emit('getDate',item)
-        for(let j=0;j<this.days.length;j++){
-          for (let i =0 ;i<this.days[j].length;i++){
-            this.days[j][i].isClick=false;
+
+        if(this.days[index1][index].isRange){
+          this.$emit('getDate',item)
+          for(let j=0;j<this.days.length;j++){
+            for (let i =0 ;i<this.days[j].length;i++){
+              this.days[j][i].isClick=false;
+            }
           }
+          this.days[index1][index].isClick=true;
         }
-        this.days[index1][index].isClick=true;
       },
       getThisMonthDays(year, month) { //月 天数
         return new Date(year, month, 0).getDate();
@@ -137,8 +154,12 @@
         let days = [];
         let thisMonthDays = this.getThisMonthDays(year, month);
         for (let i = 1; i <= thisMonthDays; i++) {
-          days.push({index: i - 1,isClock:false,isClick:false,isRange:false,date:year+'-'+month+'-'+(i>=10?i:('0'+i))});
+          days.push({afterToday:false,isToday:false,index: i - 1,isClock:false,isClick:false,isRange:false,date:year+'-'+month+'-'+(i>=10?i:('0'+i))});
         }
+        if(month==_this.cur_month){ //当天
+          days[_this.today-1].isToday = true;
+        }
+        console.log(days[_this.today-1])
         for(let i= 0;i<days.length;i++){  //循环对比 对应打卡状态
           for(let j = 0;j < _this.calendarDate.length; j++){
             if(month == _this.calendarDate[j].date.split('-')[1] && i == (_this.calendarDate[j].date.split('-')[2]-1)&&_this.calendarDate[j].clockState){
@@ -148,14 +169,20 @@
             if(month == _this.calendarDate[j].date.split('-')[1] && i == (_this.calendarDate[j].date.split('-')[2]-1)){
               //日期范围
               days[i].isRange = true;
-              if(days[i].isRange){
+              if(days[i].isRange){  //范围插入数据
                 days[i].courseId = _this.calendarDate[j].courseId
                 days[i].dayNum = _this.calendarDate[j].dayNum
               }
-
             }
+            if(month == _this.calendarDate[j].date.split('-')[1] && i == (_this.calendarDate[j].date.split('-')[2]-1)&&_this.calendarDate[j].afterToday){
+              //范围 并打卡
+              days[i].afterToday = true;
+            }
+
+
           }
         }
+        console.log(days)
         this.days.push(days);
       }
     }
@@ -166,20 +193,27 @@
   @import "../../less/variable";
   .calendarTemplate_box{
     height:auto;
+    .isRange{
+      color:#777777;
+    }
     .isClick{ /*点击style*/
       background: #B1E9FF;
-      color:#333 !important;
+      color:#333 ;
     }
     .isClock{ /*已打卡style*/
       background: #9688FF;
-      color:#fff !important;
+      color:#fff ;
     }
     .isNotClock{  /*未打卡style*/
       background: #E8E8E8;
-      color:#777 !important;
+      color:#777;
     }
     .borderClick{
       border:5/@rem solid #B1E9FF;
+    }
+    .isToday{
+      background:#B1E9FF;
+      color:#333;
     }
   }
   .show_box_cal {
@@ -262,7 +296,7 @@
   }
 
   .datesView {
-    color: #828080;
+    color: #DADADA;
     font-size: 30/@rem;
     display: flex;
     align-items: flex-end;
