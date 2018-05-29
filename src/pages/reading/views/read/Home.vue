@@ -59,7 +59,7 @@
             <p>
               <span class="text-del">{{selectCourseObj.costPrice}}</span>
               <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>元</p>
-            <a href="javascriot:void(0)" @click="orderPay">立即购买</a>
+            <span @click="orderPay">立即购买</a>
           </div>
         </div>
       </div>

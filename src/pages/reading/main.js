@@ -71,7 +71,7 @@ Vue.prototype.wxShare = function () {
     var Data = res.data.data;
     // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，
     wx.config({
-      debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
       appId: Data.appid, // 必填，公众号的唯一标识
       timestamp: Number(Data.timestamp), // 必填，生成签名的时间戳
       nonceStr: Data.noncestr, // 必填，生成签名的随机串
