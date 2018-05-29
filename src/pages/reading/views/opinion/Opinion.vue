@@ -113,7 +113,7 @@
           pageSize: this.pageSize,
 
         }
-        const url = `/comment/page`;
+        const url = `/api/comment/page`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -137,7 +137,7 @@
           status: item.userPraise ? 0 : 1,
           commentId: item.id
         }
-        const url = `/comment/praise`;
+        const url = `/api/comment/praise`;
         this.$http.get(url, {
           params
         }).then((res) => {
