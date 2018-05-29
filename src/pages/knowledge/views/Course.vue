@@ -100,7 +100,7 @@
       // 获取详情
       async getColumnDetail(id) {
         // let self = this;
-        // const url = `/api/course/get`;
+        // const url = `/course/get`;
         // this.$http.get(url, { params: { courseId: id } }).then(res => {
         //   self.detailObj = res.data.data
         // });
