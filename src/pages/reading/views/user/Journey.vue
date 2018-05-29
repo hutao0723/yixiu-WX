@@ -40,6 +40,14 @@
         </div>
       </div>
     </div>
+    <div v-else>
+      <div class="no-shelf">
+          <div class="shelf-container">
+            <img src="https://yun.dui88.com/yoofans/images/201805/read/past.png">
+          </div>
+          <div class="shelf-word">啊哦，暂无历程哟~</div>
+        </div>
+    </div>
   </div>
 </template>
 
@@ -280,7 +288,21 @@ export default {
       }
     }
   }
-
+  .no-shelf{
+    .shelf-container{
+      img{
+        width: 310/@rem;
+        height: 310/@rem;
+        display: block;
+        margin: 100/@rem auto 50/@rem;
+      }
+    }
+    .shelf-word{
+      text-align: center;
+      .fontSize(32);
+      color: #888;
+    }
+}
 
 
 
