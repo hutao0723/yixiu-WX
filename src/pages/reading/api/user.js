@@ -7,7 +7,7 @@ export default class user extends base {
    * 获取统计数据我和老师微信账号
    */
   static async getInfo() {
-    const url = `/user/stat/detail`;
+    const url = `/user/read/state`;
     const res = await this.get(url);
     return res.data;
   }
