@@ -13,6 +13,9 @@ export default class order extends base {
       itemId,
       itemType
     });
+    if(!orderId){
+      return false;
+    }
     const payment = await this.wxPrePay({
       orderId
     });
@@ -29,7 +32,7 @@ export default class order extends base {
     itemType
   }) {
     console.log('下单')
-    const url = `/order/submit`;
+    const url = `/api/order/submit`;
     const res = await this.post(url, {
       itemId,
       itemType
@@ -44,8 +47,8 @@ export default class order extends base {
     orderId
   }) {
     console.log('预支付')
-    const payType = 'WECHATH5APAY';
-    const url = `/pay/submit`;
+    const payType = 'WECHATREADH5APAY';
+    const url = `/api/pay/submit`;
     const res = await this.post(url, {
       orderId,
       payType
@@ -56,17 +59,7 @@ export default class order extends base {
   /**
    * 支付
    */
-  // static async wxPay(payment) {
-  //   const url = encodeURIComponent(location.href.split('#')[0]);
-  //   const urlData = `/wechat/getJsapiSignature`;
-  //   const res = await this.get(urlData, {
-  //     params: {
-  //       url
-  //     }
-  //   });
-  //   this.wxChooseWXPay(res.data.data, payment)
-  // }
-  static  wxPay(payment) {
+  static wxPay(payment) {
     function onBridgeReady() {
       WeixinJSBridge.invoke(
         'getBrandWCPayRequest', {
@@ -79,7 +72,6 @@ export default class order extends base {
         },
         async function (res) {
           if (res.err_msg == "get_brand_wcpay_request:ok") {
-            await play.startAudio(store.getters.getAudioInfo.columnId, store.getters.getAudioInfo.courseId, 'init')
             location.reload()
           } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
         }
@@ -104,58 +96,6 @@ export default class order extends base {
       urls: [imgUrl] // 需要预览的图片http链接列表
     });
   }
-
-  /**
-   * 专栏详情
-   */
-  static async getColumnDetail(columnId) {
-    console.log('专栏详情')
-    const url = `/column/get`;
-    const payment = await this.get(url, {
-      params: {
-        columnId
-      }
-    });
-    return payment.data.data;
-  }
-  /**
-   * 专栏列表
-   */
-  static async getColumnList(columnId) {
-    console.log('专栏列表')
-    const url = `/column/getCourses`;
-    const payment = await this.get(url, {
-      params: {
-        columnId
-      }
-    });
-    return payment.data.data;
-  }
-  /**
-   * 专栏列表
-   */
-  static async getCourseDetail(courseId) {
-    console.log('课程详情')
-    const url = `/course/get`;
-    const payment = await this.get(url, {
-      params: {
-        courseId
-      }
-    });
-    return payment.data.data;
-  }
-  /**
-   * 专栏列表
-   */
-  static async getCartList(params) {
-    console.log('已购列表')
-    const url = `/userItem/list`;
-    const payment = await this.get(url, {
-      params: params
-    });
-    return payment.data.data.lists;
-  }
-
 
 }
 

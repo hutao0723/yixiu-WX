@@ -2,7 +2,7 @@
   <div class="home-main" ref="homeMain">
     <!-- <div @click="play">播放</div> -->
     <!-- 未买课 -->
-    <div class="home-box" v-if="pageStatus == 1">
+    <div class="home-box" v-if="pageStatus < 2">
       <div class="home-tab clearfix">
         <div class="item" @click="tabActive=true">
           <span :class="{ active: tabActive}">简介</span>
@@ -26,12 +26,12 @@
               <div class="book-author otw">{{item.courseAuthor}} 著</div>
             </div>
             <div class="item-bottom">
-              <span @click="getCommentPraise(item.id,item.userPraise)">
+              <span @click="getCommentPraise(item.id,item.userPraise)" v-if="pageStatus != 0">
                 <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
-                <span class="fr">16</span>
+                <span class="fr">{{item.praiseCount}}</span>
               </span>
-              <i class="iconfont icon-share fr"></i>
-              <span>{{item.releaseTime | timeTransition}}</span>
+              <router-link :to="{ path: '/poster/' + item.id}" tag="a" class="iconfont icon-share fr"></router-link>
+              <span>{{item.releaseTime| timeTransition}}</span>
             </div>
 
           </div>
@@ -48,7 +48,7 @@
                 <div class="item-name">{{item.title}}</div>
                 <div class="item-msg">第{{item.stageNum}}期 | {{item.beginDate}}({{item.beginDateWeek}})开课</div>
                 <div class="item-num">报名{{item.orderCount}}人</div>
-                <div class="item-btn">{{selectCourseId == 0?'选择':'已选'}}</div>
+                <div class="item-btn">{{selectCourseId == item.readId?'已选':'选择'}}</div>
               </div>
               <div class="item-bottom">
                 <p v-html="item.briefer"></p>
@@ -59,7 +59,7 @@
             <p>
               <span class="text-del">{{selectCourseObj.costPrice}}</span>
               <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>元</p>
-            <a href="javascriot:void(0)">立即购买</a>
+            <a href="javascriot:void(0)" @click="orderPay">立即购买</a>
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@
         <i></i>您已成功报名</p>
       <p class="text-b">长按识别二维码</p>
       <p class="text-c">关注公众号，去等待开课</p>
-      <img src="" alt="">
+      <img src="http://yun.dui88.com/youfen/images/read_ewm.png" alt="">
     </div>
 
     <!-- 未开课 -->
@@ -82,7 +82,7 @@
       </div>
       <p class="text-d">长按识别二维码添加老师微信</p>
       <p class="text-e">因添加学员较多，老师会在3个工作日内通过，请耐心等待~</p>
-      <img src="" alt="">
+      <img :src="courseDetail.userImgUrl" alt="">
       <p class="text-f">美少女</p>
       <p class="text-g">微信添加老师后，你的专属老师会在课程</br>开始前邀请你进入对应班级群</p>
       <p class="text-h">关注微信公众号【一修读书】，点击</br>菜单栏“我的老师”添加</p>
@@ -96,7 +96,7 @@
         <img :src="todayBookDetail.courseUrl" alt="" class="book-img">
         <div class="book-name">《{{todayBookDetail.courseTitle}}》</div>
         <div class="book-msg">{{todayBookDetail.courseSubTitle}}</div>
-        <div class="book-btn">播放
+        <div class="book-btn" @click="playAudio(todayBookDetail.courseId)">播放
           <i class="iconfont icon-bofang"></i>
         </div>
       </div>
@@ -104,10 +104,12 @@
         <span> | 缺卡{{todayBookDetail.lackClockDays}}天</span>
       </h2>
       <div class="already-list clearfix">
-        <div class="item" v-for="(item,index) in historyBookList" :key="index" @click="getCourseList(item.id)">
+        <div class="item" v-for="(item,index) in historyBookList" :key="index" @click="getCourseList(item.id,item.title)">
           <div class="item-box">
             <img :src="item.imgUrl" alt="" class="item-img">
-            <div class="item-lock" v-if="item.lockStatus"><i class="iconfont icon-lock"></i></div>
+            <div class="item-lock" v-if="item.lockStatus">
+              <i class="iconfont icon-lock"></i>
+            </div>
           </div>
           <div class="item-name">{{item.title}}</div>
         </div>
@@ -130,7 +132,9 @@
 
 <script>
   import AudioBar from '../../components/basic/Audio_Bar';
-  import play from '../../api/play'
+  import play from '../../api/play';
+  import order from '../../api/order';
+
   import {
     mapState
   } from 'vuex';
@@ -143,35 +147,7 @@
         reviewList: [],
         readList: [],
         tabActive: true,
-        courseObj: {
-          status: 0,
-          name: '30天魔鬼训练营',
-          date: '5-23',
-        },
-        alreadyObj: {
-          nowDay: 5,
-          totalDay: 30,
-          lockDay: 3,
-          name: '遇见未知的自己',
-          msg: '做生活中的高情商者、职场中的商者、职场中的优雅人士做生活中的高情商者、职场中的优雅人士',
-          list: [{
-            img: '',
-            name: '拍摄照片1',
-          }, {
-            img: '',
-            name: '拍摄照片2',
-          }, {
-            img: '',
-            name: '拍摄照片3拍摄照片3',
-          }, {
-            img: '',
-            name: '拍摄照片4',
-          }, {
-            img: '',
-            name: '拍摄照片5',
-          }],
-        },
-        bookName: '今天的网红经济',
+        bookName: '',
         alertToggle: false,
 
         pageStatus: 0, // 页面状态
@@ -192,26 +168,78 @@
     filters: {
       // 时长
       timeTransition: function (value) {
+        let nowDate = new Date()
+        let nowDateNum = nowDate.getTime()
+        let valueDate = new Date(value)
+        let valueDateNum = valueDate.getTime()
+        let key = nowDateNum - valueDateNum
 
-        return value
+        let today = new Date();
+        today.setHours(0);
+        today.setMinutes(0);
+        today.setSeconds(0);
+        today.setMilliseconds(0);
+
+        let yesterday = new Date(today);
+        let yesterdayNum = yesterday.getTime()
+        let yes = valueDateNum - yesterdayNum;
+
+        let Y, M, D, h, m, s;
+        Y = valueDate.getFullYear() + '-';
+        M = (valueDate.getMonth() + 1 < 10 ? '0' + (valueDate.getMonth() + 1) : valueDate.getMonth() + 1) + '-';
+        D = (valueDate.getDate()<10?'0' + valueDate.getDate():valueDate.getDate()) + ' ';
+        h = (valueDate.getHours()<10?'0' + valueDate.getHours():valueDate.getHours()) + ':';
+        m = (valueDate.getMinutes()<10?'0' + valueDate.getMinutes():valueDate.getMinutes());
+        let text = '';
+        
+        if( key > 0 && key < 60 * 1000){
+            text = '刚刚'
+        }
+
+        if( key >= 60 * 1000 && key < 60 * 60 * 1000){
+            text = Math.floor(key / (60 * 1000)) + '分钟前'
+        }
+
+        if( key >= 60 * 60 * 1000 && key < 2 * 60 * 60 * 1000){
+            text = '1小时前'
+        }
+
+        if( key >= 2 * 60 * 60 * 1000 && key < yes){
+            text = h + m
+        }
+
+        if(key >= yes){
+            text = M + D
+        }
+        return text
       },
     },
     created() {},
     async mounted() {
-
+      this.wxShare();
       let userState = await this.getThumbUp();
       console.log(userState)
       // 状态判断逻辑
       if (userState.data) {
         if (
+          userState.data.readState == -1
+        ) {
+          console.log('用户未购买未授权')
+          this.getCommentTop();
+          this.getReadList();
+          this.pageStatus = 0;
+        }
+        if (
           userState.data.readState == 0
         ) {
-          console.log('用户未购买')
+          console.log('用户未购买已授权')
+          this.getCommentTop();
+          this.getReadList();
           this.pageStatus = 1;
         }
 
         if (
-          userState.data.readState != 0 && !userState.data.followOfficialAccount
+          userState.data.readState > 0 && !userState.data.followOfficialAccount
         ) {
           console.log('用户购买未关注')
           this.pageStatus = 2;
@@ -222,6 +250,10 @@
           userState.data.readState == 1 && userState.data.followOfficialAccount
         ) {
           console.log('用户购买已关注未开课')
+          this.teacherWxName = userState.data.teacherWxName;
+          this.teacherWxQrcodeUrl = userState.data.teacherWxQrcodeUrl;
+
+          this.courseDetail = await this.readDetail();
           this.pageStatus = 3;
         }
 
@@ -229,6 +261,8 @@
           userState.data.readState == 2 && userState.data.followOfficialAccount
         ) {
           console.log('用户购买已关注已开课')
+          this.getDetail();
+          this.getBookList();
           this.pageStatus = 4;
         }
 
@@ -236,19 +270,14 @@
 
 
       // 1
-      this.getCommentTop();
-      this.getReadList();
+
       // 2
 
       // 3
-      this.teacherWxName = userState.data.teacherWxName;
-      this.teacherWxQrcodeUrl = userState.data.teacherWxQrcodeUrl;
 
-      this.courseDetail = await this.readDetail();
 
       // 4
-      this.getDetail();
-      this.getBookList();
+
 
 
 
@@ -256,8 +285,11 @@
 
     },
     methods: {
-      playAudio(id){
-        play.audioInit(28,id,true)
+      orderPay() {
+        order.buy(this.selectCourseId, 4)
+      },
+      playAudio(id) {
+        play.audioInit(28, id, true)
         // 跳转到播放页
       },
       selectCourse(item) {
@@ -364,13 +396,14 @@
         this.$http.get(url, {
           params
         }).then((res) => {
-          this.historyBookList = res.data.data;
+          this.historyBookList = res.data.data.content;
         });
       },
-      getCourseList(id) {
+      getCourseList(id, name) {
         let self = this;
         let params = {};
         params = {
+          readId: 28,
           bookId: id,
         }
         const url = `/api/readBookCourse/courseList`;
@@ -378,6 +411,7 @@
           params
         }).then((res) => {
           this.courseList = res.data.data;
+          this.bookName = name;
           this.alertToggle = true;
         });
       }
@@ -390,7 +424,8 @@
 </script>
 
 <style lang="less">
-  @import '../../less/variable';
+  /* @import '../../less/letiable'; */
+
   @import '../../less/util';
 
   .home-main {
@@ -845,7 +880,7 @@
           overflow: hidden;
           position: relative;
           width: 170/@rem;
-          .item-box{
+          .item-box {
             position: relative;
             border-radius: 6/@rem;
             overflow: hidden;
@@ -862,7 +897,7 @@
             margin-bottom: 36/@rem;
           }
           .item-lock {
-            background:rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             position: absolute;
             left: 0;
             right: 0;
@@ -871,12 +906,12 @@
             text-align: center;
             line-height: 240/@rem;
           }
-          .icon-lock{
+          .icon-lock {
             font-size: 30/@rem;
             color: #fff;
           }
         }
-        .item:nth-last-child(3) {
+        .item:nth-child(3n) {
           margin-right: 0;
         }
       }
