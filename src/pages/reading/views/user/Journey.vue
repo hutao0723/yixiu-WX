@@ -43,9 +43,9 @@
     <div v-else>
       <div class="no-shelf">
         <div class="shelf-container">
-          <img src="https://yun.dui88.com/yoofans/images/201805/read/past.png">
+          <img src="https://yun.dui88.com/yoofans/images/201805/read/journey.png">
         </div>
-        <div class="shelf-word">啊哦，暂无历程哟~</div>
+        <div class="shelf-word">快去写感想，丰富你的历程~</div>
       </div>
     </div>
     <AudioBar/>
@@ -299,7 +299,7 @@ export default {
         width: 310/@rem;
         height: 310/@rem;
         display: block;
-        margin: 100/@rem auto 50/@rem;
+        margin: 90/@rem auto 50/@rem;
       }
     }
     .shelf-word{

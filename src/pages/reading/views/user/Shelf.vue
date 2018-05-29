@@ -19,7 +19,7 @@
       <div v-else>
         <div class="no-book">
           <div class="book-container">
-            <img src="https://yun.dui88.com/yoofans/images/201805/read/past.png">
+            <img src="https://yun.dui88.com/yoofans/images/201805/read/shelf.png">
           </div>
           <div class="book-word">正式毕业后，可在往期书架中继续看书~</div>
         </div>
