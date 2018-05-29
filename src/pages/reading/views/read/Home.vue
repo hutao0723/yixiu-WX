@@ -59,7 +59,7 @@
             <p>
               <span class="text-del">{{selectCourseObj.costPrice}}</span>
               <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>元</p>
-            <span @click="orderPay">立即购买</a>
+            <span @click="orderPay" class="btn-pay">立即购买</span>
           </div>
         </div>
       </div>
@@ -621,7 +621,7 @@
           margin-right: 6/@rem;
 
         }
-        a {
+        .btn-pay{
           .size(360, 100);
           .text(40, 100);
           position: absolute;
