@@ -37,19 +37,22 @@
       </div>  
     </div>
      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0" ></div>
+     <AudioBar/>
   </div>
 
 </template>
 
 <script>
 import { mapState } from 'vuex';
+
 import SwiperBar from '../../components/layout/swiper_bar';
 import play from '../../api/play'
 import user from '../../api/user';
+import AudioBar from '../../components/basic/Audio_Bar';
 
 export default {
   components: {
-    SwiperBar
+    SwiperBar,AudioBar
   },
   data () {
     return {

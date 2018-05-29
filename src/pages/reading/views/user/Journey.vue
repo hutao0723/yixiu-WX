@@ -42,20 +42,24 @@
     </div>
     <div v-else>
       <div class="no-shelf">
-          <div class="shelf-container">
-            <img src="https://yun.dui88.com/yoofans/images/201805/read/past.png">
-          </div>
-          <div class="shelf-word">啊哦，暂无历程哟~</div>
+        <div class="shelf-container">
+          <img src="https://yun.dui88.com/yoofans/images/201805/read/past.png">
         </div>
+        <div class="shelf-word">啊哦，暂无历程哟~</div>
+      </div>
     </div>
+    <AudioBar/>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import user from '../../api/user';
+import AudioBar from '../../components/basic/Audio_Bar';
+
 export default {
   components: {
+    AudioBar
   },
   data () {
     return {

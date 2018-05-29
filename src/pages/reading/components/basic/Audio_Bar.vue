@@ -119,6 +119,7 @@ import { mapState } from 'vuex';
     position: fixed;
     bottom: -540/@rem;
     z-index: 1001;
+    left:0;
     &.showin{
       animation: moveup 1s forwards;
       -moz-animation: moveup 1s forwards; 

@@ -69,6 +69,7 @@
     </div>
     <Contact v-show="contactToggle" v-on:success="success"/>
     <bnav></bnav>
+    <AudioBar/>
   </div>
 
 </template>
@@ -76,12 +77,13 @@
 <script>
 import { mapState } from 'vuex';
 import Contact from '../../components/basic/Contact';
+import AudioBar from '../../components/basic/Audio_Bar';
 import bnav from '../../components/basic/Nav';
 // import store from '../vuex/store';
 import user from '../../api/user';
 export default {
   components: {
-    Contact,bnav
+    Contact,bnav,AudioBar
   },
   data () {
     return {

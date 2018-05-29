@@ -5,6 +5,7 @@
     <div class="point">
       温馨提示：由于微信对添加好友的限制，老师可能收不到你的好友请求，如果在三个工作日内老师还未通过你的好友申请，你可以再发一次哦！
     </div>
+     <AudioBar/>
   </div>
 </template>
 
@@ -12,9 +13,11 @@
 import { mapState } from 'vuex';
 import bnav from '../../components/basic/Nav';
 import user from '../../api/user';
+import AudioBar from '../../components/basic/Audio_Bar';
+
 export default {
   components: {
-    bnav
+    bnav,AudioBar
   },
   data () {
     return {
