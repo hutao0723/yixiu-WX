@@ -36,7 +36,7 @@
 
           </div>
         </div>
-        <div class="home-bottom" @click="tabActive = false">去选课程</div>
+        <div class="home-bottom" @click="tabActive = false" :style="{bottom:bottomNavToggle?'100px':'0px'}">去选课程</div>
       </div>
 
       <div v-show="!tabActive">
@@ -55,7 +55,7 @@
               </div>
             </div>
           </div>
-          <div class="home-btn">
+          <div class="home-btn" :style="{bottom:bottomNavToggle?'100px':'0'}">
             <p>
               <span class="text-del">{{selectCourseObj.costPrice}}</span>
               <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>元</p>
@@ -134,6 +134,8 @@
   import AudioBar from '../../components/basic/Audio_Bar';
   import play from '../../api/play';
   import order from '../../api/order';
+  import store from '../../vuex/store';
+  
 
   import {
     mapState
@@ -160,10 +162,11 @@
         todayBookDetail: {}, // 今日书
         historyBookList: [], // 历史书
         courseList: [], // 书对应列表
+
       };
     },
     computed: {
-      ...mapState({})
+      ...mapState(['bottomNavToggle', 'bottomNavType'])
     },
     filters: {
       // 时长
@@ -187,35 +190,36 @@
         let Y, M, D, h, m, s;
         Y = valueDate.getFullYear() + '-';
         M = (valueDate.getMonth() + 1 < 10 ? '0' + (valueDate.getMonth() + 1) : valueDate.getMonth() + 1) + '-';
-        D = (valueDate.getDate()<10?'0' + valueDate.getDate():valueDate.getDate()) + ' ';
-        h = (valueDate.getHours()<10?'0' + valueDate.getHours():valueDate.getHours()) + ':';
-        m = (valueDate.getMinutes()<10?'0' + valueDate.getMinutes():valueDate.getMinutes());
+        D = (valueDate.getDate() < 10 ? '0' + valueDate.getDate() : valueDate.getDate()) + ' ';
+        h = (valueDate.getHours() < 10 ? '0' + valueDate.getHours() : valueDate.getHours()) + ':';
+        m = (valueDate.getMinutes() < 10 ? '0' + valueDate.getMinutes() : valueDate.getMinutes());
         let text = '';
-        
-        if( key > 0 && key < 60 * 1000){
-            text = '刚刚'
+
+        if (key > 0 && key < 60 * 1000) {
+          text = '刚刚'
         }
 
-        if( key >= 60 * 1000 && key < 60 * 60 * 1000){
-            text = Math.floor(key / (60 * 1000)) + '分钟前'
+        if (key >= 60 * 1000 && key < 60 * 60 * 1000) {
+          text = Math.floor(key / (60 * 1000)) + '分钟前'
         }
 
-        if( key >= 60 * 60 * 1000 && key < 2 * 60 * 60 * 1000){
-            text = '1小时前'
+        if (key >= 60 * 60 * 1000 && key < 2 * 60 * 60 * 1000) {
+          text = '1小时前'
         }
 
-        if( key >= 2 * 60 * 60 * 1000 && key < yes){
-            text = h + m
+        if (key >= 2 * 60 * 60 * 1000 && key < yes) {
+          text = h + m
         }
 
-        if(key >= yes){
-            text = M + D
+        if (key >= yes) {
+          text = M + D
         }
         return text
       },
     },
     created() {},
     async mounted() {
+      
       this.wxShare();
       let userState = await this.getThumbUp();
       console.log(userState)
@@ -228,6 +232,9 @@
           this.getCommentTop();
           this.getReadList();
           this.pageStatus = 0;
+          store.commit({type:'setBottomNavToggle',bottomNavToggle:false})
+          store.commit({type:'setBottomNavType',bottomNavType:false})
+          
         }
         if (
           userState.data.readState == 0
@@ -236,6 +243,8 @@
           this.getCommentTop();
           this.getReadList();
           this.pageStatus = 1;
+          store.commit({type:'setBottomNavToggle',bottomNavToggle:false})
+          store.commit({type:'setBottomNavType',bottomNavType:false})
         }
 
         if (
@@ -244,6 +253,8 @@
           console.log('用户购买未关注')
           this.pageStatus = 2;
           this.tabActive = userState.data.readState != 4
+          store.commit({type:'setBottomNavToggle',bottomNavToggle:false})
+          store.commit({type:'setBottomNavType',bottomNavType:false})
         }
 
         if (
@@ -255,6 +266,8 @@
 
           this.courseDetail = await this.readDetail();
           this.pageStatus = 3;
+          store.commit({type:'setBottomNavToggle',bottomNavToggle:true})
+          store.commit({type:'setBottomNavType',bottomNavType:false})
         }
 
         if (
@@ -264,8 +277,20 @@
           this.getDetail();
           this.getBookList();
           this.pageStatus = 4;
+          store.commit({type:'setBottomNavToggle',bottomNavToggle:true})
+          store.commit({type:'setBottomNavType',bottomNavType:true})
         }
 
+        if (
+          userState.data.readState == 3 && userState.data.followOfficialAccount
+        ) {
+          console.log('用户购买已关注已读完')
+          this.getCommentTop();
+          this.getReadList();
+          this.pageStatus = 1;
+          store.commit({type:'setBottomNavToggle',bottomNavToggle:true})
+          store.commit({type:'setBottomNavType',bottomNavType:false})
+        }
       }
 
 
@@ -576,8 +601,8 @@
       .home-btn {
         .text(24, 100);
         position: fixed;
-        bottom: 0;
         right: 0;
+        bottom: 0;
         width: 100%;
         z-index: 999;
         background: #fff;

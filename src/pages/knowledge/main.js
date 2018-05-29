@@ -47,7 +47,7 @@ Vue.http.interceptors.push((request, next) => {
     // console.log(response);
     // response.body = '...';
     if (response.data.code == '000001') {
-      const url = encodeURIComponent('/' + window.location.href.split('/').slice(3).join('/'));
+      let url = encodeURIComponent('/' + window.location.href.split('/').slice(3).join('/'));
 
       if (url.indexOf("course") > 0) {
         const jumpId = url.split("course/");
