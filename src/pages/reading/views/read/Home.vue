@@ -696,6 +696,7 @@
             right: 0;
             top: 0;
             background: url('http://yun.dui88.com/youfen/images/read_yz.png') no-repeat center;
+        background-size: 100% 100%; 
           }
           .item-name {
             .pos(40, 22);
@@ -835,6 +836,7 @@
       .nonevent-box {
         height: 290/@rem;
         background: url('http://yun.dui88.com/youfen/images/read_bg.png') no-repeat center;
+        background-size: 100% 100%; 
         border-radius: 20/@rem;
         color: #333333;
         padding-top: 93/@rem;
@@ -858,6 +860,7 @@
       }
       .ewm-bg {
         background: url('http://yun.dui88.com/youfen/images/read_ewmborder.png') no-repeat center;
+        background-size: 100% 100%; 
         height: 326/@rem;
         width: 326/@rem;
         margin: 30/@rem auto;
