@@ -2,7 +2,7 @@
   <div class="home-main" ref="homeMain">
     <!-- <div @click="play">播放</div> -->
     <!-- 未买课 -->
-    <div class="home-box" v-if="pageStatus == 1">
+    <div class="home-box" v-if="pageStatus == 1 || pageStatus == 0">
       <div class="home-tab clearfix">
         <div class="item" @click="tabActive=true">
           <span :class="{ active: tabActive}">简介</span>
@@ -89,7 +89,7 @@
       <div class="ewm-bg">
         <img :src="courseDetail.teacherWxQrcodeUrl" alt="">
       </div>
-      <p class="text-f">美少女</p>
+      <p class="text-f">{{courseDetail.userNickname}}</p>
       <p class="text-g">微信添加老师后，你的专属老师会在课程</br>开始前邀请你进入对应班级群</p>
       <p class="text-h">关注微信公众号【一修读书】，点击</br>菜单栏“我的老师”添加</p>
     </div>
