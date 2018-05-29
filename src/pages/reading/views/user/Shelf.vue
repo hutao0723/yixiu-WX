@@ -23,6 +23,8 @@
         </div>
       </div>
       
+     <!--  <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0" ></div> -->
+
       <div class="already-alert" v-show="alertToggle">
         <div class="alert-top">
           <h3>{{bookName}}</h3>
@@ -63,7 +65,9 @@ export default {
       dayNumList: [],
 
       pageNum: 1,
-      pageSize: 12
+      pageSize: 12,
+
+      busy: true
     }
   },
   computed: {
@@ -94,11 +98,16 @@ export default {
         console.log("获取数据失败")
       }
     },
+    // loadMore () {
+    //   this.busy = true;
+    //   this.pageNum ++;
+    //   this.success();
+    // },
     // 获取书籍列表
     async success (readId){
       let objs = await user.getBookList(readId,this.pageNum);
       if (objs.success) {
-        this.bookList = objs.data
+        this.bookList = objs.data.content
       } else {
         console.log("获取数据失败")
       }  
