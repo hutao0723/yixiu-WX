@@ -48,7 +48,7 @@
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         box-sizing: border-box;
-        padding: 80/@rem 60/@rem 86/@rem 60/@rem;
+        padding: 136/@rem 0 0/@rem 0;
         // z-index: 9;
         background: #f4f4f4;
         img{
