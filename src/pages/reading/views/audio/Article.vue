@@ -1,24 +1,27 @@
 <template>
-  <div class="article-main">
-    文稿
+  <div class="article-main" v-html="article">
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import play from '../../api/play'
 export default {
   data () {
     return {
+      article: ''
     };
   },
   computed: {
     ...mapState({})
   },
-  created() {
-    },
   mounted () {
+    this.getCourseSketch()
   },
   methods: {
+    async getCourseSketch () {
+      this.article = (await play.getCourseSketch(this.$route.params.courseId)).sketch;
+    }
   }
 };
 </script>
@@ -38,6 +41,9 @@ export default {
   padding-top: 20/@rem;
   background: #fff;
   font-size: 24/@rem;
+  img {
+      width: 100% !important;
+    }
 }
 </style>
 

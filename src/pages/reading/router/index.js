@@ -115,7 +115,7 @@ export default new Router({
       }
     },
     {
-      path: '/audio/article',
+      path: '/audio/article/:courseId',
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../views/audio/Article'));
