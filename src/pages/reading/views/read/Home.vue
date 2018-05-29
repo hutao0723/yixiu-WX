@@ -1,8 +1,8 @@
 <template>
   <div class="home-main" ref="homeMain">
-    <div @click="play">播放</div>
+    <!-- <div @click="play">播放</div> -->
     <!-- 未买课 -->
-    <div class="home-box">
+    <div class="home-box" v-if="pageStatus < 2">
       <div class="home-tab clearfix">
         <div class="item" @click="tabActive=true">
           <span :class="{ active: tabActive}">简介</span>
@@ -26,29 +26,29 @@
               <div class="book-author otw">{{item.courseAuthor}} 著</div>
             </div>
             <div class="item-bottom">
-              <span @click="getCommentPraise(item.id,item.userPraise)">
+              <span @click="getCommentPraise(item.id,item.userPraise)" v-if="pageStatus != 0">
                 <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
-                <span class="fr">16</span>
+                <span class="fr">{{item.praiseCount}}</span>
               </span>
-              <i class="iconfont icon-share fr"></i>
-              <span>{{item.releaseTime | timeTransition}}</span>
+              <router-link :to="{ path: '/poster/' + item.id}" tag="a" class="iconfont icon-share fr"></router-link>
+              <span>{{item.releaseTime| timeTransition}}</span>
             </div>
 
           </div>
         </div>
-        <div class="home-bottom">去选课程</div>
+        <div class="home-bottom" @click="tabActive = false">去选课程</div>
       </div>
 
       <div v-show="!tabActive">
         <div class="home-course">
-          <div class="item" v-for="(item,index) in courseList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
+          <div class="item" v-for="(item,index) in readList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
             @click="selectCourse(item)">
             <div class="item-box">
               <div class="item-top">
                 <div class="item-name">{{item.title}}</div>
                 <div class="item-msg">第{{item.stageNum}}期 | {{item.beginDate}}({{item.beginDateWeek}})开课</div>
                 <div class="item-num">报名{{item.orderCount}}人</div>
-                <div class="item-btn">{{selectCourseId == 0?'选择':'已选'}}</div>
+                <div class="item-btn">{{selectCourseId == item.readId?'已选':'选择'}}</div>
               </div>
               <div class="item-bottom">
                 <p v-html="item.briefer"></p>
@@ -59,77 +59,82 @@
             <p>
               <span class="text-del">{{selectCourseObj.costPrice}}</span>
               <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>元</p>
-            <a href="javascriot:void(0)">立即购买</a>
+            <a href="javascriot:void(0)" @click="orderPay">立即购买</a>
           </div>
         </div>
       </div>
 
     </div>
-    <div class="home-wechat" v-if="pageStatus == 5">
+    <div class="home-wechat" v-if="pageStatus == 2">
       <p class="text-a">
         <i></i>您已成功报名</p>
       <p class="text-b">长按识别二维码</p>
       <p class="text-c">关注公众号，去等待开课</p>
-      <img src="" alt="">
+      <img src="http://yun.dui88.com/youfen/images/read_ewm.png" alt="">
     </div>
 
     <!-- 未开课 -->
     <div class="home-nonevent" v-if="pageStatus == 3">
       <div class="nonevent-box">
         <p class="text-a">您已成功报名</p>
-        <p class="text-b">「 {{courseObj.name}} 」</p>
-        <p class="text-c">{{courseDetail.beginDate}}(开学，倒计时{{courseObj.date}}天</p>
+        <p class="text-b">「 {{courseDetail.title}} 」</p>
+        <p class="text-c">{{courseDetail.beginDate}}({{courseDetail.beginDateWeek}})开学，倒计时{{courseDetail.userReadState.days}}天</p>
       </div>
       <p class="text-d">长按识别二维码添加老师微信</p>
       <p class="text-e">因添加学员较多，老师会在3个工作日内通过，请耐心等待~</p>
-      <img src="" alt="">
+      <img :src="courseDetail.userImgUrl" alt="">
       <p class="text-f">美少女</p>
       <p class="text-g">微信添加老师后，你的专属老师会在课程</br>开始前邀请你进入对应班级群</p>
       <p class="text-h">关注微信公众号【一修读书】，点击</br>菜单栏“我的老师”添加</p>
     </div>
 
-    <div class="home-already" v-if="pageStatus == 0">
+    <div class="home-already" v-if="pageStatus == 4">
       <h2>今日学习
-        <span> | 第{{alreadyObj.nowDay}}/{{alreadyObj.totalDay}}天</span>
+        <span> | 第{{todayBookDetail.days}}/{{todayBookDetail.totalDays}}天</span>
       </h2>
       <div class="already-book">
-        <img src="" alt="" class="book-img">
-        <div class="book-name">{{alreadyObj.name}}</div>
-        <div class="book-msg">{{alreadyObj.msg}}</div>
-        <div class="book-btn">播放
-          <i></i>
+        <img :src="todayBookDetail.courseUrl" alt="" class="book-img">
+        <div class="book-name">《{{todayBookDetail.courseTitle}}》</div>
+        <div class="book-msg">{{todayBookDetail.courseSubTitle}}</div>
+        <div class="book-btn" @click="playAudio(todayBookDetail.courseId)">播放
+          <i class="iconfont icon-bofang"></i>
         </div>
       </div>
       <h2>我的书架
-        <span> | 缺卡{{alreadyObj.lockDay}}天</span>
+        <span> | 缺卡{{todayBookDetail.lackClockDays}}天</span>
       </h2>
       <div class="already-list clearfix">
-        <div class="item" v-for="(item,index) in alreadyObj.list" :key="index" @click="alertToggle = true;">
-          <div class="item-lock">
-            <img src="" alt="" class="item-img">
+        <div class="item" v-for="(item,index) in historyBookList" :key="index" @click="getCourseList(item.id,item.title)">
+          <div class="item-box">
+            <img :src="item.imgUrl" alt="" class="item-img">
+            <div class="item-lock" v-if="item.lockStatus">
+              <i class="iconfont icon-lock"></i>
+            </div>
           </div>
-          <div class="item-name">{{item.name}}</div>
+          <div class="item-name">{{item.title}}</div>
         </div>
       </div>
       <div class="already-alert" v-show="alertToggle">
         <div class="alert-top">
           <h3>{{bookName}}</h3>
           <div class="clearfix">
-            <div class="item" v-for="(item,index) in 6" :key="index" :class="{none: index >4}">{{item}}</div>
+            <div class="item" v-for="(item,index) in courseList" :key="index" :class="{none: item.lockStatus}" @click="playAudio(item.courseId)">{{index+1}}</div>
           </div>
         </div>
         <div class="alert-btn" @click="alertToggle = false;">取消</div>
         <div class="alert-bg" @click="alertToggle = false;"></div>
       </div>
     </div>
-    
+
     <AudioBar/>
   </div>
 </template>
 
 <script>
   import AudioBar from '../../components/basic/Audio_Bar';
-  import play from '../../api/play'
+  import play from '../../api/play';
+  import order from '../../api/order';
+
   import {
     mapState
   } from 'vuex';
@@ -140,61 +145,9 @@
     data() {
       return {
         reviewList: [],
-        courseList: [{
-          name: '情商高手+好口才训练营',
-          num: '3',
-          date: '5-18',
-          peoNum: '233',
-          text1: '名人教你说话之道',
-          text2: '怎么优雅、友好地拒绝别人',
-          text3: '做生活中的高情商者、职场中的优雅人士',
-        }, {
-          name: '情商高手+好口才训练营',
-          num: '3',
-          date: '5-18',
-          peoNum: '233',
-          text1: '名人教你说话之道',
-          text2: '怎么优雅、友好地拒绝别人',
-          text3: '做生活中的高情商者、职场中的优雅人士',
-        }, {
-          name: '情商高手+好口才训练营',
-          num: '3',
-          date: '5-18',
-          peoNum: '233',
-          text1: '名人教你说话之道',
-          text2: '怎么优雅、友好地拒绝别人',
-          text3: '做生活中的高情商者、职场中的优雅人士',
-        }],
+        readList: [],
         tabActive: true,
-        courseObj: {
-          status: 0,
-          name: '30天魔鬼训练营',
-          date: '5-23',
-        },
-        alreadyObj: {
-          nowDay: 5,
-          totalDay: 30,
-          lockDay: 3,
-          name: '遇见未知的自己',
-          msg: '做生活中的高情商者、职场中的商者、职场中的优雅人士做生活中的高情商者、职场中的优雅人士',
-          list: [{
-            img: '',
-            name: '拍摄照片1',
-          }, {
-            img: '',
-            name: '拍摄照片2',
-          }, {
-            img: '',
-            name: '拍摄照片3拍摄照片3',
-          }, {
-            img: '',
-            name: '拍摄照片4',
-          }, {
-            img: '',
-            name: '拍摄照片5',
-          }],
-        },
-        bookName: '今天的网红经济',
+        bookName: '',
         alertToggle: false,
 
         pageStatus: 0, // 页面状态
@@ -204,6 +157,9 @@
         teacherWxName: '', // 老师名称
         teacherWxQrcodeUrl: '', // 老师微信二维码
         courseDetail: {}, // 课程详情
+        todayBookDetail: {}, // 今日书
+        historyBookList: [], // 历史书
+        courseList: [], // 书对应列表
       };
     },
     computed: {
@@ -212,26 +168,78 @@
     filters: {
       // 时长
       timeTransition: function (value) {
+        let nowDate = new Date()
+        let nowDateNum = nowDate.getTime()
+        let valueDate = new Date(value)
+        let valueDateNum = valueDate.getTime()
+        let key = nowDateNum - valueDateNum
 
-        return value
+        let today = new Date();
+        today.setHours(0);
+        today.setMinutes(0);
+        today.setSeconds(0);
+        today.setMilliseconds(0);
+
+        let yesterday = new Date(today);
+        let yesterdayNum = yesterday.getTime()
+        let yes = valueDateNum - yesterdayNum;
+
+        let Y, M, D, h, m, s;
+        Y = valueDate.getFullYear() + '-';
+        M = (valueDate.getMonth() + 1 < 10 ? '0' + (valueDate.getMonth() + 1) : valueDate.getMonth() + 1) + '-';
+        D = (valueDate.getDate()<10?'0' + valueDate.getDate():valueDate.getDate()) + ' ';
+        h = (valueDate.getHours()<10?'0' + valueDate.getHours():valueDate.getHours()) + ':';
+        m = (valueDate.getMinutes()<10?'0' + valueDate.getMinutes():valueDate.getMinutes());
+        let text = '';
+        
+        if( key > 0 && key < 60 * 1000){
+            text = '刚刚'
+        }
+
+        if( key >= 60 * 1000 && key < 60 * 60 * 1000){
+            text = Math.floor(key / (60 * 1000)) + '分钟前'
+        }
+
+        if( key >= 60 * 60 * 1000 && key < 2 * 60 * 60 * 1000){
+            text = '1小时前'
+        }
+
+        if( key >= 2 * 60 * 60 * 1000 && key < yes){
+            text = h + m
+        }
+
+        if(key >= yes){
+            text = M + D
+        }
+        return text
       },
     },
     created() {},
     async mounted() {
-
+      this.wxShare();
       let userState = await this.getThumbUp();
       console.log(userState)
       // 状态判断逻辑
       if (userState.data) {
         if (
+          userState.data.readState == -1
+        ) {
+          console.log('用户未购买未授权')
+          this.getCommentTop();
+          this.getReadList();
+          this.pageStatus = 0;
+        }
+        if (
           userState.data.readState == 0
         ) {
-          console.log('用户未购买')
+          console.log('用户未购买已授权')
+          this.getCommentTop();
+          this.getReadList();
           this.pageStatus = 1;
         }
 
         if (
-          userState.data.readState != 0 && !userState.data.followOfficialAccount
+          userState.data.readState > 0 && !userState.data.followOfficialAccount
         ) {
           console.log('用户购买未关注')
           this.pageStatus = 2;
@@ -242,6 +250,10 @@
           userState.data.readState == 1 && userState.data.followOfficialAccount
         ) {
           console.log('用户购买已关注未开课')
+          this.teacherWxName = userState.data.teacherWxName;
+          this.teacherWxQrcodeUrl = userState.data.teacherWxQrcodeUrl;
+
+          this.courseDetail = await this.readDetail();
           this.pageStatus = 3;
         }
 
@@ -249,6 +261,8 @@
           userState.data.readState == 2 && userState.data.followOfficialAccount
         ) {
           console.log('用户购买已关注已开课')
+          this.getDetail();
+          this.getBookList();
           this.pageStatus = 4;
         }
 
@@ -256,22 +270,28 @@
 
 
       // 1
-      this.getCommentTop();
-      this.getReadList();
+
       // 2
 
       // 3
-      this.teacherWxName = userState.data.teacherWxName;
-      this.teacherWxQrcodeUrl = userState.data.teacherWxQrcodeUrl;
 
-      this.courseDetail = await this.readDetail();
-      console.log(this.courseDetail)
+
+      // 4
+
+
 
 
 
 
     },
     methods: {
+      orderPay() {
+        order.buy(this.selectCourseId, 4)
+      },
+      playAudio(id) {
+        play.audioInit(28, id, true)
+        // 跳转到播放页
+      },
       selectCourse(item) {
         if (this.selectCourseId != item.readId && !item.purchased) {
           this.selectCourseId = item.readId;
@@ -335,7 +355,7 @@
         this.$http.get(url, {
           params
         }).then((res) => {
-          this.courseList = res.data.data;
+          this.readList = res.data.data;
           if (res.data.data.length > 0) {
             this.selectCourseId = res.data.data[0].readId
             this.selectCourseObj = res.data.data[0];
@@ -343,6 +363,58 @@
           }
         });
       },
+
+      getDetail() {
+        let self = this;
+        let params = {};
+        let newDate = new Date();
+        let n = newDate.getFullYear();
+        let m = newDate.getMonth() + 1;
+        if (m < 10) {
+          m = '0' + m
+        }
+        let d = newDate.getDate();
+        let date = n + '-' + m + '-' + d;
+        params = {
+          readId: 28,
+          date: date,
+        }
+        const url = `/api/readBookCourse/courseDetailByDate`;
+        this.$http.get(url, {
+          params
+        }).then((res) => {
+          this.todayBookDetail = res.data.data;
+        });
+      },
+      getBookList() {
+        let self = this;
+        let params = {};
+        params = {
+          readId: 28,
+        }
+        const url = `/api/readBook/bookList`;
+        this.$http.get(url, {
+          params
+        }).then((res) => {
+          this.historyBookList = res.data.data.content;
+        });
+      },
+      getCourseList(id, name) {
+        let self = this;
+        let params = {};
+        params = {
+          readId: 28,
+          bookId: id,
+        }
+        const url = `/api/readBookCourse/courseList`;
+        this.$http.get(url, {
+          params
+        }).then((res) => {
+          this.courseList = res.data.data;
+          this.bookName = name;
+          this.alertToggle = true;
+        });
+      }
 
 
 
@@ -352,7 +424,8 @@
 </script>
 
 <style lang="less">
-  @import '../../less/variable';
+  /* @import '../../less/letiable'; */
+
   @import '../../less/util';
 
   .home-main {
@@ -486,8 +559,8 @@
       }
 
     }
-    .home-bottom{
-      .text(40,100);
+    .home-bottom {
+      .text(40, 100);
       position: fixed;
       left: 0;
       bottom: 0;
@@ -792,6 +865,10 @@
           border-radius: 50/@rem;
           text-align: center;
           color: #333;
+          .icon-bofang {
+            font-size: 30/@rem;
+            line-height: 54/@rem;
+          }
         }
       }
       .already-list {
@@ -800,14 +877,17 @@
         .item {
           float: left;
           margin-right: 70/@rem;
-          border-radius: 6/@rem;
           overflow: hidden;
           position: relative;
           width: 170/@rem;
+          .item-box {
+            position: relative;
+            border-radius: 6/@rem;
+            overflow: hidden;
+          }
           .item-img {
             .size(170, 240);
             display: block;
-            background: #000;
           }
           .item-name {
             font-size: 24/@rem;
@@ -817,11 +897,21 @@
             margin-bottom: 36/@rem;
           }
           .item-lock {
-            background: #000;
-            opacity: 0.6;
+            background: rgba(0, 0, 0, 0.7);
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            text-align: center;
+            line-height: 240/@rem;
+          }
+          .icon-lock {
+            font-size: 30/@rem;
+            color: #fff;
           }
         }
-        .item:nth-last-child(3) {
+        .item:nth-child(3n) {
           margin-right: 0;
         }
       }
@@ -848,6 +938,7 @@
           left: 0;
           bottom: 88/@rem;
           z-index: 9999;
+          right: 0;
           h3 {
             .text(34, 40);
             text-align: center;
@@ -869,7 +960,7 @@
             background: #E6E6E6;
             color: #bababa;
           }
-          .item:nth-last-child(3) {
+          .item:nth-child(4n) {
             margin-right: 0;
           }
         }

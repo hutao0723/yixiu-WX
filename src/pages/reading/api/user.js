@@ -7,7 +7,7 @@ export default class user extends base {
    * 获取统计数据我和老师微信账号
    */
   static async getInfo() {
-    const url = `/user/stat/detail`;
+    const url = `/user/read/state`;
     const res = await this.get(url);
     return res.data;
   }
@@ -55,10 +55,12 @@ export default class user extends base {
   /**
    * 根据banner列表获取数据getDiplomaImage
    */
-  static async getBookList(readId) {
+  static async getBookList(readId,pageNum) {
     let params = {}
     params = {
-      readId: readId
+      readId: readId,
+      pageNum: pageNum,
+      pageSize: 12
     }
     const url = `/readBook/bookList`;
     const res = await this.get(url, {
@@ -70,10 +72,11 @@ export default class user extends base {
   /**
    * 获取书籍的天数
    */
-  static async getdayNum(bookId) {
+  static async getdayNum(bookId,readId) {
     let params = {}
     params = {
-      bookId: bookId
+      bookId: bookId,
+      readId: readId
     }
     const url = `/readBookCourse/courseList`;
     const res = await this.get(url, {
@@ -87,12 +90,12 @@ export default class user extends base {
   /**
    * 获取证书图片
    */
-  static async getDiplomaImage(courseId) {
+  static async getDiplomaImage(readId) {
     let params = {}
     params = {
-      courseId: courseId
+      readId: readId
     }
-    const url = `/user/stat/detail`;
+    const url = `/user/read/diplomaImgUrl`;
     const res = await this.get(url, {
       params
     });

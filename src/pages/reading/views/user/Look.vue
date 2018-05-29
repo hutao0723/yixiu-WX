@@ -1,6 +1,6 @@
 <template>
     <div class="diploma-container">
-        <div class=""><img :src="diplomaUrl"></div>
+        <div class="class=""><img :src="diplomaUrl"></div>
         <div class="save">
             <div class="btn">长按保存分享</div>
             <img :src="diplomaUrl" class="btn-img">
@@ -13,7 +13,7 @@
     export default {
         data () {
             return {
-                diplomaUrl: "https://yun.duiba.com.cn/yoofans/images/201805/read/recommend.png"
+                diplomaUrl: ""
             };
         },
         mounted () {
@@ -22,10 +22,11 @@
         methods: {
             // 获取证书图片
             async getImage (){
-                let courseId = this.$route.query.courseId
-                let objs = await user.getDiplomaImage(courseId);
+                let readId = this.$route.params.readId
+                let objs = await user.getDiplomaImage(readId);
+                console.log(objs)
                 if (objs.success) {
-                  this.diplomaUrl = objs.data.userHeadImgUrl;
+                  this.diplomaUrl = objs.data;
                 } else {
                   console.log("获取用户信息失败")
                 }
@@ -47,9 +48,12 @@
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         box-sizing: border-box;
-        padding: 80px 60/@rem 86/@rem 60/@rem;
+        padding: 136/@rem 0 0/@rem 0;
         // z-index: 9;
         background: #f4f4f4;
+        img{
+            width: 100%;
+        }
         .save{
             width:750/@rem;
             height:86/@rem;

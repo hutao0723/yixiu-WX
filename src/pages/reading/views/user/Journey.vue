@@ -4,8 +4,9 @@
       <div class="module" v-for="(item, $index) in journeyList">
         <div class="date">{{item.releaseTime}}</div>
         <div class="text-box">
-          <div class="text-journal" v-if="item.diplomaImgUrl"><span>{{item.readName}}{{item.readStageNum}}期毕业</span>
-            <router-link :to="{ path: '/look',query:{courseId:item.courseId} }"><span class="look">查看证书></span></router-link>
+          <div class="text-journal" v-if="item.diploma"><span>{{item.readName}}{{item.readStageNum}}期毕业</span>
+
+            <router-link :to="{ path: '/look/' + item.readId}"><span class="look">查看证书></span></router-link>
           </div>
           <div class="text-container clearfix">
             <div class="container">
@@ -77,7 +78,7 @@ export default {
         }
         this.journeyList.forEach((item,index)=>{
           // 获取时间
-          this.journeyList[index].releaseTime = item.releaseTime.substring(0,10)
+          this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(5,7) + "." + item.releaseTime.substring(8,10)
         })
       }else{
         console.log("获取数据失败")
