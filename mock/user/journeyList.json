@@ -1,7 +1,6 @@
 {
   "code": "string",
-  "data": {
-    "content": [
+  "data":  [
       {
         "content": "我们曾经都是文艺青年，而原来文艺青年们，现在都已经不玩儿憔悴了。所以她有圆圆脸，我有小肚腩。以为拼尽全力，就能杀进红尘，但从前我们不知道，红是世界的，尘是自己的，没有阳光的季节。",
         "courseAuthor": "卡勒德·胡赛尼",
@@ -92,8 +91,7 @@
     "size": 0,
     "sort": {},
     "totalElements": 0,
-    "totalPages": 0
-  },
+    "totalPages": 0,
   "desc": "string",
   "success": true
 }

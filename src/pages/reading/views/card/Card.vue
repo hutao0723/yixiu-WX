@@ -2,9 +2,9 @@
   <div class="card-main">
     <cardNotice class="hideNoticeStyle" :class="{showNoticeStyle:noticeFlag}" :noticeFlag="noticeFlag" @changFlag="changeFlag"></cardNotice>
     <header>
-      <div>100天魔鬼训练营第{{readDetail.stageNum}}期</div>
+      <div>{{readDetail.title}}第{{readDetail.stageNum}}期</div>
       <h2>第{{dayNum}}天</h2>
-      <img src="" alt="">
+      <img :src="readInfo.userHeadImgUrl" alt="">
     </header>
     <div class="card-head">
       <span class="head-left" @click="noticeFlag = true ">坚持打卡送大礼 ></span>
@@ -54,74 +54,82 @@
     },
     data () {
       return {
-        readId:28, //阅读Id
+        readId:'', //阅读Id
         courseId:'', //课程Id
+        readInfo:'',//阅读状态
         readDetail:'',
         dayNum:'4',
-        courseDetail:{
-          courseId:1,  //课程ID
-          courseTitle:'偷影子的人', //课程标题 ,
-          author:'萨瓦迪卡',   //作者 ,
-          clockState:0,// 打卡状态: 0=未打卡,1=已打卡 ,
-          commentState:0,//评论状态:0=未评论,1=已评论 ,
-          courseUrl:'https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=502422c7a6efce1bea2bcfcc976a94e3/b21c8701a18b87d6e7b4ca2e060828381f30fd09.jpg' ,// 课程图片
-          playbackProgress:'',//课程播放进度 ,
-        },//课程详情
+        courseDetail:'',//课程详情
         noticeFlag:false,
         // 自定义星期名称
         weeks: ['日', '一', '二', '三', '四', '五', '六'],
-        c_date: [
-          {"date":"2018-05-25","courseId":0,"clockState":true,"commentState":false,"dayNum":1},
-          {"date":"2018-05-26","courseId":1,"clockState":false,"commentState":false,"dayNum":2},
-          {"date":"2018-05-27","courseId":2,"clockState":true,"commentState":false,"dayNum":3},
-          {"date":"2018-05-28","courseId":3,"clockState":true,"commentState":false,"dayNum":4},
-          {"date":"2018-05-29","courseId":4,"clockState":false,"commentState":false,"dayNum":5},
-          {"date":"2018-05-30","courseId":5,"clockState":true,"commentState":false,"dayNum":6},
-          {"date":"2018-05-31","courseId":6,"clockState":true,"commentState":false,"dayNum":7},
-          {"date":"2018-06-01","courseId":7,"clockState":true,"commentState":false,"dayNum":8},
-          {"date":"2018-06-02","courseId":8,"clockState":true,"commentState":false,"dayNum":9},
-          {"date":"2018-06-03","courseId":9,"clockState":true,"commentState":false,"dayNum":10}
-        ]
+        c_date:[],
       };
     },
     computed: {
       ...mapState({})
     },
     created() {
-
+      this.getReadDetail();
     },
     mounted () {
-      //this.readId = this.$router.params.readid
-      this.getReadDetail();
-      this.getClockCalendar()
+      this.getReadStatus()
     },
+   watch:{
+     readId(){
+       this.getClockCalendar()
+     }
+   },
     methods: {
       changeFlag(msg){
         this.noticeFlag = msg;
+      },
+      //获取阅读状态
+      getReadStatus(){
+        this.$http.get('/api/user/read/state').then(res =>{
+          let resp = res.data;
+          console.log(resp)
+          if(resp.success){
+            this.readInfo = resp.data;
+            this.readId = resp.data.readId;
+          }
+        })
       },
       //获取最新课程详情
       getReadDetail(){
         this.$http.get('/api/user/read/detail').then(res=>{
           let resp = res.data;
-          this.readDetail = res.data;
+          if(resp.success){
+            this.readDetail = resp.data;
+            console.log(this.readDetail)
+          }
+
         })
       },
       getDate(msg){
         let _this = this
-        if(msg.dayNum){
-          _this.dayNum = msg.dayNum;
-        }
+
+
         if(msg.isRange){
+          console.log('执行子组件时间')
+          if(msg.dayNum){
+            _this.dayNum = msg.dayNum;
+          }
           _this.getCourseDetail(msg.date)
+          _this.courseId = msg.courseId;
         }
-        _this.courseId = msg.courseId;
+
       },
       //打卡日历
       getClockCalendar(){
         let _this = this;
         _this.$http.get('/api/user/read/clockCalendar?readId='+this.readId).then(res=>{
           let resp = res.data;
-         // _this.c_date = res.data;
+          if(resp.success){
+            _this.c_date = resp.data;
+            console.log(_this.c_date)
+          }
+
         })
       },
       //获取缺卡天数
@@ -136,14 +144,15 @@
         let _this = this;
         _this.$http.get('/api/readBookCourse/courseDetailByDate?readId='+_this.readId+'&date='+date).then(res=>{
           let resp = res.data;
-          //_this.courseDetail = res.data;
+          if(resp.success){
+            _this.courseDetail = resp.data;
+           // _this.courseDetail.clockDate =  date;
+          }
         })
       },
       goComment(data){
         let detail = JSON.stringify(data);
-        //发表想法
-        this.$router.push({name:'comment',params:{data:detail}})
-        //this.$router.push('/comment?data='+ detail)
+        this.$router.push('/comment?data='+ detail)
       }
     }
   };
@@ -195,7 +204,6 @@
         width:88/@rem;
         height:88/@rem;
         border-radius: 50%;
-        background: pink;
         top:50%;
         margin-top:-44/@rem;
         right:54/@rem;
@@ -262,7 +270,6 @@
       }
       .book-detail{
         padding-top: 10/@rem;
-        float: left;
         .book-title{
           font-size: 30/@rem;
           line-height: 42/@rem;

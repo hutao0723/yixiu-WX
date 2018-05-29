@@ -33,6 +33,7 @@ export default new Router({
       },
       {
         path: '/index/card',
+        //path: '/index/card/:readId',
         component: function (resolve) {
           require.ensure([], function () {
             resolve(require('../views/card/Card'));

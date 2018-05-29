@@ -1,20 +1,14 @@
 
 {
   "code": "string",
-  "data": [
+  "data": {
+    "content":[
     {
-      "id": 1,
+      "id": 11,
       "imgUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
       "lockStatus": false,
-      "readId": 1,
+      "readId": 11,
       "title": "今天的网红"
-    },
-    {
-      "id": 2,
-      "imgUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
-      "lockStatus": false,
-      "readId": 2,
-      "title": "今天的网红书籍课程名称"
     },
     {
       "id": 3,
@@ -22,8 +16,18 @@
       "lockStatus": false,
       "readId": 3,
       "title": "今天的网红"
+    },
+    
+    {
+      "id": 3,
+      "imgUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
+      "lockStatus": false,
+      "readId": 3,
+      "title": "今天的网红"
     }
-  ],
+    
+  ]
+  },
   "desc": "string",
   "success": true
 }

@@ -53,21 +53,21 @@ export default class user extends base {
   }
 
   /**
-   * 根据banner列表获取数据getDiplomaImage
+   * 根据banner列表获取数据
    */
-  static async getBookList(readId,pageNum) {
-    let params = {}
-    params = {
-      readId: readId,
-      pageNum: pageNum,
-      pageSize: 12
-    }
-    const url = `/readBook/bookList`;
-    const res = await this.get(url, {
-      params
-    });
-    return res.data;
-  }
+  // static async getBookList(readId,pageNum) {
+  //   let params = {}
+  //   params = {
+  //     readId: readId,
+  //     pageNum: pageNum,
+  //     pageSize: 12
+  //   }
+  //   const url = `/readBook/bookList`;
+  //   const res = await this.get(url, {
+  //     params
+  //   });
+  //   return res.data;
+  // }
 
   /**
    * 获取书籍的天数

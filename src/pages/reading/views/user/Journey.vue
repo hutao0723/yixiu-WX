@@ -40,14 +40,26 @@
         </div>
       </div>
     </div>
+    <div v-else>
+      <div class="no-shelf">
+        <div class="shelf-container">
+          <img src="https://yun.dui88.com/yoofans/images/201805/read/past.png">
+        </div>
+        <div class="shelf-word">啊哦，暂无历程哟~</div>
+      </div>
+    </div>
+    <AudioBar/>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import user from '../../api/user';
+import AudioBar from '../../components/basic/Audio_Bar';
+
 export default {
   components: {
+    AudioBar
   },
   data () {
     return {
@@ -255,11 +267,12 @@ export default {
           color: #949494;
         }
         .operate-share{
-          margin-right: 30/@rem;
+          margin-right: 2/@rem;
         }
         .operate-num{
           .fontSize(26);
-          width: 30/@rem;
+          width: 45/@rem;
+          text-align: right;
           margin-right: 13/@rem;
         }
         .iconfont{
@@ -280,7 +293,21 @@ export default {
       }
     }
   }
-
+  .no-shelf{
+    .shelf-container{
+      img{
+        width: 310/@rem;
+        height: 310/@rem;
+        display: block;
+        margin: 100/@rem auto 50/@rem;
+      }
+    }
+    .shelf-word{
+      text-align: center;
+      .fontSize(32);
+      color: #888;
+    }
+}
 
 
 
