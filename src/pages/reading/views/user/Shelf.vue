@@ -19,7 +19,7 @@
       <div v-else>
         <div class="no-book">
           <div class="book-container">
-            <img src="https://yun.dui88.com/yoofans/images/201804/miniapp/help-center.png">
+            <img src="https://yun.dui88.com/yoofans/images/201805/read/past.png">
           </div>
           <div class="book-word">正式毕业后，可在往期书架中继续看书~</div>
         </div>
@@ -210,12 +210,13 @@ export default {
       width: 310/@rem;
       height: 310/@rem;
       display: block;
-      margin: 100/@rem auto 60/@rem;
+      margin: 100/@rem auto 50/@rem;
     }
   }
   .book-word{
     text-align: center;
-    .fontSize(30)
+    .fontSize(32);
+    color: #888;
   }
 }
 .already-alert {
