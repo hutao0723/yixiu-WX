@@ -1,16 +1,18 @@
 <template>
-  <div>
+  <div class="main">
     <div class="shelf-main" >
       <div v-if="!noData">
         <div v-for="(item, index) in swipeList">
-          <SwiperBar :param.sync="item" @newSwiperIndex="success"/>
+          <SwiperBar :param.sync="item" @newSwiperIndex="getBookList"/>
         </div>
-        <div class="book-table" v-for="(item, index) in bookList" >
-          <div @click="getdayNumInfo(item.id,item.readId)">
-            <div class="book-cover">
-              <img :src="item.imgUrl">
+        <div class="clearfix">
+          <div class="book-table" v-for="(item, index) in bookList" >
+            <div @click="getdayNumInfo(item.id,item.readId)">
+              <div class="book-cover">
+                <img :src="item.imgUrl">
+              </div>
+              <div class="book-name line2">{{item.title}}</div>
             </div>
-            <div class="book-name line2">{{item.title}}</div>
           </div>
         </div>
       </div>
@@ -22,8 +24,6 @@
           <div class="book-word">正式毕业后，可在往期书架中继续看书~</div>
         </div>
       </div>
-      
-     <!--  <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0" ></div> -->
 
       <div class="already-alert" v-show="alertToggle">
         <div class="alert-top">
@@ -36,6 +36,7 @@
         <div class="alert-bg" @click="alertToggle = false;"></div>
       </div>  
     </div>
+     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0" ></div>
   </div>
 
 </template>
@@ -64,6 +65,7 @@ export default {
       bookList: [],
       dayNumList: [],
 
+      readId: null,
       pageNum: 1,
       pageSize: 12,
 
@@ -98,19 +100,48 @@ export default {
         console.log("获取数据失败")
       }
     },
-    // loadMore () {
-    //   this.busy = true;
-    //   this.pageNum ++;
-    //   this.success();
-    // },
+    loadMore () {
+      this.busy = true;
+      this.pageNum ++;
+      this.getBookList(this.readId)
+    },
     // 获取书籍列表
-    async success (readId){
-      let objs = await user.getBookList(readId,this.pageNum);
-      if (objs.success) {
-        this.bookList = objs.data.content
-      } else {
-        console.log("获取数据失败")
-      }  
+    getBookList (readId){
+      if(this.readId != readId){
+        this.pageNum = 1
+        this.bookList = []
+      }
+      this.readId = readId
+      const url = `/readBook/bookList`;
+      let params = {}
+        params = {
+          readId: this.readId,
+          pageNum: this.pageNum,
+          pageSize: 12
+        }
+        this.$http.get(url, {
+          params
+        }).then((res) => {
+          console.log(res.data.success)
+          let objs = res.data
+          let obj = objs.data
+          if (objs.success) {
+            if (obj.content && obj.content.length > 0) {
+              this.busy = false;
+              if (!this.bookList) {
+                this.bookList = obj.content;
+              } else {
+                this.bookList = this.bookList.concat(obj.content);
+              };
+            } else {
+              this.busy = true
+            };
+          } else {
+            this.busy = true
+            console.log("获取数据失败")
+          } 
+
+        });
     },
     // 获取弹框列表
     async getdayNumInfo (bookId,readId) {
@@ -132,6 +163,20 @@ export default {
 @import '../../less/base';
 @import '../../less/icon';
 @import '../../less/util';
+.main{
+  width: 750/@rem;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  // z-index: 9;
+  background: #fff;
+}
+
 .shelf-main{
   padding-top: 30/@rem;
 }
@@ -149,7 +194,7 @@ export default {
     }
   }
   
-  &:nth-child(3n-1){
+  &:nth-child(3n-2){
     margin-left: 50/@rem;
   }
   .book-name{

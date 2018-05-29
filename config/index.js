@@ -39,7 +39,7 @@ module.exports = {
           }
         },
 
-        // '/read': {
+      // '/read': {
       //   // 测试环境
       //   target: 'http://172.31.50.240:9106',  // 接口域名
       //   changeOrigin: true,  //是否跨域
