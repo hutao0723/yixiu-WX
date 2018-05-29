@@ -132,7 +132,7 @@
       </div>
     </div>
 
-    <AudioBar/>
+    <!-- <AudioBar/> -->
   </div>
 </template>
 
@@ -296,7 +296,7 @@
           this.pageStatus = 3;
           store.commit({
             type: 'setBottomNavToggle',
-            bottomNavToggle: true
+            bottomNavToggle: false
           })
           store.commit({
             type: 'setBottomNavType',
@@ -313,11 +313,11 @@
           this.pageStatus = 4;
           store.commit({
             type: 'setBottomNavToggle',
-            bottomNavToggle: true
+            bottomNavToggle: false
           })
           store.commit({
             type: 'setBottomNavType',
-            bottomNavType: true
+            bottomNavType: false
           })
         }
 
@@ -330,7 +330,7 @@
           this.pageStatus = 1;
           store.commit({
             type: 'setBottomNavToggle',
-            bottomNavToggle: true
+            bottomNavToggle: false
           })
           store.commit({
             type: 'setBottomNavType',
