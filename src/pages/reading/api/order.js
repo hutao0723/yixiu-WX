@@ -32,7 +32,7 @@ export default class order extends base {
     itemType
   }) {
     console.log('下单')
-    const url = `/api/order/submit`;
+    const url = `/order/submit`;
     const res = await this.post(url, {
       itemId,
       itemType
@@ -48,7 +48,7 @@ export default class order extends base {
   }) {
     console.log('预支付')
     const payType = 'WECHATREADH5APAY';
-    const url = `/api/pay/submit`;
+    const url = `/pay/submit`;
     const res = await this.post(url, {
       orderId,
       payType

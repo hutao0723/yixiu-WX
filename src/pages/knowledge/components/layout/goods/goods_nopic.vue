@@ -4,14 +4,16 @@
       <!--左边栏-->
       <div class="left-bar row-between on-play">
         <div class="icon-fecth column-center" :class="(audio.columnId === goods.columnId || audio.courseId === goods.courseId) ? 'icon-play' : 'icon-paused'">
-          <img class="" src="https://yun.dui88.com/youfen/images/audio.svg" v-if="audio.columnId === goods.columnId || audio.courseId === goods.courseId" />
+          <!-- <img class="" src="https://yun.dui88.com/youfen/images/audio.svg" v-if="(audio.columnId === goods.columnId || audio.courseId === goods.courseId) && playing" /> -->
+          <i class="iconfont icon-wave" v-if="(audio.columnId === goods.columnId || audio.courseId === goods.courseId)"></i>
           <i class="iconfont icon-bofang" v-else></i>
         </div>
         <span class="nm line1 title" :class="(audio.columnId === goods.columnId || audio.courseId === goods.courseId) ? 'soft' : 'strong'">{{goods.title}}</span>
       </div>
       <!--右边栏-->
       <div class="right-bar">
-        <span class="xs week line1 c999">{{goods.duration}}</span>
+        <span class="xs week line1 c999" v-if="goods.courseId">{{goods.duration}}</span>
+        <span class="xs week line1 c999" v-if="goods.columnId">共{{goods.courseNum}}节</span>
       </div>
     </div>
   </div>
@@ -27,11 +29,9 @@
       param: {},
     },
     computed: {
-      ...mapState(['audio'])
+      ...mapState(['audio', 'playing'])
     },
     mounted(){
-      console.log(222,this.goods)
-      console.log(333,this.param)
     },
     methods: {
       getMonitor(obj) {

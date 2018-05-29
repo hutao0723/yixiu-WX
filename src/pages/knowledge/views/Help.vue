@@ -36,20 +36,17 @@
     },
     watch: {},
     created() {
-      this.wxShare()
     },
     mounted() {
-      // window.monitor && window.monitor.showLog(this);
-      // const arr = ['previewImage', 'onMenuShareAppMessage', 'onMenuShareTimeline']
-      // const res = await order.getApiRules(arr);
+      this.setTitle('帮助中心')
     },
     methods: {
       // 预览
       onImage() {
-        order.wxPreview('https://yun.duiba.com.cn/yoofans/images/201804/miniapp/ask-que.png');
+        order.wxPreview('https://yun.dui88.com/youfen/images/ask-que3.png');
       },
       onFlock() {
-        order.wxPreview('https://yun.duiba.com.cn/yoofans/images/201804/miniapp/ask-que2.png');
+        order.wxPreview('https://yun.dui88.com/youfen/images/ask-que4.png');
       },
     },
     mixins: [access]

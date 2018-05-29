@@ -3,7 +3,8 @@
     <div v-for="item in list">
       <div class="audio-item row-between" @click="playAudio(item)">
         <div class="row-center" :class="!(audio.courseId === item.id) ? 'icon-paused' : 'icon-play'">
-          <img class="wave-icon" src="../images/audio.svg" v-if="audio.courseId == item.id" />
+          <!-- <img class="wave-icon" src="../images/audio.svg" v-if="audio.courseId == item.id" /> -->
+          <i class="iconfont icon-wave" v-if="audio.courseId == item.id" />
           <i class="iconfont icon-bofang" v-else></i>
         </div>
         <div class="content-bar column-between">
@@ -57,12 +58,13 @@ export default {
       const msg = {
           title: this.audio.title,
           desc: this.audio.subTitle,
-          link: this.audio.courseId ? 'http://k.youfen666dev.com/#/course/' + this.audio.courseId:false ||this.audio.columnId ? 'http://k.youfen666dev.com/#/column/' + this.audio.columnId:false ,
+          link: this.audio.courseId ? 'http://k.youfen666test.com/#/course/' + this.audio.courseId:false ||this.audio.columnId ? 'http://k.youfen666test.com/#/column/' + this.audio.columnId:false ,
           imgUrl: this.audio.lateralCover || this.audio.verticalCover ||
-            'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
+            'https:https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }
         this.wxShare(msg)
     },3000)
+    this.setTitle('播放列表')
   },
   methods: {
     playAudio(item) {

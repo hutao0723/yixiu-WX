@@ -13,17 +13,15 @@
       /**
        * 处理跳转到课程／专栏详情
        */
-      routeToCourse(data, monitorLog) {
+      routeToCourse(data) {
         // clickHandler(monitorLog);
-        const {columnId, courseId} = data;
+        const {columnId, courseId, powerLevel, checkPower} = data;
         if (columnId) {
-          // if (powerLevel || checkPower || !price) {
-          //   // this.$root.$navigate(`/pages/column/column_detail?columnId=${columnId}&isbuy=${true}`);
-          //   this.$router.push(`/column/${columnId}`)
-          // } else {
-            // this.$root.$navigate(`/pages/column/column_detail?columnId=${columnId}&isbuy=${false}`);
+          if (powerLevel || checkPower) {
+            this.$router.push(`/column/${columnId}?isBuy=true`)
+          } else {
             this.$router.push(`/column/${columnId}`)
-          // }
+          }
         } else {         
           this.$router.push(`/course/${courseId}`)
         } 
@@ -33,7 +31,7 @@
        */
        playClick(columnId, courseId, isTry) {
          play.startAudio(columnId,courseId,'init');
-         store.commit('play');
+         // store.commit('play');
          if (isTry) this.$router.push(`/audio/index`);
        },
       /**
@@ -50,12 +48,12 @@
             if (checkPower || !price) {
               // 播放
               play.startAudio(columnId,courseId,'init')
-              store.commit('play');
+              // store.commit('play');
             } else {
               if (watchable) {
                 // 试听
                 play.startAudio(columnId,courseId,'init')
-                store.commit('play');
+                // store.commit('play');
                 this.$router.push(`/audio/index`);
               } else {
                 // 购买
@@ -68,12 +66,12 @@
             if (checkPower || !price) {
               // 播放
               play.startAudio(columnId,courseId,'init')
-              store.commit('play');
+              // store.commit('play');
             } else {
               if (watchable) {
                 // 试听
                 play.startAudio(columnId,courseId,'init')
-                store.commit('play');
+                // store.commit('play');
                 this.$router.push(`/audio/index`);
               } else {
                 // 购买

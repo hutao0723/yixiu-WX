@@ -1,54 +1,56 @@
 <template>
-  <div class="column-main" ref='columnMain'>
-    <div class="page-header" :monitor-log="getMonitor()">
-      <div class="header-img" v-show="detailObj.lateralCover" :style="{backgroundImage: `url(${detailObj.lateralCover})`}"></div>
-      <div class="header-img-small" v-show="!detailObj.lateralCover&&detailObj.verticalCover" :style="{backgroundImage: `url(${detailObj.verticalCover})`}"></div>
-      <div class="header-img" v-show="!detailObj.lateralCover&&!detailObj.verticalCover" :style="{backgroundImage: `url('//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
-      <div class="header-name-bg"></div>
-      <div class="header-name">
-        <span v-if="detailObj.price>0">{{detailObj.buyTimes}}人已购</span>
-        <span v-else>{{detailObj.playTimes}}人已听</span>
-        <span v-if="courseList.length > 0"> | 共{{courseList.length}}节</span>
-      </div>
-    </div>
-    <div class="page-title">
-      <div class="title-main">{{detailObj.title}}</div>
-      <div class="title-sub">{{detailObj.subTitle}}</div>
-    </div>
-    <div class="page-tab" v-show="courseList.length > 0">
-      <div class="clearfix">
-        <div class="tab-left tab" :class="{ active: tabActive}" @click="tabActive = true">专栏详情</div>
-        <div class="tab-right tab" :class="{ active: !tabActive}" @click="tabActive = false">课程目录</div>
-      </div>
-    </div>
-    <div class="page-list" v-show="!tabActive">
-      <div class="list-nav">
-        <div class="nav-title">内容</div>
-        <div class="nav-sort" @click="reverseList">
-          <i class="iconfont icon-sort" v-show="!reverseTs">&#xe685;</i>
-          <i class="iconfont icon-sort" v-show="reverseTs">&#xe684;</i>
-          {{reverseTs?'倒序':'正序'}}</div>
-      </div>
-      <div class="list-content">
-        <div class="item" v-for="(item,index) in courseList" :key="index" @click="playClick(detailObj.id, item.id, false)">
-          <i class="iconfont icon-play active" v-if="audio.courseId == item.id">
-            <img class="" src="../images/audio.svg" />
-          </i>
-          <i class="iconfont icon-play" v-else>&#xe617;</i>
-          <span class="item-title">
-            <span class="item-audition" v-if="item.watchable  == 1 && detailObj.powerLevel == 0">试听</span>
-            <span :class="{active:audio.courseId == item.id}">{{item.title}}</span>
-          </span>
-          <span class="item-time">
-            <i class="iconfont icon-time">&#xe62d;</i>{{item.timeLength | formatTime}}
-          </span>
-          <span class="item-date">{{item.publishTime | formatDate}}</span>
-          <i class="iconfont icon-ispay" v-show="item.powerLevel == 0 && item.price > 0">&#xe60c;</i>
+  <div class="column-main" ref='columnMain' v-cloak>
+    <div class="page-test">
+      <div class="page-header" :monitor-log="getMonitor()">
+        <div class="header-img" v-show="detailObj.lateralCover" :style="{backgroundImage: `url(${detailObj.lateralCover})`}"></div>
+        <div class="header-img-small" v-show="!detailObj.lateralCover&&detailObj.verticalCover" :style="{backgroundImage: `url(${detailObj.verticalCover})`}"></div>
+        <div class="header-img" v-show="!detailObj.lateralCover&&!detailObj.verticalCover" :style="{backgroundImage: `url('https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
+        <div class="header-name-bg"></div>
+        <div class="header-name">
+          <span v-if="detailObj.price>0">{{detailObj.buyTimes}}人已购</span>
+          <span v-else>{{detailObj.playTimes}}人已听</span>
+          <span v-if="courseList.length > 0"> | 共{{courseList.length}}节</span>
         </div>
       </div>
-    </div>
-    <div class="page-content" v-show="tabActive">
-      <div v-html="detailObj.detail"></div>
+      <div class="page-title">
+        <div class="title-main">{{detailObj.title}}</div>
+        <div class="title-sub">{{detailObj.subTitle}}</div>
+      </div>
+      <div class="page-tab" v-show="courseList.length > 0">
+        <div class="clearfix">
+          <div class="tab-left tab" :class="{ active: tabActive}" @click="tabActive = true">专栏详情</div>
+          <div class="tab-right tab" :class="{ active: !tabActive}" @click="tabActive = false">课程目录</div>
+        </div>
+      </div>
+      <div class="page-list" v-show="!tabActive">
+        <div class="list-nav">
+          <div class="nav-title">内容</div>
+          <div class="nav-sort" @click="reverseList">
+            <i class="iconfont icon-sort" v-show="!reverseTs">&#xe685;</i>
+            <i class="iconfont icon-sort" v-show="reverseTs">&#xe684;</i>
+            {{reverseTs?'倒序':'正序'}}</div>
+        </div>
+        <div class="list-content">
+          <div class="item" v-for="(item,index) in courseList" :key="index" @click="playAudio(item)">
+            <i class="iconfont icon-play icon-bgred active icon-wave" v-if="audio.courseId == item.id">
+              <!-- <img class="" src="../images/audio.svg" /> -->
+            </i>
+            <i class="iconfont icon-play" v-else>&#xe617;</i>
+            <span class="item-title">
+              <span class="item-audition" v-if="item.watchable  == 1 && detailObj.powerLevel == 0 && detailObj.price > 0">试听</span>
+              <span :class="{active:audio.courseId == item.id}">{{item.title}}</span>
+            </span>
+            <span class="item-time">
+              <i class="iconfont icon-time">&#xe62d;</i>{{item.timeLength | formatTime}}
+            </span>
+            <span class="item-date">{{item.publishTime | formatDate}}</span>
+            <i class="iconfont icon-ispay" v-show="detailObj.powerLevel == 0  && item.watchable  == 0 ">&#xe60c;</i>
+          </div>
+        </div>
+      </div>
+      <div class="page-content" v-show="tabActive">
+        <div v-html="detailObj.detail"></div>
+      </div>
     </div>
     <div class="page-btn" v-if="btnActive != 2">
       <a href="javascript:void(0)" class="btn-small btn-border btn" v-if="btnActive == 1" @click.stop="playClick(detailObj.id, '', true)">免费试听</a>
@@ -83,16 +85,12 @@
     computed: {
       ...mapState(['audio', 'playing', 'currentTime', 'musicDuration']),
     },
-    async mounted() {
-      await this.getColumnDetail(this.$route.params.columnId)
-      await this.getColumnList(this.$route.params.columnId)
-      let self = this;
-      // setTimeout(() => {
-      //     // 滚动
-      //     self.$refs.columnMain.addEventListener('scroll', self.dispatchScroll, false);
-      //     // 埋点
-      //     window.monitor && window.monitor.showLog(self);
-      //   }, 100);
+    mounted() {
+      this.getColumnDetail(this.$route.params.columnId)
+      this.getColumnList(this.$route.params.columnId)
+      if (this.$route.query.isBuy) {
+        this.tabActive = false
+      }
     },
     filters: {
       // 时长
@@ -120,22 +118,34 @@
       },
     },
     created() {
-
+      console.log(11, this)
     },
     methods: {
       // 获取monitor
-      getMonitor(id,type,area) {
+      getMonitor(id, type, area) {
 
         // item tabindex dpmc
         return JSON.stringify({
-          'dcm': '8001.'+ id + type?type:0 + '0',
+          'dcm': '8001.' + id + type ? type : 0 + '0',
           'dpm': 'appId.801' + area,
         });
+      },
+      playAudio(obj) {
+        // 专栏已购买
+        if (this.detailObj.powerLevel == 1) {
+          this.playClick(this.detailObj.id, obj.id, false)
+        } else if (obj.watchable > 0) {
+          // 未购买并可试听
+          this.playClick(this.detailObj.id, obj.id, true)
+        } else {
+          // 未购买并不可试听
+          this.getPay()
+        }
       },
       // 获取详情
       async getColumnDetail(id) {
         // let self = this;
-        // const url = `/api/column/get`;
+        // const url = `/column/get`;
         // this.$http.get(url, { params: { columnId: id } }).then(res => {
         //   self.detailObj = res.data.data
         // });
@@ -149,20 +159,20 @@
         }
         this.detailObj = obj
 
+        this.setTitle(this.detailObj.title)
         const msg = {
           title: obj.title,
           desc: obj.subTitle,
-          link: window.location.href,
+          link: 'http://k.youfen666test.com/knowledge.html#/home/index?jumpType=column&jumpId=' + obj.id,
           imgUrl: obj.lateralCover || obj.verticalCover ||
-            '//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
+            'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }
         this.wxShare(msg)
-
       },
       // 获取详情
       async getColumnList(id) {
         // let self = this;
-        // const url = `/api/column/getCourses`;
+        // const url = `/column/getCourses`;
         // this.$http.get(url, { params: { columnId: id } }).then(res => {
         //   self.courseList = res.data.data
         //   console.log(res.data.data)
@@ -180,13 +190,13 @@
         this.reverseTs = !this.reverseTs;
       },
       // 触发滚动
-      dispatchScroll () {
+      dispatchScroll() {
         this.mainScrollTop = this.$refs.columnMain.scrollTop;
         // console.log(this.$refs.homeMain.scrollTop)
         window.monitor && window.monitor.showLog(this);
       }
     },
-    beforeDestroy () {
+    beforeDestroy() {
       this.$refs.columnMain.removeEventListener('scroll', this.dispatchScroll, false);
     },
     components: {
@@ -199,25 +209,40 @@
 <style lang="less">
   @import "../assets/style/base/util";
   @rem: 75rem;
+
+
+
+
   .column-main {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: scroll;
     -webkit-overflow-scrolling: touch;
+    position: relative;
+    height: 100%;
   }
 
   .page-content {
     padding-bottom: 120/@rem;
     background: #fff;
+    /* position: relative;  */
     img {
       width: 100% !important;
-      -webkit-overflow-scrolling: touch!important;
+
+
     }
-    div {
-      -webkit-overflow-scrolling: touch!important;
+  }
+
+  .page-test {
+    height: 100%;
+    overflow: scroll;
+  }
+
+  .page-content {
+    padding-bottom: 120/@rem;
+    background: #fff;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    img {
+      width: 100% !important;
     }
   }
 
@@ -225,14 +250,14 @@
     .size(750, 400);
     position: relative;
     .header-img {
+      display: block;
       width: 100%;
       height: 100%;
-      display: block;
+      background-size: 100% auto;
       background-repeat: no-repeat;
-      /* background-size: 100% 100%; */
-      background-attachment: fixed;
+      overflow: hidden;
     }
-    .header-img-small{
+    .header-img-small {
       .pos(272, 50);
       .size(206, 276);
     }
@@ -259,6 +284,7 @@
     padding: 30/@rem 24/@rem;
     .title-main {
       font-size: 34/@rem;
+      font-weight: bold;
       line-height: 48/@rem;
       max-height: 96/@rem;
       color: #333;
@@ -326,6 +352,7 @@
   .list-content {
     padding-bottom: 120/@rem;
     margin: 0 30/@rem;
+
     .item {
       height: 157/@rem;
       position: relative;
@@ -334,11 +361,13 @@
         .pos(14, 52);
         .size(54, 54);
         .text(20, 54);
-        background: #aaa;
         text-align: center;
         color: #fff;
         border-radius: 50%;
-        background: #FF3E44;
+        background: #AAAAAA;
+      }
+      .icon-bgred {
+        background: #ff3e44;
       }
       .icon-svn {
         background: #ff3e44;

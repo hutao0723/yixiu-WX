@@ -4,7 +4,7 @@
       <div class="item" v-for="(item,index) in cartList" :key="index" @click="routeToCourse(item)" :monitor-log="getMonitor()">
         <div class="item-img" v-show="item.lateralCover" :style="{backgroundImage: `url(${item.lateralCover})`}"></div>
         <div class="item-img-small" v-show="!item.lateralCover&&item.verticalCover" :style="{backgroundImage: `url(${item.verticalCover})`}"></div>
-        <div class="item-img" v-show="!item.lateralCover&&!item.verticalCover" :style="{backgroundImage: `url('//yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
+        <div class="item-img" v-show="!item.lateralCover&&!item.verticalCover" :style="{backgroundImage: `url('https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png')`}"></div>
         <span class="item-title">{{item.title}}</span>
         <span class="item-sub" v-if="item.subTitle">{{item.subTitle}}</span>
         <span class="item-new" v-if="item.latestSubTitle">最新：{{item.latestSubTitle}}</span>
@@ -14,22 +14,19 @@
           <span class="red mr20">{{item.playbackProgress && item.timeLength ? (item.percent + '%') : '未收听'}}</span>{{item.timeLengthText}}
         </span>
         <a href="javascript:void(0)" class="item-btn" @click.stop="playClick(item.columnId, item.courseId, false)">
-          <i class="iconfont icon-play"></i>播放</a>
+          <i class="iconfont icon-bofang2"></i>播放</a>
       </div>
     </div>
     <div class="page-none" v-show="noData">
       <img src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/zanwushuju.png" class="none-img" />
       <p class="none-text">暂无数据</p>
-      <a href="javascript:void(0)" class="none-btn">去逛逛</a>
+      <a href="javascript:void(0)" class="none-btn" @click="goHome">去逛逛</a>
     </div>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0" ></div>
-    <AudioBar/>
-    <!-- <bnav></bnav> -->
   </div>
 </template>
 
 <script>
-  import AudioBar from '../components/basic/Audio_Bar';
   import order from '../api/order';
   import router from '../mixins/router';
   import access from '../mixins/accessHandler';
@@ -49,13 +46,7 @@
     },
     async mounted() {
       await this.getList();
-      let self = this;
-      // setTimeout(() => {
-      //     // 滚动
-      //     self.$refs.cartMain.addEventListener('scroll', self.dispatchScroll, false);
-      //     // 埋点
-      //     window.monitor && window.monitor.showLog(self);
-      //   }, 100);
+      this.setTitle('已购');
     },
     computed: {},
     methods: {
@@ -72,6 +63,7 @@
             item['timeLengthText'] = this.secondToDate(item.timeLength);
             let percent = Math.floor((+item.playbackProgress ? +item.playbackProgress : 0) / +item.timeLength * 100);
             item['percent'] = percent > 100 ? 100 : percent;
+            item.checkPower = true;
           });
           if (!this.cartList.length) {
             this.cartList = obj;
@@ -98,6 +90,9 @@
       getMonitor () {
         return JSON.stringify({'dcm': 'cart','dpm': '1.1.1','url': '1111'});
       },
+      goHome () {
+        this.$router.push('index/home')
+      },
       // 触发滚动
       dispatchScroll () {
         this.mainScrollTop = this.$refs.cartMain.scrollTop;
@@ -106,7 +101,6 @@
       }
     },
     components: {
-      AudioBar
     },
     mixins: [router, access]
   };
@@ -157,7 +151,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         width: 450/@rem;
-
+        font-weight: bold;
       }
       .item-sub {
         .pos(235, 77);
@@ -192,7 +186,7 @@
       }
       .item-btn {
         .size(100, 40);
-        .text(24, 40);
+        .text(28, 40);
         text-align: center;
         border-radius: 45/@rem;
         color: #FF464A;
@@ -201,6 +195,9 @@
         right: 0;
         bottom: 35/@rem;
       }
+      .iconfont{
+          font-size: 28/@rem;
+        }
     }
   }
 
