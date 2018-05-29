@@ -263,11 +263,12 @@ export default {
           color: #949494;
         }
         .operate-share{
-          margin-right: 30/@rem;
+          margin-right: 2/@rem;
         }
         .operate-num{
           .fontSize(26);
-          width: 30/@rem;
+          width: 45/@rem;
+          text-align: right;
           margin-right: 13/@rem;
         }
         .iconfont{
