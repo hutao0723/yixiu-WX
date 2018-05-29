@@ -7,62 +7,62 @@ export default new Router({
   routes: [
     {
       path: '*',
-      redirect: '/read',
+      redirect: '/index',
       component: function (resolve) {
         require.ensure([], function () {
-          resolve(require('../views/read/Index'));
+          resolve(require('../views/Index'));
         }, 'reading_read');
       }
     },
     {
-      name: 'read',
-      path: '/read',
-      redirect: '/read/home',
+      name: 'index',
+      path: '/index',
+      redirect: '/index/home',
       component: function (resolve) {
         require.ensure([], function () {
-          resolve(require('../views/read/Index'));
+          resolve(require('../views/Index'));
         }, 'reading_read');
       },
       children: [{
-        path: '/read/home',
+        path: '/index/home',
         component: function (resolve) {
           require.ensure([], function () {
             resolve(require('../views/read/Home'));
           }, 'reading_home');
         }
-      }
-      ]
-    },
-    {
-      path: '/card',
-      component: function (resolve) {
-        require.ensure([], function () {
-          resolve(require('../views/card/Card'));
-        }, 'reading_card');
-      }
+      },
+      {
+        path: '/index/card',
+        component: function (resolve) {
+          require.ensure([], function () {
+            resolve(require('../views/card/Card'));
+          }, 'reading_card');
+        }
+      },
+      {
+        path: '/index/opinion',
+        component: function (resolve) {
+          require.ensure([], function () {
+            resolve(require('../views/opinion/Opinion'));
+          }, 'reading_opinion');
+        }
+      },
+      {
+        path: '/index/user',
+        component: function (resolve) {
+          require.ensure([], function () {
+            resolve(require('../views/user/User'));
+          }, 'reading_user');
+        }
+      }]
     },
     {
       path: '/comment',
+      name:'comment',
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../views/card/Comment'));
         }, 'reading_comment');
-      }
-    },
-    {
-      path: '/opinion',
-      component: function (resolve) {
-        require.ensure([], function () {
-          resolve(require('../views/opinion/Opinion'));
-        }, 'reading_opinion');
-      }
-    },
-    {
-      path: '/user',
-      component: function (resolve) {
-        require.ensure([], function () {
-          resolve(require('../views/user/User'));
-        }, 'reading_user');
       }
     },
     {
@@ -82,6 +82,22 @@ export default new Router({
       }
     },
     {
+      path: '/look/:readId',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/user/Look'));
+        }, 'reading_look');
+      }
+    },
+    {
+      path: '/shelf',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/user/Shelf'));
+        }, 'reading_shelf');
+      }
+    },
+    {
       path: '/audio/index',
       component: function (resolve) {
         require.ensure([], function () {
@@ -95,6 +111,22 @@ export default new Router({
         require.ensure([], function () {
           resolve(require('../views/audio/List'));
         }, 'reading_audiolist');
+      }
+    },
+    {
+      path: '/audio/article',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/audio/Article'));
+        }, 'reading_audioarticle');
+      }
+    },
+    {
+      path: '/poster',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/poster/poster'));
+        }, 'reading_poster');
       }
     }
   ]

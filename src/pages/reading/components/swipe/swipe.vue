@@ -4,9 +4,8 @@
       <slot></slot>
     </div>
     <div class="mint-swipe-indicators" v-show="showIndicators">
-      <div class="mint-swipe-indicator"
-           v-for="(page, $index) in pages"
-           :class="{ 'is-active': $index === index }"></div>
+      <div class="mint-swipe-indicator"  v-for="(page, $index) in pages" :class="{ 'is-active': $index === index }">
+      </div>
     </div>
   </div>
 </template>
@@ -206,6 +205,8 @@
             addClass(newPage, 'is-active');
 
             this.index = newIndex;
+            this.$emit("indexChange",newIndex) 
+            
           }
 
           if (prevPage) {
@@ -401,13 +402,13 @@
     mounted () {
       this.ready = true;
 
-      if (this.auto > 0) {
-        this.timer = setInterval(() => {
-          if (!this.dragging && !this.animating) {
-            this.next();
-          }
-        }, this.auto);
-      }
+      // if (this.auto > 0) {
+      //   this.timer = setInterval(() => {
+      //     if (!this.dragging && !this.animating) {
+      //       this.next();
+      //     }
+      //   }, this.auto);
+      // }
 
       this.reInitPages();
 
@@ -424,11 +425,13 @@
       });
 
       element.addEventListener('touchmove', (event) => {
+        // document.getElementsByClassName("yellow")[this.index].style.display = "none"
         if (!this.dragging) return;
         this.doOnTouchMove(event);
       });
 
       element.addEventListener('touchend', (event) => {
+        // document.getElementsByClassName("yellow")[this.index].style.display = "none"
         if (this.userScrolling) {
           this.dragging = false;
           this.dragState = {};
@@ -445,32 +448,49 @@
 <style lang="less">
   @rem: 75rem;
   .mint-swipe {
-    overflow: hidden;
+    // overflow: hidden;
     position: relative;
     height: 100%;
   }
   .mint-swipe-items-wrap {
+    // overflow: hidden;
     position: relative;
-    overflow: hidden;
     height: 100%;
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
   }
   .mint-swipe-item{
-    padding-left: 30/@rem;
+    padding: 0 0 0 36/@rem;
+    display: inline-block;
+    box-sizing: border-box;
   }
   .mint-swipe-items-wrap > div {
     position: absolute;
     -webkit-transform: translateX(-100%);
     transform: translateX(-100%);
-    width: 100%;
+    width: 750/@rem;
     height: 100%;
-    display: none
+    // display: none
   }
   .mint-swipe-items-wrap > div.is-active {
     display: block;
     -webkit-transform: none;
     transform: none;
+  }
+  .mint-swipe-items-wrap>div {
+    position: absolute;
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    width: 750/@rem;
+    height: 100%;
+    display: none;
+    a, img {
+      width: 665/@rem;
+      height: 260/@rem;
+      display: block;
+      border-radius: 10/@rem;
+      // box-shadow:0 10/@rem 10/@rem 0 rgba(235,235,235,0.6);
+    }
   }
   .mint-swipe-indicators {
     position: absolute;
@@ -492,33 +512,9 @@
   }
   /* slider插件css + 改写*/
   .mint-swipe, .mint-swipe-items-wrap {
-    overflow: hidden;
     position: relative;
     height: 100%
   }
-
-  .mint-swipe-items-wrap>div {
-    position: absolute;
-    -webkit-transform: translateX(-100%);
-    transform: translateX(-100%);
-    width: 100%;
-    height: 100%;
-    display: none;
-    a, img {
-      width: 690/@rem;
-      height: 280/@rem;
-      display: block;
-      border-radius: 10/@rem;
-      // box-shadow:0 10/@rem 10/@rem 0 rgba(235,235,235,0.6);
-    }
-  }
-
-  .mint-swipe-items-wrap>div.is-active {
-    display: block;
-    -webkit-transform: none;
-    transform: none
-  }
-
   .mint-swipe-indicators {
     position: absolute;
     bottom: 10px;
@@ -534,11 +530,11 @@
     border-radius: 100/@rem;
     background: #ccc;
     margin: 0 5/@rem;
-    background: black; 
+    background: grey; 
   }
 
   .mint-swipe-indicator.is-active {
     width: 10/@rem;
-    background: red;
+    background: #ff4c4c;
   }
 </style>

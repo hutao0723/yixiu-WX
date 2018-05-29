@@ -6,40 +6,37 @@
  */
 var fs = require('fs');
 var setOnline = [
+  // 获取统计数据我和老师微信账号
   { 
-    name: 'layout',
+    name: 'userInfo',
     type: 'get',
-    url: '/floor/page'
+    url: '/user/stat/detail'
+  },
+  // 我的历程列表
+  { 
+    name: 'journeyList',
+    type: 'get',
+    url: '/user/read/journey'
   },
   { 
-    name: 'title',
+    name: 'success',
     type: 'get',
-    url: '/floor/Title/1'
+    url: '/comment/praise'
+  },
+  { 
+    name: 'book',
+    type: 'get',
+    url: '/readBook/bookList'
   },
   { 
     name: 'swiper',
     type: 'get',
-    url: '/floor/SWIPER/2'
+    url: '/read/past'
   },
   { 
-    name: 'goodsbox',
+    name: 'dayNum',
     type: 'get',
-    url: '/floor/GOODS_BOX/3'
-  },
-  { 
-    name: 'blank',
-    type: 'get',
-    url: '/floor/BLANK/4'
-  },
-  { 
-    name: 'poster',
-    type: 'get',
-    url: '/comment/share'
-  },
-  { 
-    name: '',
-    type: 'get',
-    url: ''
+    url: '/readBookCourse/courseList'
   }
 ];
 
@@ -52,7 +49,7 @@ for (var i = 0, len = setOnline.length; i < len; i++) {
     var name = setOnline[i].name;
 
     exports[name] = function(req, res) {
-      fs.readFile('./mock/home/' + name + '.json', function(err, data) {
+      fs.readFile('./mock/user/' + name + '.json', function(err, data) {
         if (err) throw err;
         
         res.json(JSON.parse(data));

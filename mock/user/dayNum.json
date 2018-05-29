@@ -1,0 +1,28 @@
+{
+  "code": "string",
+  "data": [
+    {
+      "courseId": 1,
+      "dayNum": 1,
+      "id": 1,
+      "lockStatus": false,
+      "readId": 1
+    },
+    {
+      "courseId": 2,
+      "dayNum": 2,
+      "id": 2,
+      "lockStatus": false,
+      "readId": 2
+    },
+    {
+      "courseId": 3,
+      "dayNum": 3,
+      "id": 3,
+      "lockStatus": false,
+      "readId": 3
+    }
+  ],
+  "desc": "string",
+  "success": true
+}
