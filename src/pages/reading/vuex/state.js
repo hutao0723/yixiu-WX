@@ -21,6 +21,8 @@ export default {
 	readDuration: 0,
 	// 音乐是否在加载
 	readLoadStart: false,
+	showCardModal: false,
+	startTimestamp: 0,
 	// 曝光参数相关
 	referer: ''
 };

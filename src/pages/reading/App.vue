@@ -9,9 +9,26 @@
 
 <script>
 import store from './vuex/store'
+import { mapState } from 'vuex'
+import play from './api/play'
 export default {
   data () {
     return {
+    }
+  },
+  computed: {
+    ...mapState(['readPlaying'])
+  },
+  watch: {
+    readPlaying(val) {
+      if (val) {
+        clearInterval(this.syncReadTime)
+        this.syncReadTime = setInterval(() => {
+          play.syncPlaytimes();
+        }, 1000)
+      } else {
+        clearInterval(this.syncReadTime)
+      }
     }
   },
   methods: {
@@ -39,13 +56,9 @@ export default {
       if (this.$refs.audio.currentTime === 0) this.$refs.audio.currentTime = store.getters.getAudioInfo.playbackProgress;
     },
     // 音乐处于播放状态
-    musicOnPlaying () {
-      store.commit('play')
-    },
+    musicOnPlaying () {},
     // 音乐处于watting状态
-    musicOnWaiting () {
-      
-    },
+    musicOnWaiting () {},
     // 音乐处于暂停状态
     musicOnPause () {
       store.commit('pause')
