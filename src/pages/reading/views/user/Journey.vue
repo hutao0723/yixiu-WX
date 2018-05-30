@@ -11,7 +11,7 @@
             </div>
             <div class="text-container clearfix">
               <div class="content-container">
-                <div  class="content" ref="cheight" :class="item.expand?'h131':''">{{item.content}}</div>
+                <div  class="content" ref="cheight" :class="item.expand?'h132':''">{{item.content}}</div>
                 <div v-if="item.line"> 
                   <div class="letter" v-if="(item.letter == 1 )&& (item.expand)" @click.stop="handleChange(item)">全部</div>
                   <div class="letter" v-if="(item.letter == 2 )&& (!item.expand)" @click.stop="handleChange(item)">收起</div>
@@ -137,7 +137,7 @@ export default {
       this.journeyList.forEach((item,index)=>{
         let multiple = 750/document.body.clientWidth;
         // 131为三行字体的高度
-        let originalOffsetY = 131/multiple;
+        let originalOffsetY = 132/multiple;
         let valueHeight = this.$refs.cheight[index].getBoundingClientRect().height;
         if(valueHeight > originalOffsetY){
           // line属性是否展示全部收起这个容器
@@ -315,8 +315,8 @@ export default {
           color:rgba(255,76,76,1);
         }
       }
-      .h131{
-        height: 131/@rem;
+      .h132{
+        height: 132/@rem;
       }
       .hauto{
         height:auto;
