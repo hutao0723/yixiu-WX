@@ -27,6 +27,8 @@
     },
     data () {
       return {
+        courseId:'',
+        readId:'',
         courseDetail:'',
         content:''
       };
@@ -35,25 +37,38 @@
       ...mapState({})
     },
     created() {
+      this.getCourseId()
     },
     mounted () {
-      //this.courseDetail = JSON.parse(this.$route.params.data) ;
-      this.courseDetail = JSON.parse(this.$route.query.data) ;
-
     },
     methods: {
+      getCourseId(){
+        this.courseId = this.$route.params.courseId;
+        this.readId = this.$route.params.readId;
+        console.log(this.courseId,this.readId)
+        this.$http.get('/readBookCourse/courseDetail?readId='+this.readId +'&courseId='+this.courseId).then(res=>{
+          let resp = res.data;
+          if(resp.success){
+            this.courseDetail = resp.data;
+          }
+          console.log(resp)
+        })
+      },
       subComment(){
-        let sub = this.courseDetail;
         let params={
           content:this.content,
-          //clockDate:sub.clockDate,
-          readId:sub.readId,
-          courseId:sub.courseId,
-          dayNum:sub.days
+          readId:this.readId,
+          courseId:this.courseId,
+          dayNum:this.courseDetail.days
         }
         console.log(params)
-        this.$http.post('/api/user/read/clock',params,{emulateJSON: true}).then(res=>{
+        this.$http.post('/user/read/clock',params,{emulateJSON: true}).then(res=>{
           let resp = res.data;
+          if(resp.success){
+            console.log(resp.data)
+            let commentId = resp.data.commentId;
+            let lastClock = resp.data.lastClock;
+          }
         })
       },
     }
@@ -98,7 +113,6 @@
       }
       .book-detail{
         padding-top: 10/@rem;
-        float: left;
         .book-title{
           font-size: 30/@rem;
           line-height: 42/@rem;

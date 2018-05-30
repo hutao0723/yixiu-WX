@@ -54,19 +54,19 @@ import { mapState } from 'vuex'
             {
               title: '阅读',
               icon: 'icon-book',
-              active: 'icon-book active',
+              active: 'icon-book active tag',
               path: '/index/home'
             },
             {
               title: '观点',
               icon: 'icon-opinion',
-              active: 'icon-opinion active',
+              active: 'icon-opinion active tag',
               path: '/index/opinion'
             },
             {
               title: '我的',
               icon: 'icon-user',
-              active: 'icon-user active',
+              active: 'icon-user active tag',
               path: '/index/user'
             }
           ]

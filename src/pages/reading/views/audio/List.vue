@@ -29,19 +29,14 @@ import play from '../../api/play';
 import access from '../../mixins/accessHandler';
 export default {
   computed: {
-    ...mapState(['readList', 'readAudio'])
+    ...mapState(['readAudio','readList'])
   },
   data () {
     return {
-      list:[]
     };
   },
-  async mounted () {
-      this.readList.forEach((item) => {
-        item.duration = play.fmtTime(+item.timeLength);
-        let percent = Math.floor((+item.playbackProgress ? +item.playbackProgress : 0) / +item.timeLength * 100);
-        item.percent = (percent > 100 ? 100 : percent) + "%";
-      })
+  mounted () {
+    play.getReadList(this.readAudio.readId)
   },
   methods: {
     playAudio(item) {

@@ -25,7 +25,7 @@ export default {
         clearInterval(this.syncReadTime)
         this.syncReadTime = setInterval(() => {
           play.syncPlaytimes();
-        }, 1000)
+        }, 60000)
       } else {
         clearInterval(this.syncReadTime)
       }

@@ -384,6 +384,7 @@
       playAudio(id) {
         play.audioInit(this.readId, id, true)
         // 跳转到播放页
+        this.$route.push('/audio/index/1')
       },
       selectCourse(item) {
         if (this.selectCourseId != item.readId && !item.purchased) {
