@@ -157,6 +157,7 @@
         tabActive: true,
         bookName: '',
         alertToggle: false,
+        readId: '',
 
         pageStatus: 0, // 页面状态
 
@@ -233,6 +234,8 @@
       this.wxShare();
       let userState = await this.getThumbUp();
       console.log(userState)
+
+      this.readId = userState.data.readId;
       // 状态判断逻辑
       if (userState.data) {
         if (
@@ -344,7 +347,7 @@
         order.buy(this.selectCourseId, 4)
       },
       playAudio(id) {
-        play.audioInit(28, id, true)
+        play.audioInit(this.readId, id, true)
         // 跳转到播放页
       },
       selectCourse(item) {
@@ -431,7 +434,7 @@
         let d = newDate.getDate();
         let date = n + '-' + m + '-' + d;
         params = {
-          readId: 28,
+          readId: this.readId,
           date: date,
         }
         const url = `/readBookCourse/courseDetailByDate`;
@@ -445,7 +448,7 @@
         let self = this;
         let params = {};
         params = {
-          readId: 28,
+          readId: this.readId,
         }
         const url = `/readBook/bookList`;
         this.$http.get(url, {
@@ -458,7 +461,7 @@
         let self = this;
         let params = {};
         params = {
-          readId: 28,
+          readId: this.readId,
           bookId: id,
         }
         const url = `/readBookCourse/courseList`;
