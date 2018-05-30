@@ -2,132 +2,129 @@
   <div class="audio-main">
     <div class="audio-page">
       <div class=" banner">
-        <img class="course-img" :src="audio.verticalCover" v-if="audio.verticalCover && ! audio.lateralCover"/>
-        <img class="course-img-lateral" :src="audio.lateralCover" v-if="audio.lateralCover"/>
-        <img class="course-img-lateral" src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png" v-if="!audio.lateralCover && !audio.verticalCover"/>
-        <span class="xl strong line1 detail-word">{{audio.title}}</span>
+        <img class="course-img" :src="readAudio.verticalCover" v-if="readAudio.verticalCover && ! readAudio.lateralCover"/>
+        <img class="course-img-lateral" :src="readAudio.lateralCover" v-if="readAudio.lateralCover"/>
+        <img class="course-img-lateral" src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png" v-if="!readAudio.lateralCover && !readAudio.verticalCover"/>
+        <span class="xl black line1 detail-word">{{readAudio.courseTitle}}</span>
       </div>
       <div class="controler column-between">
-        <div class="slider-bar" :monitor-log="getMonitor('803.1')">
+        <div class="slider-bar">
           <!--播放器进度条-->
-          <range  ball-width="30" :canDrag="audio.powerLevel"/>
+          <range />
           <div class="row-between timer">
             <span class="xs week row-center">{{current}}</span>
             <span class="xs week row-center">{{duration}}</span>
           </div>
         </div>
         <div class="row-between control-bar">
-          <button type="primary" class="btn-switch" @click="audioPrev" :monitor-log="getMonitor('803.3')">
-            <i class="iconfont icon-shangyiqu" :style="{color: `${!audio.isPrev ? '#FF9E9A' : '#FF5349'}`}"></i>
+          <button type="primary" class="column-around btn-bottom" @click="routeToArticle">
+            <i class="iconfont icon-page"></i>
+            <span class="xxs primary">文稿</span>
           </button>
-          <button type="primary" class="btn-play" @click="togglePlay" :monitor-log="getMonitor('803.2.1')" v-if="!playing">
-            <i class="iconfont icon-bofang"></i>
+          <button type="primary" class="btn-switch" @click="audioPrev">
+            <i class="iconfont icon-prev" :style="{color: `${readAudio.isPrev ? '#343434' : '#919191'}`}"></i>
           </button>
-          <button type="primary" class="btn-play" @click="togglePlay" :monitor-log="getMonitor('803.2.2')" v-if="playing">
-            <i class="iconfont icon-bofangqi-zanting"></i>
+          <button type="primary" class="btn-play" @click="togglePlay">
+            <i class="iconfont" :class="readPlaying ? 'icon-pause' : 'icon-play'" ></i>
           </button>
-          <button type="primary" class="btn-switch" @click="audioNext" :monitor-log="getMonitor('803.4')">
-            <i class="iconfont icon-xiayiqu" :style="{color: `${!audio.isNext ? '#FF9E9A' : '#FF5349'}`}"></i>
+          <button type="primary" class="btn-switch" @click="audioNext">
+            <i class="iconfont icon-next" :style="{color: `${readAudio.isNext ? '#343434' : '#919191'}`}"></i>
+          </button>
+          <button type="primary"  class="column-around btn-bottom" @click="routeToList">
+            <i class="iconfont icon-list"></i>
+            <span class="xxs primary">播放列表</span>
           </button>
         </div>
-        <div class="column-between bottom" :class="!audio.powerLevel ? 'h214' : 'h120'" :style ="{borderTop: `${!audio.powerLevel ? 'none' : '1px solid #E5E5E5'}`}">
-          <div class="buy-bar row-around" :class="audio.musicTryEnd ? 'buy-bar-after' : 'buy-bar-before'" v-if="!audio.powerLevel">
-            <span class="remind nm " v-if="!audio.musicTryEnd && audio.columnId">试听免费课程，购买后收听完整专栏</span>
-            <span class="remind nm " v-if="!audio.musicTryEnd && !audio.columnId">免费试听前{{audio.watchable}}秒，购买后收听完整版</span>
-            <span class="remind nm " v-if="audio.musicTryEnd">试听结束，购买后收听完整版</span>
-            <button type="primary" class="btn-fetch row-center" @click="goPay" :monitor-log="getMonitor('803.5.1')">
-              直接购买
-            </button>
-          </div>
-          <div class="row-around table" style="">
-            <button type="primary" class="column-around btn-bottom" @click="routeToCourse(audio)" :monitor-log="getMonitor('803.10.1')">
-              <i class="iconfont icon-detail"></i>
-              <span class="xxs weak">详情</span>
-            </button>
-            <button type="primary" class="column-around btn-bottom" @click="shareToggle = true" :monitor-log="getMonitor('803.10.2')">
-              <i class="iconfont icon-share1"></i>
-              <span class="xxs weak">分享</span>
-            </button>
-            <button type="primary"  class="column-around btn-bottom" @click="routeToAudioList()" :monitor-log="getMonitor('803.10.3')">
-              <i class="iconfont icon-list"></i>
-              <span class="xxs weak">播放列表</span>
-            </button>
-          </div>
+        <div class="bottom" @click="goComment">
+           {{text}}
         </div>
       </div>
     </div> 
-    <Share v-show="shareToggle" v-on:success="success"/>
-    
+    <div class="modal" v-if="showCardModal">
+      <div class="pop-mask"></div>
+      <div class="container">
+        <div class="btn-yes column-center">
+            <i class="iconfont icon-yes"></i>
+        </div>
+        <div class="btn-close column-center" @click="hideModal">
+            <i class="iconfont icon-close"></i>
+        </div>
+        <p class="des">你已完成今日课程，趁热打铁 来打卡吧！</p>
+        <p class="info">今日已打卡<span class="warm">{{clockCount}}</span>人</p>
+        <div class="btn-card" @click="goComment">打卡</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import router from '../../mixins/router';
 import store from '../../vuex/store';
 import play from '../../api/play';
-import order from '../../api/order';
 import { mapState } from 'vuex'
 import range from '../../components/basic/Range'
-import Share from '../../components/basic/Share';
 import access from '../../mixins/accessHandler';
 
 export default {
   data () {
     return {
-      shareToggle: false,
+      clockCount: ''
     };
   },
   computed: {
-    ...mapState(['audio','playing','currentTime','musicDuration']),
+    ...mapState(['readAudio','readPlaying','readCurrentTime','readDuration','showCardModal']),
     current() {
-      return this.timerFomart(this.currentTime)
+      return this.timerFomart(this.readCurrentTime)
     },
     duration() {
-      return this.timerFomart(this.musicDuration)
+      return this.timerFomart(this.readDuration)
+    },
+    text() {
+      if (!this.readAudio.clockState) {
+          return '去打卡'
+      } else {
+        if (!this.readAudio.commentState) {
+          return '写想法'
+        } else {
+          return '查看'
+        }
+      }
     }
   },
-  mounted () {
-    setTimeout(()=>{
-      const msg = {
-          title: this.audio.title,
-          desc: this.audio.subTitle,
-          link: this.audio.courseId ? 'http://k.youfen666dev.com/#/course/' + this.audio.courseId:false ||this.audio.columnId ? 'http://k.youfen666dev.com/#/column/' + this.audio.columnId:false ,
-          imgUrl: this.audio.lateralCover || this.audio.verticalCover ||
-            'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
-        }
-        this.wxShare(msg)
-    },3000)
-    if (!store.getters.getAudioElement.getAttribute('src')) {
-      store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
-      store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title);
+  async mounted () {
+    if (this.$route.params.type == 0 && !store.getters.getAudioElement.getAttribute('src')) {
+      let readAudio = this.readAudio;
+      readAudio.src = await play.getAudioUrl(store.getters.getAudioInfo.readId, store.getters.getAudioInfo.courseId);
+      store.commit({ type: 'setAudio', readAudio: readAudio });
     }
-    // window.monitor && window.monitor.showLog(this);
+    if (!store.getters.getAudioElement.getAttribute('src')){
+      store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
+      store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
+    }
+    // 获取打卡人数
+    this.clockCount = await play.getClockCount(this.readAudio.readId, this.readAudio.courseId);
   },
   methods: {
-    // 获取monitor
-    getMonitor(dpm) {
-      return JSON.stringify({
-        'dcm': '8001.',
-        'dpm': dpm,
-      });
-    },
-    success(){
-      this.shareToggle = false;
-    },
     audioPrev () {
-      play.startAudio(this.audio.columnId, this.audio.courseId, 'prev')
+      if (this.readAudio.isPrev) play.audioPrev()
     },  
     togglePlay() {
-      if (!this.audio.musicTryEnd) {
-        store.commit('togglePlay');
-      }
+      store.commit('togglePlay');
     },
     audioNext (){
-      play.startAudio(this.audio.columnId, this.audio.courseId, 'next')
+      if (this.readAudio.isNext) play.audioNext()
     },
-    goPay(){
-        order.buy(this.audio.columnId?this.audio.columnId:this.audio.courseId, this.audio.columnId?2:1)
-      
+    routeToArticle () {
+      this.$router.push('/audio/article/' + this.readAudio.courseId);
+    },
+    routeToList () {
+      this.$router.push('/audio/list');
+    },
+    hideModal () {
+      store.commit('resetShowCardModal')
+    },
+    goComment () {
+      store.commit('resetShowCardModal');
+      this.$router.push(`/comment/${this.readAudio.readId}/${this.readAudio.courseId}`);
     },
     timerFomart (time) {
       if (isNaN(time)) return '00:00';
@@ -136,8 +133,8 @@ export default {
       return mm + ':' + ss;
     }
   },
-  components:{ range,Share },
-  mixins: [router, access]
+  components:{ range },
+  mixins: [access]
 };
 </script>
 <style lang="less">
@@ -153,16 +150,16 @@ export default {
     padding: 0 30/@rem;
     .banner{
       width: 100%;
-      height: 54%;
+      height: 62%;
       position: relative;
       padding: 1/@rem;
       box-sizing: border-box;
       border:none;
       .course-img{
-        width: 360/@rem;
-        height: 468/@rem;
+        width: 240/@rem;
+        height: 336/@rem;
         display: block;
-        margin: 40/@rem auto 0;
+        margin: 142/@rem auto 0;
         box-shadow: -5/@rem 0/@rem 10/@rem 4/@rem rgba(225,225,225,0.5);
         border-radius: 10/@rem;
       }
@@ -175,101 +172,148 @@ export default {
         box-shadow: -5/@rem 0/@rem 10/@rem 4/@rem rgba(225,225,225,0.5);
       }
       .detail-word{
-        position: absolute;
+        margin-top: 52/@rem;;
         text-align: center;
         display: block;
-        bottom: 45/@rem;
+        // bottom: 45/@rem;
+        font-weight: bold;
       }
     }
     .controler{
-      height: 46%;
+      height: 38%;
     }
     .slider-bar{
       width: 690/@rem;
     }
     .control-bar{
-      width: 414/@rem;
+      width: 690/@rem;
       .btn-switch{
-        width: 46/@rem;
+        width: 38/@rem;
         background: white;
         border:none;
         .iconfont{
-          font-size: 46/@rem;
+          font-size: 38/@rem;
         }
       }
-      .btn-play{
-        display: block;
-        width:130/@rem;
-        height:130/@rem; 
-        line-height: 130/@rem;
-        border: 0;
-        border-color: transparent;
-        background:linear-gradient(90deg,rgba(254,61,52,1),rgba(255,101,77,1));
-        border-radius: 50%;
-        .iconfont{
-          font-size: 46/@rem;
-          color: #fff;
-        }
-      }
-    }
-    .bottom{
-      width: 750/@rem;
-      @colorbefore: #FF3E44;
-      @colorafter: #FF5F4E;
-      &.h214{
-        height:214/@rem;
-      }
-      &.h120{
-        height:120/@rem;
-      }
-      .buy-bar{
-        width: 750/@rem;
-        height: 94/@rem;
-        .btn-fetch{
-          width:150/@rem;
-          height:56/@rem; 
-          border-radius: 45/@rem; 
-          font-size: @text-sm;
-          border: 1/@rem solid #ff464a;
-        }
-      }
-      .buy-bar-before{
-        background: #FFF2EB;
-        .remind{
-          color: @colorbefore;
-        }
-        .btn-fetch{
-          background:white;
-          color: @colorbefore;
-          border:1px solid #ff464a;
-        }
-      }
-      .buy-bar-after{
-        background: @colorafter;
-        .remind{
-          color: white;
-        }
-        .btn-fetch{
-          background:#FFD900;
-          color: #FF4000;
-        }
-      }
-      .table{
-        width: 100%;
-        height: 120/@rem;
-        .btn-bottom{
-          width: 200/@rem;
+      .btn-bottom{
+          width: 88/@rem;
           height: 120/@rem;
           background: white;
           border: none;
           .iconfont{
             width: 36/@rem;
-            height: 36/@rem;
-            font-size: 36/@rem;
-            color: #666666;
+            height: 40/@rem;
+            font-size: 40/@rem;
+            color: @color-black;
           }
         }
+      .btn-play{
+        display: block;
+        width:120/@rem;
+        height:120/@rem; 
+        line-height: 120/@rem;
+        border: 0;
+        border-color: transparent;
+        background:@color-black;
+        border-radius: 50%;
+        .iconfont{
+          font-size: 44/@rem;
+          color: #fff;
+        }
       }
+    }
+    .bottom{
+      width:300/@rem;
+      height: 70/@rem;
+      line-height: 70/@rem;
+      text-align: center;
+      margin-bottom: 70/@rem;
+      background:rgba(255,229,85,1);
+      border-radius: 42/@rem ; 
+      font-size:28/@rem;
+      font-family:'PingFang-SC-Bold';
+      color: #000;
+      font-weight: bold;
+    }
+  }
+  .pop-mask{
+    width: 750/@rem;
+    height: 100%;
+    position: fixed;
+    background: rgba(0,0,0,0.6);
+    z-index: 1000;
+    top: 0;
+    left: 0;
+  }
+  .container{
+    width: 590/@rem;
+    height: 448/@rem; 
+    background:rgba(255,251,251,1);
+    border-radius: 20/@rem; 
+    position: fixed;
+    z-index: 1001;
+    box-sizing: border-box;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    .btn-yes{
+      width: 160/@rem;
+      height: 160/@rem;
+      position: absolute;
+      top: -80/@rem;
+      left: 50%;
+      transform: translate(-50%,0);
+      background: #FF4C4C;
+      border-radius: 50%;
+    }
+    .btn-close{
+      width: 50/@rem;
+      height: 50/@rem;
+      position: absolute;
+      right: 15/@rem;
+      top: -75/@rem;
+      background:rgba(0,0,0,0.3);
+      border-radius: 50%;
+    }
+    .icon-yes{
+      color: #fff;
+      font-size: 74/@rem;
+    }
+    .icon-close{
+      color: #fff;
+      font-size: 19/@rem;
+    }
+    .des{
+      width:390/@rem;
+      height:84/@rem;
+      margin: 50/@rem auto 0;
+      text-align: center;
+      font-size:30/@rem;
+      font-family:PingFangSC-Medium;
+      color:rgba(51,51,51,1);
+      line-height:42/@rem;
+    }
+    .info{
+      width:188/@rem;
+      height:33/@rem;
+      margin: 66/@rem auto 16/@rem;
+      text-align: center;;
+      font-size:24/@rem;
+      font-family:PingFangSC-Medium;
+      color:rgba(51,51,51,1);
+      line-height:33/@rem;
+    }
+    .btn-card{
+      width: 460/@rem;
+      height: 68/@rem;
+      line-height: 68/@rem;
+      margin: 0 auto;
+      background: #FFDB43;
+      border-radius: 10/@rem; 
+      text-align: center;
+      color: @color-strong;
+      font-size: 30/@rem;
+      font-weight: bold;
     }
   }
 </style>

@@ -9,10 +9,26 @@
 
 <script>
 import store from './vuex/store'
+import { mapState } from 'vuex'
+import play from './api/play'
 export default {
   data () {
     return {
-      info: {}
+    }
+  },
+  computed: {
+    ...mapState(['readPlaying'])
+  },
+  watch: {
+    readPlaying(val) {
+      if (val) {
+        clearInterval(this.syncReadTime)
+        this.syncReadTime = setInterval(() => {
+          play.syncPlaytimes();
+        }, 60000)
+      } else {
+        clearInterval(this.syncReadTime)
+      }
     }
   },
   methods: {
@@ -26,31 +42,24 @@ export default {
         type: 'set_CurrentTime',
         time: Math.floor(this.$refs.audio.currentTime)
       })
-      if (!store.getters.getAudioInfo.powerLevel && Math.floor(this.$refs.audio.currentTime) == store.getters.getAudioInfo.watchable) {
-        store.commit('pause');
-        store.commit('setMusicTryEnd');
-      }
     },
     // 可以播放事件
     musicCanPlay () {
       store.dispatch({
-        type: 'set_MusicDuration',
+        type: 'set_ReadDuration',
         duration: Math.floor(this.$refs.audio.duration)
       })
       store.commit({
-        type: 'setMusicLoadStart',
+        type: 'setReadLoadStart',
         isloadstart: false
       })
-      // if (this.$refs.audio.currentTime === 0) this.$refs.audio.currentTime = store.getters.getAudioInfo.playbackProgress;
+      if (this.$refs.audio.currentTime === 0 && store.getters.getAudioInfo.playbackProgress < store.getters.getMusicDuration) 
+        {this.$refs.audio.currentTime = store.getters.getAudioInfo.playbackProgress;}
     },
     // 音乐处于播放状态
-    musicOnPlaying () {
-      store.commit('play')
-    },
+    musicOnPlaying () {},
     // 音乐处于watting状态
-    musicOnWaiting () {
-      
-    },
+    musicOnWaiting () {},
     // 音乐处于暂停状态
     musicOnPause () {
       store.commit('pause')
@@ -58,7 +67,7 @@ export default {
     // 音乐加载
     loadStart () {
       store.commit({
-        type: 'setMusicLoadStart',
+        type: 'setReadLoadStart',
         isloadstart: true
       })
     }

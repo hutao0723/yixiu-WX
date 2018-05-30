@@ -47,15 +47,6 @@
       };
     },
     created() {
-
-      const msg = {
-        title: '一修读书', // 分享标题
-        desc: '在这里发现更好的自己', // 分享描述
-        link: location.href, // 分享链接 默认以当前链接
-        imgUrl: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
-      }
-      this.wxShare(msg)
-      this.setTitle('一修读书')
     },
     computed: {
       ...mapState({})
@@ -84,14 +75,15 @@
               item['navActive'] = 0;
             }
           })
-          // self.loaded();
-          console.log(self.components, `[template] render template page success`)
-        //   setTimeout(() => {
-        //   // 滚动
-        //   self.$refs.activityMain.addEventListener('scroll', self.dispatchScroll, false);
-        //   // 埋点
-        //   window.monitor && window.monitor.showLog(self);
-        // }, 100);
+          self.setTitle('一修读书')
+          const msg = {
+            title: processData.params.navigation.pageTitle || '一修读书', // 分享标题
+            desc: processData.params.shareConfig.shareDescribe || '在这里发现更好的自己', // 分享描述
+            link: 'http://k.youfen666test.com/knowledge.html#/home/index?jumpType=activity&jumpId=' + self.$route.params.id,
+            imgUrl: processData.params.shareConfig.sharePictureUrl?'https:' + processData.params.shareConfig.sharePictureUrl: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
+          }
+
+          self.wxShare(msg)
         })
       },
       // 触发滚动
@@ -118,7 +110,6 @@
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding-top: 20/@rem;
   // z-index: 9;
   background: #fff;
     .fontSize(24);

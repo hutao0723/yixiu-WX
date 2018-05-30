@@ -36,36 +36,35 @@ Vue.use(VueLazyload, {
     }
   }
 });
-Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWU3mytF3ApV8mEc2kB5evPRnyRpavR8cm5wn9dqjBi2gJAmSsg7PBHUBaaXJwbMRCDALvnWRSz4Baa58skhiQ34n5WzibsHrg9e57eZZRE1q4xzCkb95vzvWzHDDEyPp5GpZTjm64eQ';
+Vue.http.headers.common['from'] = 'read';
+// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWU3mytFEThAbUxgYoDsLSGVdXwpPoDchZnGyMnEVTKiS3QcAZ2Ht9pH8sRbLgX6CQVxH6ZszUt6pLDTdFDNYq8EpDs27xWbyhrFM6Qyr7d5gq3HCZKumRZVy3YKapJYDsivP8RgBwrZ';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
   // continue to next interceptor
   next((response) => { // 在响应之后传给then之前对response进行修改和逻辑判断。对于token时候已过期的判断，就添加在此处，页面中任何一次http请求都会先调用此处方法
-    // console.log(response);
     // response.body = '...';
     if (response.data.code == '000001') {
-      const url = encodeURIComponent('/' + window.location.href.split('/').slice(3).join('/'));
-      // location.href = "/loginH5?dbredirect=" + url;
+      if (response.url = '/order/submit') {
+        let reqObj = JSON.parse(request.body)
+        const url = encodeURIComponent(('/' + window.location.href.split('/').slice(3).join('/'))+ '?courseId=' +reqObj.itemId);
+        location.href = "/loginH5?dbredirect=" + url;
+      }else{
+        const url = encodeURIComponent(('/' + window.location.href.split('/').slice(3).join('/')));
+        location.href = "/loginH5?dbredirect=" + url;
+      }
+
     }
     return response;
   });
 });
 
-Vue.prototype.wxShare = function (msg) {
-  console.log(msg)
-  // var link  = encodeURIComponent(link);
-  // const url = encodeURIComponent(location.href.split('#')[0]);// 当前url
-  // const url = encodeURIComponent(window.location.href.split('#')[0]);
-  // const url = location.href.split('#')[0];
-
-  if (!msg) {
-    msg = {
-      title: '一修读书', // 分享标题
-      desc: '在这里发现更好的自己', // 分享描述
-      link: 'http://k.youfen666dev.com/#/home/index', // 分享链接 默认以当前链接
-      imgUrl: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/knowledge.jpg', // 分享图标
-    }
+Vue.prototype.wxShare = function () {
+  let msg = {
+    title: '我已经坚持在这读书23天了，一起来读书吧！', // 分享标题
+    desc: '每天阅读10分钟，培养阅读习惯，成就更好的自己。', // 分享描述
+    link: 'http://k.youfen666test.com/reading.html#/index/home', // 分享链接 默认以当前链接
+    imgUrl: 'http://yun.dui88.com/youfen/images/read_share.png', // 分享图标
   }
   const urlData = `/wechat/getJsapiSignature`;
   const url = location.href.split("#")[0];
@@ -75,16 +74,18 @@ Vue.prototype.wxShare = function (msg) {
       url: url
     }
   }).then(res => { // 获得签名配置
-    var Data = res.data.data;
-    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，
-    wx.config({
-      debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-      appId: Data.appid, // 必填，公众号的唯一标识
-      timestamp: Number(Data.timestamp), // 必填，生成签名的时间戳
-      nonceStr: Data.noncestr, // 必填，生成签名的随机串
-      signature: Data.signature, // 必填，签名，见附录1
-      jsApiList: ['onMenuShareAppMessage', 'onMenuShareTimeline', 'previewImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-    });
+    if (res.data.data) {
+      var Data = res.data.data;
+      // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，
+      wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: Data.appid, // 必填，公众号的唯一标识
+        timestamp: Number(Data.timestamp), // 必填，生成签名的时间戳
+        nonceStr: Data.noncestr, // 必填，生成签名的随机串
+        signature: Data.signature, // 必填，签名，见附录1
+        jsApiList: ['onMenuShareAppMessage', 'onMenuShareTimeline', 'previewImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+      });
+    }
   });
   wx.ready(() => {
     // 所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，
@@ -121,10 +122,6 @@ Vue.prototype.wxShare = function (msg) {
   });
 };
 
-router.beforeEach((to, from, next) => {
-  /* 路由发生变化修改页面title */
-  next()
-})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

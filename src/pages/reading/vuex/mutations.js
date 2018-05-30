@@ -1,73 +1,86 @@
 import play from '../api/play'
 export default {
     // play设置
-		play (state) {
-			state.audio.musicTryEnd = false
-			state.playing = true
-			state.audioelement.play()
-		},
-		// 暂停设置
-		pause (state) {
-			state.playing = false
+	play (state) {
+		state.readPlaying = true;
+		state.audioelement.play()
+	},
+	// 暂停设置
+	pause (state) {
+		state.readPlaying = false
+		state.audioelement.pause()
+	},
+	togglePlay (state) {
+		if (state.readPlaying) {
+			state.readPlaying = false
 			state.audioelement.pause()
-		},
-		togglePlay (state) {
-			if (state.playing) {
-				state.playing = false
-				state.audioelement.pause()
+		} else {
+			state.readPlaying = true
+			state.audioelement.play()
+		};
+		play.syncProgress(state.readAudio.readId, state.readAudio.courseId, state.readCurrentTime)
+	},
+	// 更新音乐数据
+	setAudio (state, obj) {
+		state.readAudio = obj.readAudio
+	},
+	// 更新播放id列表
+	setReadIds(state, obj) {
+		state.readIds = obj.readIds
+	},
+	// 更新播放列表
+	setReadList (state, obj) {
+		state.readList = obj.readList
+	},
+	// 获取音乐元素 Dom
+	setAudioElement (state, ele) {
+		state.audioelement = ele
+	},
+	// 设置音乐结束自动播放播放类型的歌曲
+	playEnded (state) {
+		if (state.readAudio.clockState){
+          if (state.readAudio.isNext) {
+				play.audioNext()
 			} else {
-				state.playing = true
-				state.audioelement.play()
-			};
-			if (state.audio.powerLevel && state.audio.price) play.syncProgress(state.audio.columnId,state.audio.courseId,state.currentTime)
-		},
-		// 更新音乐数据
-		setAudio (state, obj) {
-			state.audio = obj.audio
-		},
-		// 获取音乐元素 Dom
-		setAudioElement (state, ele) {
-			state.audioelement = ele
-		},
-		setPlayType (state) {
-			if (state.playType === 3) {
-				state.playType = 1
-			} else {
-				state.playType ++
-			}
-		},
-		// 设置音乐结束自动播放播放类型的歌曲
-		playEnded (state) {
-			if (state.audio.isNext) {
-				play.startAudio(state.audio.columnId, state.audio.courseId, 'next')
-			} else {
-				if (state.audio.powerLevel && state.audio.price) play.syncProgress(state.audio.columnId,state.audio.courseId,state.currentTime)
+				play.syncProgress(state.readAudio.readId, state.readAudio.courseId, state.readCurrentTime)
 				state.audioelement.load()
 				state.audioelement.pause()
-			}	
-		},
-		setCurrentTime (state, obj) {
-			state.currentTime = obj.time
-		},
-		setMusicDuration (state, obj) {
-			state.musicDuration = obj.duration
-		},
-		// 设置音乐是否正在加载
-		setMusicLoadStart (state, obj) {
-			state.musicLoadStart = obj.isloadstart;
-			if (state.audioelement.currentTime === 0 && state.audio.playbackProgress < state.musicDuration) state.audioelement.currentTime = state.audio.playbackProgress;
-		},
-		// 设置音乐试听结束
-		setMusicTryEnd (state) {
-			state.audio.musicTryEnd = true;
-		},
-		// 设置音乐停止播放状态
-		setPlaying (state) {
-			state.playing = false;
-		},
-	// 曝光参数设置
-	    // 设置referer
-	    setReferer (state, obj) {
-	    	state.referer = obj.referer;
-	    }
+			}
+		} else {
+			state.showCardModal = true;
+			play.syncProgress(state.readAudio.readId, state.readAudio.courseId, state.readCurrentTime)
+			state.audioelement.load()
+			state.audioelement.pause()
+		}	
+	},
+	setCurrentTime (state, obj) {
+		state.readCurrentTime = obj.time
+	},
+	setReadDuration (state, obj) {
+		state.readDuration = obj.duration
+	},
+	// 设置音乐是否正在加载
+	setReadLoadStart (state, obj) {
+		state.readLoadStart = obj.isloadstart;
+	},
+	// 设置音乐停止播放状态
+	setPlaying (state) {
+		state.readPlaying = false;
+	},
+	// 重置打卡弹窗
+	resetShowCardModal (state) {
+		state.showCardModal = false;
+	},
+    // 曝光参数设置
+    // 设置referer
+    setReferer (state, obj) {
+    	state.referer = obj.referer;
+    },
+    setBottomNavType(state, obj) {
+      state.bottomNavType = obj.bottomNavType;
+    },
+    setBottomNavToggle(state, obj) {
+      state.bottomNavToggle = obj.bottomNavToggle;
+    }
 }
+

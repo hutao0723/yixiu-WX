@@ -1,13 +1,13 @@
 <template>
   <div class="audio-list">
-    <div v-for="item in list">
+    <div v-for="item in readList">
       <div class="audio-item row-between" @click="playAudio(item)">
-        <div class="row-center" :class="!(audio.courseId === item.id) ? 'icon-paused' : 'icon-play'">
-          <img class="wave-icon" src="../../images/audio.svg" v-if="audio.courseId == item.id" />
-          <i class="iconfont icon-bofang" v-else></i>
+        <div class="row-center icon-on">
+          <!-- <img class="wave-icon" src="../../images/audio.svg" v-if="readAudio.courseId == item.id" /> -->
+          <i :class="readAudio.courseId == item.id ? 'iconfont icon-wave' : 'iconfont icon-play'"></i>
         </div>
         <div class="content-bar column-between">
-          <span class="lg line1" :class="!(audio.courseId === item.id) ? 'strong' : 'soft'">{{item.title}}</span>
+          <span class="lg line1 strong title">{{item.title}}</span>
           <div class="info-bar row-between">
             <div class="duration">
               <i class="iconfont icon-clock mr10"></i>
@@ -29,44 +29,20 @@ import play from '../../api/play';
 import access from '../../mixins/accessHandler';
 export default {
   computed: {
-    ...mapState(['audio'])
+    ...mapState(['readAudio','readList'])
   },
   data () {
     return {
-      list:[]
     };
   },
-  async mounted () {
-    if (!this.audio.columnId) {
-        // 单课程列表
-        let objs = await order.getCourseDetail(this.audio.courseId);
-        this.list = [objs]
-      } else {
-        let objs = await order.getColumnList(this.audio.columnId);
-        this.list = objs.filter((item) => {
-          return item.powerLevel == 1 || item.freeTime > 0;
-        });
-      }
-      this.list.forEach((item) => {
-        item.duration = play.fmtTime(+item.timeLength);
-        let percent = Math.floor((+item.playbackProgress ? +item.playbackProgress : 0) / +item.timeLength * 100);
-        item.percent = (percent > 100 ? 100 : percent) + "%";
-      })
-      console.log(this.list)
-      setTimeout(()=>{
-      const msg = {
-          title: this.audio.title,
-          desc: this.audio.subTitle,
-          link: this.audio.courseId ? 'http://k.youfen666dev.com/#/course/' + this.audio.courseId:false ||this.audio.columnId ? 'http://k.youfen666dev.com/#/column/' + this.audio.columnId:false ,
-          imgUrl: this.audio.lateralCover || this.audio.verticalCover ||
-            'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
-        }
-        this.wxShare(msg)
-    },3000)
+  mounted () {
+    // 更新播放列表数据
+    play.getReadList(this.readAudio.readId)
   },
   methods: {
     playAudio(item) {
-      play.startAudio(this.audio.columnId,item.id,'init');
+      // 播放某一课程
+      play.audioInit(item.readId, item.id, false);
       this.$router.go(-1);
     }
   },
@@ -84,39 +60,27 @@ export default {
       width: 690/@rem;
       height: 142/@rem;
       border-bottom: @border;
-      .icon-play {
+      .icon-on {
         width: 54/@rem;
         height: 54/@rem;
-        background: @color-soft;
+        border: 1px solid @color-soft;
         border-radius: 50%;
-        .wave-icon {
-          width: 45/@rem
-        }
         .iconfont {
-          color: white;
+          color: @color-soft;
           font-size: 22/@rem;
         }
-        ;
+        .icon-wave {
+          color: @color-main;
+        }
       }
-      .icon-paused {
-        width: 54/@rem;
-        height: 54/@rem;
-        background: rgba(170, 170, 170, 1);
-        box-shadow: 0px 2px 4px 0px rgba(214, 214, 214, 0.5);
-        border-radius: 50%;
-        .iconfont {
-          color: white;
-          font-size: 22/@rem;
-        }
-        ;
       }
       .content-bar {
         width: 626/@rem;
         height: 92/@rem;
         padding-left: 20/@rem;
         box-sizing: border-box;
-        text.onplay {
-          color: #fff
+        .title{
+          font-weight: bold;
         }
         .info-bar {
           width: 100%;
@@ -134,5 +98,4 @@ export default {
         }
       }
     }
-  }
 </style>

@@ -86,18 +86,25 @@ export default {
       return this.timerFomart(this.musicDuration)
     }
   },
-  mounted () {
+  async mounted () {
+    let self = this;
     setTimeout(()=>{
       const msg = {
           title: this.audio.title,
           desc: this.audio.subTitle,
-          link: this.audio.courseId ? 'http://k.youfen666dev.com/#/course/' + this.audio.courseId:false ||this.audio.columnId ? 'http://k.youfen666dev.com/#/column/' + this.audio.columnId:false ,
+          link: this.audio.courseId ? 'http://k.youfen666test.com/knowledge.html#/home/index?jumpType=course&jumpId=' + this.audio.courseId:false ||this.audio.columnId ? 'http://k.youfen666test.com/knowledge.html#/home/index?jumpType=column&jumpId=' + this.audio.columnId:false ,
           imgUrl: this.audio.lateralCover || this.audio.verticalCover ||
-            'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
+            'https:https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }
         this.wxShare(msg)
     },3000)
     if (!store.getters.getAudioElement.getAttribute('src')) {
+      let src = await play.getAudioUrl(this.audio.columnId, this.audio.courseId);
+      this.audio.src = src;
+      store.commit({
+        type: 'setAudio',
+        audio: self.audio
+      });
       store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
       store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title);
     }
@@ -116,7 +123,12 @@ export default {
       this.shareToggle = false;
     },
     audioPrev () {
-      play.startAudio(this.audio.columnId, this.audio.courseId, 'prev')
+      if (this.audio.columnId) {
+        if (this.audio.powerLevel) play.syncProgress(this.audio.columnId,this.audio.courseId,store.getters.getCurrentTime)
+      } else {
+        if (this.audio.powerLevel && this.audio.price) play.syncProgress(this.audio.columnId,this.audio.courseId,store.getters.getCurrentTime)
+      }
+      if (this.audio.isPrev) play.startAudio(this.audio.columnId, this.audio.courseId, 'prev')
     },  
     togglePlay() {
       if (!this.audio.musicTryEnd) {
@@ -124,7 +136,12 @@ export default {
       }
     },
     audioNext (){
-      play.startAudio(this.audio.columnId, this.audio.courseId, 'next')
+      if (this.audio.columnId) {
+        if (this.audio.powerLevel) play.syncProgress(this.audio.columnId,this.audio.courseId,store.getters.getCurrentTime)
+      } else {
+        if (this.audio.powerLevel && this.audio.price) play.syncProgress(this.audio.columnId,this.audio.courseId,store.getters.getCurrentTime)
+      }
+      if (this.audio.isNext) play.startAudio(this.audio.columnId, this.audio.courseId, 'next')
     },
     goPay(){
         order.buy(this.audio.columnId?this.audio.columnId:this.audio.courseId, this.audio.columnId?2:1)
@@ -163,7 +180,7 @@ export default {
         width: 360/@rem;
         height: 468/@rem;
         display: block;
-        margin: 40/@rem auto 0;
+        margin: 60/@rem auto 0;
         box-shadow: -5/@rem 0/@rem 10/@rem 4/@rem rgba(225,225,225,0.5);
         border-radius: 10/@rem;
       }
@@ -180,6 +197,7 @@ export default {
         text-align: center;
         display: block;
         bottom: 45/@rem;
+        font-weight: bold;
       }
     }
     .controler{
@@ -265,7 +283,7 @@ export default {
           border: none;
           .iconfont{
             width: 36/@rem;
-            height: 36/@rem;
+            height: 16/@rem;
             font-size: 36/@rem;
             color: #666666;
           }
