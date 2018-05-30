@@ -1,54 +1,56 @@
 <template>
-  <div class="journey-main">
-    <div v-if="!noData">
-      <div class="module" v-for="(item, $index) in journeyList">
-        <div class="date">{{item.releaseTime}}</div>
-        <div class="text-box">
-          <div class="text-journal" v-if="item.diploma"><span>{{item.readName}}{{item.readStageNum}}期毕业</span>
+  <div class="main">
+    <div class="journey-main">
+      <div v-if="!noData">
+        <div class="module" v-for="(item, $index) in journeyList" :style="item.content?'':'display:none'">
+          <div class="date">{{item.releaseTime}}</div>
+          <div class="text-box">
+            <div class="text-journal" v-if="item.diploma"><span>{{item.readName}}{{item.readStageNum}}期毕业</span>
 
-            <router-link :to="{ path: '/look/' + item.readId}"><span class="look">查看证书></span></router-link>
-          </div>
-          <div class="text-container clearfix">
-            <div class="container">
-              <div  class="content" ref="cheight" :class="item.expand?'h131':''">{{item.content}}</div>
-              <div v-if="item.line"> 
-                <div class="letter" v-if="(item.letter == 1 )&& (item.expand)" @click.stop="handleChange(item)">全部</div>
-                <div class="letter" v-if="(item.letter == 2 )&& (!item.expand)" @click.stop="handleChange(item)">收起</div>
-              </div>
+              <router-link :to="{ path: '/look/' + item.readId}"><span class="look">查看证书></span></router-link>
             </div>
-            <div class="clearfix book" :class="item.content?'btop':''">
-              <div class="fl book-img"><img :src="item.courseUrl"></div>
-              <div class="book-content">
-                <div class="book-title">{{item.courseTitle}}</div>
-                <div class="book-writer">{{item.courseAuthor}}</div>
-              </div>
-            </div>
-            <div class="row operate fr">
-              <router-link :to="{ path: '/poster/' + item.id}">
-                <div class="column-center operate-share">
-                  <i class="iconfont icon-share"></i>
+            <div class="text-container clearfix">
+              <div class="container">
+                <div  class="content" ref="cheight" :class="item.expand?'h131':''">{{item.content}}</div>
+                <div v-if="item.line"> 
+                  <div class="letter" v-if="(item.letter == 1 )&& (item.expand)" @click.stop="handleChange(item)">全部</div>
+                  <div class="letter" v-if="(item.letter == 2 )&& (!item.expand)" @click.stop="handleChange(item)">收起</div>
                 </div>
-              </router-link>
-              <div class="row">
-                <span class="operate-num">{{item.praiseCount}}</span>
               </div>
-              <div class="column-center" @click.stop="thumbsUp(item,$index)">
-                <i class="iconfont icon-heart" :class="(item.userPraise==0) ? '':'zan' "></i>
+              <div class="clearfix book" :class="item.content?'btop':''">
+                <div class="fl book-img"><img :src="item.courseUrl"></div>
+                <div class="book-content">
+                  <div class="book-title">{{item.courseTitle}}</div>
+                  <div class="book-writer">{{item.courseAuthor}}</div>
+                </div>
+              </div>
+              <div class="row operate fr">
+                <router-link :to="{ path: '/poster/' + item.id}">
+                  <div class="column-center operate-share">
+                    <i class="iconfont icon-share"></i>
+                  </div>
+                </router-link>
+                <div class="row">
+                  <span class="operate-num">{{item.praiseCount}}</span>
+                </div>
+                <div class="column-center" @click.stop="thumbsUp(item,$index)">
+                  <i class="iconfont icon-heart" :class="(item.userPraise==0) ? '':'zan' "></i>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div v-else>
-      <div class="no-shelf">
-        <div class="shelf-container">
-          <img src="https://yun.dui88.com/yoofans/images/201805/read/past.png">
+      <div v-else>
+        <div class="no-shelf">
+          <div class="shelf-container">
+            <img src="https://yun.dui88.com/yoofans/images/201805/read/journey.png">
+          </div>
+          <div class="shelf-word">快去写感想，丰富你的历程~</div>
         </div>
-        <div class="shelf-word">啊哦，暂无历程哟~</div>
       </div>
+      <AudioBar/>
     </div>
-    <AudioBar/>
   </div>
 </template>
 
@@ -170,6 +172,17 @@ export default {
 @import '../../less/variable';
 @import '../../less/base';
 @import '../../less/icon';
+.main{
+  width: 750/@rem;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
 .journey-main{
   padding: 41/@rem 33/@rem 0 50/@rem;
   .module{
@@ -299,7 +312,7 @@ export default {
         width: 310/@rem;
         height: 310/@rem;
         display: block;
-        margin: 100/@rem auto 50/@rem;
+        margin: 90/@rem auto 50/@rem;
       }
     }
     .shelf-word{

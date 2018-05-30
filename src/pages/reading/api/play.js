@@ -1,5 +1,4 @@
 import base from './base';
-import list from './audio_list';
 import store from '../vuex/store'
 export default class play extends base {
 
@@ -14,20 +13,30 @@ export default class play extends base {
     return res.body.data;
   }
   
-  
   /**
-   * 同步播放次数
+   * 获取文稿
+   */
+  static async getCourseSketch(courseId) {
+    const url = `/course/getCourseSketch`;
+    let params = { courseId }
+    const res = await this.get(url, {params});
+    return res.body.data;
+  } 
+
+  /**
+   * 同步播放时间
    */
   static async syncPlaytimes(courseId) {
-    const url = `/course/playTimesIncrement`;
-    this.post(url, {courseId});
+    const url = `/user/stat/changeListens`;
+    this.post(url);
   }
 
   /**
    * 同步播放进度
    */
-  static async syncProgress(courseId, current) {
+  static async syncProgress(readId, courseId, current) {
     let params = {
+      readId,
       itemId: courseId,
       playbackProgress: current
     }
