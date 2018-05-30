@@ -12,12 +12,12 @@
           <div class="dateView" v-for="(item3,index) in days[index1]" :key="index" @click="clickDay(index1,index,item3)">
             <a href="javascript:;" >
               <div class="datesView" :class="[
-              {'isClock':item3.isClock&&item3.afterToday},
+              {'isClock':item3.isClock},
               {'isClick':item3.isClick},
               {'isToday':item3.isToday&&item3.isClick},
               {'isRange':item3.isRange},
               {'isNotClock':item3.isRange&&!item3.isClock&&item3.afterToday},
-              {'borderClick':item3.afterToday&&item3.isClick}]">
+              {'borderClick':item3.isClick&&item3.afterToday||item3.isClick&&item3.isToday}]">
                 <template v-if="_month == item1.cur_month&&index == today-1">今</template>
                 <template v-else>{{item3.index+1}}</template>
               </div>
@@ -88,7 +88,6 @@
           }
         }
         _this.caledarArr = caledarArr
-        console.log(caledarArr)
 
         /**月 */
         this.nowYear = cur_year;
@@ -108,7 +107,6 @@
           this.calculateDays(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
 
           if(_this.caledarArr[i].cur_month==_this._month){ //默认选中当天
-            console.log(_this.days[i][_this.today-1])
             _this.clickDay(i,_this.today-1,_this.days[i][_this.today-1])
           }
         }
@@ -159,7 +157,6 @@
         if(month==_this.cur_month){ //当天
           days[_this.today-1].isToday = true;
         }
-        console.log(days[_this.today-1])
         for(let i= 0;i<days.length;i++){  //循环对比 对应打卡状态
           for(let j = 0;j < _this.calendarDate.length; j++){
             if(month == _this.calendarDate[j].date.split('-')[1] && i == (_this.calendarDate[j].date.split('-')[2]-1)&&_this.calendarDate[j].clockState){
@@ -182,7 +179,6 @@
 
           }
         }
-        console.log(days)
         this.days.push(days);
       }
     }
@@ -201,8 +197,8 @@
       color:#333 ;
     }
     .isClock{ /*已打卡style*/
-      background: #9688FF;
-      color:#fff ;
+      background: #9688FF !important;
+      color:#fff !important;
     }
     .isNotClock{  /*未打卡style*/
       background: #E8E8E8;
