@@ -86,7 +86,6 @@ import { mapState } from 'vuex'
     height: 70/@rem;
     padding: 15/@rem 0;
     background-color: #FFFFFF;
-    // box-shadow: 0 -5/@rem 5/@rem 0 rgba(150, 150, 150, 0.1);
     border-top: 1/@rem solid #E5E5E5;
     font-size: 22/@rem;
     ul {
@@ -109,7 +108,6 @@ import { mapState } from 'vuex'
             content: '';
             width: 28/@rem;
             height: 8/@rem;
-            border-radius: 100%;
             background-color: @color-main;
             position: absolute;
             bottom: 4/@rem;

@@ -133,7 +133,7 @@ export default {
       return mm + ':' + ss;
     }
   },
-  components:{ range},
+  components:{ range },
   mixins: [access]
 };
 </script>
