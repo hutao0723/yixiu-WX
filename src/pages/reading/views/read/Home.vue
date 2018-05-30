@@ -11,51 +11,65 @@
           <span :class="{ active: !tabActive}">课程</span>
         </div>
       </div>
-      <div v-show="tabActive">
-        <div class="home-content"><img src="http://yun.dui88.com/youfen/images/read_detail.jpg" alt=""></div>
-        <div class="home-review" v-if="reviewList.length> 0">
-          <h2>学员观点</h2>
-          <div class="item" v-for="(item,index) in reviewList" :key="index">
-            <img :src="item.userImgUrl" alt="" class="item-header">
-            <div class="item-name">{{item.userNickname}}</div>
-            <div class="item-periods">{{item.readName}}第{{item.readStageNum}}学员</div>
-            <div class="item-content">{{item.readName}}</div>
-            <div class="item-book">
-              <div class="book-bg">
-                <img class="book-img" :src="item.courseUrl" alt="">
+      <div class="home-bottom" @click="tabActive = false" :style="{bottom:bottomNavToggle?'100px':'0px'}">去选课程</div>
+      <div class="home-wechat" v-if="pageStatus == 2">
+        <p class="text-a">
+          <i class="iconfont icon-chenggong">&#xe608;</i>您已成功报名</p>
+        <p class="text-b">长按识别二维码</p>
+        <p class="text-c">关注公众号，去等待开课</p>
+        <img src="http://yun.dui88.com/youfen/images/read_ewm.png" alt="">
+      </div>
+      <div class="home-test">
+        <div v-show="tabActive">
+          <div class="home-content">
+            <img src="http://yun.dui88.com/youfen/images/read_detail.jpg" alt="">
+          </div>
+          <div class="home-review" v-if="reviewList.length> 0">
+            <h2>学员观点</h2>
+            <div class="item" v-for="(item,index) in reviewList" :key="index">
+              <img :src="item.userImgUrl" alt="" class="item-header">
+              <div class="item-name">{{item.userNickname}}</div>
+              <div class="item-periods">{{item.readName}}第{{item.readStageNum}}学员</div>
+              <div class="item-content">{{item.readName}}</div>
+              <div class="item-book">
+                <div class="book-bg">
+                  <img class="book-img" :src="item.courseUrl" alt="">
+                </div>
+
+                <div class="book-name otw">{{item.courseTitle}}</div>
+                <div class="book-author otw">{{item.courseAuthor}} 著</div>
+              </div>
+              <div class="item-bottom">
+                <span @click="getCommentPraise(item.id,item.userPraise)" v-if="pageStatus != 0">
+                  <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
+                  <span class="fr">{{item.praiseCount}}</span>
+                </span>
+                <!-- <router-link :to="{ path: '/poster/' + item.id}" tag="a" class="iconfont icon-share fr"></router-link> -->
+                <span>{{item.releaseTime| timeTransition}}</span>
               </div>
 
-              <div class="book-name otw">{{item.courseTitle}}</div>
-              <div class="book-author otw">{{item.courseAuthor}} 著</div>
             </div>
-            <div class="item-bottom">
-              <span @click="getCommentPraise(item.id,item.userPraise)" v-if="pageStatus != 0">
-                <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
-                <span class="fr">{{item.praiseCount}}</span>
-              </span>
-              <!-- <router-link :to="{ path: '/poster/' + item.id}" tag="a" class="iconfont icon-share fr"></router-link> -->
-              <span>{{item.releaseTime| timeTransition}}</span>
-            </div>
-
           </div>
         </div>
-        <div class="home-bottom" @click="tabActive = false" :style="{bottom:bottomNavToggle?'100px':'0px'}">去选课程</div>
+
       </div>
 
       <div v-show="!tabActive">
         <div class="home-course">
-          <div class="item" v-for="(item,index) in readList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
-            @click="selectCourse(item)">
-            <div class="item-box">
-              <div class="item-top">
-                <div class="item-none" v-if="item.purchased"></div>
-                <div class="item-name">{{item.title}}</div>
-                <div class="item-msg">第{{item.stageNum}}期 | {{item.beginDate}}（{{item.beginDateWeek}}）开课</div>
-                <div class="item-num">报名{{item.orderCount}}人</div>
-                <div class="item-btn">{{selectCourseId == item.readId?'已选':'选择'}}</div>
-              </div>
-              <div class="item-bottom">
-                <p v-html="item.briefer"></p>
+          <div class="home-test">
+            <div class="item" v-for="(item,index) in readList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
+              @click="selectCourse(item)">
+              <div class="item-box">
+                <div class="item-top">
+                  <div class="item-none" v-if="item.purchased"></div>
+                  <div class="item-name">{{item.title}}</div>
+                  <div class="item-msg">第{{item.stageNum}}期 | {{item.beginDate}}（{{item.beginDateWeek}}）开课</div>
+                  <div class="item-num">报名{{item.orderCount}}人</div>
+                  <div class="item-btn">{{selectCourseId == item.readId?'已选':'选择'}}</div>
+                </div>
+                <div class="item-bottom">
+                  <p v-html="item.briefer"></p>
+                </div>
               </div>
             </div>
           </div>
@@ -69,13 +83,7 @@
       </div>
 
     </div>
-    <div class="home-wechat" v-if="pageStatus == 2">
-      <p class="text-a">
-        <i class="iconfont icon-chenggong">&#xe608;</i>您已成功报名</p>
-      <p class="text-b">长按识别二维码</p>
-      <p class="text-c">关注公众号，去等待开课</p>
-      <img src="http://yun.dui88.com/youfen/images/read_ewm.png" alt="">
-    </div>
+
 
     <!-- 未开课 -->
     <div class="home-nonevent" v-if="pageStatus == 3">
@@ -95,6 +103,7 @@
     </div>
 
     <div class="home-already" v-if="pageStatus == 4">
+      <AudioBar/>
       <h2>今日学习
         <span> | 第{{todayBookDetail.days}}/{{todayBookDetail.totalDays}}天</span>
       </h2>
@@ -132,7 +141,6 @@
       </div>
     </div>
 
-    <!-- <AudioBar/> -->
   </div>
 </template>
 
@@ -342,14 +350,14 @@
         }
       }
 
-      store.commit({
-        type: 'setBottomNavToggle',
-        bottomNavToggle: false
-      })
-      store.commit({
-        type: 'setBottomNavType',
-        bottomNavType: false
-      })
+      // store.commit({
+      //   type: 'setBottomNavToggle',
+      //   bottomNavToggle: false
+      // })
+      // store.commit({
+      //   type: 'setBottomNavType',
+      //   bottomNavType: false
+      // })
       this.changeLoginDays();
       this.changeReadStatus();
 
@@ -384,7 +392,7 @@
       playAudio(id) {
         play.audioInit(this.readId, id, true)
         // 跳转到播放页
-        this.$route.push('/audio/index/1')
+        this.$router.push('/audio/index/1')
       },
       selectCourse(item) {
         if (this.selectCourseId != item.readId && !item.purchased) {
@@ -525,20 +533,20 @@
   .home-main {
     width: 750/@rem;
     height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: scroll;
     -webkit-overflow-scrolling: touch;
+    position: relative;
     background: #fff;
     font-size: 24/@rem;
     .icon-nav {
       height: 480/@rem;
       border: 1px solid #ccc;
     }
-    .home-box{
+    .home-test {
+      height: 100%;
+      overflow: scroll;
+    }
+    .home-box {
       padding-top: 108/@rem;
     }
     .home-tab {
@@ -547,6 +555,7 @@
       left: 0;
       width: 100%;
       background: #fff;
+      z-index: 999;
       .item {
         width: 50%;
         float: left;
@@ -564,8 +573,8 @@
         }
       }
     }
-    .home-content{
-      img{
+    .home-content {
+      img {
         display: block;
         width: 750/@rem;
         border-bottom: 20/@rem solid #f0f0f0;
@@ -643,7 +652,6 @@
         }
         .item-bottom {
           .size(22, 30);
-          font-size: 22/@rem!important;
           width: 100%;
           box-sizing: border-box;
           .iconfont {
@@ -837,7 +845,7 @@
         }
         .item-bottom {
           /* height: 230/@rem; */
-          font-size: 30/@rem;
+          font-size: 30/@rem  !important;
           line-height: 52/@rem;
           padding: 37/@rem 40/@rem;
         }
