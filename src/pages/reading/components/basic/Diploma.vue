@@ -5,7 +5,7 @@
       <div class="icon-tri share column-center" @click="close()">
           <i class="iconfont icon-close ear-icon"></i>
       </div>
-      <img src="https://yun.duiba.com.cn/yoofans/images/201805/read/diploma.png">
+      <div class="diploma-box"><img src="https://yun.duiba.com.cn/yoofans/images/201805/read/diploma.png"></div>
       <div class="btn" @click="know">查收证书</div>
     </div>
   </div>
@@ -56,6 +56,7 @@
   left: 50%;
   transform: translate(-50%,-50%);
   .icon-tri{
+    position: absolute;
     width: 50/@rem;
     height: 50/@rem;
     position: absolute;
@@ -68,13 +69,18 @@
     color: #fff;
     .fontSize(19);
   }
-  img{
-    display: block;
-    height: 400/@rem;
-    width: 440/@rem;
-    position: absolute;
-    top: 50/@rem;
+  .diploma-box{
+    img{
+      position: absolute;
+      display: block;
+      height: 440/@rem;
+      width: 440/@rem;
+      position: absolute;
+      top: 50/@rem;
+    }
+
   }
+  
   .btn{
     width: 100%;
     height: 78/@rem;
