@@ -49,8 +49,8 @@
           <div class="shelf-word">快去写感想，丰富你的历程~</div>
         </div>
       </div>
-      <AudioBar/>
     </div>
+    <AudioBar/>
   </div>
 </template>
 
