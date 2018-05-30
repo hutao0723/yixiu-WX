@@ -24,6 +24,16 @@ export default class play extends base {
   } 
 
   /**
+   * 获取打卡人数
+   */
+  static async getClockCount(readId, courseId) {
+    const url = `/comment/clockCount`;
+    let params = { readId, courseId }
+    const res = await this.get(url, {params});
+    return res.body.data;
+  } 
+
+  /**
    * 同步播放时间
    */
   static async syncPlaytimes(courseId) {
