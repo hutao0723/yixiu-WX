@@ -23,7 +23,7 @@
     methods: {
       close() {
         console.log('关闭')
-      }
+      },
       know() {
         this.$emit("success")
       }
