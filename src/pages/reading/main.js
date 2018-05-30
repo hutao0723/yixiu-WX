@@ -48,6 +48,7 @@ Vue.http.interceptors.push((request, next) => {
       if (response.url = '/order/submit') {
         let reqObj = JSON.parse(request.body)
         const url = encodeURIComponent(('/' + window.location.href.split('/').slice(3).join('/'))+ '?courseId=' +reqObj.itemId);
+        location.href = "/loginH5?dbredirect=" + url;
 
       }else{
         const url = encodeURIComponent(('/' + window.location.href.split('/').slice(3).join('/')));
@@ -66,7 +67,7 @@ Vue.prototype.wxShare = function () {
     link: 'http://k.youfen666test.com/reading.html#/index/home', // 分享链接 默认以当前链接
     imgUrl: 'http://yun.dui88.com/youfen/images/read_share.png', // 分享图标
   }
-  const urlData = `/api/wechat/getJsapiSignature`;
+  const urlData = `/wechat/getJsapiSignature`;
   const url = location.href.split("#")[0];
 
   Vue.http.get(urlData, {

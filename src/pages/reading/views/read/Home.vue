@@ -12,7 +12,7 @@
         </div>
       </div>
       <div v-show="tabActive">
-        <div class="home-content"></div>
+        <div class="home-content"><img src="http://yun.dui88.com/youfen/images/read_detail.jpg" alt=""></div>
         <div class="home-review" v-if="reviewList.length> 0">
           <h2>学员观点</h2>
           <div class="item" v-for="(item,index) in reviewList" :key="index">
@@ -538,7 +538,15 @@
       height: 480/@rem;
       border: 1px solid #ccc;
     }
+    .home-box{
+      padding-top: 108/@rem;
+    }
     .home-tab {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
       .item {
         width: 50%;
         float: left;
@@ -554,6 +562,13 @@
           color: #333;
           border-bottom: 6/@rem solid #333;
         }
+      }
+    }
+    .home-content{
+      img{
+        display: block;
+        width: 750/@rem;
+        border-bottom: 20/@rem solid #f0f0f0;
       }
     }
     .home-review {
@@ -628,9 +643,7 @@
         }
         .item-bottom {
           .size(22, 30);
-          /* position: absolute; */
-          /* bottom: 30/@rem; */
-          /* left: 0; */
+          font-size: 22/@rem!important;
           width: 100%;
           box-sizing: border-box;
           .iconfont {
