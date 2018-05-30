@@ -37,7 +37,7 @@ Vue.use(VueLazyload, {
   }
 });
 Vue.http.headers.common['from'] = 'read';
-Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWU3mytFEThAbUxgYoDsLSGVdXwpPoDchZnGyMnEVTKiS3QcAZ2Ht9pH8sRbLgX6CQVxH6ZszUt6pLDTdFDNYq8EpDs27xWbyhrFM6Qyr7d5gq3HCZKumRZVy3YKapJYDsivP8RgBwrZ';
+// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWU3mytFEThAbUxgYoDsLSGVdXwpPoDchZnGyMnEVTKiS3QcAZ2Ht9pH8sRbLgX6CQVxH6ZszUt6pLDTdFDNYq8EpDs27xWbyhrFM6Qyr7d5gq3HCZKumRZVy3YKapJYDsivP8RgBwrZ';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
@@ -48,7 +48,7 @@ Vue.http.interceptors.push((request, next) => {
       if (response.url = '/order/submit') {
         let reqObj = JSON.parse(request.body)
         let o = '/' + window.location.href.split('/').slice(3).join('/')
-        const url = encodeURIComponent(o)+ (o.indexOf("？")?'&courseId=' +reqObj.itemId:'?courseId=' +reqObj.itemId);
+        const url = encodeURIComponent(o)+ (o.indexOf("？")> -1?'&courseId=' +reqObj.itemId:'?courseId=' +reqObj.itemId);
         location.href = "/loginH5?dbredirect=" + url;
       }else{
         const url = encodeURIComponent();
