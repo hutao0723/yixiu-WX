@@ -2,7 +2,7 @@
   <div class="main">
     <div class="journey-main">
       <div v-if="!noData">
-        <div class="module" v-for="(item, $index) in journeyList">
+        <div class="module" v-for="(item, $index) in journeyList" :style="item.content?'':'display:none'">
           <div class="date">{{item.releaseTime}}</div>
           <div class="text-box">
             <div class="text-journal" v-if="item.diploma"><span>{{item.readName}}{{item.readStageNum}}期毕业</span>

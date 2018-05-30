@@ -3,10 +3,10 @@
     <div class="mint-swipe-items-wrap" ref="wrap">
       <slot></slot>
     </div>
-    <div class="mint-swipe-indicators" v-show="showIndicators">
+    <!-- <div class="mint-swipe-indicators" v-show="showIndicators">
       <div class="mint-swipe-indicator"  v-for="(page, $index) in pages" :class="{ 'is-active': $index === index }">
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -464,26 +464,18 @@
     display: inline-block;
     box-sizing: border-box;
   }
-  .mint-swipe-items-wrap > div {
-    position: absolute;
-    -webkit-transform: translateX(-100%);
-    transform: translateX(-100%);
-    width: 750/@rem;
-    height: 100%;
-    // display: none
-  }
   .mint-swipe-items-wrap > div.is-active {
     display: block;
     -webkit-transform: none;
     transform: none;
   }
-  .mint-swipe-items-wrap>div {
+  .mint-swipe-items-wrap > div {
     position: absolute;
-    -webkit-transform: translateX(-100%);
-    transform: translateX(-100%);
-    width: 750/@rem;
+    -webkit-transform: translateX(99%);
+    transform: translateX(99%);
+    // width: 750/@rem;
     height: 100%;
-    display: none;
+    // display: none;
     a, img {
       width: 665/@rem;
       height: 260/@rem;
