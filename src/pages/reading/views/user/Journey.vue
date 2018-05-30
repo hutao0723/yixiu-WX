@@ -69,7 +69,10 @@ export default {
       // contentHeight: 130,
       noData: false,
       journeyList: [],
-      expandStatus: []
+      expandStatus: [],
+
+      // 统计内容为空的数据条数
+      contentNum: 0
     };
   },
   computed: {
@@ -85,7 +88,7 @@ export default {
     async getJourneyInfo (){
       let objs = await user.getJourneyList();
       if (objs.success) {
-        this.journeyList = objs.data;
+        this.journeyList = objs.data
         if(!this.journeyList.length) {
           this.noData = true
           return
@@ -118,6 +121,16 @@ export default {
     },
     init() {  
       if(!this.journeyList.length) {
+        this.noData = true
+        return
+      }
+      this.journeyList.forEach((item,index)=>{
+          // 获取时间
+        if(!this.journeyList[index].content){
+          this.contentNum += 1
+        }
+      })
+      if(this.contentNum == this.journeyList.length ){
         this.noData = true
         return
       }
