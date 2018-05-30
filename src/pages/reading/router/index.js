@@ -33,7 +33,6 @@ export default new Router({
       },
       {
         path: '/index/card',
-        //path: '/index/card/:readId',
         component: function (resolve) {
           require.ensure([], function () {
             resolve(require('../views/card/Card'));
@@ -99,7 +98,7 @@ export default new Router({
       }
     },
     {
-      path: '/audio/index',
+      path: '/audio/index/:type',
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../views/audio/Index'));
