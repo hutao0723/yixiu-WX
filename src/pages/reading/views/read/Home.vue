@@ -13,7 +13,7 @@
       </div>
       <div v-show="tabActive">
         <div class="home-content"></div>
-        <div class="home-review">
+        <div class="home-review" v-if="reviewList.length> 0">
           <h2>学员观点</h2>
           <div class="item" v-for="(item,index) in reviewList" :key="index">
             <img :src="item.userImgUrl" alt="" class="item-header">
@@ -89,7 +89,7 @@
       <div class="ewm-bg">
         <img :src="courseDetail.teacherWxQrcodeUrl" alt="">
       </div>
-      <p class="text-f">{{courseDetail.userNickname}}</p>
+      <!-- <p class="text-f">{{courseDetail.userNickname}}</p> -->
       <p class="text-g">微信添加老师后，你的专属老师会在课程</br>开始前邀请你进入对应班级群</p>
       <p class="text-h">关注微信公众号【一修读书】，点击</br>菜单栏“我的老师”添加</p>
     </div>
@@ -159,7 +159,7 @@
         alertToggle: false,
         readId: '',
 
-        pageStatus: 0, // 页面状态
+        pageStatus: 10, // 页面状态
 
         selectCourseId: 0, // 已选课程
         selectCourseObj: {},
@@ -228,7 +228,7 @@
     async mounted() {
       console.log(this.$route.query)
       // 如果是支付流程直接支付
-      if(this.$route.query.courseId){
+      if (this.$route.query.courseId) {
         order.buy(this.$route.query.courseId, 4)
       }
       this.wxShare();
@@ -280,7 +280,7 @@
           this.tabActive = userState.data.readState != 4
           store.commit({
             type: 'setBottomNavToggle',
-            bottomNavToggle: false
+            bottomNavToggle: true
           })
           store.commit({
             type: 'setBottomNavType',
@@ -299,7 +299,7 @@
           this.pageStatus = 3;
           store.commit({
             type: 'setBottomNavToggle',
-            bottomNavToggle: false
+            bottomNavToggle: true
           })
           store.commit({
             type: 'setBottomNavType',
@@ -316,11 +316,11 @@
           this.pageStatus = 4;
           store.commit({
             type: 'setBottomNavToggle',
-            bottomNavToggle: false
+            bottomNavToggle: true
           })
           store.commit({
             type: 'setBottomNavType',
-            bottomNavType: false
+            bottomNavType: true
           })
         }
 
@@ -333,7 +333,7 @@
           this.pageStatus = 1;
           store.commit({
             type: 'setBottomNavToggle',
-            bottomNavToggle: false
+            bottomNavToggle: true
           })
           store.commit({
             type: 'setBottomNavType',
@@ -341,8 +341,43 @@
           })
         }
       }
+
+      store.commit({
+        type: 'setBottomNavToggle',
+        bottomNavToggle: false
+      })
+      store.commit({
+        type: 'setBottomNavType',
+        bottomNavType: false
+      })
+      this.changeLoginDays();
+      this.changeReadStatus();
+
     },
     methods: {
+
+      changeLoginDays() {
+        let self = this;
+        let params = {};
+        params = {}
+        const url = `/api/testurl/user/stat/changeLoginDays`;
+        this.$http.get(url, {
+          params
+        }).then((res) => {
+
+        });
+      },
+      changeReadStatus() {
+        let self = this;
+        let params = {};
+        params = {}
+        const url = `/api/testurl/user/stat/changeReadStatus`;
+        this.$http.get(url, {
+          params
+        }).then((res) => {
+
+        });
+      },
       orderPay() {
         order.buy(this.selectCourseId, 4)
       },
@@ -360,7 +395,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/read/detail`;
+        const url = `/api/testurl/user/read/detail`;
         const res = await this.$http.get(url, {
           params
         });
@@ -372,7 +407,7 @@
         params = {
 
         }
-        const url = `/user/read/state`;
+        const url = `/api/testurl/user/read/state`;
         const res = await this.$http.get(url, {
           params
         });
@@ -383,7 +418,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/comment/top`;
+        const url = `/api/testurl/comment/top`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -398,7 +433,7 @@
           status: status ? 0 : 1,
           commentId: id
         }
-        const url = `/comment/praise`;
+        const url = `/api/testurl/comment/praise`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -409,7 +444,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/read/readList`;
+        const url = `/api/testurl/read/readList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -437,7 +472,7 @@
           readId: this.readId,
           date: date,
         }
-        const url = `/readBookCourse/courseDetailByDate`;
+        const url = `/api/testurl/readBookCourse/courseDetailByDate`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -450,7 +485,7 @@
         params = {
           readId: this.readId,
         }
-        const url = `/readBook/bookList`;
+        const url = `/api/testurl/readBook/bookList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -464,7 +499,7 @@
           readId: this.readId,
           bookId: id,
         }
-        const url = `/readBookCourse/courseList`;
+        const url = `/api/testurl/readBookCourse/courseList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -693,33 +728,41 @@
           height: 210/@rem;
           position: relative;
           background: #FEED47;
-          .item-none{
-            .size(150,117);
+          .item-none {
+            .size(150, 117);
             position: absolute;
             right: 0;
             top: 0;
             background: url('http://yun.dui88.com/youfen/images/read_yz.png') no-repeat center;
-        background-size: 100% 100%; 
+            background-size: 100% 100%;
           }
           .item-name {
-            .pos(40, 22);
-            .text(44, 62);
+            .pos(40,
+            22);
+            .text(44,
+            62);
             color: #333;
             font-weight: blod;
           }
           .item-msg {
-            .pos(40, 103);
-            .text(26, 37);
+            .pos(40,
+            103);
+            .text(26,
+            37);
             color: #333;
           }
           .item-num {
-            .pos(40, 145);
-            .text(26, 37);
+            .pos(40,
+            145);
+            .text(26,
+            37);
             color: #333;
           }
           .item-btn {
-            .size(130, 56);
-            .text(32, 56);
+            .size(130,
+            56);
+            .text(32,
+            56);
             position: absolute;
             top: 115/@rem;
             right: 20/@rem;
@@ -747,22 +790,30 @@
         .item-top {
           height: 220/@rem;
           .item-name {
-            .pos(40, 22);
-            .text(48, 67);
+            .pos(40,
+            22);
+            .text(48,
+            67);
           }
           .item-msg {
-            .pos(40, 109);
-            .text(28, 40);
+            .pos(40,
+            109);
+            .text(28,
+            40);
             color: #333;
           }
           .item-num {
-            .pos(40, 157);
-            .text(28, 40);
+            .pos(40,
+            157);
+            .text(28,
+            40);
             color: #333;
           }
           .item-btn {
-            .size(130, 56);
-            .text(32, 56);
+            .size(130,
+            56);
+            .text(32,
+            56);
             position: absolute;
             top: 124/@rem;
             background: #FF4C4C;
@@ -800,33 +851,37 @@
     }
     .home-wechat {
       .text-a {
-        .text(40, 56);
+        .text(40,
+        56);
         font-weight: bold;
         text-align: center;
         padding-top: 65/@rem;
         color: #343434;
-        .icon-chenggong{
+        .icon-chenggong {
           font-size: 56/@rem;
-          line-height:56/@rem;
+          line-height: 56/@rem;
           color: #FFE555;
           margin-right: 24/@rem;
         }
       }
       .text-b {
-        .text(88, 123);
+        .text(88,
+        123);
         font-weight: bold;
         text-align: center;
         padding-top: 17/@rem;
         color: #343434;
       }
       .text-c {
-        .text(40, 56);
+        .text(40,
+        56);
         text-align: center;
         padding-top: 24/@rem;
         color: #666;
       }
       img {
-        .size(688, 688);
+        .size(688,
+        688);
         margin: 40/@rem auto;
         display: block;
       }
@@ -839,7 +894,7 @@
       .nonevent-box {
         height: 290/@rem;
         background: url('http://yun.dui88.com/youfen/images/read_bg.png') no-repeat center;
-        background-size: 100% 100%; 
+        background-size: 100% 100%;
         border-radius: 20/@rem;
         color: #333333;
         padding-top: 93/@rem;
@@ -863,7 +918,7 @@
       }
       .ewm-bg {
         background: url('http://yun.dui88.com/youfen/images/read_ewmborder.png') no-repeat center;
-        background-size: 100% 100%; 
+        background-size: 100% 100%;
         height: 326/@rem;
         width: 326/@rem;
         margin: 30/@rem auto;
