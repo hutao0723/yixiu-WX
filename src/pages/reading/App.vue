@@ -53,7 +53,8 @@ export default {
         type: 'setReadLoadStart',
         isloadstart: false
       })
-      if (this.$refs.audio.currentTime === 0) this.$refs.audio.currentTime = store.getters.getAudioInfo.playbackProgress;
+      if (this.$refs.audio.currentTime === 0 && store.getters.getAudioInfo.playbackProgress < store.getters.getMusicDuration) 
+        {this.$refs.audio.currentTime = store.getters.getAudioInfo.playbackProgress;}
     },
     // 音乐处于播放状态
     musicOnPlaying () {},

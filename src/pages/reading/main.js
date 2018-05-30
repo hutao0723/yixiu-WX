@@ -49,7 +49,6 @@ Vue.http.interceptors.push((request, next) => {
         let reqObj = JSON.parse(request.body)
         const url = encodeURIComponent(('/' + window.location.href.split('/').slice(3).join('/'))+ '?courseId=' +reqObj.itemId);
         location.href = "/loginH5?dbredirect=" + url;
-
       }else{
         const url = encodeURIComponent(('/' + window.location.href.split('/').slice(3).join('/')));
         location.href = "/loginH5?dbredirect=" + url;
@@ -123,10 +122,6 @@ Vue.prototype.wxShare = function () {
   });
 };
 
-router.beforeEach((to, from, next) => {
-  /* 路由发生变化修改页面title */
-  next()
-})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
