@@ -4,7 +4,7 @@
     <!-- 未买课 -->
 
     <div class="home-box" v-show="pageStatus == 1 || pageStatus == 0">
-      <div class="home-tab clearfix">
+      <div class="home-tab clearfix" id="hometab">
         <div class="item" @click="tabActive=true">
           <span :class="{ active: tabActive}">简介</span>
         </div>
@@ -20,17 +20,17 @@
         <span @click="orderPay" class="btn-pay">立即购买</span>
       </div>
       <div class="home-test" ref="homemain">
-        <div>
-          <div class="home-content">
+        <div id="homebox" class="home-th" :class="{active:tabActive}" v-show="tabActive">
+          <div class="home-content" id="homecontent">
             <img src="http://yun.dui88.com/youfen/images/read_detail.jpg" alt="">
           </div>
-          <div class="home-review" v-if="reviewList.length> 0">
+          <div class="home-review" v-if="reviewList.length> 0" id="homereview">
             <h2>学员观点</h2>
             <div class="item" v-for="(item,index) in reviewList" :key="index">
               <img :src="item.userImgUrl" alt="" class="item-header">
               <div class="item-name">{{item.userNickname}}</div>
-              <div class="item-periods">{{item.readName}}第{{item.readStageNum}}学员</div>
-              <div class="item-content">{{item.readName}}</div>
+              <div class="item-periods">{{item.readName}}第{{item.readStageNum}}期学员</div>
+              <div class="item-content">{{item.content}}</div>
               <div class="item-book">
                 <div class="book-bg">
                   <img class="book-img" :src="item.courseUrl" alt="">
@@ -51,7 +51,7 @@
             </div>
           </div>
         </div>
-        <div>
+        <div class="home-th" :class="{active:!tabActive}" v-show="!tabActive">
           <div class="home-course">
             <div class="item" v-for="(item,index) in readList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
               @click="selectCourse(item)">
@@ -149,6 +149,9 @@
   import {
     mapState
   } from 'vuex';
+
+
+
   export default {
     components: {
       AudioBar
@@ -172,6 +175,8 @@
         todayBookDetail: {}, // 今日书
         historyBookList: [], // 历史书
         courseList: [], // 书对应列表
+        offsetHeight: 0,
+        tabOffsetHeight: 0,
 
       };
     },
@@ -228,7 +233,23 @@
       },
     },
     created() {},
-    async mounted() { 
+    async mounted() {
+
+      setTimeout(() => {
+        var c = document.getElementById("homecontent");
+        var ch = c.offsetHeight; //高度
+        var r = document.getElementById("homereview");
+        var rh = r.offsetHeight; //高度
+        this.offsetHeight = ch + rh;
+
+        var tabo = document.getElementById("hometab");
+        var tabh = tabo.offsetHeight; //高度
+        this.tabOffsetHeight = tabh;
+        console.log(this.offsetHeight)
+      }, 300)
+
+
+
       // 如果是支付流程直接支付
       if (this.$route.query.dcd) {
         this.getDcd(this.$route.query.dcd)
@@ -367,11 +388,57 @@
     methods: {
 
       dispatchScroll(e) {
+        console.log('滚动了')
         console.log(this.$refs.homemain.scrollTop)
-        // if(this.$refs.homemain.scrollTop > 7000){
-        //   this.tabActive = false;
-        //   console.log('sadas')
-        // }
+        let self = this;
+        if (this.$refs.homemain.scrollTop > this.offsetHeight - document.body.clientHeight + this.tabOffsetHeight - 10) {
+          console.log('滑动到底部啦')
+
+          var startX = 0,
+            startY = 0,
+            isTrue = false;
+
+
+          function touchStart(evt) {
+            try {
+              var touch = evt.touches[0], //获取第一个触点
+                x = Number(touch.pageX), //页面触点X坐标
+                y = Number(touch.pageY); //页面触点Y坐标
+              //记录触点初始位置
+              startX = x;
+              startY = y;
+            } catch (e) {
+              console.log(e.message)
+            }
+          }
+
+          function touchMove(evt) {
+            try {
+              var touch = evt.touches[0], //获取第一个触点
+                x = Number(touch.pageX), //页面触点X坐标
+                y = Number(touch.pageY); //页面触点Y坐标
+              //判断滑动方向
+              if (startY - y > 300) {
+                console.log('下滑了！' + (y - startY));
+              } else {
+                console.log('上滑了！' + (y - startY));
+                isTrue = true;
+              }
+            } catch (e) {
+              console.log(e.message)
+            }
+          }
+
+          function touchEnd() {
+            if (isTrue)
+              self.tabActive = false;
+          }
+
+          //绑定事件
+          document.addEventListener('touchstart', touchStart, false);
+          document.addEventListener('touchmove', touchMove, false);
+          document.addEventListener('touchend', touchEnd, false);
+        }
       },
       getDcd(dcd) {
         let self = this;
@@ -379,7 +446,7 @@
         params = {
           dcd: dcd,
         }
-        const url = `/distribution/binding`;
+        const url = `/api/distribution/binding`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -390,7 +457,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/stat/changeLoginDays`;
+        const url = `/api/user/stat/changeLoginDays`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -401,7 +468,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/stat/changeReadStatus`;
+        const url = `/api/user/stat/changeReadStatus`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -426,7 +493,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/read/detail`;
+        const url = `/api/user/read/detail`;
         const res = await this.$http.get(url, {
           params
         });
@@ -438,7 +505,7 @@
         params = {
 
         }
-        const url = `/user/read/state`;
+        const url = `/api/user/read/state`;
         const res = await this.$http.get(url, {
           params
         });
@@ -449,7 +516,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/comment/top`;
+        const url = `/api/comment/top`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -464,7 +531,7 @@
           status: status ? 0 : 1,
           commentId: id
         }
-        const url = `/comment/praise`;
+        const url = `/api/comment/praise`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -475,7 +542,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/read/readList`;
+        const url = `/api/read/readList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -503,7 +570,7 @@
           readId: this.readId,
           date: date,
         }
-        const url = `/readBookCourse/courseDetailByDate`;
+        const url = `/api/readBookCourse/courseDetailByDate`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -516,7 +583,7 @@
         params = {
           readId: this.readId,
         }
-        const url = `/readBook/bookList`;
+        const url = `/api/readBook/bookList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -530,7 +597,7 @@
           readId: this.readId,
           bookId: id,
         }
-        const url = `/readBookCourse/courseList`;
+        const url = `/api/readBookCourse/courseList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -564,9 +631,27 @@
       height: 480/@rem;
       border: 1px solid #ccc;
     }
+    .home-th {
+      /* position: absolute;
+      overflow: hidden;
+      left: 0;
+      right: 0;
+      top: 100%; */
+      transition: top 0.25s ease;
+      -moz-transition: top 0.25s ease;
+      /* Firefox 4 */
+      -webkit-transition: top 0.25s ease;
+      /* Safari and Chrome */
+      -o-transition: top 0.25s ease;
+      /* Opera */
+      display: block;
+    }
+    .home-th.active {
+      top: 108/@rem;
+    }
     .home-test {
-      height: 100%;
-      overflow: scroll;
+      height: 300%;
+      overflow: hidden;
       padding-top: 108/@rem;
       box-sizing: border-box;
     }
@@ -632,6 +717,7 @@
       }
     }
     .home-content {
+      height: 100%;
       img {
         display: block;
         width: 750/@rem;
