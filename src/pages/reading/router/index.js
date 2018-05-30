@@ -58,7 +58,7 @@ export default new Router({
       }]
     },
     {
-      path: '/comment',
+      path: '/comment/:readId/:courseId',
       name:'comment',
       component: function (resolve) {
         require.ensure([], function () {

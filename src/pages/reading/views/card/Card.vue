@@ -29,8 +29,8 @@
         <div class="book-author">
           <span>{{courseDetail.author}}</span>
           <span class="book-btn" v-if="courseDetail.clockState==1&&courseDetail.commentState==1">查看</span>
-          <span class="book-btn" v-if="courseDetail.clockState==1&&courseDetail.commentState==0" @click="goComment(courseDetail)">写想法</span>
-          <span class="book-btn" v-if="courseDetail.clockState==0" @click="goComment(courseDetail)">去打卡</span>
+          <span class="book-btn" v-if="courseDetail.clockState==1&&courseDetail.commentState==0" @click="goComment()">写想法</span>
+          <span class="book-btn" v-if="courseDetail.clockState==0" @click="goComment()">去打卡</span>
         </div>
       </div>
       <div style="clear: both"></div>
@@ -108,8 +108,6 @@
       },
       getDate(msg){
         let _this = this
-
-
         if(msg.isRange){
           console.log('执行子组件时间')
           if(msg.dayNum){
@@ -150,9 +148,8 @@
           }
         })
       },
-      goComment(data){
-        let detail = JSON.stringify(data);
-        this.$router.push('/comment?data='+ detail)
+      goComment(){
+        this.$router.push({name:'comment',params:{readId:this.readId,courseId:this.courseId}})
       }
     }
   };
