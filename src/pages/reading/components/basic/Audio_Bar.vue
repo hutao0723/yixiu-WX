@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bar">
     <div class="audio-controler row"  @click="goAudioPage"> 
       <div class="right-bar row-around" style="background-repeat:no-repeat;background-size:100% 100%;" 
       :style="{backgroundImage:`url(${readAudio.lateralCover || readAudio.verticalCover || baseImg}`}" >
@@ -64,6 +64,9 @@ import { mapState } from 'vuex';
 </script>
 <style lang="less">
 @import url('../../less/variable.less');
+.bar{
+  position:fixed;
+}
 .audio-controler{
   @size: 90/@rem;
   position: fixed;

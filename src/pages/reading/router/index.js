@@ -122,7 +122,8 @@ export default new Router({
       }
     },
     {
-      path: '/poster',
+      path: '/poster/:commentId/:lastClock',
+      name:'poster',
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../views/poster/poster'));

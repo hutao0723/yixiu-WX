@@ -9,8 +9,7 @@ export default {
 	// 是否有在读课程
 	bottomNavToggle: true,
 	// audio信息
-	readAudio: {
-	},
+	readAudio: {},
 	// 是否正在播放
 	readPlaying: false,
 	// 是否正在加载

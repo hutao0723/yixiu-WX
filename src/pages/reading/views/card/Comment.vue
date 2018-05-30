@@ -67,7 +67,13 @@
           if(resp.success){
             console.log(resp.data)
             let commentId = resp.data.commentId;
-            let lastClock = resp.data.lastClock;
+            let lastClock;
+            if(resp.data.lastClock){
+              lastClock=1
+            }else{
+              lastClock=0
+            }
+            this.$router.push('/poster/'+commentId+'/'+lastClock)
           }
         })
       },

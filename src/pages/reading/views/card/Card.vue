@@ -28,9 +28,12 @@
         <div class="book-title">{{courseDetail.courseTitle}}</div>
         <div class="book-author">
           <span>{{courseDetail.author}}</span>
-          <span class="book-btn" v-if="courseDetail.clockState==1&&courseDetail.commentState==1">查看</span>
-          <span class="book-btn" v-if="courseDetail.clockState==1&&courseDetail.commentState==0" @click="goComment()">写想法</span>
-          <span class="book-btn" v-if="courseDetail.clockState==0" @click="goComment()">去打卡</span>
+          <span class="book-btn" v-if="afterToday||isToday">
+              <template  v-if="courseDetail.clockState==1&&courseDetail.commentState==1" @click="goPoster()">查看</template>
+              <template  v-if="courseDetail.clockState==1&&courseDetail.commentState==0" @click="goComment()">写想法</template>
+              <template  v-if="courseDetail.clockState==0" @click="goComment()">去打卡</template>
+          </span>
+
         </div>
       </div>
       <div style="clear: both"></div>
@@ -56,6 +59,7 @@
       return {
         readId:'', //阅读Id
         courseId:'', //课程Id
+        commentId:'',//观点id
         readInfo:'',//阅读状态
         readDetail:'',
         dayNum:'4',
@@ -64,6 +68,9 @@
         // 自定义星期名称
         weeks: ['日', '一', '二', '三', '四', '五', '六'],
         c_date:[],
+        lastClock:0,
+        afterToday:false,
+        isToday:false
       };
     },
     computed: {
@@ -88,7 +95,6 @@
       getReadStatus(){
         this.$http.get('/user/read/state').then(res =>{
           let resp = res.data;
-          console.log(resp)
           if(resp.success){
             this.readInfo = resp.data;
             this.readId = resp.data.readId;
@@ -101,7 +107,6 @@
           let resp = res.data;
           if(resp.success){
             this.readDetail = resp.data;
-            console.log(this.readDetail)
           }
 
         })
@@ -109,7 +114,10 @@
       getDate(msg){
         let _this = this
         if(msg.isRange){
+          console.log(msg)
           console.log('执行子组件时间')
+          _this.afterToday = msg.afterToday;
+          _this.isToday = msg.isToday;
           if(msg.dayNum){
             _this.dayNum = msg.dayNum;
           }
@@ -125,11 +133,11 @@
           let resp = res.data;
           if(resp.success){
             _this.c_date = resp.data;
-            console.log(_this.c_date)
           }
 
         })
       },
+
       //获取缺卡天数
       getLackClock(){
         let _this = this;
@@ -137,6 +145,7 @@
           let resp = res.data;
         })
       },
+
       //打卡课程详情
       getCourseDetail(date){
         let _this = this;
@@ -144,12 +153,19 @@
           let resp = res.data;
           if(resp.success){
             _this.courseDetail = resp.data;
-           // _this.courseDetail.clockDate =  date;
+            console.log(_this.courseDetail)
+            if( _this.courseDetail.commentId){
+              _this.commentId =  _this.courseDetail.commentId
+            }
           }
         })
       },
       goComment(){
         this.$router.push({name:'comment',params:{readId:this.readId,courseId:this.courseId}})
+      },
+      goPoster(){
+        console.log(this.commentId)
+        this.$router.push('/poster/'+this.commentId+'/0')
       }
     }
   };
@@ -157,6 +173,7 @@
 
 <style lang="less">
   @import '../../less/variable';
+
   .card-main {
     width: 750/@rem;
     height: 100%;
