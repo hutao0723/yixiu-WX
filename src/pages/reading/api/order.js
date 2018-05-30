@@ -23,7 +23,6 @@ export default class order extends base {
   }
 
 
-
   /**
    * 下单
    */
@@ -37,6 +36,11 @@ export default class order extends base {
       itemId,
       itemType
     });
+
+    if(!res.data.success){
+      location.href = '/reading.html#/index/home';
+      return false;
+    }
     return res.data.data;
   }
 

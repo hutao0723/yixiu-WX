@@ -1,8 +1,9 @@
 <template>
-  <div class="home-main" ref="homeMain">
+  <div class="home-main">
     <!-- <div @click="play">播放</div> -->
     <!-- 未买课 -->
-    <div class="home-box" v-if="pageStatus == 1 || pageStatus == 0">
+
+    <div class="home-box" v-show="pageStatus == 1 || pageStatus == 0">
       <div class="home-tab clearfix">
         <div class="item" @click="tabActive=true">
           <span :class="{ active: tabActive}">简介</span>
@@ -11,15 +12,14 @@
           <span :class="{ active: !tabActive}">课程</span>
         </div>
       </div>
-      <div class="home-bottom" @click="tabActive = false" :style="{bottom:bottomNavToggle?'100px':'0px'}">去选课程</div>
-      <div class="home-wechat" v-if="pageStatus == 2">
-        <p class="text-a">
-          <i class="iconfont icon-chenggong">&#xe608;</i>您已成功报名</p>
-        <p class="text-b">长按识别二维码</p>
-        <p class="text-c">关注公众号，去等待开课</p>
-        <img src="http://yun.dui88.com/youfen/images/read_ewm.png" alt="">
+      <div class="home-bottom" @click="tabActive = false" :style="{bottom:bottomNavToggle?'100px':'0px'}" v-show="tabActive">去选课程</div>
+      <div class="home-btn" :style="{bottom:bottomNavToggle?'100px':'0'}" v-show="!tabActive">
+        <p>
+          <span class="text-del">{{selectCourseObj.costPrice}}</span>
+          <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>元</p>
+        <span @click="orderPay" class="btn-pay">立即购买</span>
       </div>
-      <div class="home-test">
+      <div class="home-test" ref="homemain">
         <div v-show="tabActive">
           <div class="home-content">
             <img src="http://yun.dui88.com/youfen/images/read_detail.jpg" alt="">
@@ -51,12 +51,8 @@
             </div>
           </div>
         </div>
-
-      </div>
-
-      <div v-show="!tabActive">
-        <div class="home-course">
-          <div class="home-test">
+        <div v-show="!tabActive">
+          <div class="home-course">
             <div class="item" v-for="(item,index) in readList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
               @click="selectCourse(item)">
               <div class="item-box">
@@ -73,18 +69,17 @@
               </div>
             </div>
           </div>
-          <div class="home-btn" :style="{bottom:bottomNavToggle?'100px':'0'}">
-            <p>
-              <span class="text-del">{{selectCourseObj.costPrice}}</span>
-              <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>元</p>
-            <span @click="orderPay" class="btn-pay">立即购买</span>
-          </div>
         </div>
       </div>
-
     </div>
 
-
+    <div class="home-wechat" v-if="pageStatus == 2">
+      <p class="text-a">
+        <i class="iconfont icon-chenggong">&#xe608;</i>您已成功报名</p>
+      <p class="text-b">长按识别二维码</p>
+      <p class="text-c">关注公众号，去等待开课</p>
+      <img src="http://yun.dui88.com/youfen/images/read_ewm.png" alt="">
+    </div>
     <!-- 未开课 -->
     <div class="home-nonevent" v-if="pageStatus == 3">
       <div class="nonevent-box">
@@ -234,8 +229,10 @@
     },
     created() {},
     async mounted() {
-      console.log(this.$route.query)
       // 如果是支付流程直接支付
+      if (this.$route.query.dcd) {
+        this.getDcd(this.$route.query.dcd)
+      }
       if (this.$route.query.courseId) {
         order.buy(this.$route.query.courseId, 4)
       }
@@ -360,15 +357,40 @@
       // })
       this.changeLoginDays();
       this.changeReadStatus();
+      // window.addEventListener('scroll', this.handleScroll,true);
+      console.log(this.$refs)
+      console.log(this.$refs.homemain)
+      let self = this;
+      self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, true);
 
     },
     methods: {
 
+      dispatchScroll(e) {
+        console.log(this.$refs.homemain.scrollTop)
+        if(this.$refs.homemain.scrollTop == 6594){
+          this.tabActive = false;
+          console.log('sadas')
+        }
+      },
+      getDcd(dcd) {
+        let self = this;
+        let params = {};
+        params = {
+          dcd: dcd,
+        }
+        const url = `/api/distribution/binding`;
+        this.$http.get(url, {
+          params
+        }).then((res) => {
+
+        });
+      },
       changeLoginDays() {
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/stat/changeLoginDays`;
+        const url = `/api/user/stat/changeLoginDays`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -379,7 +401,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/stat/changeReadStatus`;
+        const url = `/api/user/stat/changeReadStatus`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -404,7 +426,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/read/detail`;
+        const url = `/api/user/read/detail`;
         const res = await this.$http.get(url, {
           params
         });
@@ -416,7 +438,7 @@
         params = {
 
         }
-        const url = `/user/read/state`;
+        const url = `/api/user/read/state`;
         const res = await this.$http.get(url, {
           params
         });
@@ -427,7 +449,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/comment/top`;
+        const url = `/api/comment/top`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -442,7 +464,7 @@
           status: status ? 0 : 1,
           commentId: id
         }
-        const url = `/comment/praise`;
+        const url = `/api/comment/praise`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -453,7 +475,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/read/readList`;
+        const url = `/api/read/readList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -481,7 +503,7 @@
           readId: this.readId,
           date: date,
         }
-        const url = `/readBookCourse/courseDetailByDate`;
+        const url = `/api/readBookCourse/courseDetailByDate`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -494,7 +516,7 @@
         params = {
           readId: this.readId,
         }
-        const url = `/readBook/bookList`;
+        const url = `/api/readBook/bookList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -508,7 +530,7 @@
           readId: this.readId,
           bookId: id,
         }
-        const url = `/readBookCourse/courseList`;
+        const url = `/api/readBookCourse/courseList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -545,9 +567,11 @@
     .home-test {
       height: 100%;
       overflow: scroll;
+      padding-top: 108/@rem;
+      box-sizing: border-box;
     }
     .home-box {
-      padding-top: 108/@rem;
+      height: 100%;
     }
     .home-tab {
       position: fixed;
@@ -571,6 +595,40 @@
           color: #333;
           border-bottom: 6/@rem solid #333;
         }
+      }
+    }
+    .home-btn {
+      .text(24, 100);
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      z-index: 999;
+      background: #fff;
+      color: #FF4C4C;
+      padding-left: 80/@rem;
+      padding-right: 386/@rem;
+      box-sizing: border-box;
+      text-align: right;
+      .text-del {
+        color: #777;
+        text-decoration: line-through;
+      }
+      .text-red {
+        font-size: 40/@rem;
+        margin-left: 20/@rem;
+        margin-right: 6/@rem;
+
+      }
+      .btn-pay {
+        .size(360, 100);
+        .text(40, 100);
+        position: absolute;
+        right: 0;
+        top: 0;
+        background: #FF4C4C;
+        color: #fff;
+        text-align: center;
       }
     }
     .home-content {
@@ -689,40 +747,7 @@
     .home-course {
       background: #f1f1f1;
       padding: 40/@rem 0 120/@rem 0;
-      .home-btn {
-        .text(24, 100);
-        position: fixed;
-        right: 0;
-        bottom: 0;
-        width: 100%;
-        z-index: 999;
-        background: #fff;
-        color: #FF4C4C;
-        padding-left: 80/@rem;
-        padding-right: 386/@rem;
-        box-sizing: border-box;
-        text-align: right;
-        .text-del {
-          color: #777;
-          text-decoration: line-through;
-        }
-        .text-red {
-          font-size: 40/@rem;
-          margin-left: 20/@rem;
-          margin-right: 6/@rem;
 
-        }
-        .btn-pay {
-          .size(360, 100);
-          .text(40, 100);
-          position: absolute;
-          right: 0;
-          top: 0;
-          background: #FF4C4C;
-          color: #fff;
-          text-align: center;
-        }
-      }
       .item,
       .item-name,
       .item-box,
@@ -731,12 +756,12 @@
       .item-num,
       .item-btn,
       .item-bottom {
-        transition: all 0.5s;
-        -moz-transition: all 0.5s;
+        transition: all 0.25s ease;
+        -moz-transition: all 0.25s ease;
         /* Firefox 4 */
-        -webkit-transition: all 0.5s;
+        -webkit-transition: all 0.25s ease;
         /* Safari and Chrome */
-        -o-transition: all 0.5s;
+        -o-transition: all 0.25s ease;
         /* Opera */
       }
       .item {
@@ -796,11 +821,16 @@
         }
         .item-bottom {
           /* height: 220/@rem; */
-          font-size: 28/@rem;
+          font-size: 28/@rem  !important;
           line-height: 52/@rem;
           padding: 29/@rem 40/@rem;
           background: #fff;
           box-sizing: border-box;
+          span,
+          p,
+          div {
+            font-size: 28/@rem  !important;
+          }
         }
       }
 
@@ -814,28 +844,28 @@
           .item-name {
             .pos(40,
             22);
-            .text(48,
-            67);
+            /* .text(48,
+            67); */
           }
           .item-msg {
             .pos(40,
             109);
-            .text(28,
-            40);
+            /* .text(28,
+            40); */
             color: #333;
           }
           .item-num {
             .pos(40,
             157);
-            .text(28,
-            40);
+            /* .text(28,
+            40); */
             color: #333;
           }
           .item-btn {
             .size(130,
             56);
-            .text(32,
-            56);
+            /* .text(32,
+            56); */
             position: absolute;
             top: 124/@rem;
             background: #FF4C4C;
@@ -845,9 +875,14 @@
         }
         .item-bottom {
           /* height: 230/@rem; */
-          font-size: 30/@rem  !important;
+          /* font-size: 30/@rem  !important; */
           line-height: 52/@rem;
           padding: 37/@rem 40/@rem;
+          /* span,
+          p,
+          div {
+            font-size: 30/@rem  !important;
+          } */
         }
       }
       .none {
