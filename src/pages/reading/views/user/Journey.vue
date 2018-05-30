@@ -10,7 +10,7 @@
               <router-link :to="{ path: '/look/' + item.readId}"><span class="look">查看证书></span></router-link>
             </div>
             <div class="text-container clearfix">
-              <div class="container">
+              <div class="content-container">
                 <div  class="content" ref="cheight" :class="item.expand?'h131':''">{{item.content}}</div>
                 <div v-if="item.line"> 
                   <div class="letter" v-if="(item.letter == 1 )&& (item.expand)" @click.stop="handleChange(item)">全部</div>
@@ -243,7 +243,14 @@ export default {
       border-radius: 8/@rem;
       padding: 25/@rem 35/@rem 25/@rem 29/@rem ;
       box-sizing: border-box;
-      
+      .content-container {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-pack: center;
+            justify-content: center;
+        -ms-flex-direction: column;
+            flex-direction: column;
+      }
       .content{
         .fontSize(30);
         line-height: 42/@rem;
