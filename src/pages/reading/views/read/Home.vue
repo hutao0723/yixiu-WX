@@ -2,7 +2,7 @@
   <div class="home-main" ref="homeMain">
     <!-- <div @click="play">播放</div> -->
     <!-- 未买课 -->
-    <div class="home-box" v-if="pageStatus < 2">
+    <div class="home-box" v-if="pageStatus == 1 || pageStatus == 0">
       <div class="home-tab clearfix">
         <div class="item" @click="tabActive=true">
           <span :class="{ active: tabActive}">简介</span>
@@ -48,8 +48,9 @@
             @click="selectCourse(item)">
             <div class="item-box">
               <div class="item-top">
+                <div class="item-none" v-if="item.purchased"></div>
                 <div class="item-name">{{item.title}}</div>
-                <div class="item-msg">第{{item.stageNum}}期 | {{item.beginDate}}({{item.beginDateWeek}})开课</div>
+                <div class="item-msg">第{{item.stageNum}}期 | {{item.beginDate}}（{{item.beginDateWeek}}）开课</div>
                 <div class="item-num">报名{{item.orderCount}}人</div>
                 <div class="item-btn">{{selectCourseId == item.readId?'已选':'选择'}}</div>
               </div>
@@ -70,7 +71,7 @@
     </div>
     <div class="home-wechat" v-if="pageStatus == 2">
       <p class="text-a">
-        <i></i>您已成功报名</p>
+        <i class="iconfont icon-chenggong">&#xe608;</i>您已成功报名</p>
       <p class="text-b">长按识别二维码</p>
       <p class="text-c">关注公众号，去等待开课</p>
       <img src="http://yun.dui88.com/youfen/images/read_ewm.png" alt="">
@@ -81,14 +82,14 @@
       <div class="nonevent-box">
         <p class="text-a">您已成功报名</p>
         <p class="text-b">「 {{courseDetail.title}} 」</p>
-        <p class="text-c">{{courseDetail.beginDate}}({{courseDetail.beginDateWeek}})开学，倒计时{{courseDetail.userReadState.days}}天</p>
+        <p class="text-c">{{courseDetail.beginDate}}（{{courseDetail.beginDateWeek}}）开学，倒计时{{courseDetail.days}}天</p>
       </div>
       <p class="text-d">长按识别二维码添加老师微信</p>
       <p class="text-e">因添加学员较多，老师会在3个工作日内通过，请耐心等待~</p>
       <div class="ewm-bg">
-        <img :src="courseDetail.userImgUrl" alt="">
+        <img :src="courseDetail.teacherWxQrcodeUrl" alt="">
       </div>
-      <p class="text-f">美少女</p>
+      <p class="text-f">{{courseDetail.userNickname}}</p>
       <p class="text-g">微信添加老师后，你的专属老师会在课程</br>开始前邀请你进入对应班级群</p>
       <p class="text-h">关注微信公众号【一修读书】，点击</br>菜单栏“我的老师”添加</p>
     </div>
@@ -131,7 +132,7 @@
       </div>
     </div>
 
-    <AudioBar/>
+    <!-- <AudioBar/> -->
   </div>
 </template>
 
@@ -156,6 +157,7 @@
         tabActive: true,
         bookName: '',
         alertToggle: false,
+        readId: '',
 
         pageStatus: 0, // 页面状态
 
@@ -232,6 +234,8 @@
       this.wxShare();
       let userState = await this.getThumbUp();
       console.log(userState)
+
+      this.readId = userState.data.readId;
       // 状态判断逻辑
       if (userState.data) {
         if (
@@ -295,7 +299,7 @@
           this.pageStatus = 3;
           store.commit({
             type: 'setBottomNavToggle',
-            bottomNavToggle: true
+            bottomNavToggle: false
           })
           store.commit({
             type: 'setBottomNavType',
@@ -312,11 +316,11 @@
           this.pageStatus = 4;
           store.commit({
             type: 'setBottomNavToggle',
-            bottomNavToggle: true
+            bottomNavToggle: false
           })
           store.commit({
             type: 'setBottomNavType',
-            bottomNavType: true
+            bottomNavType: false
           })
         }
 
@@ -329,7 +333,7 @@
           this.pageStatus = 1;
           store.commit({
             type: 'setBottomNavToggle',
-            bottomNavToggle: true
+            bottomNavToggle: false
           })
           store.commit({
             type: 'setBottomNavType',
@@ -343,7 +347,7 @@
         order.buy(this.selectCourseId, 4)
       },
       playAudio(id) {
-        play.audioInit(28, id, true)
+        play.audioInit(this.readId, id, true)
         // 跳转到播放页
       },
       selectCourse(item) {
@@ -356,7 +360,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/user/read/detail`;
+        const url = `/user/read/detail`;
         const res = await this.$http.get(url, {
           params
         });
@@ -368,7 +372,7 @@
         params = {
 
         }
-        const url = `/api/user/read/state`;
+        const url = `/user/read/state`;
         const res = await this.$http.get(url, {
           params
         });
@@ -379,7 +383,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/comment/top`;
+        const url = `/comment/top`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -394,7 +398,7 @@
           status: status ? 0 : 1,
           commentId: id
         }
-        const url = `/api/comment/praise`;
+        const url = `/comment/praise`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -405,7 +409,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/read/readList`;
+        const url = `/read/readList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -430,10 +434,10 @@
         let d = newDate.getDate();
         let date = n + '-' + m + '-' + d;
         params = {
-          readId: 28,
+          readId: this.readId,
           date: date,
         }
-        const url = `/api/readBookCourse/courseDetailByDate`;
+        const url = `/readBookCourse/courseDetailByDate`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -444,9 +448,9 @@
         let self = this;
         let params = {};
         params = {
-          readId: 28,
+          readId: this.readId,
         }
-        const url = `/api/readBook/bookList`;
+        const url = `/readBook/bookList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -457,10 +461,10 @@
         let self = this;
         let params = {};
         params = {
-          readId: 28,
+          readId: this.readId,
           bookId: id,
         }
-        const url = `/api/readBookCourse/courseList`;
+        const url = `/readBookCourse/courseList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -689,6 +693,14 @@
           height: 210/@rem;
           position: relative;
           background: #FEED47;
+          .item-none{
+            .size(150,117);
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: url('http://yun.dui88.com/youfen/images/read_yz.png') no-repeat center;
+        background-size: 100% 100%; 
+          }
           .item-name {
             .pos(40, 22);
             .text(44, 62);
@@ -793,6 +805,12 @@
         text-align: center;
         padding-top: 65/@rem;
         color: #343434;
+        .icon-chenggong{
+          font-size: 56/@rem;
+          line-height:56/@rem;
+          color: #FFE555;
+          margin-right: 24/@rem;
+        }
       }
       .text-b {
         .text(88, 123);
@@ -821,6 +839,7 @@
       .nonevent-box {
         height: 290/@rem;
         background: url('http://yun.dui88.com/youfen/images/read_bg.png') no-repeat center;
+        background-size: 100% 100%; 
         border-radius: 20/@rem;
         color: #333333;
         padding-top: 93/@rem;
@@ -844,13 +863,16 @@
       }
       .ewm-bg {
         background: url('http://yun.dui88.com/youfen/images/read_ewmborder.png') no-repeat center;
+        background-size: 100% 100%; 
         height: 326/@rem;
         width: 326/@rem;
-        padding: 5/@rem;
+        margin: 30/@rem auto;
+        padding: 15/@rem;
+        box-sizing: border-box;
         img {
-          display: inline-block;
-          height: 300/@rem;
-          width: 300/@rem;
+          display: block;
+          height: 280/@rem;
+          width: 280/@rem;
         }
       }
       .text-d {
@@ -879,16 +901,16 @@
         margin-top: 16/@rem;
       }
       .text-h {
-        position: absolute;
+        position: fixed;
         height: 116/@rem;
         background: #EEEEEE;
         color: #666;
         padding-top: 16/@rem;
         font-size: 26/@rem;
-        line-height: 36/@rem;
+        line-height: 42/@rem;
         box-sizing: border-box;
         left: 0;
-        bottom: 0;
+        bottom: 100/@rem;
         right: 0;
       }
     }
