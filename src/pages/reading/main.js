@@ -37,7 +37,7 @@ Vue.use(VueLazyload, {
   }
 });
 Vue.http.headers.common['from'] = 'read';
-Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWU3mytFEThAbVRbBsiG99J5L3AycHw9RQzaApFRydFrQ94M49MsJcX715G25172Pf1KBoFocRFwKY5dnB1hHqaxtZhKtX8vv65wehmLQumJMZem1Y7WHFSr4bvsC2gnjQKj8NYsNeax\n';
+// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWU3mytFEThAbVRbBsiG99J5L3AycHw9RQzaApFRydFrQ94M49MsJcX715G25172Pf1KBoFocRFwKY5dnB1hHqaxtZhKtX8vv65wehmLQumJMZem1Y7WHFSr4bvsC2gnpBqavafHRqg6';
 
 Vue.http.interceptors.push((request, next) => {
   // modify request
@@ -49,9 +49,10 @@ Vue.http.interceptors.push((request, next) => {
       if (response.url = '/order/submit') {
         let reqObj = JSON.parse(request.body)
         const url = encodeURIComponent(('/' + window.location.href.split('/').slice(3).join('/'))+ '?courseId=' +reqObj.itemId);
+
       }else{
         const url = encodeURIComponent(('/' + window.location.href.split('/').slice(3).join('/')));
-        //location.href = "/loginH5?dbredirect=" + url;
+        location.href = "/loginH5?dbredirect=" + url;
       }
 
     }

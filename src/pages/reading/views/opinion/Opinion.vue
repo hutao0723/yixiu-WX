@@ -1,30 +1,30 @@
 <template>
   <div class="opinion-main">
     <div class="home-review">
-      <h2>学员观点</h2>
       <div class="item" v-for="(item,index) in reviewList" :key="index">
-            <img :src="item.userImgUrl" alt="" class="item-header">
-            <div class="item-name">{{item.userNickname}}</div>
-            <div class="item-periods">{{item.readName}}第{{item.readStageNum}}学员</div>
-            <div class="item-content">{{item.readName}}</div>
-            <div class="item-book">
-              <div class="book-bg">
-                <img class="book-img" :src="item.courseUrl" alt="">
-              </div>
-
-              <div class="book-name otw">{{item.courseTitle}}</div>
-              <div class="book-author otw">{{item.courseAuthor}} 著</div>
-            </div>
-            <div class="item-bottom">
-              <span @click="getCommentPraise(item.id,item.userPraise)" v-if="pageStatus != 0">
-                <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
-                <span class="fr">{{item.praiseCount}}</span>
-              </span>
-              <!-- <router-link :to="{ path: '/poster/' + item.id}" tag="a" class="iconfont icon-share fr"></router-link> -->
-              <span>{{item.releaseTime| timeTransition}}</span>
-            </div>
+        <img :src="item.userImgUrl" alt="" class="item-header">
+        <div class="item-name">{{item.userNickname}}</div>
+        <div class="item-periods">{{item.readName}}第{{item.readStageNum}}学员</div>
+        <div class="item-content">{{item.readName}}</div>
+        <div class="item-book">
+          <div class="book-bg">
+            <img class="book-img" :src="item.courseUrl" alt="">
           </div>
+
+          <div class="book-name otw">{{item.courseTitle}}</div>
+          <div class="book-author otw">{{item.courseAuthor}} 著</div>
+        </div>
+        <div class="item-bottom">
+          <span @click="getCommentPraise(item)">
+            <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
+            <span class="fr">{{item.praiseCount}}</span>
+          </span>
+          <!-- <router-link :to="{ path: '/poster/' + item.id}" tag="a" class="iconfont icon-share fr"></router-link> -->
+          <span>{{item.releaseTime| timeTransition}}</span>
+        </div>
+      </div>
     </div>
+    <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0"></div>
   </div>
 </template>
 
@@ -37,6 +37,10 @@
     data() {
       return {
         reviewList: [],
+        pageNum: 1,
+        pageSize: 20,
+
+        busy: true
       };
     },
     computed: {
@@ -96,30 +100,49 @@
       this.getCommentTop();
     },
     methods: {
+      loadMore() {
+        this.busy = true;
+        this.pageNum++;
+        this.getCommentTop()
+      },
       getCommentTop() {
         let self = this;
         let params = {};
-        params = {}
-        const url = `/api/comment/page`;
+        params = {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+
+        }
+        const url = `/comment/page`;
         this.$http.get(url, {
           params
         }).then((res) => {
-          this.reviewList = res.data.data.content;
+          if (res.data.data.content && res.data.data.content.length > 0) {
+            this.busy = false;
+            if (!this.reviewList) {
+                this.reviewList = res.data.data.content;
+              } else {
+                this.reviewList = this.reviewList.concat(res.data.data.content);
+              };
+          } else {
+            this.busy = true;
+          }
 
         });
       },
-      getCommentPraise(id, status) {
+      getCommentPraise(item) {
         let self = this;
         let params = {};
         params = {
-          status: status ? 0 : 1,
-          commentId: id
+          status: item.userPraise ? 0 : 1,
+          commentId: item.id
         }
-        const url = `/api/comment/praise`;
+        const url = `/comment/praise`;
         this.$http.get(url, {
           params
         }).then((res) => {
-          this.getCommentTop();
+          item.userPraise = item.userPraise? 0:1
+          item.praiseCount = !item.userPraise?item.praiseCount-1:item.praiseCount+1
         });
       },
     }
@@ -130,7 +153,7 @@
 <style lang="less">
   @import '../../less/variable';
   @import '../../less/util';
-  
+
   .opinion-main {
     width: 750/@rem;
     height: 100%;
