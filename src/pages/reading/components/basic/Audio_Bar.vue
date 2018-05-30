@@ -53,7 +53,7 @@ import { mapState } from 'vuex';
         } else {
           this.notice = false;
           this.animation = false;
-          this.$router.push(`/audio/index`);
+          this.$router.push(`/audio/index/0`);
         }
       },
       hideNotice: function(){

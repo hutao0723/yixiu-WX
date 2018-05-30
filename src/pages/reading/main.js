@@ -37,7 +37,7 @@ Vue.use(VueLazyload, {
   }
 });
 Vue.http.headers.common['from'] = 'read';
-// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWU3mytF3ApV8mEc2kB5evPRnyRpavR8cm5wn9dqjBi2gJAmSsg7PBHUBaaXJwbMRCDALvnWRSz4Baa58skhiQ34n5WzibsHrg9e57eZZRE1q4xzCkb95vzvWzHDDEyPkPdReVt1oVcy';
+// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWU3mytFEThAbVRbBsiG99J5L3AycHw9RQzaApFRydFrQ94M49MsJcX715G25172Pf1KBoFocRFwKY5dnB1hHqaxtZhKtX8vv65wehmLQumJMZem1Y7WHFSr4bvsC2gmJxbe9ij86bEc';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
@@ -45,11 +45,10 @@ Vue.http.interceptors.push((request, next) => {
   next((response) => { // 在响应之后传给then之前对response进行修改和逻辑判断。对于token时候已过期的判断，就添加在此处，页面中任何一次http请求都会先调用此处方法
     // response.body = '...';
     if (response.data.code == '000001') {
-      if (response.url == '/order/submit') {
+      if (response.url = '/order/submit') {
         let reqObj = JSON.parse(request.body)
         const url = encodeURIComponent(('/' + window.location.href.split('/').slice(3).join('/'))+ '?courseId=' +reqObj.itemId);
-        location.href = "/loginH5?dbredirect=" + url;
-        
+
       }else{
         const url = encodeURIComponent(('/' + window.location.href.split('/').slice(3).join('/')));
         location.href = "/loginH5?dbredirect=" + url;
@@ -67,7 +66,7 @@ Vue.prototype.wxShare = function () {
     link: 'http://k.youfen666test.com/reading.html#/index/home', // 分享链接 默认以当前链接
     imgUrl: 'http://yun.dui88.com/youfen/images/read_share.png', // 分享图标
   }
-  const urlData = `/wechat/getJsapiSignature`;
+  const urlData = `/api/wechat/getJsapiSignature`;
   const url = location.href.split("#")[0];
 
   Vue.http.get(urlData, {
@@ -81,7 +80,7 @@ Vue.prototype.wxShare = function () {
       wx.config({
         debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: Data.appid, // 必填，公众号的唯一标识
-        timestamp: Data.timestamp, // 必填，生成签名的时间戳
+        timestamp: Number(Data.timestamp), // 必填，生成签名的时间戳
         nonceStr: Data.noncestr, // 必填，生成签名的随机串
         signature: Data.signature, // 必填，签名，见附录1
         jsApiList: ['onMenuShareAppMessage', 'onMenuShareTimeline', 'previewImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2

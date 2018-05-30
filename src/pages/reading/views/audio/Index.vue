@@ -35,8 +35,8 @@
             <span class="xxs primary">播放列表</span>
           </button>
         </div>
-        <div class="bottom">
-           {{status.text}}
+        <div class="bottom" @click="goComment">
+           {{text}}
         </div>
       </div>
     </div> 
@@ -51,7 +51,7 @@
         </div>
         <p class="des">你已完成今日课程，趁热打铁 来打卡吧！</p>
         <p class="info">今日已打卡223人</p>
-        <div class="btn-card" @click="">打卡</div>
+        <div class="btn-card" @click="goComment">打卡</div>
       </div>
     </div>
   </div>
@@ -77,34 +77,27 @@ export default {
     duration() {
       return this.timerFomart(this.readDuration)
     },
-    status() {
+    text() {
       if (!this.readAudio.clockState) {
-        return {
-          state: 1,
-          text: '去打卡'
-        }
+          return '去打卡'
       } else {
         if (!this.readAudio.commentState) {
-          return {
-            state: 2,
-            text: '写想法'
-          }
+          return '写想法'
         } else {
-          return {
-            state: 3,
-            text: '查看'
-          }
+          return '查看'
         }
       }
     }
   },
   async mounted () {
-    if (!store.getters.getAudioElement.getAttribute('src')) {
+    if (this.$route.params.type == 0 && !store.getters.getAudioElement.getAttribute('src')) {
       let readAudio = this.readAudio;
       readAudio.src = await play.getAudioUrl(store.getters.getAudioInfo.readId, store.getters.getAudioInfo.courseId);
       store.commit({ type: 'setAudio', readAudio: readAudio });
+    }
+    if (!store.getters.getAudioElement.getAttribute('src')){
       store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
-      store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title);
+      store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
     }
   },
   methods: {
@@ -126,9 +119,9 @@ export default {
     hideModal () {
       store.commit('resetShowCardModal')
     },
-    goCard () {
+    goComment () {
       store.commit('resetShowCardModal');
-      this.$router.push('/card')
+      this.$router.push(`/comment/${this.readAudio.readId}/${this.readAudio.courseId}`);
     },
     timerFomart (time) {
       if (isNaN(time)) return '00:00';

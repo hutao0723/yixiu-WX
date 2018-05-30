@@ -28,7 +28,7 @@ export default class play extends base {
    */
   static async syncPlaytimes(courseId) {
     const url = `/user/stat/changeListens`;
-    this.post(url);
+    this.get(url);
   }
 
   /**

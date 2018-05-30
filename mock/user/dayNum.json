@@ -2,25 +2,25 @@
   "code": "string",
   "data": [
     {
-      "courseId": 1,
+      "courseId": 191,
       "dayNum": 1,
       "id": 1,
       "lockStatus": false,
-      "readId": 1
+      "readId": 28
     },
     {
-      "courseId": 2,
+      "courseId": 192,
       "dayNum": 2,
       "id": 2,
       "lockStatus": false,
-      "readId": 2
+      "readId": 28
     },
     {
-      "courseId": 3,
+      "courseId": 193,
       "dayNum": 3,
       "id": 3,
       "lockStatus": false,
-      "readId": 3
+      "readId": 28
     }
   ],
   "desc": "string",
