@@ -34,7 +34,6 @@ import QRCode from 'qrcode'
 import { mapState } from 'vuex';
 import PosterSwiper from './Poster-swiper'
 import sales from '../../../api/sales'
-import picc from '../../../images/888.jpg'
 
 export default {
     components: {
@@ -61,13 +60,10 @@ export default {
         ...mapState({})
     },
     created() {
-        // for(let i=1;i<10;i++){
-        //     this.swiperArr.push(`//u.bcwcdn.com/activity_img/2017/img_1208/1633_0${i}.png`)
-        // }
+ 
         this.getUserInfo()
         this.qrcodeUrl()
         this.readPlanPosters()
-        // this.getQrcodeData()
     },
     mounted () {
         // myCanvas.toDataURL("image/png");
@@ -80,7 +76,6 @@ export default {
             let obj = await sales.getUserInfo()
             this.headimgurl = obj.headimgurl
             this.nickname = obj.nickname
-            // console.log(this.nickname)
         },
 
         async qrcodeUrl(){
@@ -116,23 +111,19 @@ export default {
                 this.createQrc();
                 this.basecode64 = document.getElementById('qrccode-canvas').toDataURL("image/png");
                 this.createCanvas()
-                // let cimg = document.getElementById('cImg') 
-                // cimg.setAttribute('src', code64)
             })
         },
         createdImg(){
             var img = document.getElementById('img');
             var myCanvas = document.getElementById('myCanvas');
             var fxImg = document.getElementById('fx_img');
-            var toBase64 = myCanvas.toDataURL("image/png"); 
-            // console.log(toBase64)
+            var toBase64 = myCanvas.toDataURL("image/png");
             img.setAttribute('src', toBase64)
             fxImg.setAttribute('src', toBase64)
         },
 
         getSwiperIndex(itemImg, index){
             this.poster = itemImg
-            // console.log(index)
             this.swiperIndex = index
             this.createCanvas()
         },
@@ -182,7 +173,7 @@ export default {
             };
             background.then(code).then(icon).then(()=>{
                 
-                //self.readPlanPostersArr[this.swiperIndex]。nicknameFontSize 中的字段不存在则跳过
+                //self.readPlanPostersArr[this.swiperIndex].nicknameFontSize 中的字段不存在则跳过
                 if(rpp.nicknameFontSize){
                     ctx.font = conversion(rpp.nicknameFontSize)+'px 宋体';
                     ctx.fillStyle = rpp.nicknameFontColor;

@@ -16,8 +16,8 @@
             </li>
         </ul>
         <div class="page-none" v-show="noData">
-            <img src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/zanwushuju.png" class="none-img" />
-            <p class="none-text">暂无数据</p>
+            <img src="http://yun.dui88.com/yoofans/images/201805/zanwukh.png" class="none-img" />
+            <p class="none-text">您还没有客户，快去邀请吧</p>
         </div>
         <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0" ></div>
     </div>
@@ -50,7 +50,8 @@ export default {
             bindPageNum:1,
             unbindPageNum: 1,
             pageSize:20,
-            busy: true
+            busy: true,
+            noData: false,
         };
     },
     computed: {
@@ -84,6 +85,7 @@ export default {
             if(obj.content && obj.content.length){
                 this.record = [...this.record, ...obj.content]
             }
+            if (!this.record.length) this.noData = true;
         },
     },
     watch: {

@@ -7,11 +7,13 @@
 				<span class="pi-name">美少女</span>
 			</div>
 		</div>
+
 		<div class="personal-main">
-			<router-link v-for="item in list" class="pm-list" :class="item.class" :key="item.class" :to="{path:item.router,query:{'hasEarningMsg':true}}">
+			<router-link v-for="item in list" class="pm-list" :class="item.class" :key="item.class" :to="{path:item.router,query:{'earningMoney':'0.1'}}">
 				<span class="pm-text iconfont" :class="item.icon">{{item.text}}</span>
 				<i class="iconfont icon-right" :class="item.icon"></i>
 			</router-link>
+
 			<!-- <div class="share"></div>
 			<div class="recommend"></div>
 			<div class="support-center"></div> -->

@@ -71,7 +71,8 @@
                     'balance': '',
                     'totalPromotionEarnings': ''
                 },
-                redPointArr:[]
+                redPointArr:[],
+                earningMoney:'' // 
             };
         },
         computed: {
@@ -107,9 +108,9 @@
                 }
             },
             shouldCongratulationDialogShow() {
-                let hasEarningMsg = this.$route.query.hasEarningMsg
-                if (hasEarningMsg) {
-                    this.congratulationDialog()
+                this.earningMoney = this.$route.query.earningMoney
+                if (this.earningMoney && this.earningMoney != '0') {
+                    this.congratulationDialog(this.earningMoney)
                 }
             },
             congratulationDialog(sh) {
@@ -301,7 +302,7 @@
                 height: 772/@rem;
                 top: 108/@rem;
                 transform: translateX(-50%);
-                background: url(../../../images/congratulation_bg.png) no-repeat bottom center;
+                background: url(http://yun.dui88.com/yoofans/images/201805/congratulation_bg.png) no-repeat bottom center;
                 .modal-body {
                     .notice{
                         width: 224/@rem;

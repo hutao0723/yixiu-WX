@@ -4,7 +4,6 @@
         <div class="cash-import">
             <div class="ci-warp">
                 <input type="tel" v-model="cashNum" name="" id="" class="ciw-inp" :placeholder="`可提现${balance}元`" maxlength="8">
-                <!-- <span class="ciw-placeholder" v-show="isPlaceholderShow">可提现214.5元</span> -->
             </div>
             <span class="ci-tip">2小时内到账</span>
         </div>
@@ -45,7 +44,8 @@ export default {
         ...mapState({}),
     },
     created() {
-        this.balance = this.$route.query.balance
+        // this.balance = this.$route.query.balance
+        this.getBalance()
     },
     mounted () {
         
@@ -54,7 +54,8 @@ export default {
 
         judgeCash(){
             let money;
-            if(this.cashNum < 10){
+            this.cashNum = Number(this.cashNum)
+            if(this.cashNum < 20){
                 this.promptText = '至少提现<em>20</em>元'
                 this.dialog(this.promptText)
             }else if(this.cashNum > this.balance){
@@ -72,7 +73,6 @@ export default {
                 showConfirmButton:false,
                 cancelButtonText:'我知道了'
             }).then((response) => {
-                console.log(response)
                 this.$refs.dialog.show = false
             }).catch((type) =>{
                 console.log(type)
@@ -90,6 +90,11 @@ export default {
                 }else{
                     this.$router.push('/personal/share/deposit-success')
                 }
+            })
+        },
+        getBalance(){
+            sales.info().then((res) => {
+                this.balance = res.balance.split('.')[0]
             })
         }
     },
