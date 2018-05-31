@@ -48,9 +48,14 @@ Vue.http.interceptors.push((request, next) => {
       if (response.url.indexOf('/order/submit') > -1) {
         let reqObj = JSON.parse(request.body)
         let o = '/' + window.location.href.split('/').slice(3).join('/')
-        let url = encodeURIComponent(o) + (o.indexOf("?") > -1 ? '&courseId=' + reqObj.itemId : '?courseId=' + reqObj.itemId);
-        location.href = "/loginH5?dbredirect=" + url;
-      } else{
+        if(o.indexOf('?')>-1){
+          let url = encodeURIComponent(o + '&courseId=' + reqObj.itemId);
+          location.href = "/loginH5?dbredirect=" + url;
+        }else{
+          let url = encodeURIComponent(o + '?courseId=' + reqObj.itemId);
+          location.href = "/loginH5?dbredirect=" + url;
+        }
+      } else {
         let o = '/' + window.location.href.split('/').slice(3).join('/')
         let url = encodeURIComponent(o);
         location.href = "/loginH5?dbredirect=" + url;

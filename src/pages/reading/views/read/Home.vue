@@ -927,7 +927,7 @@
         }
         .item-bottom {
           /* height: 220/@rem; */
-          font-size: 28/@rem  !important;
+          font-size: 28/@rem!important;
           line-height: 52/@rem;
           padding: 29/@rem 40/@rem;
           background: #fff;
@@ -935,7 +935,7 @@
           span,
           p,
           div {
-            font-size: 28/@rem  !important;
+            font-size: 28/@rem!important;
           }
         }
       }
@@ -984,11 +984,11 @@
           /* font-size: 30/@rem  !important; */
           line-height: 52/@rem;
           padding: 37/@rem 40/@rem;
-          /* span,
+          span,
           p,
           div {
-            font-size: 30/@rem  !important;
-          } */
+            font-size: 28/@rem !important;
+          }
         }
       }
       .none {
