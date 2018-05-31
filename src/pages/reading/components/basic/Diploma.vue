@@ -22,10 +22,10 @@
     },
     methods: {
       close() {
-        this.$emit("success",false)
+        this.$emit("close")
       },
       know() {
-        this.$emit("success",true)
+        this.$emit("success")
       }
     }
   };

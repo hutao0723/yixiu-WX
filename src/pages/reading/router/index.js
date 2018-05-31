@@ -129,6 +129,15 @@ export default new Router({
           resolve(require('../views/poster/poster'));
         }, 'reading_poster');
       }
+    },
+    {
+      path: '/graduation',
+      name:'graduation',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/poster/graduation'));
+        }, 'reading_graduation');
+      }
     }
   ]
 });
