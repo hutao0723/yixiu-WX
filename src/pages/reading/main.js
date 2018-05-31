@@ -48,10 +48,11 @@ Vue.http.interceptors.push((request, next) => {
       if (response.url = '/order/submit') {
         let reqObj = JSON.parse(request.body)
         let o = '/' + window.location.href.split('/').slice(3).join('/')
-        const url = encodeURIComponent(o)+ (o.indexOf("？")> -1?'&courseId=' +reqObj.itemId:'?courseId=' +reqObj.itemId);
+        let url = encodeURIComponent(o)+ (o.indexOf("？")> -1?'&courseId=' +reqObj.itemId:'?courseId=' +reqObj.itemId);
         location.href = "/loginH5?dbredirect=" + url;
       }else{
-        const url = encodeURIComponent();
+        let o = '/' + window.location.href.split('/').slice(3).join('/')
+        let url = encodeURIComponent(o);
         location.href = "/loginH5?dbredirect=" + url;
       }
 

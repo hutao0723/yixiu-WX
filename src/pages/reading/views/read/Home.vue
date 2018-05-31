@@ -837,6 +837,7 @@
     .home-course {
       background: #f1f1f1;
       padding-top: 40/@rem;
+      padding-bottom: 120/@rem;
       min-height: 100%;
 
       .item,

@@ -6,25 +6,25 @@
           <p>
             <i class="iconfont" :class="item.path === $route.path ? item.active : item.icon"></i>
           </p>
-          <p >{{item.title}}</p>
+          <p>{{item.title}}</p>
         </router-link>
       </li>
     </ul>
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+  import {
+    mapState
+  } from 'vuex'
   export default {
-    data () {
-      return {
-      };
+    data() {
+      return {};
     },
     computed: {
-      ...mapState(['bottomNavType','bottomNavToggle']),
-      navlist () {
+      ...mapState(['bottomNavType', 'bottomNavToggle']),
+      navlist() {
         if (this.bottomNavType) {
-          return [
-            {
+          return [{
               title: '阅读',
               icon: 'icon-book',
               active: 'icon-book active tag',
@@ -50,8 +50,7 @@ import { mapState } from 'vuex'
             }
           ]
         } else {
-          return [
-            {
+          return [{
               title: '阅读',
               icon: 'icon-book',
               active: 'icon-book active tag',
@@ -74,10 +73,11 @@ import { mapState } from 'vuex'
       }
     }
   };
+
 </script>
 <style lang="less">
-@import url('../../less/variable.less');
-  .bottom-nav{
+  @import url('../../less/variable.less');
+  .bottom-nav {
     position: fixed;
     z-index: 100;
     bottom: -1px;
@@ -89,21 +89,21 @@ import { mapState } from 'vuex'
     border-top: 1/@rem solid #E5E5E5;
     font-size: 22/@rem;
     ul {
-      li{
+      li {
         display: inline-block;
         text-align: center;
-        p{
+        p {
           line-height: 34/@rem;
           color: #B3B3B3;
         }
-        i{
+        i {
           font-size: 32/@rem;
         }
-        .active{
+        .active {
           color: #222222 !important;
           position: relative;
         }
-        .tag{
+        .tag {
           &:after {
             content: '';
             width: 28/@rem;
@@ -118,4 +118,6 @@ import { mapState } from 'vuex'
       }
     }
   }
+
 </style>
+
