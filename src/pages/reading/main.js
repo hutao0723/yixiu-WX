@@ -52,7 +52,7 @@ Vue.http.interceptors.push((request, next) => {
           let url = encodeURIComponent(o + '&courseId=' + reqObj.itemId);
           location.href = "/loginH5?dbredirect=" + url;
         }else{
-          let url = encodeURIComponent(o + '?courseId=' + reqObj.itemId);
+          let url = encodeURIComponent(o + 'courseId=' + reqObj.itemId);
           location.href = "/loginH5?dbredirect=" + url;
         }
       } else {
