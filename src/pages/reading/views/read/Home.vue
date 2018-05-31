@@ -1019,8 +1019,8 @@
         padding-top: 65/@rem;
         color: #343434;
         .iconfont {
-          font-size: 56/@rem;
-          line-height: 56/@rem;
+          height: 56/@rem;
+          width: 56/@rem;
           display: inline-block;
           background: url('http://yun.dui88.com/youfen/images/read_icon.png') no-repeat center;
           background-size: 100% 100%;
