@@ -88,7 +88,7 @@
 
     <div class="home-wechat" v-if="pageStatus == 2">
       <p class="text-a">
-        <i class="iconfont icon-chenggong">&#xe608;</i>您已成功报名</p>
+        <i class="iconfont icon-chenggong">&#xe608; </i>您已成功报名</p>
       <p class="text-b">长按识别二维码</p>
       <p class="text-c">关注公众号，去等待开课</p>
       <img src="http://yun.dui88.com/youfen/images/read_ewm.png" alt="">
@@ -459,9 +459,8 @@
 
         function touchEnd() {
           if (isTrue == 1) {
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
-            window.scrollTo(0, 0)
+            self.$refs.homemain.scrollTop = 0
+
             self.tabActive = false;
           }
         }
@@ -1120,21 +1119,15 @@
           .text(30,
           42);
           margin-top: 15/@rem;
-          font-weight: bold;
+          /* font-weight: bold; */
         }
       }
       .ewm-bg {
-        background: url('http://yun.dui88.com/youfen/images/read_ewmborder.png') no-repeat center;
-        background-size: 100% 100%;
-        height: 326/@rem;
-        width: 326/@rem;
-        margin: 30/@rem auto;
-        padding: 15/@rem;
-        box-sizing: border-box;
         img {
+          margin: 30/@rem auto;
           display: block;
-          height: 280/@rem;
-          width: 280/@rem;
+          height: 430/@rem;
+          width: 369/@rem;
         }
       }
       .text-d {
@@ -1145,7 +1138,7 @@
         color: #116EBC;
       }
       .text-e {
-        .text(22,
+        .text(24,
         30);
         margin-top: 12/@rem;
         color: #666;
@@ -1161,11 +1154,12 @@
         line-height: 40/@rem;
         color: #333;
         margin-top: 16/@rem;
+        font-weight: bold;
       }
       .text-h {
         position: fixed;
         height: 116/@rem;
-        background: #EEEEEE;
+        background: #666;
         color: #666;
         padding-top: 16/@rem;
         font-size: 26/@rem;
