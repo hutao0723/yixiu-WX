@@ -22,14 +22,12 @@
       <div class="home-test" ref="homemain" id="hometest">
         <div id="homebox" v-show="tabActive">
           <div class="home-content">
-            <img src="http://yun.dui88.com/youfen/images/read_test01.jpg" alt="">
-            <img src="http://yun.dui88.com/youfen/images/read_test02.jpg" alt="">
-            <img src="http://yun.dui88.com/youfen/images/read_test03.jpg" alt="">
-            <img src="http://yun.dui88.com/youfen/images/read_test04.jpg" alt="">
-            <img src="http://yun.dui88.com/youfen/images/read_test05.jpg" alt="">
-            <img src="http://yun.dui88.com/youfen/images/read_test06.jpg" alt="">
-            <img src="http://yun.dui88.com/youfen/images/read_test07.jpg" alt="">
-            <img src="http://yun.dui88.com/youfen/images/read_test08.jpg" alt="">
+            <img src="http://yun.dui88.com/youfen/images/read_img01.jpg" alt="">
+            <img src="http://yun.dui88.com/youfen/images/read_img02.jpg" alt="">
+            <img src="http://yun.dui88.com/youfen/images/read_img03.jpg" alt="">
+            <img src="http://yun.dui88.com/youfen/images/read_img04.jpg" alt="">
+            <img src="http://yun.dui88.com/youfen/images/read_img05.jpg" alt="">
+            <img src="http://yun.dui88.com/youfen/images/read_img06.jpg" alt="">
           </div>
           <div class="home-review" v-if="reviewList.length> 0">
             <h2>学员观点</h2>
@@ -1098,7 +1096,7 @@
         .text(24,
         30);
         margin-top: 20/@rem;
-        color: #666;
+        color: #333;
       }
       .text-f {
         .text(36,
