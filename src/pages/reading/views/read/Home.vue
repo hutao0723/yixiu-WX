@@ -367,7 +367,7 @@
         }
 
         if (
-          userState.data.readState == 3 && userState.data.followOfficialAccount
+          userState.data.readState == 3
         ) {
           console.log('用户购买已关注已读完')
           this.getCommentTop();
