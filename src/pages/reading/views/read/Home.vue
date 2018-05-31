@@ -420,6 +420,7 @@
         var startX = 0,
           startY = 0,
           isTrue = 0;
+
         function touchStart(evt) {
           try {
             var touch = evt.touches[0], //获取第一个触点
@@ -460,7 +461,9 @@
         function touchEnd() {
           if (isTrue == 1) {
             self.$refs.homemain.scrollTop = 0
-
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+            window.scrollTo(0, 0);
             self.tabActive = false;
           }
         }
