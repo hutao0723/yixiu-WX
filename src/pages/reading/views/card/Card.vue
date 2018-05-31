@@ -17,7 +17,6 @@
       <span v-for="week in weeks" class="week">{{week}}</span>
     </div>
     <div class="calendar-box">
-      <!--<calendar ></calendar>-->
       <calendar-template :calendarDate='c_date' @getDate="getDate"></calendar-template>
     </div>
     <div class="book-book">
@@ -29,9 +28,9 @@
         <div class="book-author">
           <span>{{courseDetail.author}}</span>
           <span class="book-btn" v-if="afterToday||isToday">
-              <template  v-if="courseDetail.clockState==1&&courseDetail.commentState==1" @click="goPoster()">查看</template>
-              <template  v-if="courseDetail.clockState==1&&courseDetail.commentState==0" @click="goComment()">写想法</template>
-              <template  v-if="courseDetail.clockState==0" @click="goComment()">去打卡</template>
+              <span  v-if="courseDetail.clockState==1&&courseDetail.commentState==1" @click="goPoster()">查看</span>
+              <span  v-if="courseDetail.clockState==1&&courseDetail.commentState==0" @click="goComment()">写想法</span>
+              <span  v-if="courseDetail.clockState==0" @click="goComment()">去打卡</span>
           </span>
 
         </div>
@@ -45,13 +44,11 @@
 <script>
   import { mapState } from 'vuex';
   import bnav from '../../components/basic/Nav';
-  // import calendar from '../../components/layout/calendar.vue';
   import calendarTemplate from '../../components/layout/calendarTemplate';
   import cardNotice from '../../components/layout/card-notice';
   export default {
     components: {
       bnav,
-      // calendar,
       cardNotice,
       calendarTemplate
     },
@@ -70,7 +67,8 @@
         c_date:[],
         lastClock:0,
         afterToday:false,
-        isToday:false
+        isToday:false,
+        new_date: [{"date":"2018-05-25","courseId":0,"clockState":true,"commentState":false},{"date":"2018-05-26","courseId":1,"clockState":true,"commentState":false},{"date":"2018-05-27","courseId":2,"clockState":true,"commentState":false},{"date":"2018-05-28","courseId":3,"clockState":true,"commentState":false},{"date":"2018-05-29","courseId":4,"clockState":true,"commentState":false},{"date":"2018-05-30","courseId":5,"clockState":true,"commentState":false},{"date":"2018-05-31","courseId":6,"clockState":true,"commentState":false},{"date":"2018-06-01","courseId":7,"clockState":true,"commentState":false},{"date":"2018-06-02","courseId":8,"clockState":true,"commentState":false},{"date":"2018-06-03","courseId":9,"clockState":true,"commentState":false}]
       };
     },
     computed: {
@@ -138,14 +136,6 @@
         })
       },
 
-      //获取缺卡天数
-      getLackClock(){
-        let _this = this;
-        _this.$http.get('/user/read/lackClock? readId='+12).then(res=>{
-          let resp = res.data;
-        })
-      },
-
       //打卡课程详情
       getCourseDetail(date){
         let _this = this;
@@ -161,10 +151,11 @@
         })
       },
       goComment(){
+
         this.$router.push({name:'comment',params:{readId:this.readId,courseId:this.courseId}})
       },
       goPoster(){
-        console.log(this.commentId)
+        console.log('查看')
         this.$router.push('/poster/'+this.commentId+'/0')
       }
     }

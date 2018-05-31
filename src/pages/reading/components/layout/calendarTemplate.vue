@@ -7,7 +7,7 @@
           {{item1.cur_year || "--"}}年{{item1.cur_month || "--"}}月
         </div>
         <div class="dateBgView">
-          <div class="dateEmptyView" v-for="item2 in empytGrids[index]">{{item2.index}}
+          <div class="dateEmptyView" v-for="item2 in empytGrids[index1]">{{item2.index}}
           </div>
           <div class="dateView" v-for="(item3,index) in days[index1]" :key="index" @click="clickDay(index1,index,item3)">
             <a href="javascript:;" >
