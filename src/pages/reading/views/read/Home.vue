@@ -107,7 +107,7 @@
       </div>
       <!-- <p class="text-f">{{courseDetail.userNickname}}</p> -->
       <p class="text-g">微信添加老师后，你的专属老师会在课程</br>开始前邀请你进入对应班级群</p>
-      <p class="text-h">关注微信公众号【一修读书】，点击</br>菜单栏“我的老师”添加</p>
+      <!-- <p class="text-h">关注微信公众号【一修读书】，点击</br>菜单栏“我的老师”添加</p> -->
     </div>
 
     <div class="home-already" v-if="pageStatus == 4">
@@ -1094,7 +1094,7 @@
     }
     .home-nonevent {
       position: relative;
-      padding: 20/@rem 34/@rem;
+      padding: 50/@rem 34/@rem 20/@rem 34/@rem;
       text-align: center;
       padding-bottom: 116/@rem;
       .nonevent-box {
@@ -1124,7 +1124,7 @@
       }
       .ewm-bg {
         img {
-          margin: 30/@rem auto;
+          margin: 24/@rem auto 36/@rem auto;
           display: block;
           height: 430/@rem;
           width: 369/@rem;
@@ -1133,14 +1133,14 @@
       .text-d {
         .text(36,
         50);
-        margin-top: 34/@rem;
+        margin-top: 70/@rem;
         font-weight: bold;
         color: #116EBC;
       }
       .text-e {
         .text(24,
         30);
-        margin-top: 12/@rem;
+        margin-top: 20/@rem;
         color: #666;
       }
       .text-f {
