@@ -19,12 +19,12 @@
           <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>元</p>
         <span @click="orderPay" class="btn-pay">立即购买</span>
       </div>
-      <div class="home-test" ref="homemain">
-        <div id="homebox" class="home-th" :class="{active:tabActive}" v-show="tabActive">
-          <div class="home-content" id="homecontent">
+      <div class="home-test" ref="homemain" id="hometest">
+        <div id="homebox" v-show="tabActive">
+          <div class="home-content">
             <img src="http://yun.dui88.com/youfen/images/read_detail.jpg" alt="">
           </div>
-          <div class="home-review" v-if="reviewList.length> 0" id="homereview">
+          <div class="home-review" v-if="reviewList.length> 0">
             <h2>学员观点</h2>
             <div class="item" v-for="(item,index) in reviewList" :key="index">
               <img :src="item.userImgUrl" alt="" class="item-header">
@@ -49,9 +49,10 @@
               </div>
 
             </div>
+            <h3>上滑加载更多精彩课程<i class="iconfont">&#xe61e;</i></h3>
           </div>
         </div>
-        <div class="home-th" :class="{active:!tabActive}" v-show="!tabActive">
+        <div id="homecorse" v-show="!tabActive">
           <div class="home-course">
             <div class="item" v-for="(item,index) in readList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
               @click="selectCourse(item)">
@@ -177,6 +178,8 @@
         courseList: [], // 书对应列表
         offsetHeight: 0,
         tabOffsetHeight: 0,
+        testOffsetHeight: 0,
+        courseOffsetHeight: 0,
 
       };
     },
@@ -236,17 +239,23 @@
     async mounted() {
 
       setTimeout(() => {
-        var c = document.getElementById("homecontent");
-        var ch = c.offsetHeight; //高度
-        var r = document.getElementById("homereview");
-        var rh = r.offsetHeight; //高度
-        this.offsetHeight = ch + rh;
+        var testo = document.getElementById("hometest");
+        var testh = testo.offsetHeight; //高度
+        this.testOffsetHeight = testh;
+
+        var o = document.getElementById("homebox");
+        var h = o.offsetHeight; //高度
+        this.offsetHeight = h;
 
         var tabo = document.getElementById("hometab");
         var tabh = tabo.offsetHeight; //高度
         this.tabOffsetHeight = tabh;
-        console.log(this.offsetHeight)
-      }, 300)
+
+        var courseo = document.getElementById("homecorse");
+        var courseh = courseo.offsetHeight; //高度
+        this.courseOffsetHeight = courseh;
+        console.log(h)
+      }, 500)
 
 
 
@@ -388,57 +397,59 @@
     methods: {
 
       dispatchScroll(e) {
-        console.log('滚动了')
-        console.log(this.$refs.homemain.scrollTop)
+        // console.log(this.$refs.homemain.scrollTop)
         let self = this;
-        if (this.$refs.homemain.scrollTop > this.offsetHeight - document.body.clientHeight + this.tabOffsetHeight - 10) {
-          console.log('滑动到底部啦')
+        var startX = 0,
+          startY = 0,
+          isTrue = 0;
 
-          var startX = 0,
-            startY = 0,
-            isTrue = false;
-
-
-          function touchStart(evt) {
-            try {
-              var touch = evt.touches[0], //获取第一个触点
-                x = Number(touch.pageX), //页面触点X坐标
-                y = Number(touch.pageY); //页面触点Y坐标
-              //记录触点初始位置
-              startX = x;
-              startY = y;
-            } catch (e) {
-              console.log(e.message)
-            }
+        function touchStart(evt) {
+          try {
+            var touch = evt.touches[0], //获取第一个触点
+              x = Number(touch.pageX), //页面触点X坐标
+              y = Number(touch.pageY); //页面触点Y坐标
+            //记录触点初始位置
+            startX = x;
+            startY = y;
+          } catch (e) {
+            console.log(e.message)
           }
-
-          function touchMove(evt) {
-            try {
-              var touch = evt.touches[0], //获取第一个触点
-                x = Number(touch.pageX), //页面触点X坐标
-                y = Number(touch.pageY); //页面触点Y坐标
-              //判断滑动方向
-              if (startY - y > 300) {
-                console.log('下滑了！' + (y - startY));
-              } else {
-                console.log('上滑了！' + (y - startY));
-                isTrue = true;
-              }
-            } catch (e) {
-              console.log(e.message)
-            }
-          }
-
-          function touchEnd() {
-            if (isTrue)
-              self.tabActive = false;
-          }
-
-          //绑定事件
-          document.addEventListener('touchstart', touchStart, false);
-          document.addEventListener('touchmove', touchMove, false);
-          document.addEventListener('touchend', touchEnd, false);
         }
+
+        function touchMove(evt) {
+          console.log(self.$refs.homemain.scrollTop)
+          try {
+            var touch = evt.touches[0], //获取第一个触点
+              x = Number(touch.pageX), //页面触点X坐标
+              y = Number(touch.pageY); //页面触点Y坐标
+            //判断滑动方向
+            if (startY - y > 400 && self.$refs.homemain.scrollTop > self.offsetHeight - document.body.clientHeight +
+              self.tabOffsetHeight - 10) {
+              console.log('上滑了')
+              isTrue = 1;
+            } else if (y - startY > 200) {
+              console.log('下滑了')
+              isTrue = 2;
+            } else {
+              isTrue = 0;
+            }
+
+
+          } catch (e) {
+            console.log(e.message)
+          }
+        }
+
+        function touchEnd() {
+          if (isTrue == 1) {
+            self.tabActive = false;
+          }
+        }
+
+        //绑定事件
+        document.addEventListener('touchstart', touchStart, false);
+        document.addEventListener('touchmove', touchMove, false);
+        document.addEventListener('touchend', touchEnd, false);
       },
       getDcd(dcd) {
         let self = this;
@@ -446,7 +457,7 @@
         params = {
           dcd: dcd,
         }
-        const url = `/api/distribution/binding`;
+        const url = `/distribution/binding`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -457,7 +468,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/user/stat/changeLoginDays`;
+        const url = `/user/stat/changeLoginDays`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -468,7 +479,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/user/stat/changeReadStatus`;
+        const url = `/user/stat/changeReadStatus`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -493,7 +504,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/user/read/detail`;
+        const url = `/user/read/detail`;
         const res = await this.$http.get(url, {
           params
         });
@@ -505,7 +516,7 @@
         params = {
 
         }
-        const url = `/api/user/read/state`;
+        const url = `/user/read/state`;
         const res = await this.$http.get(url, {
           params
         });
@@ -516,7 +527,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/comment/top`;
+        const url = `/comment/top`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -531,7 +542,7 @@
           status: status ? 0 : 1,
           commentId: id
         }
-        const url = `/api/comment/praise`;
+        const url = `/comment/praise`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -542,7 +553,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/read/readList`;
+        const url = `/read/readList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -570,7 +581,7 @@
           readId: this.readId,
           date: date,
         }
-        const url = `/api/readBookCourse/courseDetailByDate`;
+        const url = `/readBookCourse/courseDetailByDate`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -583,7 +594,7 @@
         params = {
           readId: this.readId,
         }
-        const url = `/api/readBook/bookList`;
+        const url = `/readBook/bookList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -597,7 +608,7 @@
           readId: this.readId,
           bookId: id,
         }
-        const url = `/api/readBookCourse/courseList`;
+        const url = `/readBookCourse/courseList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -631,29 +642,12 @@
       height: 480/@rem;
       border: 1px solid #ccc;
     }
-    .home-th {
-      /* position: absolute;
-      overflow: hidden;
-      left: 0;
-      right: 0;
-      top: 100%; */
-      transition: top 0.25s ease;
-      -moz-transition: top 0.25s ease;
-      /* Firefox 4 */
-      -webkit-transition: top 0.25s ease;
-      /* Safari and Chrome */
-      -o-transition: top 0.25s ease;
-      /* Opera */
-      display: block;
-    }
-    .home-th.active {
-      top: 108/@rem;
-    }
     .home-test {
-      height: 300%;
-      overflow: hidden;
+      height: 100%;
+      overflow: scroll;
       padding-top: 108/@rem;
       box-sizing: border-box;
+      /* transform:translateY(-800/@rem); */
     }
     .home-box {
       height: 100%;
@@ -717,7 +711,6 @@
       }
     }
     .home-content {
-      height: 100%;
       img {
         display: block;
         width: 750/@rem;
@@ -730,6 +723,17 @@
         .text(40, 120);
         color: #333;
         text-align: center;
+      }
+      h3 {
+        .text(32, 120);
+        color: #666;
+        text-align: center;
+        font-weight: normal;
+        .iconfont{
+          .text(32,120);
+          margin-left: 10/@rem;
+          color: #666;
+        }
       }
       .item {
         position: relative;
@@ -832,7 +836,8 @@
     }
     .home-course {
       background: #f1f1f1;
-      padding: 40/@rem 0 120/@rem 0;
+      padding-top: 40/@rem;
+      min-height: 100%;
 
       .item,
       .item-name,
