@@ -91,7 +91,7 @@
         <i class="iconfont icon-chenggong">&#xe608; </i>您已成功报名</p>
       <p class="text-b">长按识别二维码</p>
       <p class="text-c">关注公众号，去等待开课</p>
-      <img src="http://yun.dui88.com/youfen/images/read_ewm.png" alt="">
+      <img src="http://yun.dui88.com/youfen/images/read_ewm2.png" alt="">
     </div>
     <!-- 未开课 -->
     <div class="home-nonevent" v-if="pageStatus == 3">
