@@ -4,8 +4,8 @@
       <div class="item" v-for="(item,index) in reviewList" :key="index">
         <img :src="item.userImgUrl" alt="" class="item-header">
         <div class="item-name">{{item.userNickname}}</div>
-        <div class="item-periods">{{item.readName}}第{{item.readStageNum}}学员</div>
-        <div class="item-content">{{item.readName}}</div>
+        <div class="item-periods">{{item.readName}}第{{item.readStageNum}}期学员</div>
+        <div class="item-content">{{item.content}}</div>
         <div class="item-book">
           <div class="book-bg">
             <img class="book-img" :src="item.courseUrl" alt="">

@@ -12,8 +12,8 @@
           <span :class="{ active: !tabActive}">课程</span>
         </div>
       </div>
-      <div class="home-bottom" @click="tabActive = false" :style="{bottom:bottomNavToggle?'100px':'0px'}" v-show="tabActive">去选课程</div>
-      <div class="home-btn" :style="{bottom:bottomNavToggle?'100px':'0'}" v-show="!tabActive">
+      <div class="home-bottom" @click="tabActive = false" :class="{bottom:bottomNavToggle}"  v-show="tabActive">去选课程</div>
+      <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="!tabActive">
         <p>
           <span class="text-del">{{selectCourseObj.costPrice}}</span>
           <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>元</p>
@@ -430,7 +430,7 @@
               x = Number(touch.pageX), //页面触点X坐标
               y = Number(touch.pageY); //页面触点Y坐标
             //判断滑动方向
-            if (startY - y > 400 && self.$refs.homemain.scrollTop > self.offsetHeight - document.body.clientHeight +
+            if (startY - y > 200 && self.$refs.homemain.scrollTop > self.offsetHeight - document.body.clientHeight +
               self.tabOffsetHeight - 10) {
               console.log('上滑了')
               isTrue = 1;
@@ -717,12 +717,15 @@
         text-align: center;
       }
     }
+    .home-bottom.bottom{
+      bottom: 100/@rem;
+    }
     .home-content {
+        border-bottom: 20/@rem solid #f0f0f0;
       img {
         pointer-events: none;
         display: block;
         width: 750/@rem;
-        border-bottom: 20/@rem solid #f0f0f0;
       }
     }
     .home-review {
@@ -841,6 +844,9 @@
       width: 100%;
       z-index: 999;
       text-align: center;
+    }
+    .home-bottom.bottom{
+      bottom: 100/@rem;
     }
     .home-course {
       background: #f1f1f1;
