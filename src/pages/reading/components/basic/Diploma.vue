@@ -22,10 +22,10 @@
     },
     methods: {
       close() {
-        console.log('关闭')
+        this.$emit("success",false)
       },
       know() {
-        this.$emit("success")
+        this.$emit("success",true)
       }
     }
   };

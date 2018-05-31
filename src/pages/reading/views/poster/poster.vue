@@ -1,41 +1,51 @@
 <template>
     <div class="share">
-        <canvas id="sharePoster" v-show="!imgUrl"></canvas>
-        <img :src="imgUrl" v-show="imgUrl" />
+        <canvas id="sharePoster" v-if="!imgUrl"></canvas>
+        <img :src="imgUrl" v-if="imgUrl" />
+        <Popup v-if="popup" v-on:success = "listenChild"/>
     </div>
 </template>
 
 <script>
+    import Popup from './../../components/basic/Diploma' 
     export default {
         data () {
             return {
                 imgUrl:'',
+                popup:false,
                 info:{}
             };
         },
+        components:{
+            Popup,
+        },
         mounted () {
-            // 如果是最后一天
-            // if(_this.$route.params.lastClock){
-
-            // }else{
-            //     this.getInfo();
-            // }
+            const _this = this;
+            _this.popup = _this.$route.params.lastClock*1;
+            _this.createdCanvas();
         },
         methods: {
-            async getInfo() {
-                let _this = this;
-                let params = {
-                    commentId: "50" // _this.$route.params.commentId
-                }
-                const url = `/api/comment/share`;
-                const res = await _this.$http.get(url, {
-                    params
-                });
-                if(res.data.success){
-                    _this.info = res.data.data;
-                    _this.createdCanvas ();
+            // async getInfo() {
+            //     let _this = this;
+            //     let params = {
+            //         commentId: "50" // _this.$route.params.commentId
+            //     }
+            //     const url = `/api/comment/share`;
+            //     const res = await _this.$http.get(url, {
+            //         params
+            //     });
+            //     if(res.data.success){
+            //         _this.info = res.data.data;
+            //         _this.createdCanvas ();
+            //     }else{
+            //         console.log('获取数据失败')
+            //     }
+            // },
+            listenChild(data){
+                if(data){
+                    //this.push()
                 }else{
-                    console.log('获取数据失败')
+                    this.popup = false;
                 }
             },
             conversion(data){
@@ -74,7 +84,9 @@
                     viewpointHeight = (stringLength.length-3)*_this.conversion(50);
                 }
                 myCanvas.width = _this.conversion(750);
-                myCanvas.height = _this.conversion(1200)*1+viewpointHeight;  
+                myCanvas.height = _this.conversion(1200)*1+viewpointHeight; 
+                ctx.fillStyle = "#fff";
+                ctx.fillRect(0,0, myCanvas.width, myCanvas.height);  
                 
                 // 绘制头部背景图
                 let headerImg = new Promise((resolve,reject) => {
@@ -89,18 +101,26 @@
                 // 绘制方框
                 function createdBox(){
                     return new Promise((resolve,reject) =>{
-                        //绘制圆角
-                        ctx.fillStyle = "#fff";
-                        ctx.lineJoin = "round"; 
-                        ctx.lineWidth = 20; 
-                        ctx.strokeStyle = "#fff";
-                        ctx.strokeRect(_this.conversion(34), _this.conversion(355), _this.conversion(680), _this.conversion(660)); 
-                        //绘制阴影
+                        // 绘制阴影
                         ctx.shadowBlur=50;
                         ctx.shadowColor="#888";
                         ctx.shadowOffsetX = 0;
                         ctx.shadowOffsetY = 20;
-                        ctx.fillRect(_this.conversion(34), _this.conversion(355), _this.conversion(680), _this.conversion(660)*1+viewpointHeight*1); 
+                        // 绘制圆角矩形
+                        function roundRect(x, y, w, h, r) {
+                            var min_size = Math.min(w, h);
+                            if (r > min_size / 2) r = min_size / 2;
+                            ctx.beginPath();
+                            ctx.moveTo(x + r, y);
+                            ctx.arcTo(x + w, y, x + w, y + h, r);
+                            ctx.arcTo(x + w, y + h, x, y + h, r);
+                            ctx.arcTo(x, y + h, x, y, r);
+                            ctx.arcTo(x, y, x + w, y, r);
+                            ctx.closePath();
+                            ctx.fillStyle = "#fff"
+                            ctx.fill();
+                        }
+                        roundRect(_this.conversion(34), _this.conversion(355), _this.conversion(680), _this.conversion(660)*1+viewpointHeight*1,_this.conversion(10)); 
                         //清除阴影效果 
                         ctx.shadowColor="rgba(0,0,0,0)";
                         resolve("");
@@ -147,7 +167,6 @@
                         }    
                     })
                 }
-
                 //绘制头像
                 function createdIcon(){
                     return new Promise((resolve,reject) =>{
@@ -168,6 +187,7 @@
                         drawImg.src = 'https://yun.dui88.com/youfen/images/z6qj8zsviw.jpg';        
                         
                         drawImg.onload = function () {
+                            ctx.beginPath();
                             ctx.save(); // 保存当前ctx的状态
                             ctx.arc(_this.conversion(113), _this.conversion(443), _this.conversion(45), 0, Math.PI*2, true);
                             ctx.clip(); //裁剪上面的圆形
@@ -206,7 +226,7 @@
                     })    
                 }
                 // 绘制所有canvas
-                headerImg.then(createdBox).then(createdCode).then(createdIcon).then(createdBook).then(() =>{
+                headerImg.then(createdBox).then(createdIcon).then(createdCode).then(createdBook).then(() =>{
                     drawScreen();
                     const myPoster = document.getElementById('sharePoster');
                     let  toBase64 = myPoster.toDataURL("image/png"); 
@@ -230,7 +250,6 @@
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         box-sizing: border-box;
-        padding: 80px 60/@rem 86/@rem 60/@rem;
         // z-index: 9;
         background: #f4f4f4;
         img{
