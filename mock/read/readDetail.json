@@ -1,0 +1,25 @@
+{
+    "success": true,
+    "data": {
+        "briefer" : "阅读简介" ,
+		"clockState" : 0 ,
+		"commentState" : 0,
+		"courseId" : 181 ,
+		"courseSubTitle" : "课程副标题" ,
+		"courseTitle" : "课程标题" ,
+		"courseUrl" : "课程图片" ,
+		"playbackProgress": 20 ,
+        "timeLength": 180 ,
+		"dayNum" : 3 ,
+		"days" : 2 ,
+		"readId" : 1 ,
+		"readState" : 1 ,
+		"stageId" : 3,
+		"stageNum" : 2,
+		"title" : "阅读标题" ,
+		"totalDays" : 5,
+		"userId" : 1 ,
+		"userImgUrl" : "用户头像" ,
+		"userNickname" : "用户昵称"
+    }
+}

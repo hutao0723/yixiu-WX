@@ -100,7 +100,7 @@
       // 获取详情
       async getColumnDetail(id) {
         // let self = this;
-        // const url = `/api/course/get`;
+        // const url = `/course/get`;
         // this.$http.get(url, { params: { courseId: id } }).then(res => {
         //   self.detailObj = res.data.data
         // });
@@ -121,7 +121,7 @@
         const msg = {
           title: obj.title,
           desc: obj.subTitle,
-          link: 'http://k.youfen666dev.com/knowledge.html#/home/index?jumpType=course&jumpId=' + obj.id,
+          link: 'http://k.youfen666test.com/knowledge.html#/home/index?jumpType=course&jumpId=' + obj.id,
           imgUrl: obj.lateralCover || obj.verticalCover ||
             'https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }

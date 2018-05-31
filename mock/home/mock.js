@@ -32,6 +32,11 @@ var setOnline = [
     url: '/floor/BLANK/4'
   },
   { 
+    name: 'poster',
+    type: 'get',
+    url: '/comment/share'
+  },
+  { 
     name: '',
     type: 'get',
     url: ''

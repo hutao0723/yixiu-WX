@@ -2,36 +2,26 @@
 export default {
     // audio元素
 	audioelement: '',
+	// 是否有在读课程
+	readMission: true,
+	// 是否有在读课程
+	bottomNavType: true,
+	// 是否有在读课程
+	bottomNavToggle: true,
 	// audio信息
-	audio: {
-		columnId: '',
-		courseId: '',
-		current: '',
-		isNext: '',
-		isPrev: '',
-		lateralCover:"",
-		lecturerId: '',
-		lecturerName: '',
-		playbackProgress: '',
-		powerLevel: '',
-		src: "",
-		timeLength: '',
-		title: "",
-		verticalCover: "",
-		watchable: ''
-	},
+	readAudio: {},
 	// 是否正在播放
-	playing: false,
+	readPlaying: false,
 	// 是否正在加载
-	waiting: false,
-	// 播放类型   1是正序  2是倒序 
-	playType: 1,
+	readWaiting: false,
 	// 当前播放的时间
-	currentTime: 0,
+	readCurrentTime: 0,
 	// 音乐的播放时长
-	musicDuration: 0,
+	readDuration: 0,
 	// 音乐是否在加载
-	musicLoadStart: false,
+	readLoadStart: false,
+	showCardModal: false,
+	startTimestamp: 0,
 	// 曝光参数相关
 	referer: ''
 };

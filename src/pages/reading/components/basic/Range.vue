@@ -208,9 +208,9 @@ export default {
 		this.type = this.rangeType
 		this.currentcolor = this.currentColor
 		this.ballwidth = this.ballWidth
-		this.$refs.ball.style.width = `${this.ballwidth}px`
-		this.$refs.ball.style.height = `${this.ballwidth}px`
-		this.$refs.ball.style.marginTop = `-${this.ballwidth / 2 - 1}px`
+		// this.$refs.ball.style.width = `${this.ballwidth}px`
+		// this.$refs.ball.style.height = `${this.ballwidth}px`
+		// this.$refs.ball.style.marginTop = `-${this.ballwidth / 2 - 1}px`
 		if (!this.currentcolor.length > 0 || this.type === 'progress') return
 		this.$refs.currentProgress.style.background = this.currentcolor
 	}
@@ -243,7 +243,7 @@ export default {
 			flex:1;
 			height:4/@rem;
 			border-radius:4/@rem;
-			background:#EBEBEB;
+			background:@color-black;
 			margin:0 auto;
 			font-size:0;
 			cursor:pointer;
@@ -254,18 +254,18 @@ export default {
 				height:4/@rem;
 				border-radius:4/@rem;
 				float:left;
-				background:#FF464A;
+				background:@color-black;
 			}
 			.ball{
 				display:inline-block;
 				position:absolute;
-				width:40/@rem;
-				height:40/@rem;
+				width:6/@rem;
+				height:22/@rem;
 				left:-7/@rem;
-				// margin-top:-6px;
-				background:#FF464A;
+				margin-top:-9/@rem;
+				background:@color-black;
 				// transform:translate(-50%,0);
-				border-radius:50%;
+				border-radius:3/@rem;
 				cursor:pointer;
 			}
 			}

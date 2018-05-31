@@ -24,51 +24,20 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 8666,
+    port: 8699,
     autoOpenBrowser: false, // 自动打开浏览器
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/floor': {
-        // 测试环境
-        target: 'https://k.youfen666dev.com',  // 接口域名
-        changeOrigin: true,  //是否跨域
-        // pathRewrite: {
-        //   '': ''   //需要rewrite重写的,
-        // }
-      },
-      '/api': {
-        // 测试环境
-        target: 'https://k.youfen666dev.com',  // 接口域名
-        changeOrigin: true,  //是否跨域
-        pathRewrite: {
-          '/api': 'https://k.youfen666dev.com'   //需要rewrite重写的,
+        '/api': {
+          // 测试环境
+          target: 'http://k.youfen666dev.com',  // 接口域名   172.31.10.130:9106
+          changeOrigin: true,  //是否跨域
+          pathRewrite: {
+            '/api': ''   //需要rewrite重写的,
+          }
         }
-      },
-      '/course': {
-        // 测试环境
-        target: 'https://k.youfen666dev.com',  // 接口域名
-        changeOrigin: true,  //是否跨域
-        // pathRewrite: {
-        //   '': ''   //需要rewrite重写的,
-        // }
-      },
-      '/column': {
-        // 测试环境
-        target: 'https://k.youfen666dev.com',  // 接口域名
-        changeOrigin: true,  //是否跨域
-        // pathRewrite: {
-        //   '': ''   //需要rewrite重写的,
-        // }
-      },
-      '/userItem': {
-        // 测试环境
-        target: 'https://k.youfen666dev.com',  // 接口域名
-        changeOrigin: true,  //是否跨域
-        // pathRewrite: {
-        //   '': ''   //需要rewrite重写的,
-        // }
-      },
+      }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
@@ -77,5 +46,4 @@ module.exports = {
     // just be aware of this issue when enabling this option.
     cssSourceMap: false
   }
-};
 

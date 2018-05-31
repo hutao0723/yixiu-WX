@@ -2,9 +2,9 @@
   <div>
     <div class="audio-controler row"  @click="goAudioPage"> 
       <div class="right-bar row-around" style="background-repeat:no-repeat;background-size:100% 100%;" 
-      :style="{backgroundImage:`url(${audioData.coverImgUrl ? audioData.coverImgUrl : baseImg}`}" >
-        <div class="icon-play column-center" :class="!playing ? 'line' : 'mask'">
-          <i class="iconfont icon-bofang" v-if="!playing"></i>
+      :style="{backgroundImage:`url(${readAudio.lateralCover || readAudio.verticalCover || baseImg}`}" >
+        <div class="icon-state column-center" :class="!readPlaying ? 'line' : 'mask'">
+          <i class="iconfont icon-play" v-if="!readPlaying"></i>
           <img class="" src="../../images/audio.svg" v-else/>
         </div>
       </div>
@@ -43,17 +43,17 @@ import { mapState } from 'vuex';
       };
     },
     computed: {
-      ...mapState(['audio','playing'])
+      ...mapState(['readAudio','readPlaying'])
     },
     methods: {
       goAudioPage: function() {
-        if (!this.audio.src) {
+        if (!this.readAudio.src) {
           this.notice = true;
           this.animation = true;
         } else {
           this.notice = false;
           this.animation = false;
-          this.$router.push(`/audio/index`);
+          this.$router.push(`/audio/index/0`);
         }
       },
       hideNotice: function(){
@@ -81,7 +81,7 @@ import { mapState } from 'vuex';
     height: @size;
     border-radius: 50%;
     box-shadow: 0px 8/@rem 10/@rem 0/@rem rgba(204,204,204,0.5);
-    .icon-play{
+    .icon-state{
       width: 87/@rem;
       height: 87/@rem;
       border-radius: 50%;
@@ -96,7 +96,7 @@ import { mapState } from 'vuex';
         color: @color-white;
         font-size: 40/@rem;
       }
-      .icon-bofang{
+      .icon-play{
         color: rgba(0,0,0,0.4753)
       }
     }
@@ -119,6 +119,7 @@ import { mapState } from 'vuex';
     position: fixed;
     bottom: -540/@rem;
     z-index: 1001;
+    left:0;
     &.showin{
       animation: moveup 1s forwards;
       -moz-animation: moveup 1s forwards; 

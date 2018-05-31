@@ -92,7 +92,7 @@ export default {
       const msg = {
           title: this.audio.title,
           desc: this.audio.subTitle,
-          link: this.audio.courseId ? 'http://k.youfen666dev.com/knowledge.html#/home/index?jumpType=course&jumpId=' + this.audio.courseId:false ||this.audio.columnId ? 'http://k.youfen666dev.com/knowledge.html#/home/index?jumpType=column&jumpId=' + this.audio.columnId:false ,
+          link: this.audio.courseId ? 'http://k.youfen666test.com/knowledge.html#/home/index?jumpType=course&jumpId=' + this.audio.courseId:false ||this.audio.columnId ? 'http://k.youfen666test.com/knowledge.html#/home/index?jumpType=column&jumpId=' + this.audio.columnId:false ,
           imgUrl: this.audio.lateralCover || this.audio.verticalCover ||
             'https:https://yun.dui88.com/yoofans/images/201804/miniapp/details-page-top.png',
         }
@@ -128,7 +128,7 @@ export default {
       } else {
         if (this.audio.powerLevel && this.audio.price) play.syncProgress(this.audio.columnId,this.audio.courseId,store.getters.getCurrentTime)
       }
-      play.startAudio(this.audio.columnId, this.audio.courseId, 'prev')
+      if (this.audio.isPrev) play.startAudio(this.audio.columnId, this.audio.courseId, 'prev')
     },  
     togglePlay() {
       if (!this.audio.musicTryEnd) {
@@ -141,7 +141,7 @@ export default {
       } else {
         if (this.audio.powerLevel && this.audio.price) play.syncProgress(this.audio.columnId,this.audio.courseId,store.getters.getCurrentTime)
       }
-      play.startAudio(this.audio.columnId, this.audio.courseId, 'next')
+      if (this.audio.isNext) play.startAudio(this.audio.columnId, this.audio.courseId, 'next')
     },
     goPay(){
         order.buy(this.audio.columnId?this.audio.columnId:this.audio.courseId, this.audio.columnId?2:1)
