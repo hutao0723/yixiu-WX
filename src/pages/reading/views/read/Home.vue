@@ -474,7 +474,7 @@
         params = {
           dcd: dcd,
         }
-        const url = `/distribution/binding`;
+        const url = `/api/distribution/binding`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -485,7 +485,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/stat/changeLoginDays`;
+        const url = `/api/user/stat/changeLoginDays`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -496,7 +496,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/stat/changeReadStatus`;
+        const url = `/api/user/stat/changeReadStatus`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -521,7 +521,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/read/detail`;
+        const url = `/api/user/read/detail`;
         const res = await this.$http.get(url, {
           params
         });
@@ -533,7 +533,7 @@
         params = {
 
         }
-        const url = `/user/read/state`;
+        const url = `/api/user/read/state`;
         const res = await this.$http.get(url, {
           params
         });
@@ -544,7 +544,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/comment/top`;
+        const url = `/api/comment/top`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -559,7 +559,7 @@
           status: status ? 0 : 1,
           commentId: id
         }
-        const url = `/comment/praise`;
+        const url = `/api/comment/praise`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -570,7 +570,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/read/readList`;
+        const url = `/api/read/readList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -598,7 +598,7 @@
           readId: this.readId,
           date: date,
         }
-        const url = `/readBookCourse/courseDetailByDate`;
+        const url = `/api/readBookCourse/courseDetailByDate`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -611,7 +611,7 @@
         params = {
           readId: this.readId,
         }
-        const url = `/readBook/bookList`;
+        const url = `/api/readBook/bookList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -625,7 +625,7 @@
           readId: this.readId,
           bookId: id,
         }
-        const url = `/readBookCourse/courseList`;
+        const url = `/api/readBookCourse/courseList`;
         this.$http.get(url, {
           params
         }).then((res) => {

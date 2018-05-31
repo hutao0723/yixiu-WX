@@ -44,24 +44,36 @@ Vue.http.interceptors.push((request, next) => {
   // continue to next interceptor
   next((response) => { // 在响应之后传给then之前对response进行修改和逻辑判断。对于token时候已过期的判断，就添加在此处，页面中任何一次http请求都会先调用此处方法
     // response.body = '...';
+    // if (response.data.code == '000001') {
+    //   if (response.url.indexOf('/order/submit') > -1) {
+    //     let reqObj = JSON.parse(request.body)
+    //     let o = '/' + window.location.href.split('/').slice(3).join('/')
+    //     if(o.indexOf('?')>-1){
+    //       let url = encodeURIComponent(o + '&courseId=' + reqObj.itemId);
+    //       location.href = "/loginH5?dbredirect=" + url;
+    //     }else{
+    //       let url = encodeURIComponent(o + '?courseId=' + reqObj.itemId);
+    //       location.href = "/loginH5?dbredirect=" + url;
+    //     }
+    //   } else {
+    //     let o = '/' + window.location.href.split('/').slice(3).join('/')
+    //     let url = encodeURIComponent(o);
+    //     location.href = "/loginH5?dbredirect=" + url;
+    //   }
+
+    // }
     if (response.data.code == '000001') {
-      if (response.url.indexOf('/order/submit') > -1) {
-        let reqObj = JSON.parse(request.body)
-        let o = '/' + window.location.href.split('/').slice(3).join('/')
-        if(o.indexOf('?')>-1){
-          let url = encodeURIComponent(o + '&courseId=' + reqObj.itemId);
+        if (response.url.indexOf('/order/submit') > -1) {
+          let o = '/' + window.location.href.split('/').slice(3).join('/')
+          let url = encodeURIComponent(o);
           location.href = "/loginH5?dbredirect=" + url;
-        }else{
-          let url = encodeURIComponent(o + 'courseId=' + reqObj.itemId);
+        } else {
+          let o = '/' + window.location.href.split('/').slice(3).join('/')
+          let url = encodeURIComponent(o);
           location.href = "/loginH5?dbredirect=" + url;
         }
-      } else {
-        let o = '/' + window.location.href.split('/').slice(3).join('/')
-        let url = encodeURIComponent(o);
-        location.href = "/loginH5?dbredirect=" + url;
+  
       }
-
-    }
     return response;
   });
 });
