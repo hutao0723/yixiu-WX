@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="book-name otw">{{item.courseTitle}}</div>
-                <div class="book-author otw">{{item.courseAuthor}} 著</div>
+                <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
               </div>
               <div class="item-bottom">
                 <!-- <span @click="getCommentPraise(item.id,item.userPraise)" v-if="pageStatus != 0">
@@ -410,6 +410,7 @@
       tabActiveToggle(e) {
         document.documentElement.scrollTop = 0;
         document.body.scrollTop = 0;
+        window.scrollTo(0, 0)
         this.tabActive = e;
       },
       dispatchScroll(e) {
@@ -458,8 +459,10 @@
 
         function touchEnd() {
           if (isTrue == 1) {
-            self.tabActive = false;
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
             window.scrollTo(0, 0)
+            self.tabActive = false;
           }
         }
 
@@ -965,7 +968,7 @@
         }
         .item-bottom {
           /* height: 220/@rem; */
-          font-size: 28/@rem !important;
+          font-size: 28/@rem  !important;
           line-height: 52/@rem;
           padding: 29/@rem 40/@rem;
           background: #fff;
@@ -973,7 +976,7 @@
           span,
           p,
           div {
-            font-size: 28/@rem !important;
+            font-size: 28/@rem  !important;
           }
         }
       }

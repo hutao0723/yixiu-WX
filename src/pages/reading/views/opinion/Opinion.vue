@@ -12,7 +12,7 @@
           </div>
 
           <div class="book-name otw">{{item.courseTitle}}</div>
-          <div class="book-author otw">{{item.courseAuthor}} 著</div>
+          <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
         </div>
         <div class="item-bottom">
           <span @click="getCommentPraise(item)">
