@@ -22,7 +22,14 @@
       <div class="home-test" ref="homemain" id="hometest">
         <div id="homebox" v-show="tabActive">
           <div class="home-content">
-            <img src="http://yun.dui88.com/youfen/images/read_detail.jpg" alt="">
+            <img src="http://yun.dui88.com/youfen/images/read_test01.jpg" alt="">
+            <img src="http://yun.dui88.com/youfen/images/read_test02.jpg" alt="">
+            <img src="http://yun.dui88.com/youfen/images/read_test03.jpg" alt="">
+            <img src="http://yun.dui88.com/youfen/images/read_test04.jpg" alt="">
+            <img src="http://yun.dui88.com/youfen/images/read_test05.jpg" alt="">
+            <img src="http://yun.dui88.com/youfen/images/read_test06.jpg" alt="">
+            <img src="http://yun.dui88.com/youfen/images/read_test07.jpg" alt="">
+            <img src="http://yun.dui88.com/youfen/images/read_test08.jpg" alt="">
           </div>
           <div class="home-review" v-if="reviewList.length> 0">
             <h2>学员观点</h2>
@@ -712,6 +719,7 @@
     }
     .home-content {
       img {
+        pointer-events: none;
         display: block;
         width: 750/@rem;
         border-bottom: 20/@rem solid #f0f0f0;
