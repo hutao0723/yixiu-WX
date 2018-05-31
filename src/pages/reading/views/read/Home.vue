@@ -88,7 +88,7 @@
 
     <div class="home-wechat" v-if="pageStatus == 2">
       <p class="text-a">
-        <i class="iconfont icon-chenggong">&#xe608; </i>您已成功报名</p>
+        <i class="iconfont"></i>您已成功报名</p>
       <p class="text-b">长按识别二维码</p>
       <p class="text-c">关注公众号，去等待开课</p>
       <img src="http://yun.dui88.com/youfen/images/read_ewm2.png" alt="">
@@ -838,16 +838,7 @@
             padding-right: 10/@rem;
             box-sizing: border-box;
           }
-        } // .item-bottom {
-        //   .size(22, 30);
-        //   width: 100%;
-        //   box-sizing: border-box;
-        //   .iconfont {
-        //     line-height: 30/@rem;
-        //     font-size: 24/@rem;
-        //     padding: 0 10/@rem
-        //   }
-        // }
+        }
       }
       .item:after {
         content: '';
@@ -984,55 +975,16 @@
       }
 
       .active {
-        transform: scale(1.1); // padding: 0 20/@rem;
+        transform: scale(1.1);
         box-shadow: 0/@rem -2/@rem 14/@rem 5/@rem rgba(0, 0, 0, 0.2);
         .item-box {}
         .item-top {
           background: #FEED47;
-        } // .item-top {
-        //   height: 220/@rem;
-        //   .item-name {
-        //     .pos(40,
-        //     22);
-        //     /* .text(48,
-        //     67); */
-        //   }
-        //   .item-msg {
-        //     .pos(40,
-        //     109);
-        //     /* .text(28,
-        //     40); */
-        //     color: #333;
-        //   }
-        //   .item-num {
-        //     .pos(40,
-        //     157);
-        //     /* .text(28,
-        //     40); */
-        //     color: #333;
-        //   }
+        }
         .item-btn {
-          background: #FEED47; // .size(130,
-          // 56);
-          /* .text(32,
-                56); */
-          // position: absolute;
-          // top: 124/@rem;
-          // background: #FF4C4C;
-          // border-color: #FF4C4C;
-          // color: #fff;
-        } // }
-        // .item-bottom {
-        //   /* height: 230/@rem; */
-        //   /* font-size: 30/@rem  !important; */
-        //   line-height: 52/@rem;
-        //   padding: 37/@rem 40/@rem;
-        //   span,
-        //   p,
-        //   div {
-        //     font-size: 28/@rem !important;
-        //   }
-        // }
+          background: #FEED47;
+        }
+
       }
       .none {
         .item-top {
@@ -1066,10 +1018,12 @@
         text-align: center;
         padding-top: 65/@rem;
         color: #343434;
-        .icon-chenggong {
+        .iconfont {
           font-size: 56/@rem;
           line-height: 56/@rem;
-          color: #FFE555;
+          display: inline-block;
+          background: url('http://yun.dui88.com/youfen/images/read_icon.png') no-repeat center;
+          background-size: 100% 100%;
           margin-right: 24/@rem;
         }
       }
