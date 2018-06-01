@@ -33,41 +33,73 @@ export default {
                     num:'0.00'
                 },
             ],
-            isPlaceholderShow:true,
-            cashNum:'',
-            balance:'',
-            isCashBtnDisabled:false,
-            promptText:'',
+            cashNum:'', // 输入提现金额
+            balance:'', // 可提现的额度
+            promptText:'',  // 弹窗消息
         };
     },
     computed: {
         ...mapState({}),
     },
     created() {
-        // this.balance = this.$route.query.balance
         this.getBalance()
     },
     mounted () {
         
     },
+    watch:{
+        'cashNum':function(v){
+            // 限制输入金额到小数点后两位
+            this.cashNum = v.replace(/(\d*)(\.\d{0,2})?.*/, (match, p1, p2) => {
+                // p1整数部分，p2小数部分
+                // console.log(match)
+                console.log(p1)
+                return Number(p1) + (p2 || '');
+            });
+        }
+    },
     methods: {
-
-        judgeCash(){
+        judgeCash(){// 判断是否达到提现的条件
             let money;
             this.cashNum = Number(this.cashNum)
-            if(this.cashNum < 20){
+            if(this.cashNum < 20){// 提现不得小于20元
                 this.promptText = '至少提现<em>20</em>元'
                 this.dialog(this.promptText)
-            }else if(this.cashNum > this.balance){
+            }else if(this.cashNum > this.balance){ // 不得超过额度
                 this.promptText = `最多可提现${this.balance}元`
                 this.dialog(this.promptText)
             }else{
-                money = this.cashNum + '00'
+                // 对传入的金额再次进行处理
+                money = this.dealWithMoney()
                 this.getData(money)
             }
         },
+        
+        // 处理输入后的金额转成整数
+        dealWithMoney(){
+            let integerPart,decimalsPart,cash = this.cashNum.toString();
+            if(cash.indexOf('.') < 0){
+                return cash + '00'
+            }else{
+                // 金钱的整数部分
+                integerPart = cash.split('.')[0]
+                // 金钱的小数部分,并取两位
+                decimalsPart = cash.split('.')[1]
+                if(decimalsPart.length >= 2){
+                    // 小数点后两位
+                    decimalsPart = decimalsPart.slice(0,2)
+                }else if(decimalsPart.length == 1){
+                    // 小数点后一位
+                    decimalsPart = decimalsPart+'0'
+                }else{
+                    // 只带小数点
+                    decimalsPart = decimalsPart+'00'
+                }
+                return integerPart + decimalsPart
+            }            
+        },
 
-        dialog(msg){
+        dialog(msg){ // 不满足提现条件时的弹窗
             this.$refs.dialog.confirm({
                 text: msg,
                 showConfirmButton:false,
@@ -80,10 +112,12 @@ export default {
         },
 
         allCashing(){
+            // 全部提现
             this.cashNum = this.balance.split('.')[0];
         },
 
         getData(money){
+            // 进行提现操作
             sales.widthdraw(money).then((res) => {
                 if(Boolean(res.desc)){
                     this.dialog(res.desc)
@@ -93,6 +127,7 @@ export default {
             })
         },
         getBalance(){
+            // 刷新页面重新获取可提现金额
             sales.info().then((res) => {
                 this.balance = res.balance.split('.')[0]
             })

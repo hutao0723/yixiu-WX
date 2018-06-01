@@ -34,11 +34,11 @@ export default {
                 },
             ],
             symbolClass:'cash-history',
-            historyList: [],
-            noData: false,
-            id: '',
-            pageSize: 20,
-            busy: true,
+            historyList: [], // 页面的记录列表数组
+            noData: false, // 空数据
+            pageSize: 20,  // 每页条数
+            pageNum:1,     // 下拉页码
+            busy: true,    // 下拉加载控制
         };
     },
     computed: {
@@ -54,19 +54,15 @@ export default {
 
         // 获取更多数据
         async getList() {
-            // let params = {
-            //     pageNum: this.pageNum,
-            //     pageSize: this.pageSize
-            // }
-            let arr
-            if(this.historyList.length){
-                this.id = this.historyList[this.historyList.length-1].id
-                console.log(this.id)
+            let params = {
+                pageNum: this.pageNum,
+                pageSize: this.pageSize
             }
-            arr = await sales.incomeDetail(this.id,this.pageSize)
-
-            if (arr && arr.length) {
-                this.historyList = [...this.historyList, ...arr];
+            // 拉取数据
+            let obj = await sales.incomeDetail(this.pageNum,this.pageSize)
+            // 判断是否为空，非空则放入historyList
+            if (obj.content && obj.content.length) {
+                this.historyList = [...this.historyList, ...obj.content];
                 this.busy = false;
             } else {
                 this.busy = true
@@ -74,13 +70,14 @@ export default {
 
             if (!this.historyList.length) this.noData = true;
         },
-        loadMore () {
+        loadMore () { // 下拉加载控制
             this.busy = true;
             this.pageNum ++;
             this.getList();
         },
     },
 
+    // 根据路由判断symbolClass是否显示
     beforeRouteEnter (to, from, next) {
         next(vm => {
             // 通过 `vm` 访问组件实例
