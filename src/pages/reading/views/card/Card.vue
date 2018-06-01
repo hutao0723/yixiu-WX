@@ -52,6 +52,7 @@
   import calendarTemplate from '../../components/layout/calendarTemplate';
   import cardNotice from '../../components/layout/card-notice';
   import AudioBar from '../../components/basic/Audio_Bar';
+  import play from '../../api/play'
   export default {
     components: {
       bnav,
@@ -74,7 +75,7 @@
         c_date:[],
         lastClock:0,
         afterToday:false,
-        isToday:false
+        isToday:false,
       };
     },
     computed: {
@@ -99,10 +100,12 @@
         this.noticeFlag = msg;
       },
       playAudio(readId,courseId){
-        console.log(readId,courseId)
-        play.audioInit(readId,courseId,true)
-        // 跳转到播放页
-        this.$router.push("/audio/Index/1");
+        if(this.afterToday||this.isToday){
+          play.audioInit(readId,courseId,true)
+          // 跳转到播放页
+          this.$router.push("/audio/index/1");
+        }
+
       },
       //获取阅读状态
       getReadStatus(){

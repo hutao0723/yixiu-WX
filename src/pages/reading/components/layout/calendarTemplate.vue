@@ -9,7 +9,7 @@
         <div class="dateBgView">
           <div class="dateEmptyView" v-for="item2 in empytGrids[index1]">{{item2.index}}
           </div>
-          <div class="dateView" :class="[{isToday_def:item3.isToday},{isFirstLackCard:item3.isLackCard}]" v-for="(item3,index) in days[index1]"  :key="index" @click="clickDay(index1,index,item3)">
+          <div class="dateView" :class="[{isToday_def:item3.isToday},{isFirstLackCard:item3.lackCard}]" v-for="(item3,index) in days[index1]"  :key="index" @click="clickDay(index1,index,item3)">
             <a href="javascript:;" >
               <div class="datesView"  :class="[
               {'isClock':item3.isClock},
@@ -77,6 +77,8 @@
             console.log('缺卡第一天定位')
             child = document.querySelector('.isFirstLackCard');
           }
+          //console.log('child---'+child.offsetTop)
+          //console.log('father---'+father.offsetTop)
           father.scrollTop = child.offsetTop - father.offsetTop-10;
           this.isFrist = false
         }
@@ -129,10 +131,23 @@
           this.calculateEmptyGrids(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
           /**调用计算空格子*/
           this.calculateDays(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
-
-          if(_this.caledarArr[i].cur_month==_this._month){ //默认选中当天
-            _this.clickDay(i,_this.today-1,_this.days[i][_this.today-1])
+          //选中当天或者缺卡第一天
+          if(this.isTodayClock){
+            //当天
+            if(_this.caledarArr[i].cur_month==_this._month){ //默认选中当天
+              _this.clickDay(i,_this.today-1,_this.days[i][_this.today-1])
+            }
+          }else{
+            //缺卡第一天
+            for(let i=0;i<this.days.length;i++){
+              for(let j=0;j<this.days[i].length;j++){
+                if(this.days[i][j].lackCard){
+                  _this.clickDay(i,j,_this.days[i][j])
+                }
+              }
+            }
           }
+
         }
       },
 
@@ -175,7 +190,7 @@
         let days = [];
         let thisMonthDays = this.getThisMonthDays(year, month);
         for (let i = 1; i <= thisMonthDays; i++) {
-          days.push({isLackCard:false,afterToday:false,isToday:false,index: i - 1,isClock:false,isClick:false,isRange:false,date:year+'-'+month+'-'+(i>=10?i:('0'+i))});
+          days.push({lackCard:false,afterToday:false,isToday:false,index: i - 1,isClock:false,isClick:false,isRange:false,date:year+'-'+month+'-'+(i>=10?i:('0'+i))});
         }
         if(month==_this.cur_month){ //当天
           days[_this.today-1].isToday = true;
@@ -186,9 +201,9 @@
              //范围 并打卡
               days[i].isClock = true;
             }
-            if(month == _this.calendarDate[j].date.split('-')[1] && i == (_this.calendarDate[j].date.split('-')[2]-1)&&_this.calendarDate[j].isLackCard){
+            if(month == _this.calendarDate[j].date.split('-')[1] && i == (_this.calendarDate[j].date.split('-')[2]-1)&&_this.calendarDate[j].lackCard){
               //范围 并打卡
-              days[i].isLackCard = true;
+              days[i].lackCard = true;
             }
             if(month == _this.calendarDate[j].date.split('-')[1] && i == (_this.calendarDate[j].date.split('-')[2]-1)){
               //日期范围
