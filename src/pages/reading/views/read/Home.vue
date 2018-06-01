@@ -386,14 +386,7 @@
         }
       }
 
-      store.commit({
-        type: 'setBottomNavToggle',
-        bottomNavToggle: false
-      })
-      store.commit({
-        type: 'setBottomNavType',
-        bottomNavType: false
-      })
+      
       this.changeLoginDays();
       this.changeReadStatus();
       // window.addEventListener('scroll', this.handleScroll,true);
