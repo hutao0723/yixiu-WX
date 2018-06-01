@@ -66,25 +66,26 @@ export default {
     methods: {
         //getBindUsers
         loadMore () {
-            this.busy = true;
-            if(this.initIndex){
+            this.busy = true; // busy为true则暂停loaderMore
+            if(this.initIndex){ // initIndex - 1获取绑定中用户的显示页面bindPageNum++，0获取未绑定用户的显示页面unbindPageNum++
                 this.bindPageNum++;
             }else{
                 this.unbindPageNum++
             }
-            this.getList();
+            this.getList(); // 拉取用户列表数据
         },
         async getList() {
             let obj;
-            if(this.initIndex){
+            if(this.initIndex){// initIndex - 1获取绑定中的用户列表，0获取未绑定的用户列表
                 obj = await sales.getBindUsers(this.bindPageNum,this.pageSize,this.initIndex);
             }else{
                 obj = await sales.getBindUsers(this.unbindPageNum,this.pageSize,this.initIndex);
             }
-
+            // 返回的数据非空时加入this.record数组中
             if(obj.content && obj.content.length){
                 this.record = [...this.record, ...obj.content]
             }
+            // this.record为空时显示无数据占位图
             if (!this.record.length) this.noData = true;
         },
     },

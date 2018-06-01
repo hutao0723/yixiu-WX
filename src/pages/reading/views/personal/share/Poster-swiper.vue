@@ -39,6 +39,7 @@ export default {
     mounted() {
     },
     methods:{
+        // 点击到某张图片时，符合条件则进行滚动，并将 index和itemImg传回父组件
         selectSwiper (index,itemImg) {
             this.tabIndex = index
             this.swiper.slideTo(index-1, 1000, false)

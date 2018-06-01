@@ -17,7 +17,8 @@
         </div>
         <div class="share-list">
             <router-link v-for="(item,i) in data" :key="item.name" :to="item.router">
-                <span :class="it.showStatus && 'sl-new'" v-for="(it,index) in redPointArr" :key="index" v-if="it.functionsType == i+1 && it.functionsType">{{item.name}}</span>
+                <!-- showStatus:1显示，0隐藏，functionsType:用户红点功能类型集合：1:我的客户;2:收益记录 -->
+                <span :class="it.showStatus && it.functionsType && it.functionsType == i+1  && 'sl-new'" v-for="(it,index) in redPointArr" :key="index" v-if="i == index">{{item.name}}</span>
                 <i class="iconfont icon-right"></i>
             </router-link>
             <router-link to="/personal/share/poster">
@@ -25,6 +26,7 @@
                 <i class="iconfont icon-right"></i>
             </router-link>
         </div>
+
         <div class="tip-modal">
             <confirmDialog ref="dialog"></confirmDialog>
         </div>
@@ -86,7 +88,7 @@
             this.shouldCongratulationDialogShow()
         },
         methods: {
-            withdrawDeposit() {
+            withdrawDeposit() { // 判断是否达到提现的条件
                 if (this.shareData.balance < 0) {
                     this.$refs.dialog.confirm({
                         text: '可提现金额需满<em>20</em>元 才可提现？',
@@ -100,21 +102,17 @@
                     })
                 } else {
                     this.$router.push({
-                        path: '/personal/share/cash',
-                        query: {
-                            'balance': this.shareData.balance
-                        }
+                        path: '/personal/share/cash'
                     })
                 }
             },
-            shouldCongratulationDialogShow() {
+            shouldCongratulationDialogShow() { // 有收益到账时的弹窗触发条件
                 this.earningMoney = this.$route.query.earningMoney
                 if (this.earningMoney && this.earningMoney != '0') {
                     this.congratulationDialog(this.earningMoney)
                 }
             },
-            congratulationDialog(sh) {
-
+            congratulationDialog(sh) { // 收益到账时的弹窗
                 this.$refs.cdialog.confirm({
                     text: `你有一笔收益到账${sh}元`,
                     cancelButtonText: '好的',
@@ -127,11 +125,13 @@
                 })
             },
             getDate() {
-                // 用户红点功能类型集合：1:我的客户;2:收益记录,3:分享赚钱
-                let functionsTypes = '1,2,3';
+                // 用户红点功能类型集合：1:我的客户;2:收益记录
+                let functionsTypes = '1,2';
+                // 获取用户的提现金额和收益金额等信息
                 sales.info().then((res) => {
                     this.shareData = res
                 })
+                //获取红点信息
                 sales.redPoint(functionsTypes).then((res) => {
                     this.redPointArr = [...this.redPointArr, ...res]
                 })
@@ -302,7 +302,8 @@
                 height: 772/@rem;
                 top: 108/@rem;
                 transform: translateX(-50%);
-                background: url(http://yun.dui88.com/yoofans/images/201805/congratulation_bg.png) no-repeat bottom center;
+                background: url(http://yun.dui88.com/yoofans/images/201805/congrate.png) no-repeat bottom center;
+                background-size: contain;
                 .modal-body {
                     .notice{
                         width: 224/@rem;

@@ -48,7 +48,7 @@ export default {
             swiperArr: [],
             // swiperImgAddress:'//u.bcwcdn.com/activity_img/2017/img_1208/1633_01.png',
             headimgurl:'',
-            nickname:'',
+            nickname:'', 
             QrcodeAddress:'',
             basecode64:'',
             readPlanPostersArr:[],
@@ -72,21 +72,21 @@ export default {
     },
     methods: {
 
-        async getUserInfo(){
+        async getUserInfo(){ // 拉取微信用户的昵称和头像
             let obj = await sales.getUserInfo()
             this.headimgurl = obj.headimgurl
             this.nickname = obj.nickname
         },
 
-        async qrcodeUrl(){
+        async qrcodeUrl(){ // 获取图片流二维码
             this.QrcodeAddress = await sales.qrcodeUrl()  
         },
 
-        async readPlanPosters(){
+        async readPlanPosters(){ // 获取海报
             this.readPlanPostersArr = await sales.readPlanPosters()
         },
 
-        createQrc: function () {
+        createQrc: function () { // 根据接口返回的URL创建二维码
             if (!this.qrcUrl) {
                 window.alert('链接不能为空')
                 return false
@@ -100,7 +100,7 @@ export default {
             })
         },
 
-        showQrc: function(){
+        showQrc: function(){ // 将创建完的二维码显示到页面中的canvas中
             new Promise((resolve, reject) => {
                 this.$nextTick(function () {
                     // DOM操作
@@ -109,6 +109,7 @@ export default {
                 })
             }).then(() => {
                 this.createQrc();
+                // 将canvas转成base64
                 this.basecode64 = document.getElementById('qrccode-canvas').toDataURL("image/png");
                 this.createCanvas()
             })
@@ -122,6 +123,7 @@ export default {
             fxImg.setAttribute('src', toBase64)
         },
 
+        //  
         getSwiperIndex(itemImg, index){
             this.poster = itemImg
             this.swiperIndex = index
@@ -130,6 +132,7 @@ export default {
         createCanvas(){
             const self = this;
             const rpp = self.readPlanPostersArr[self.swiperIndex]
+            // 图像大小适配
             function conversion(number) {
                 return number
             };
@@ -138,7 +141,7 @@ export default {
             myCanvas.width = conversion(510);
             myCanvas.height = conversion(820);
             var ctx =  myCanvas.getContext('2d');
-            
+            // 绘制背景图
             let background = new Promise(function(resolve, reject){
                 var BG_img = new Image();
                 BG_img.crossOrigin = 'anonymous'; 
@@ -148,7 +151,7 @@ export default {
                     resolve('');
                 };	
             });   
-            
+            // 绘制二维码
             function code(){
                 return new Promise(function(resolve, reject){
                     var codeImg = new Image();
@@ -160,6 +163,7 @@ export default {
                     };
                 });
             };
+            // 绘制微信头像
             function icon(){
                 return new Promise(function(resolve, reject){
                     var iconImg = new Image();
@@ -171,10 +175,11 @@ export default {
                     };	
                 });
             };
+            // 图像绘制完后进行文字绘制
             background.then(code).then(icon).then(()=>{
                 
                 //self.readPlanPostersArr[this.swiperIndex].nicknameFontSize 中的字段不存在则跳过
-                if(rpp.nicknameFontSize){
+                if(rpp.nicknameFontSize){ // 绘制昵称
                     ctx.font = conversion(rpp.nicknameFontSize)+'px 宋体';
                     ctx.fillStyle = rpp.nicknameFontColor;
                     // ctx.textAlign = 'center';
@@ -202,7 +207,7 @@ export default {
                             ctx.fillText(row[b],conversion(255),y+(b)*conversion(40));
                         }
                     }
-
+                    // 绘制签名
                     rpp.ctitleFontSize && drawText('那些你从小到大未见过未听过的故事，这些关于深海的秘密',conversion(rpp.ctitleLeftMargin),conversion(rpp.ctitleTopMargin),conversion(300));
                     
                     self.createdImg()

@@ -37,6 +37,7 @@ export default {
             historyList: [],
             noData: false,
             id: '',
+            pageNum: 1,
             pageSize: 20,
             busy: true,
             lastCreateDate:'' //当前页最后一个创建时间
@@ -55,14 +56,13 @@ export default {
 
         // 获取更多数据
         async getList() {
-            let arr
-                if(this.historyList.length){
-                    this.lastCreateDate = this.historyList[this.historyList.length-1].gmtCreate
-                }
-                arr = await sales.record(this.lastCreateDate)
+            // if(this.historyList.length){
+            //     this.lastCreateDate = this.historyList[this.historyList.length-1].gmtCreate
+            // }
+            let obj = await sales.record(this.pageNum, this.pageSize)
 
-            if (arr && arr.length) {
-                this.historyList = [...this.historyList, ...arr];
+            if (obj.content && obj.content.length) {
+                this.historyList = [...this.historyList, ...obj.content];
                 this.busy = false;
             } else {
                 this.busy = true
