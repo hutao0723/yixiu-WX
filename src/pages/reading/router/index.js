@@ -32,7 +32,7 @@ export default new Router({
         }
       },
       {
-        path: '/index/card',
+        path: '/index/card/:isTodayClock',
         component: function (resolve) {
           require.ensure([], function () {
             resolve(require('../views/card/Card'));
@@ -122,7 +122,7 @@ export default new Router({
       }
     },
     {
-      path: '/poster/:commentId/:lastClock',
+      path: '/poster/:commentId/:lastClock/:isClock',
       name:'poster',
       component: function (resolve) {
         require.ensure([], function () {

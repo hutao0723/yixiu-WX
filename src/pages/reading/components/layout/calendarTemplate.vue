@@ -1,6 +1,6 @@
 <template id="calendarTemplate">
-  <div>
-  <div class="calendarTemplate_box" v-for="(item1,index1) in caledarArr">
+  <div class="box">
+    <div class="calendarTemplate_box" v-for="(item1,index1) in caledarArr" >
     <div class="canlendarBgView">
       <div class="canlendarView">
         <div class="canlendarTopView">
@@ -9,17 +9,17 @@
         <div class="dateBgView">
           <div class="dateEmptyView" v-for="item2 in empytGrids[index1]">{{item2.index}}
           </div>
-          <div class="dateView" v-for="(item3,index) in days[index1]" :key="index" @click="clickDay(index1,index,item3)">
+          <div class="dateView" :class="[{isToday_def:item3.isToday},{isFirstLackCard:item3.isLackCard}]" v-for="(item3,index) in days[index1]"  :key="index" @click="clickDay(index1,index,item3)">
             <a href="javascript:;" >
-              <div class="datesView" :class="[
+              <div class="datesView"  :class="[
               {'isClock':item3.isClock},
               {'isClick':item3.isClick},
               {'isToday':item3.isToday&&item3.isClick},
               {'isRange':item3.isRange},
               {'isNotClock':item3.isRange&&!item3.isClock&&item3.afterToday},
-              {'borderClick':item3.isClick&&item3.afterToday||item3.isClick&&item3.isToday}]">
-                <template v-if="_month == item1.cur_month&&index == today-1">今</template>
-                <template v-else>{{item3.index+1}}</template>
+              {'borderClick':item3.isClick&&item3.isClock&&item3.afterToday||item3.isClick&&!item3.isClock&&item3.afterToday}]">
+                <span v-if="item3.isToday">今</span>
+                <span v-else>{{item3.index+1}}</span>
               </div>
             </a>
           </div>
@@ -49,22 +49,46 @@
         maxMonthNum: 4,
         nowMonth: null,
         nowYear: null,
-        caledarArr: []
+        caledarArr: [],
+        hhh:0,
+        isFrist:true,
+        isTodayClock:''
       }
     },
     mounted: function () {
-
+      this.isTodayClock = this.$route.params.isTodayClock;
     },
     watch: {
       calendarDate (){
         this.setNowDate()
       }
     },
+    updated:function(){
+      this.$nextTick(function () {
+        let child;
+        let father = document.querySelector('.calendar-box');
+        if(this.isFrist){
+          if(this.isTodayClock){
+            //定位当天
+            console.log('当天定位')
+            child = document.querySelector('.isToday_def');
+          }else{
+            //定位第一次缺卡位置
+            console.log('缺卡第一天定位')
+            child = document.querySelector('.isFirstLackCard');
+          }
+          father.scrollTop = child.offsetTop - father.offsetTop-10;
+          this.isFrist = false
+        }
 
+      })
+    },
     created: function () {
+
 
     },
     methods: {
+
       setNowDate: function () {//当月
         let date = new Date();
         let cur_year = date.getFullYear();
@@ -110,11 +134,10 @@
             _this.clickDay(i,_this.today-1,_this.days[i][_this.today-1])
           }
         }
-
       },
 
       clickDay: function (index1,index,item) { //点击态
-
+        this.index = index
         if(this.days[index1][index].isRange){
           this.$emit('getDate',item)
           for(let j=0;j<this.days.length;j++){
@@ -152,7 +175,7 @@
         let days = [];
         let thisMonthDays = this.getThisMonthDays(year, month);
         for (let i = 1; i <= thisMonthDays; i++) {
-          days.push({afterToday:false,isToday:false,index: i - 1,isClock:false,isClick:false,isRange:false,date:year+'-'+month+'-'+(i>=10?i:('0'+i))});
+          days.push({isLackCard:false,afterToday:false,isToday:false,index: i - 1,isClock:false,isClick:false,isRange:false,date:year+'-'+month+'-'+(i>=10?i:('0'+i))});
         }
         if(month==_this.cur_month){ //当天
           days[_this.today-1].isToday = true;
@@ -162,6 +185,10 @@
             if(month == _this.calendarDate[j].date.split('-')[1] && i == (_this.calendarDate[j].date.split('-')[2]-1)&&_this.calendarDate[j].clockState){
              //范围 并打卡
               days[i].isClock = true;
+            }
+            if(month == _this.calendarDate[j].date.split('-')[1] && i == (_this.calendarDate[j].date.split('-')[2]-1)&&_this.calendarDate[j].isLackCard){
+              //范围 并打卡
+              days[i].isLackCard = true;
             }
             if(month == _this.calendarDate[j].date.split('-')[1] && i == (_this.calendarDate[j].date.split('-')[2]-1)){
               //日期范围
@@ -175,11 +202,10 @@
               //范围 并打卡
               days[i].afterToday = true;
             }
-
-
           }
         }
         this.days.push(days);
+
       }
     }
   }

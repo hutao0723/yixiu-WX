@@ -34,7 +34,7 @@
               title: '打卡',
               icon: 'icon-date',
               active: 'icon-date active tag',
-              path: '/index/card'
+              path: '/index/card/1'
             },
             {
               title: '观点',
