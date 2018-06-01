@@ -269,10 +269,10 @@
 
 
       // 如果是支付流程直接支付
-      if (this.$route.query.dcd) {
+      if (this.$route.query.dcd && !this.$route.query.isPay) {
         this.getDcd(this.$route.query.dcd)
       }
-      if (this.$route.query.courseId) {
+      if (this.$route.query.courseId && !this.$route.query.isPay) {
         this.tabActive = false;
         order.buy(this.$route.query.courseId, 4)
       }
