@@ -666,6 +666,7 @@
       overflow: scroll;
       padding-top: 100/@rem;
       box-sizing: border-box;
+      background: #f1f1f1;
       /* transform:translateY(-800/@rem); */
     }
     .home-box {
@@ -746,6 +747,7 @@
       bottom: 100/@rem;
     }
     .home-content {
+      background: #fff;
       border-bottom: 20/@rem solid #f0f0f0;
       img {
         /* pointer-events: none; */
@@ -754,6 +756,7 @@
       }
     }
     .home-review {
+      background: #fff;
       padding-bottom: 120/@rem;
       h2 {
         .text(40, 56);
