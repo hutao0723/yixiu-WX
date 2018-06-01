@@ -80,11 +80,11 @@ export default class order extends base {
           // } 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
           alert('跳转地址！')
           
-          const url = location.href
+          const url = window.location.href
           if (url.indexOf('?') > -1) {
-            location.href = url + '&timestamp=' + ((new Date()).getTime() + Math.random());
+            window.location.href = url + '&timestamp=' + ((new Date()).getTime() + Math.random());
           } else {
-            location.href = url + '?timestamp=' + ((new Date()).getTime() + Math.random());
+            window.location.href = url + '?timestamp=' + ((new Date()).getTime() + Math.random());
           }
         }
       );
