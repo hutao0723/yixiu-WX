@@ -13,7 +13,7 @@ export default class order extends base {
       itemId,
       itemType
     });
-    if(!orderId){
+    if (!orderId) {
       return false;
     }
     const payment = await this.wxPrePay({
@@ -37,7 +37,7 @@ export default class order extends base {
       itemType
     });
 
-    if(!res.data.success){
+    if (!res.data.success) {
       location.href = '/reading.html#/index/home';
       return false;
     }
@@ -74,10 +74,28 @@ export default class order extends base {
           "signType": payment.signType, //微信签名方式：     
           "paySign": payment.paySign //微信签名 
         },
-        async function (res) {
+        function (res) {
           if (res.err_msg == "get_brand_wcpay_request:ok") {
-            location.reload()
-          } // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
+
+            // } 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+
+            function url_add_hash(url, key) {
+              var key = (key || 't') + '='; //默认是"t"  
+              var reg = new RegExp(key + '\\d+'); //正则：t=1472286066028  
+              var timestamp = +new Date();
+              if (url.indexOf(key) > -1) { //有时间戳，直接更新  
+                return url.replace(reg, key + timestamp);
+              } else { //没有时间戳，加上时间戳  
+                if (url.indexOf('#') > -1) {
+                  return url.split('#')[0] + '?' + key + timestamp + location.hash;
+                } else {
+                  return url + '?' + key + timestamp;
+                }
+              }
+            }
+
+            window.location.href = url_add_hash(window.location.href)
+          }
         }
       );
     }
