@@ -85,8 +85,7 @@
     </div>
 
     <div class="home-wechat" v-if="pageStatus == 2">
-      <p class="text-a">
-        <i class="iconfont"></i>您已成功报名</p>
+      <p class="text-a"><i class="iconfont"></i>您已成功报名</p>
       <p class="text-b">长按识别二维码</p>
       <p class="text-c">关注公众号，去等待开课</p>
       <img src="http://yun.dui88.com/youfen/images/read_ewm3.png" alt="">
@@ -247,7 +246,7 @@
     },
     created() {},
     async mounted() {
-
+      this.wxShare();
       setTimeout(() => {
         var testo = document.getElementById("hometest");
         var testh = testo.offsetHeight; //高度
@@ -274,9 +273,9 @@
         this.getDcd(this.$route.query.dcd)
       }
       if (this.$route.query.courseId) {
+        this.tabActive = false;
         order.buy(this.$route.query.courseId, 4)
       }
-      this.wxShare();
       let userState = await this.getThumbUp();
       console.log(userState)
 
@@ -1017,6 +1016,7 @@
         padding-top: 65/@rem;
         color: #343434;
         .iconfont {
+          font-size: 0;
           height: 56/@rem;
           width: 56/@rem;
           display: inline-block;
@@ -1024,6 +1024,7 @@
           background: url('http://yun.dui88.com/youfen/images/read_icon.png') no-repeat center;
           background-size: 100% 100%;
           margin-right: 24/@rem;
+          margin-bottom: 10/@rem
         }
       }
       .text-b {
