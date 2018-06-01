@@ -54,9 +54,9 @@
               </div>
 
             </div>
-            <h3>上滑加载更多精彩课程
+            <!-- <h3>上滑加载更多精彩课程
               <i class="iconfont">&#xe61e;</i>
-            </h3>
+            </h3> -->
           </div>
         </div>
         <div id="homecorse" v-show="!tabActive">
@@ -400,7 +400,7 @@
       console.log(this.$refs)
       console.log(this.$refs.homemain)
       let self = this;
-      self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, true);
+      // self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, true);
 
     },
     methods: {
@@ -411,65 +411,65 @@
         // window.scrollTo(0, 0)
         this.tabActive = e;
       },
-      dispatchScroll(e) {
-        // console.log(this.$refs.homemain.scrollTop)
-        let self = this;
-        var startX = 0,
-          startY = 0,
-          isTrue = 0;
+      // dispatchScroll(e) {
+      //   // console.log(this.$refs.homemain.scrollTop)
+      //   let self = this;
+      //   var startX = 0,
+      //     startY = 0,
+      //     isTrue = 0;
 
-        function touchStart(evt) {
-          try {
-            var touch = evt.touches[0], //获取第一个触点
-              x = Number(touch.pageX), //页面触点X坐标
-              y = Number(touch.pageY); //页面触点Y坐标
-            //记录触点初始位置
-            startX = x;
-            startY = y;
-          } catch (e) {
-            console.log(e.message)
-          }
-        }
+      //   function touchStart(evt) {
+      //     try {
+      //       var touch = evt.touches[0], //获取第一个触点
+      //         x = Number(touch.pageX), //页面触点X坐标
+      //         y = Number(touch.pageY); //页面触点Y坐标
+      //       //记录触点初始位置
+      //       startX = x;
+      //       startY = y;
+      //     } catch (e) {
+      //       console.log(e.message)
+      //     }
+      //   }
 
-        function touchMove(evt) {
-          console.log(self.$refs.homemain.scrollTop)
-          try {
-            var touch = evt.touches[0], //获取第一个触点
-              x = Number(touch.pageX), //页面触点X坐标
-              y = Number(touch.pageY); //页面触点Y坐标
-            //判断滑动方向
-            if (startY - y > 200 && self.$refs.homemain.scrollTop > self.offsetHeight - document.body.clientHeight +
-              self.tabOffsetHeight - 10) {
-              console.log('上滑了')
-              isTrue = 1;
-            } else if (y - startY > 200) {
-              console.log('下滑了')
-              isTrue = 2;
-            } else {
-              isTrue = 0;
-            }
+      //   function touchMove(evt) {
+      //     console.log(self.$refs.homemain.scrollTop)
+      //     try {
+      //       var touch = evt.touches[0], //获取第一个触点
+      //         x = Number(touch.pageX), //页面触点X坐标
+      //         y = Number(touch.pageY); //页面触点Y坐标
+      //       //判断滑动方向
+      //       if (startY - y > 200 && self.$refs.homemain.scrollTop > self.offsetHeight - document.body.clientHeight +
+      //         self.tabOffsetHeight - 10) {
+      //         console.log('上滑了')
+      //         isTrue = 1;
+      //       } else if (y - startY > 200) {
+      //         console.log('下滑了')
+      //         isTrue = 2;
+      //       } else {
+      //         isTrue = 0;
+      //       }
 
 
-          } catch (e) {
-            console.log(e.message)
-          }
-        }
+      //     } catch (e) {
+      //       console.log(e.message)
+      //     }
+      //   }
 
-        function touchEnd() {
-          if (isTrue == 1) {
-            self.$refs.homemain.scrollTop = 0
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
-            window.scrollTo(0, 0);
-            self.tabActive = false;
-          }
-        }
+      //   function touchEnd() {
+      //     if (isTrue == 1) {
+      //       self.$refs.homemain.scrollTop = 0
+      //       document.documentElement.scrollTop = 0;
+      //       document.body.scrollTop = 0;
+      //       window.scrollTo(0, 0);
+      //       self.tabActive = false;
+      //     }
+      //   }
 
-        //绑定事件
-        document.addEventListener('touchstart', touchStart, false);
-        document.addEventListener('touchmove', touchMove, false);
-        document.addEventListener('touchend', touchEnd, false);
-      },
+      //   //绑定事件
+      //   document.addEventListener('touchstart', touchStart, false);
+      //   document.addEventListener('touchmove', touchMove, false);
+      //   document.addEventListener('touchend', touchEnd, false);
+      // },
       getDcd(dcd) {
         let self = this;
         let params = {};
