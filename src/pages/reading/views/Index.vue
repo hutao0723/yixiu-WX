@@ -28,10 +28,7 @@ export default {
 </script>
 
 <style lang="less">
-.index-main{
-  background:rgba(244,244,244,1);
-  height: 100%;
-}
+
 // --- 基础样式gobal_loading 加载动画 --- //
 /* router-fade */
 .router-fade-enter-active, .router-fade-leave-active {

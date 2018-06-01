@@ -1,9 +1,6 @@
 <template>
   <div class="home-main">
-    <!-- <div @click="play">播放</div> -->
-    <!-- 未买课 -->
-
-    <div class="home-box" v-show="pageStatus == 1 || pageStatus == 0">
+    <div class="home-type" v-show="pageStatus == 1 || pageStatus == 0">
       <div class="home-tab clearfix" id="hometab">
         <div class="item" @click="tabActiveToggle(true)">
           <span :class="{ active: tabActive}">简介</span>
@@ -12,15 +9,15 @@
           <span :class="{ active: !tabActive}">课程</span>
         </div>
       </div>
-      <div class="home-bottom" @click="tabActive = false" :class="{bottom:bottomNavToggle}" v-show="tabActive">去选课程</div>
+      <!-- <div class="home-bottom" @click="tabActive = false" :class="{bottom:bottomNavToggle}" v-show="tabActive">去选课程</div>
       <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="!tabActive">
         <p>
           <span class="text-del">{{selectCourseObj.costPrice}}</span>
           <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>元</p>
         <span @click="orderPay" class="btn-pay">立即购买</span>
-      </div>
-      <div class="home-test" ref="homemain" id="hometest">
-        <div id="homebox" v-show="tabActive">
+      </div> -->
+      <div class="home-box" id="hometest" :style="{transform:tabActive?'translateY(0)':'translateY(-'+(maincontent-100)+'px)'}" ref="homemain">
+        <div id="maincontent">
           <div class="home-content">
             <img src="http://yun.dui88.com/youfen/images/read_img01.jpg" alt="">
             <img src="http://yun.dui88.com/youfen/images/read_img02.jpg" alt="">
@@ -59,7 +56,7 @@
             </h3> -->
           </div>
         </div>
-        <div id="homecorse" v-show="!tabActive">
+        <div>
           <div class="home-course">
             <div class="item" v-for="(item,index) in readList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
               @click="selectCourse(item)">
@@ -85,7 +82,8 @@
     </div>
 
     <div class="home-wechat" v-if="pageStatus == 2">
-      <p class="text-a"><i class="iconfont"></i>您已成功报名</p>
+      <p class="text-a">
+        <i class="iconfont"></i>您已成功报名</p>
       <p class="text-b">长按识别二维码</p>
       <p class="text-c">关注公众号，去等待开课</p>
       <img src="http://yun.dui88.com/youfen/images/read_ewm3.png" alt="">
@@ -185,10 +183,8 @@
         todayBookDetail: {}, // 今日书
         historyBookList: [], // 历史书
         courseList: [], // 书对应列表
-        offsetHeight: 0,
-        tabOffsetHeight: 0,
-        testOffsetHeight: 0,
-        courseOffsetHeight: 0,
+        maincontent: 0,
+        
 
       };
     },
@@ -248,22 +244,22 @@
     async mounted() {
       this.wxShare();
       setTimeout(() => {
-        var testo = document.getElementById("hometest");
-        var testh = testo.offsetHeight; //高度
-        this.testOffsetHeight = testh;
+        var maincontento = document.getElementById("maincontent");
+        var maincontenth = maincontento.offsetHeight; //高度
+        this.maincontent = maincontenth;
 
-        var o = document.getElementById("homebox");
-        var h = o.offsetHeight; //高度
-        this.offsetHeight = h;
+        // var o = document.getElementById("homebox");
+        // var h = o.offsetHeight; //高度
+        // this.offsetHeight = h;
 
-        var tabo = document.getElementById("hometab");
-        var tabh = tabo.offsetHeight; //高度
-        this.tabOffsetHeight = tabh;
+        // var tabo = document.getElementById("hometab");
+        // var tabh = tabo.offsetHeight; //高度
+        // this.tabOffsetHeight = tabh;
 
-        var courseo = document.getElementById("homecorse");
-        var courseh = courseo.offsetHeight; //高度
-        this.courseOffsetHeight = courseh;
-        console.log(h)
+        // var courseo = document.getElementById("homecorse");
+        // var courseh = courseo.offsetHeight; //高度
+        // this.courseOffsetHeight = courseh;
+        console.log(this.maincontent)
       }, 500)
 
 
@@ -386,14 +382,13 @@
         }
       }
 
-      
       this.changeLoginDays();
       this.changeReadStatus();
       // window.addEventListener('scroll', this.handleScroll,true);
       console.log(this.$refs)
       console.log(this.$refs.homemain)
       let self = this;
-      // self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, true);
+      self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, true);
 
     },
     methods: {
@@ -404,72 +399,72 @@
         // window.scrollTo(0, 0)
         this.tabActive = e;
       },
-      // dispatchScroll(e) {
-      //   // console.log(this.$refs.homemain.scrollTop)
-      //   let self = this;
-      //   var startX = 0,
-      //     startY = 0,
-      //     isTrue = 0;
+      dispatchScroll(e) {
+        console.log(this.$refs.homemain.scrollTop)
+        let self = this;
+        var startX = 0,
+          startY = 0,
+          isTrue = 0;
 
-      //   function touchStart(evt) {
-      //     try {
-      //       var touch = evt.touches[0], //获取第一个触点
-      //         x = Number(touch.pageX), //页面触点X坐标
-      //         y = Number(touch.pageY); //页面触点Y坐标
-      //       //记录触点初始位置
-      //       startX = x;
-      //       startY = y;
-      //     } catch (e) {
-      //       console.log(e.message)
-      //     }
-      //   }
+        function touchStart(evt) {
+          try {
+            var touch = evt.touches[0], //获取第一个触点
+              x = Number(touch.pageX), //页面触点X坐标
+              y = Number(touch.pageY); //页面触点Y坐标
+            //记录触点初始位置
+            startX = x;
+            startY = y;
+          } catch (e) {
+            console.log(e.message)
+          }
+        }
 
-      //   function touchMove(evt) {
-      //     console.log(self.$refs.homemain.scrollTop)
-      //     try {
-      //       var touch = evt.touches[0], //获取第一个触点
-      //         x = Number(touch.pageX), //页面触点X坐标
-      //         y = Number(touch.pageY); //页面触点Y坐标
-      //       //判断滑动方向
-      //       if (startY - y > 200 && self.$refs.homemain.scrollTop > self.offsetHeight - document.body.clientHeight +
-      //         self.tabOffsetHeight - 10) {
-      //         console.log('上滑了')
-      //         isTrue = 1;
-      //       } else if (y - startY > 200) {
-      //         console.log('下滑了')
-      //         isTrue = 2;
-      //       } else {
-      //         isTrue = 0;
-      //       }
+        function touchMove(evt) {
+          console.log(self.$refs.homemain.scrollTop)
+          try {
+            var touch = evt.touches[0], //获取第一个触点
+              x = Number(touch.pageX), //页面触点X坐标
+              y = Number(touch.pageY); //页面触点Y坐标
+            //判断滑动方向
+            if (startY - y > 200 && self.$refs.homemain.scrollTop > self.offsetHeight - document.body.clientHeight +
+              self.tabOffsetHeight - 10) {
+              console.log('上滑了')
+              isTrue = 1;
+            } else if (y - startY > 200) {
+              console.log('下滑了')
+              isTrue = 2;
+            } else {
+              isTrue = 0;
+            }
 
 
-      //     } catch (e) {
-      //       console.log(e.message)
-      //     }
-      //   }
+          } catch (e) {
+            console.log(e.message)
+          }
+        }
 
-      //   function touchEnd() {
-      //     if (isTrue == 1) {
-      //       self.$refs.homemain.scrollTop = 0
-      //       document.documentElement.scrollTop = 0;
-      //       document.body.scrollTop = 0;
-      //       window.scrollTo(0, 0);
-      //       self.tabActive = false;
-      //     }
-      //   }
+        function touchEnd() {
+          if (isTrue == 1) {
+            self.$refs.homemain.scrollTop = 0
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+            window.scrollTo(0, 0);
+            self.tabActive = false;
+          }
+        }
 
-      //   //绑定事件
-      //   document.addEventListener('touchstart', touchStart, false);
-      //   document.addEventListener('touchmove', touchMove, false);
-      //   document.addEventListener('touchend', touchEnd, false);
-      // },
+        //绑定事件
+        document.addEventListener('touchstart', touchStart, false);
+        document.addEventListener('touchmove', touchMove, false);
+        document.addEventListener('touchend', touchEnd, false);
+      },
       getDcd(dcd) {
         let self = this;
         let params = {};
         params = {
           dcd: dcd,
         }
-        const url = `/distribution/binding`;
+        const url = `/api/distribution/binding`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -480,7 +475,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/stat/changeLoginDays`;
+        const url = `/api/user/stat/changeLoginDays`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -491,7 +486,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/stat/changeReadStatus`;
+        const url = `/api/user/stat/changeReadStatus`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -516,7 +511,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/read/detail`;
+        const url = `/api/user/read/detail`;
         const res = await this.$http.get(url, {
           params
         });
@@ -528,7 +523,7 @@
         params = {
 
         }
-        const url = `/user/read/state`;
+        const url = `/api/user/read/state`;
         const res = await this.$http.get(url, {
           params
         });
@@ -539,7 +534,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/comment/top`;
+        const url = `/api/comment/top`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -554,7 +549,7 @@
           status: status ? 0 : 1,
           commentId: id
         }
-        const url = `/comment/praise`;
+        const url = `/api/comment/praise`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -565,7 +560,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/read/readList`;
+        const url = `/api/read/readList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -593,7 +588,7 @@
           readId: this.readId,
           date: date,
         }
-        const url = `/readBookCourse/courseDetailByDate`;
+        const url = `/api/readBookCourse/courseDetailByDate`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -606,7 +601,7 @@
         params = {
           readId: this.readId,
         }
-        const url = `/readBook/bookList`;
+        const url = `/api/readBook/bookList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -620,7 +615,7 @@
           readId: this.readId,
           bookId: id,
         }
-        const url = `/readBookCourse/courseList`;
+        const url = `/api/readBookCourse/courseList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -641,10 +636,11 @@
   /* @import '../../less/letiable'; */
 
   @import '../../less/util';
-
+  html,body,#app,.index-main,.home-main,.home-type{
+    height: 100%;
+  }
   .home-main {
     width: 750/@rem;
-    height: 100%;
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
     position: relative;
@@ -654,16 +650,13 @@
       height: 480/@rem;
       border: 1px solid #ccc;
     }
-    .home-test {
+    .home-box {
+      background: #f1f1f1;
+      width: 100%;
       height: 100%;
       overflow: scroll;
-      padding-top: 100/@rem;
-      box-sizing: border-box;
-      background: #f1f1f1;
-      /* transform:translateY(-800/@rem); */
-    }
-    .home-box {
-      height: 100%;
+      transition: transform 1s cubic-bezier(0.86, 0, 0.03, 1);
+      -webkit-transition: -webkit-transform 1s cubic-bezier(0.86, 0, 0.03, 1);
     }
     .home-tab {
       position: fixed;
@@ -742,6 +735,8 @@
     .home-content {
       background: #fff;
       border-bottom: 20/@rem solid #f0f0f0;
+      padding-top: 100/@rem;
+      box-sizing: border-box;
       img {
         /* pointer-events: none; */
         display: block;
