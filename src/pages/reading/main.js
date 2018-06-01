@@ -73,8 +73,8 @@ Vue.http.interceptors.push((request, next) => {
 
 Vue.prototype.wxShare = function () {
   let msg = {
-    title: '我已经坚持在这读书23天了，一起来读书吧！', // 分享标题
-    desc: '每天阅读10分钟，培养阅读习惯，成就更好的自己。', // 分享描述
+    title: '每天10分钟，改变从一点一滴开始！', // 分享标题
+    desc: '坚持49天，奖励一张京东购物卡。', // 分享描述
     link: 'http://k.youfen666test.com/reading.html#/index/home', // 分享链接 默认以当前链接
     imgUrl: 'http://yun.dui88.com/youfen/images/read_share.png', // 分享图标
   }
