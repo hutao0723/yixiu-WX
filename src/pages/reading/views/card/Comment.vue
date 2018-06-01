@@ -1,6 +1,5 @@
 <template>
   <div class="comment-main">
-    {{bfscrolltop}}
     <div class="book-book">
       <div class="book-img">
         <img :src="courseDetail.courseUrl" alt="">
@@ -40,8 +39,8 @@
       };
     },
     updated:function(){
-      this.bfscrolltop = document.body.scrollTop;//获取软键盘唤起前浏览器滚动部分的高度
-      console.log(this.bfscrolltop)
+      // this.bfscrolltop = document.body.scrollTop;//获取软键盘唤起前浏览器滚动部分的高度
+      // console.log(this.bfscrolltop)
     },
     computed: {
       ...mapState({})
