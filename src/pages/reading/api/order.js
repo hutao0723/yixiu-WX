@@ -102,8 +102,6 @@ export default class order extends base {
               }
             }
           }
-          alert('支付成功' + url_add_hash(window.location.href))
-
           window.location.href = url_add_hash(window.location.href)
         }
       );
