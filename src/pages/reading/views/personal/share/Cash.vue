@@ -59,17 +59,22 @@ export default {
         judgeCash(){// 判断是否达到提现的条件
             let money;
             this.cashNum = Number(this.cashNum)
-            if(this.cashNum < 20){// 提现不得小于20元
-                this.promptText = '至少提现<em>20</em>元'
-                this.dialog(this.promptText)
-            }else if(this.cashNum > this.balance){ // 不得超过额度
-                this.promptText = `最多可提现${this.balance}元`
-                this.dialog(this.promptText)
-            }else{
                 // 对传入的金额再次进行处理
                 money = this.dealWithMoney()
                 this.getData(money)
-            }
+
+                
+            // if(this.cashNum < 20){// 提现不得小于20元
+            //     this.promptText = '至少提现<em>20</em>元'
+            //     this.dialog(this.promptText)
+            // }else if(this.cashNum > this.balance){ // 不得超过额度
+            //     this.promptText = `最多可提现${this.balance}元`
+            //     this.dialog(this.promptText)
+            // }else{
+            //     // 对传入的金额再次进行处理
+            //     money = this.dealWithMoney()
+            //     this.getData(money)
+            // }
         },
         
         // 处理输入后的金额转成整数

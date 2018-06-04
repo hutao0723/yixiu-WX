@@ -62,8 +62,8 @@ export default {
     created() {
  
         this.getUserInfo()
-        this.qrcodeUrl()
         this.readPlanPosters()
+        
     },
     mounted () {
         // myCanvas.toDataURL("image/png");
@@ -86,6 +86,7 @@ export default {
 
         async readPlanPosters(){ // 获取海报
             this.readPlanPostersArr = await sales.readPlanPosters()
+            this.qrcodeUrl()
         },
 
         
@@ -123,7 +124,6 @@ export default {
             var myCanvas = document.getElementById('myCanvas');
             var fxImg = document.getElementById('fx_img');
             var toBase64 = myCanvas.toDataURL("image/png");
-            // console.log(toBase64)
             img.setAttribute('src', toBase64)
             fxImg.setAttribute('src', toBase64)
         },
@@ -137,6 +137,9 @@ export default {
         createCanvas(){
             const self = this;
             const rpp = self.readPlanPostersArr[self.swiperIndex]
+            if(!this.poster){
+                this.poster = rpp.poster
+            }
             // 图像大小适配
             function conversion(number) {
                 return number
@@ -154,6 +157,7 @@ export default {
                 BG_img.onload = function () {
                     ctx.drawImage(BG_img, 0, 0,myCanvas.width,myCanvas.height);
                     resolve('');
+                    
                 };	
             });   
             // 绘制二维码
@@ -185,6 +189,7 @@ export default {
                     	
                 });
             };
+            
             // 图像绘制完后进行文字绘制
             background.then(code).then(icon).then(()=>{
                 

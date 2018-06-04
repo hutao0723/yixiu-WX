@@ -143,7 +143,12 @@
                 
                 //获取红点信息
                 sales.redPoint(functionsTypes).then((res) => {
-                    this.redPointArr = [...this.redPointArr, ...res]
+                    if(this.redPointArr.length){
+                        this.redPointArr = JSON.parse(JSON.stringify(res))
+                        // console.log(this.redPointArr)
+                    }else{
+                        this.redPointArr = [...this.redPointArr, ...res]
+                    }
                 })
             }
         },
