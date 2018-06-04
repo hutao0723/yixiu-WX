@@ -72,9 +72,9 @@ Vue.http.interceptors.push((request, next) => {
 
 Vue.prototype.wxShare = function () {
   let msg = {
-    title: '每天10分钟，改变从一点一滴开始！', // 分享标题
-    desc: '坚持49天，奖励一张京东购物卡。', // 分享描述
-    link: 'http://k.youfen666test.com/reading.html#/index/home', // 分享链接 默认以当前链接
+    title: '每天10分钟，轻松阅读，日有所得', // 分享标题
+    desc: '打卡满49天，退还所有学费，还可以获得奖学金！', // 分享描述
+    link: 'http://k.youfen666.com/reading.html#/index/home', // 分享链接 默认以当前链接
     imgUrl: 'http://yun.dui88.com/youfen/images/read_share.png', // 分享图标
   }
   const urlData = `/wechat/getJsapiSignature`;
