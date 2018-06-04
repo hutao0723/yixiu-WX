@@ -5,7 +5,7 @@ export default class sales extends base {
      *  获取资金账户信息
      */
     static async info() {
-        const url = `/api/capital/account/info`;
+        const url = `/capital/account/info`;
         let params = {};
         const res = await this.get(url, { params });
         return res.body.data;
@@ -16,7 +16,7 @@ export default class sales extends base {
      * @param {*} pageSize 分页大小，默认分页大小为20
      */
     static async incomeDetail(pageNum,pageSize) {
-        const url = `/api/capitalAccountDetail/getIncomeFlow`;
+        const url = `/capitalAccountDetail/getIncomeFlow`;
         let params = {
             pageNum,
             pageSize
@@ -29,7 +29,7 @@ export default class sales extends base {
      * @param {*} withdrawAmount 提现金额（分）
      */
     static async widthdraw(withdrawAmount) {
-        const url = `/api/capital/account/withdraw`;
+        const url = `/capital/account/withdraw`;
         // let deal = (withdrawAmount) => {
         //     return `${withdrawAmount}00`;
         // }
@@ -42,7 +42,7 @@ export default class sales extends base {
      * @param {*} pageSize 每页条数
      */
     static async record(pageNum, pageSize) {
-        const url = `/api/capital/account/withdraw/record`;
+        const url = `/capital/account/withdraw/record`;
         let params = {
             pageNum,
             pageSize
@@ -60,7 +60,7 @@ export default class sales extends base {
      * @param {*} bindStatus 绑定状态 1-绑定中 0-已解绑
      */
     static async getBindUsers(pageNum, pageSize, bindStatus) {
-        const url = `/api/distribution/getBindUsers`;
+        const url = `/distribution/getBindUsers`;
         let params = {
             pageNum,
             pageSize,
@@ -75,7 +75,7 @@ export default class sales extends base {
      * @param {*} functionsTypes 用户红点功能类型集合：1:我的客户;2:收益记录，例：1,2
      */
     static async redPoint(functionsTypes) {
-        const url = `/api/userRedPoint/list`;
+        const url = `/userRedPoint/list`;
         let params = {
             functionsTypes
         }
@@ -87,7 +87,7 @@ export default class sales extends base {
      * 获取图片流二维码
      */
     static async qrcode() {
-        const url = `/api/poster/QRCode`;
+        const url = `/poster/QRCode`;
         let params = {
             
         }
@@ -99,7 +99,7 @@ export default class sales extends base {
      *  获取阅读计划海报列表
      */
     static async readPlanPosters() {
-        const url = `/api/poster/readPlanPosters`;
+        const url = `/poster/readPlanPosters`;
         let params = {
 
         }
@@ -111,7 +111,7 @@ export default class sales extends base {
      *  获取二维码URL
      */
     static async qrcodeUrl() {
-        const url = `/api/poster/QRCodeUrl`;
+        const url = `/poster/QRCodeUrl`;
         let params = {
 
         }
@@ -123,7 +123,7 @@ export default class sales extends base {
      *  获取用户的微信昵称、头像，id
      */
     static async getUserInfo() {
-        const url = `/api/user/getUserInfo`;
+        const url = `/user/getUserInfo`;
         let params = {
 
         }
