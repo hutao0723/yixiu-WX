@@ -10,7 +10,7 @@
                     </div>
                 </div>
                 <div class="cml-sum">
-                    <p class="cmls-money cmls">共<em>{{item.totalTradeMoney}}</em>元</p>
+                    <p class="cmls-money cmls">共<em>{{item.totalPromotionEarnings}}</em>元</p>
                     <p class="cmls-count cmls">{{item.totalTradeNum}}笔</p>
                 </div>
             </li>
