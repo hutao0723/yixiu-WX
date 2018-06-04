@@ -23,14 +23,14 @@
         </ul>
       <div class="mt20 recommend bgfff">
           <img :src="recommendUrl">
-          <div class="icon-tri share column-center jiantou">
+          <div class="icon-tri column-center jiantou">
               <i class="iconfont ear-icon"></i>
           </div>
       </div>
       <router-link :to="{ path: '/journey' }">
         <div class="bgfff">
           <div class="person-h90 row mt20 border" >
-            <div class="icon-box share column-center">
+            <div class="icon-box column-center">
               <i class="iconfont icon-clock person-icon"></i>
             </div>
             <div class="row ft32 ml30">我的历程</div>
@@ -40,7 +40,7 @@
       <router-link :to="{ path: '/shelf' }">
         <div class="bgfff">
           <div class="person-h90 row border">
-            <div class="icon-box share column-center">
+            <div class="icon-box column-center">
               <i class="iconfont icon-booklist person-icon"></i>
             </div>
             <div class="row ft32 ml30">往期书架</div>
@@ -50,7 +50,7 @@
       <router-link :to="{ path: '/lecturer' }">
         <div class="bgfff">
           <div class="person-h90 row" >
-            <div class="icon-box share column-center">
+            <div class="icon-box column-center">
               <i class="iconfont icon-user person-icon"></i>
             </div>
             <div class="row ft32 ml30">我的老师</div>
@@ -60,7 +60,7 @@
       
       <div class="bgfff" @click="contactToggle = true">
         <div class="person-h90 row mt20" >
-          <div class="icon-box share column-center">
+          <div class="icon-box column-center">
             <i class="iconfont icon-ear person-icon"></i>
           </div>
           <div class="row ft32 ml30" @click="contactToggle = true">联系客服</div>

@@ -30,7 +30,7 @@
             async getInfo() {
                 let _this = this;
                 let params = {
-                    commentId: "50" // _this.$route.params.commentId
+                    commentId: _this.$route.params.commentId
                 }
                 const url = `/api/comment/share`;
                 const res = await _this.$http.get(url, {
@@ -94,7 +94,7 @@
                 let headerImg = new Promise((resolve,reject) => {
                     let drawImg = new Image();   
                     drawImg.crossOrigin = "Anonymous";
-                    drawImg.src = 'https://yun.dui88.com/youfen/images/z6qj8zsviw.jpg';
+                    drawImg.src = _this.info.bookBgimgUrl;
                     drawImg.onload = function () {
                         ctx.drawImage(drawImg, 0, 0,_this.conversion(750),_this.conversion(545));
                         resolve();
