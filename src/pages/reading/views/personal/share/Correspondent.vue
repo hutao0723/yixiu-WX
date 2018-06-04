@@ -41,6 +41,13 @@ export default {
         count(ms){
             return new Promise((resolve) => {setTimeout(resolve,ms)})
         }
+    },
+    beforeRouteEnter: (to, from, next) => {
+        /* 路由发生变化修改页面title */
+        if (to.meta.title) {
+            document.title = to.meta.title
+        }
+        next()
     }
 };  
 </script>

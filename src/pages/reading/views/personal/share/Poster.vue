@@ -44,12 +44,12 @@ export default {
             playbill:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527313092411&di=570284fc80fbc68d6dd211ec7f11a871&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201409%2F13%2F20140913140805_EZYKn.jpeg',
             portrait:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527313812184&di=66835925969c776a10030dea414d2ece&imgtype=0&src=http%3A%2F%2Fimg3.duitang.com%2Fuploads%2Fitem%2F201507%2F09%2F20150709200521_nYZMX.thumb.700_0.jpeg',
             canvas:'',
-            qrcUrl: 'www.baidu.com',
+            qrcUrl: '',
             swiperArr: [],
             // swiperImgAddress:'//u.bcwcdn.com/activity_img/2017/img_1208/1633_01.png',
             headimgurl:'',
             nickname:'', 
-            QrcodeAddress:'',
+            // QrcodeAddress:'',
             basecode64:'',
             readPlanPostersArr:[],
             poster:'',
@@ -67,7 +67,6 @@ export default {
     },
     mounted () {
         // myCanvas.toDataURL("image/png");
-        this.showQrc()
         
     },
     methods: {
@@ -78,17 +77,22 @@ export default {
             this.nickname = obj.nickname
         },
 
-        async qrcodeUrl(){ // 获取图片流二维码
-            this.QrcodeAddress = await sales.qrcodeUrl()  
+        async qrcodeUrl(){ // 获取二维码地址
+            this.qrcUrl = await sales.qrcodeUrl()
+            if(this.qrcUrl){
+                this.showQrc()
+            }
         },
 
         async readPlanPosters(){ // 获取海报
             this.readPlanPostersArr = await sales.readPlanPosters()
         },
 
+        
+
         createQrc: function () { // 根据接口返回的URL创建二维码
             if (!this.qrcUrl) {
-                window.alert('链接不能为空')
+                // window.alert('链接不能为空')
                 return false
             }
             QRCode.toCanvas(this.canvas, this.qrcUrl, (error) => {
@@ -119,6 +123,7 @@ export default {
             var myCanvas = document.getElementById('myCanvas');
             var fxImg = document.getElementById('fx_img');
             var toBase64 = myCanvas.toDataURL("image/png");
+            // console.log(toBase64)
             img.setAttribute('src', toBase64)
             fxImg.setAttribute('src', toBase64)
         },
@@ -166,20 +171,25 @@ export default {
             // 绘制微信头像
             function icon(){
                 return new Promise(function(resolve, reject){
-                    var iconImg = new Image();
-                    iconImg.crossOrigin = 'anonymous'; 
-                    iconImg.src = self.headimgurl;
-                    iconImg.onload = function () {
-                        ctx.drawImage(iconImg, conversion(rpp.portraitLeftMargin), conversion(rpp.portraitTopMargin),conversion(rpp.portraitLength),conversion(rpp.portraitLength));
+                    if(rpp.portraitDisplay){
+                        var iconImg = new Image();
+                        iconImg.crossOrigin = 'anonymous'; 
+                        iconImg.src = self.headimgurl;
+                        iconImg.onload = function () {
+                            ctx.drawImage(iconImg, conversion(rpp.portraitLeftMargin), conversion(rpp.portraitTopMargin),conversion(rpp.portraitLength),conversion(rpp.portraitLength));
+                            resolve('');
+                        };
+                    }else{
                         resolve('');
-                    };	
+                    }
+                    	
                 });
             };
             // 图像绘制完后进行文字绘制
             background.then(code).then(icon).then(()=>{
                 
                 //self.readPlanPostersArr[this.swiperIndex].nicknameFontSize 中的字段不存在则跳过
-                if(rpp.nicknameFontSize){ // 绘制昵称
+                if(rpp.nicknameDisplay){ // 绘制昵称
                     ctx.font = conversion(rpp.nicknameFontSize)+'px 宋体';
                     ctx.fillStyle = rpp.nicknameFontColor;
                     // ctx.textAlign = 'center';
@@ -190,7 +200,6 @@ export default {
                         let row = [];
                         for(let a = 0; a < chr.length; a++){
                             if( ctx.measureText(temp).width*1< w ){
-                                
                             }else{
                                 row.push(temp);
                                 temp = ""; 
@@ -208,7 +217,7 @@ export default {
                         }
                     }
                     // 绘制签名
-                    rpp.ctitleFontSize && drawText('那些你从小到大未见过未听过的故事，这些关于深海的秘密',conversion(rpp.ctitleLeftMargin),conversion(rpp.ctitleTopMargin),conversion(300));
+                    rpp.ctitleDisplay && drawText('我在一修读书学习，邀请你成为我的同学，每天10分钟，养成读书习惯',conversion(rpp.ctitleLeftMargin),conversion(rpp.ctitleTopMargin),conversion(300));
                     
                     self.createdImg()
                 }
@@ -219,6 +228,13 @@ export default {
             
 
         }
+    },
+    beforeRouteEnter: (to, from, next) => {
+        /* 路由发生变化修改页面title */
+        if (to.meta.title) {
+            document.title = to.meta.title
+        }
+        next()
     }
 };  
 </script>
