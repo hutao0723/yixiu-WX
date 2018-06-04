@@ -3,7 +3,7 @@
         <p class="cash-tit">提现金额</p>
         <div class="cash-import">
             <div class="ci-warp">
-                <input type="tel" v-model="cashNum" name="" id="" class="ciw-inp" :placeholder="`可提现${balance}元`" maxlength="8">
+                <input type="number" v-model="cashNum" name="" id="" class="ciw-inp" :placeholder="`可提现${balance}元`" maxlength="8">
             </div>
             <span class="ci-tip">2小时内到账</span>
         </div>
@@ -115,7 +115,7 @@ export default {
 
         allCashing(){
             // 全部提现
-            this.cashNum = this.balance.split('.')[0];
+            this.cashNum = this.balance;
         },
 
         getData(money){
