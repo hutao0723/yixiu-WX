@@ -196,8 +196,7 @@
                         }
                         let drawImg = new Image();   
                         drawImg.crossOrigin = "Anonymous";
-                        //drawImg.src = _this.info.userImgUrl;    
-                        drawImg.src = "https://yun.duiba.com.cn/youfen/images/tvxra9poq7.png"    
+                        drawImg.src = _this.info.userImgUrl;     
                         
                         drawImg.onload = function () {
                             ctx.beginPath();
