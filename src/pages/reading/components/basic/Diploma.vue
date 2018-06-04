@@ -22,7 +22,7 @@
     },
     methods: {
       close() {
-        console.log('关闭')
+        this.$emit("close")
       },
       know() {
         this.$emit("success")
