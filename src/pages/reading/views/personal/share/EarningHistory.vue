@@ -79,6 +79,10 @@ export default {
 
     // 根据路由判断symbolClass是否显示
     beforeRouteEnter (to, from, next) {
+        /* 路由发生变化修改页面title */
+        if (to.meta.title) {
+            document.title = to.meta.title
+        }
         next(vm => {
             // 通过 `vm` 访问组件实例
             if(to.path.indexOf('earnings-history') > 0){

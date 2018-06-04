@@ -26,13 +26,7 @@ export default {
     },
     data () {
         return {
-            record:[
-                {
-                    text:'提交到微信 - 交易失败（微信未实名,请完善实名)',
-                    date:'2018-05-01 17:23:30',
-                    num:'0.00'
-                },
-            ],
+            record:[],
             cashNum:'', // 输入提现金额
             balance:'', // 可提现的额度
             promptText:'',  // 弹窗消息
@@ -52,9 +46,12 @@ export default {
             // 限制输入金额到小数点后两位
             this.cashNum = v.replace(/(\d*)(\.\d{0,2})?.*/, (match, p1, p2) => {
                 // p1整数部分，p2小数部分
-                // console.log(match)
-                console.log(p1)
-                return Number(p1) + (p2 || '');
+                if(p1 == (0 || '')){
+                    return ''                   
+                }else{
+                    return Number(p1) + (p2 || '');
+                }
+                
             });
         }
     },
@@ -133,6 +130,13 @@ export default {
             })
         }
     },
+    beforeRouteEnter: (to, from, next) => {
+        /* 路由发生变化修改页面title */
+        if (to.meta.title) {
+            document.title = to.meta.title
+        }
+        next()
+    }
 };  
 </script>
 
