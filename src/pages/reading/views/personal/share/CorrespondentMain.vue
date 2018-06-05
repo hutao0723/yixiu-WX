@@ -10,7 +10,7 @@
                     </div>
                 </div>
                 <div class="cml-sum">
-                    <p class="cmls-money cmls">共<em>{{item.totalPromotionEarnings}}</em>元</p>
+                    <p class="cmls-money cmls">共<em>{{item.totalPromotionEarnings | dealEearning}}</em>元</p>
                     <p class="cmls-count cmls">{{item.totalTradeNum}}笔</p>
                 </div>
             </li>
@@ -31,6 +31,11 @@ export default {
         //  initIndex: 1-绑定中 0-已解绑
         initIndex:{
             type: Number,
+        }
+    },
+    filters:{ // 后端返回的金额除以100
+        dealEearning:function(value){
+            return value / 100
         }
     },
     components: {

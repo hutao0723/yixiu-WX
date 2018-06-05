@@ -6,7 +6,7 @@
                     <strong>{{`${item.consumerName}购买课程`}}</strong>
                     <p class="crli-date">{{item.finishTime}}</p>
                 </div>
-                <strong class="crl-num" :class="symbolClass">{{item.incomeAmount}}</strong>
+                <strong class="crl-num" :class="symbolClass">{{item.incomeAmount | dealEearning}}</strong>
             </li>
         </ul>
         <div class="page-none" v-show="noData">
@@ -40,6 +40,11 @@ export default {
             pageNum:1,     // 下拉页码
             busy: true,    // 下拉加载控制
         };
+    },
+    filters:{ // 后端返回的金额除以100
+        dealEearning:function(value){
+            return value / 100
+        }
     },
     computed: {
         ...mapState({})
