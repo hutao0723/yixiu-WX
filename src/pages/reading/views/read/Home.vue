@@ -252,7 +252,6 @@
     created() {},
     async mounted() {
       let self = this;
-      this.wxShare();
       setTimeout(() => {
         var maincontento = document.getElementById("maincontent");
         var maincontenth = maincontento.offsetHeight; //高度
@@ -273,6 +272,7 @@
         order.buy(this.$route.query.courseId, 4)
       }
       let userState = await this.getThumbUp();
+      this.wxShare(userState.data.userId);
 
       this.readId = userState.data.readId;
       // 状态判断逻辑
@@ -485,7 +485,6 @@
 
                 window.location.href = url_add_hash(window.location.href)
               } else {
-                alert('支付取消')
                 self.payCancelToggle = true;
               }
             }
