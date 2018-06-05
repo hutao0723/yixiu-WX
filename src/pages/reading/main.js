@@ -74,7 +74,7 @@ Vue.prototype.wxShare = function (id) {
   let msg = {
     title: '每天10分钟，轻松阅读，日有所得', // 分享标题
     desc: '打卡满49天，退还所有学费，还可以获得奖学金！', // 分享描述
-    link: id?'http://k.youfen666.com/reading.html#/index/home?dcd=u_'+ id:'http://k.youfen666.com/reading.html#/index/home', // 分享链接 默认以当前链接
+    link: id?'http://k.youfen666test.com/reading.html#/index/home?dcd=u_'+ id:'http://k.youfen666test.com/reading.html#/index/home', // 分享链接 默认以当前链接
     imgUrl: 'http://yun.dui88.com/youfen/images/read_share.png', // 分享图标
   }
   const urlData = `/wechat/getJsapiSignature`;
