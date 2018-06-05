@@ -37,11 +37,7 @@ Vue.use(VueLazyload, {
   }
 });
 Vue.http.headers.common['from'] = 'read';
-<<<<<<< HEAD
-//  Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWU3mytFEThAbVRbBsiG99J5L3AycHw9RQzaApFRydFrQ94M49MsJcX715G25172Pf1KBoFocRFwKY5dnB1hHqaxtZhKtX8vv65wehmLQumJMZem1Y7WHFSr4bvsC3XzQNP2toEM4HNa';
-=======
 // Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjrgAVYrS2jWTFx5xqHDj2QQBH1uXBFMw3gMPxWGMYXWq992G8UBUUjtDPenDWhHayUB6cTjNCScruS3vsPcREhmMXmK2rxgixHsa31XHprvefiBtesVeVWdyJUbfVpW24eB5N';
->>>>>>> 4c7c250934a8d44a22f12cd443a6a5e684a40ac1
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
