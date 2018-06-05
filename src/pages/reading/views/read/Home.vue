@@ -420,7 +420,7 @@
       }) {
         console.log('下单')
         const url = `/order/submit`;
-        const res = await this.post(url, {
+        const res = await this.$http.post(url, {
           itemId,
           itemType
         });
@@ -441,7 +441,7 @@
         console.log('预支付')
         const payType = 'WECHATREADH5APAY';
         const url = `/pay/submit`;
-        const res = await this.post(url, {
+        const res = await this.$http.post(url, {
           orderId,
           payType
         });
