@@ -10,8 +10,8 @@
               <router-link :to="{ path: '/look/' + item.readId}"><span class="look">查看证书></span></router-link>
             </div>
             <div class="text-container clearfix">
-              <div class="container">
-                <div  class="content" ref="cheight" :class="item.expand?'h131':''">{{item.content}}</div>
+              <div class="content-container">
+                <div  class="content" ref="cheight" :class="item.expand?'h132':''">{{item.content}}</div>
                 <div v-if="item.line"> 
                   <div class="letter" v-if="(item.letter == 1 )&& (item.expand)" @click.stop="handleChange(item)">全部</div>
                   <div class="letter" v-if="(item.letter == 2 )&& (!item.expand)" @click.stop="handleChange(item)">收起</div>
@@ -25,7 +25,7 @@
                 </div>
               </div>
               <div class="row operate fr">
-                <router-link :to="{ path: '/poster/' + item.id}">
+                <router-link :to="{ path: '/poster/' + item.id+'/0/1'}">
                   <div class="column-center operate-share">
                     <i class="iconfont icon-share"></i>
                   </div>
@@ -49,8 +49,8 @@
           <div class="shelf-word">快去写感想，丰富你的历程~</div>
         </div>
       </div>
-      <AudioBar/>
     </div>
+    <AudioBar/>
   </div>
 </template>
 
@@ -69,7 +69,10 @@ export default {
       // contentHeight: 130,
       noData: false,
       journeyList: [],
-      expandStatus: []
+      expandStatus: [],
+
+      // 统计内容为空的数据条数
+      contentNum: 0
     };
   },
   computed: {
@@ -85,7 +88,7 @@ export default {
     async getJourneyInfo (){
       let objs = await user.getJourneyList();
       if (objs.success) {
-        this.journeyList = objs.data;
+        this.journeyList = objs.data
         if(!this.journeyList.length) {
           this.noData = true
           return
@@ -122,9 +125,19 @@ export default {
         return
       }
       this.journeyList.forEach((item,index)=>{
+          // 获取时间
+        if(!this.journeyList[index].content){
+          this.contentNum += 1
+        }
+      })
+      if(this.contentNum == this.journeyList.length ){
+        this.noData = true
+        return
+      }
+      this.journeyList.forEach((item,index)=>{
         let multiple = 750/document.body.clientWidth;
         // 131为三行字体的高度
-        let originalOffsetY = 131/multiple;
+        let originalOffsetY = 132/multiple;
         let valueHeight = this.$refs.cheight[index].getBoundingClientRect().height;
         if(valueHeight > originalOffsetY){
           // line属性是否展示全部收起这个容器
@@ -230,7 +243,14 @@ export default {
       border-radius: 8/@rem;
       padding: 25/@rem 35/@rem 25/@rem 29/@rem ;
       box-sizing: border-box;
-      
+      .content-container {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-pack: center;
+            justify-content: center;
+        -ms-flex-direction: column;
+            flex-direction: column;
+      }
       .content{
         .fontSize(30);
         line-height: 42/@rem;
@@ -295,8 +315,8 @@ export default {
           color:rgba(255,76,76,1);
         }
       }
-      .h131{
-        height: 131/@rem;
+      .h132{
+        height: 132/@rem;
       }
       .hauto{
         height:auto;

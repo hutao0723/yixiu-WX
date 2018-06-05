@@ -36,10 +36,12 @@ export default {
     };
   },
   mounted () {
+    // 更新播放列表数据
     play.getReadList(this.readAudio.readId)
   },
   methods: {
     playAudio(item) {
+      // 播放某一课程
       play.audioInit(item.readId, item.id, false);
       this.$router.go(-1);
     }

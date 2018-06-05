@@ -22,7 +22,7 @@ export default {
   data () {
     return {
       data: {},
-      codeUrl: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=834282135,3059144775&fm=27&gp=0.jpg'
+      codeUrl: ''
     };
   },
   computed: {

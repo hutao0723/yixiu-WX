@@ -1,5 +1,5 @@
 <template>
-  <div class="cardNotice-box" >
+  <div class="cardNotice-box">
     <div class="notice-box">
       <div class="notice-title">打卡须知</div>
       <ul class="notice-content">
@@ -41,7 +41,7 @@
     width:100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.6);
-    z-index: 999;
+    z-index: 99;
     position: absolute;
     top:0;
     left:0;

@@ -1,86 +1,94 @@
 <template>
   <div class="home-main">
-    <!-- <div @click="play">播放</div> -->
-    <!-- 未买课 -->
-
-    <div class="home-box" v-show="pageStatus == 1 || pageStatus == 0">
-      <div class="home-tab clearfix">
-        <div class="item" @click="tabActive=true">
+    <div class="home-type" v-show="pageStatus == 1 || pageStatus == 0">
+      <a href="http://www.baidu.com" class="home-service"></a>
+      <div class="home-tab clearfix" id="hometab">
+        <div class="item" @click="tabActiveToggle(true)">
           <span :class="{ active: tabActive}">简介</span>
         </div>
-        <div class="item" @click="tabActive=false">
+        <div class="item" @click="tabActiveToggle(false)">
           <span :class="{ active: !tabActive}">课程</span>
         </div>
       </div>
-      <div class="home-bottom" @click="tabActive = false" :style="{bottom:bottomNavToggle?'100px':'0px'}" v-show="tabActive">去选课程</div>
-      <div class="home-btn" :style="{bottom:bottomNavToggle?'100px':'0'}" v-show="!tabActive">
+      <div class="home-bottom" @click="tabActiveToggle(false)" :class="{bottom:bottomNavToggle}" v-show="tabActive">去选课程</div>
+      <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="!tabActive">
         <p>
           <span class="text-del">{{selectCourseObj.costPrice}}</span>
           <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>元</p>
         <span @click="orderPay" class="btn-pay">立即购买</span>
       </div>
-      <div class="home-test" ref="homemain">
-        <div v-show="tabActive">
-          <div class="home-content">
-            <img src="http://yun.dui88.com/youfen/images/read_detail.jpg" alt="">
-          </div>
-          <div class="home-review" v-if="reviewList.length> 0">
-            <h2>学员观点</h2>
-            <div class="item" v-for="(item,index) in reviewList" :key="index">
-              <img :src="item.userImgUrl" alt="" class="item-header">
-              <div class="item-name">{{item.userNickname}}</div>
-              <div class="item-periods">{{item.readName}}第{{item.readStageNum}}学员</div>
-              <div class="item-content">{{item.readName}}</div>
-              <div class="item-book">
-                <div class="book-bg">
-                  <img class="book-img" :src="item.courseUrl" alt="">
-                </div>
 
-                <div class="book-name otw">{{item.courseTitle}}</div>
-                <div class="book-author otw">{{item.courseAuthor}} 著</div>
-              </div>
-              <div class="item-bottom">
-                <span @click="getCommentPraise(item.id,item.userPraise)" v-if="pageStatus != 0">
-                  <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
-                  <span class="fr">{{item.praiseCount}}</span>
-                </span>
-                <!-- <router-link :to="{ path: '/poster/' + item.id}" tag="a" class="iconfont icon-share fr"></router-link> -->
-                <span>{{item.releaseTime| timeTransition}}</span>
+
+      <div id="maincontent" class="home-detail" ref="homemain" v-show="tabActive">
+        <div class="home-content">
+          <img src="http://yun.dui88.com/youfen/images/read_img01.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/read_img02.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/read_img03.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/read_img04.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/read_img05.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/read_img06.jpg" alt="">
+        </div>
+        <div class="home-review" v-if="reviewList.length> 0">
+          <h2>学员观点</h2>
+          <div class="item" v-for="(item,index) in reviewList" :key="index">
+            <img :src="item.userImgUrl" alt="" class="item-header">
+            <div class="item-name">{{item.userNickname}}</div>
+            <div class="item-periods">{{item.readName}}第{{item.readStageNum}}期学员</div>
+            <div class="item-content">{{item.content}}</div>
+            <div class="item-book">
+              <div class="book-bg">
+                <img class="book-img" :src="item.courseUrl" alt="">
               </div>
 
+              <div class="book-name otw">{{item.courseTitle}}</div>
+              <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
+            </div>
+            <div class="item-bottom">
+              <span @click="getCommentPraise(item.id,item.userPraise)" v-if="pageStatus != 0">
+                <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
+                <span class="fr">{{item.praiseCount}}</span>
+              </span>
+              <router-link :to="{ path: '/poster/' + item.id+'/0/1'}" tag="a" class="iconfont icon-share fr"></router-link>
+              <span>{{item.releaseTime| timeTransition}}</span>
             </div>
           </div>
         </div>
-        <div v-show="!tabActive">
-          <div class="home-course">
-            <div class="item" v-for="(item,index) in readList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
-              @click="selectCourse(item)">
-              <div class="item-box">
-                <div class="item-top">
-                  <div class="item-none" v-if="item.purchased"></div>
-                  <div class="item-name">{{item.title}}</div>
-                  <div class="item-msg">第{{item.stageNum}}期 | {{item.beginDate}}（{{item.beginDateWeek}}）开课</div>
-                  <div class="item-num">报名{{item.orderCount}}人</div>
-                  <div class="item-btn">{{selectCourseId == item.readId?'已选':'选择'}}</div>
-                </div>
-                <div class="item-bottom">
-                  <p v-html="item.briefer"></p>
-                </div>
-              </div>
+        <h3>上滑加载更多精彩课程
+          <i class="iconfont">&#xe61e;</i>
+        </h3>
+      </div>
+      <div class="home-course" v-show="!tabActive">
+        <div class="item" v-for="(item,index) in readList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
+          @click="selectCourse(item)">
+          <div class="item-box">
+            <div class="item-top">
+              <div class="item-none" v-if="item.purchased"></div>
+              <div class="item-name">{{item.title}}</div>
+              <div class="item-msg">第{{item.stageNum}}期
+                <i></i>{{item.beginDate}}（{{item.beginDateWeek}}）开课</div>
+              <div class="item-num">报名{{item.orderCount}}人</div>
+              <div class="item-btn" v-show="selectCourseId != item.readId">选择</div>
+              <div class="item-btn red" v-show="selectCourseId == item.readId">已选</div>
+            </div>
+            <div class="item-bottom">
+              <p v-html="item.briefer"></p>
             </div>
           </div>
         </div>
       </div>
     </div>
 
+
+
+    <!-- 报名未关注 -->
     <div class="home-wechat" v-if="pageStatus == 2">
       <p class="text-a">
-        <i class="iconfont icon-chenggong">&#xe608;</i>您已成功报名</p>
+        <i class="iconfont"></i>您已成功报名</p>
       <p class="text-b">长按识别二维码</p>
       <p class="text-c">关注公众号，去等待开课</p>
-      <img src="http://yun.dui88.com/youfen/images/read_ewm.png" alt="">
+      <img src="http://yun.dui88.com/youfen/images/read_ewm3.png" alt="">
     </div>
-    <!-- 未开课 -->
+    <!-- 报名未开课 -->
     <div class="home-nonevent" v-if="pageStatus == 3">
       <div class="nonevent-box">
         <p class="text-a">您已成功报名</p>
@@ -92,11 +100,9 @@
       <div class="ewm-bg">
         <img :src="courseDetail.teacherWxQrcodeUrl" alt="">
       </div>
-      <!-- <p class="text-f">{{courseDetail.userNickname}}</p> -->
       <p class="text-g">微信添加老师后，你的专属老师会在课程</br>开始前邀请你进入对应班级群</p>
-      <p class="text-h">关注微信公众号【一修读书】，点击</br>菜单栏“我的老师”添加</p>
     </div>
-
+    <!-- 已关注已开课 -->
     <div class="home-already" v-if="pageStatus == 4">
       <AudioBar/>
       <h2>今日学习
@@ -104,7 +110,7 @@
       </h2>
       <div class="already-book">
         <img :src="todayBookDetail.courseUrl" alt="" class="book-img">
-        <div class="book-name">《{{todayBookDetail.courseTitle}}》</div>
+        <div class="book-name otw">{{todayBookDetail.courseTitle}}</div>
         <div class="book-msg">{{todayBookDetail.courseSubTitle}}</div>
         <div class="book-btn" @click="playAudio(todayBookDetail.courseId)">播放
           <i class="iconfont icon-bofang"></i>
@@ -135,20 +141,32 @@
         <div class="alert-bg" @click="alertToggle = false;"></div>
       </div>
     </div>
-
+    <div class="home-pop" v-show="payCancelToggle">
+        <div class="pop-content">
+          <h2>还有疑问?</br>联系老师进一步了解</h2>
+            <img src="http://yun.dui88.com/youfen/images/read_headimg01.png" alt="">
+            <div class="text-name">小雪老师</div>
+            <div class="text-msg">智慧与美貌并存的读书达人</div>
+            <a class="btn" href="http://www.baidu.com">跟她聊聊</a>
+        </div>
+        <div class="pop-bg"></div>
+        <i class="pop-close iconfont icon-close" @click="payCancelToggle = false;"></i>
+      </div>
   </div>
 </template>
 
 <script>
   import AudioBar from '../../components/basic/Audio_Bar';
   import play from '../../api/play';
-  import order from '../../api/order';
   import store from '../../vuex/store';
 
 
   import {
     mapState
   } from 'vuex';
+
+
+
   export default {
     components: {
       AudioBar
@@ -172,6 +190,10 @@
         todayBookDetail: {}, // 今日书
         historyBookList: [], // 历史书
         courseList: [], // 书对应列表
+        maincontent: 0,
+        bodycontent: 0,
+        payCancelToggle: false,
+
 
       };
     },
@@ -229,16 +251,28 @@
     },
     created() {},
     async mounted() {
+      let self = this;
+      this.wxShare();
+      setTimeout(() => {
+        var maincontento = document.getElementById("maincontent");
+        var maincontenth = maincontento.offsetHeight; //高度
+        this.maincontent = maincontenth;
+
+        this.bodycontent = document.body.clientHeight;
+        console.log('maincontent高度:' + this.maincontent)
+      }, 500)
+
+
+
       // 如果是支付流程直接支付
-      if (this.$route.query.dcd) {
+      if (this.$route.query.dcd && !this.$route.query.isPay) {
         this.getDcd(this.$route.query.dcd)
       }
-      if (this.$route.query.courseId) {
+      if (this.$route.query.courseId && !this.$route.query.isPay) {
+        this.tabActive = false;
         order.buy(this.$route.query.courseId, 4)
       }
-      this.wxShare();
       let userState = await this.getThumbUp();
-      console.log(userState)
 
       this.readId = userState.data.readId;
       // 状态判断逻辑
@@ -330,7 +364,7 @@
         }
 
         if (
-          userState.data.readState == 3 && userState.data.followOfficialAccount
+          userState.data.readState == 3
         ) {
           console.log('用户购买已关注已读完')
           this.getCommentTop();
@@ -346,32 +380,191 @@
           })
         }
       }
-
-      // store.commit({
-      //   type: 'setBottomNavToggle',
-      //   bottomNavToggle: false
-      // })
-      // store.commit({
-      //   type: 'setBottomNavType',
-      //   bottomNavType: false
-      // })
       this.changeLoginDays();
       this.changeReadStatus();
       // window.addEventListener('scroll', this.handleScroll,true);
-      console.log(this.$refs)
-      console.log(this.$refs.homemain)
-      let self = this;
       self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, true);
 
     },
     methods: {
 
-      dispatchScroll(e) {
-        console.log(this.$refs.homemain.scrollTop)
-        if(this.$refs.homemain.scrollTop == 6594){
-          this.tabActive = false;
-          console.log('sadas')
+
+      // 支付
+
+
+      /**
+       * 拉起支付
+       */
+      async buy(itemId, itemType) {
+        console.log('拉起支付')
+        const orderId = await this.placeOrder({
+          itemId,
+          itemType
+        });
+        if (!orderId) {
+          return false;
         }
+        const payment = await this.wxPrePay({
+          orderId
+        });
+        this.wxPay(payment);
+      },
+
+
+      /**
+       * 下单
+       */
+      async placeOrder({
+        itemId,
+        itemType
+      }) {
+        console.log('下单')
+        const url = `/order/submit`;
+        const res = await this.post(url, {
+          itemId,
+          itemType
+        });
+
+        if (!res.data.success) {
+          location.href = '/reading.html#/index/home';
+          return false;
+        }
+        return res.data.data;
+      },
+
+      /**
+       * 预支付
+       */
+      async wxPrePay({
+        orderId
+      }) {
+        console.log('预支付')
+        const payType = 'WECHATREADH5APAY';
+        const url = `/pay/submit`;
+        const res = await this.post(url, {
+          orderId,
+          payType
+        });
+        return res.data.data;
+      },
+
+      /**
+       * 支付
+       */
+      wxPay(payment) {
+        let self = this;
+        function onBridgeReady() {
+          WeixinJSBridge.invoke(
+            'getBrandWCPayRequest', {
+              "appId": payment.appId, //公众号名称，由商户传入     
+              "timeStamp": payment.timeStamp, //时间戳，自1970年以来的秒数     
+              "nonceStr": payment.nonceStr, //随机串     
+              "package": payment.package,
+              "signType": payment.signType, //微信签名方式：     
+              "paySign": payment.paySign //微信签名 
+            },
+            function (res) {
+              if (res.err_msg == "get_brand_wcpay_request:ok") {
+
+                // } 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+
+                function url_add_hash(url, key) {
+                  var key = (key || 't') + '='; //默认是"t"  
+                  var reg = new RegExp(key + '\\d+'); //正则：t=1472286066028  
+                  var timestamp = +new Date();
+                  if (url.indexOf(key) > -1) { //有时间戳，直接更新  
+                    return url.replace(reg, key + timestamp);
+                  } else { //没有时间戳，加上时间戳  
+                    if (url.indexOf('#') > -1) {
+                      return url.split('#')[0] + '?' + key + timestamp + location.hash;
+                    } else {
+                      return url + '?' + key + timestamp;
+                    }
+                  }
+                }
+
+                window.location.href = url_add_hash(window.location.href)
+              } else {
+                alert('支付取消')
+                self.payCancelToggle = true;
+              }
+            }
+          );
+        }
+        if (typeof WeixinJSBridge == "undefined") {
+          if (document.addEventListener) {
+            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+          } else if (document.attachEvent) {
+            document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+          }
+        } else {
+          onBridgeReady();
+        }
+      },
+
+
+
+      tabActiveToggle(e) {
+        this.$refs.homemain.scrollTop = 0
+        this.tabActive = e;
+      },
+      dispatchScroll(e) {
+        console.log(this.$refs.homemain.scrollTop + document.body.clientHeight)
+        let self = this;
+        var startX = 0,
+          startY = 0,
+          isTrue = 0;
+
+        function touchStart(evt) {
+          try {
+            var touch = evt.touches[0], //获取第一个触点
+              x = Number(touch.pageX), //页面触点X坐标
+              y = Number(touch.pageY); //页面触点Y坐标
+            //记录触点初始位置
+            startX = x;
+            startY = y;
+          } catch (e) {
+            console.log(e.message)
+          }
+        }
+
+        function touchMove(evt) {
+          try {
+            var touch = evt.touches[0], //获取第一个触点
+              x = Number(touch.pageX), //页面触点X坐标
+              y = Number(touch.pageY); //页面触点Y坐标
+
+
+            // //判断滑动方向
+            // if (startY - y > 200) {
+            //   console.log('到底部并且上滑了')
+            //   isTrue = 1;
+            // } else if (y - startY > 200) {
+            //   console.log('下滑了')
+            //   isTrue = 2;
+            // } else {
+            //   isTrue = 0;
+            // }
+
+
+          } catch (e) {}
+        }
+
+        function touchEnd() {
+          if (isTrue == 1) {
+            self.$refs.homemain.scrollTop = 0
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+            window.scrollTo(0, 0);
+            self.tabActive = false;
+          }
+        }
+
+        //绑定事件
+        document.addEventListener('touchstart', touchStart, false);
+        document.addEventListener('touchmove', touchMove, false);
+        document.addEventListener('touchend', touchEnd, false);
       },
       getDcd(dcd) {
         let self = this;
@@ -379,7 +572,7 @@
         params = {
           dcd: dcd,
         }
-        const url = `/api/distribution/binding`;
+        const url = `/distribution/binding`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -390,7 +583,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/user/stat/changeLoginDays`;
+        const url = `/user/stat/changeLoginDays`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -401,7 +594,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/user/stat/changeReadStatus`;
+        const url = `/user/stat/changeReadStatus`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -409,7 +602,7 @@
         });
       },
       orderPay() {
-        order.buy(this.selectCourseId, 4)
+        this.buy(this.selectCourseId, 4)
       },
       playAudio(id) {
         play.audioInit(this.readId, id, true)
@@ -426,7 +619,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/user/read/detail`;
+        const url = `/user/read/detail`;
         const res = await this.$http.get(url, {
           params
         });
@@ -438,7 +631,7 @@
         params = {
 
         }
-        const url = `/api/user/read/state`;
+        const url = `/user/read/state`;
         const res = await this.$http.get(url, {
           params
         });
@@ -449,7 +642,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/comment/top`;
+        const url = `/comment/top`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -464,7 +657,7 @@
           status: status ? 0 : 1,
           commentId: id
         }
-        const url = `/api/comment/praise`;
+        const url = `/comment/praise`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -475,7 +668,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/read/readList`;
+        const url = `/read/readList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -503,7 +696,7 @@
           readId: this.readId,
           date: date,
         }
-        const url = `/api/readBookCourse/courseDetailByDate`;
+        const url = `/readBookCourse/courseDetailByDate`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -511,12 +704,12 @@
         });
       },
       getBookList() {
-        let self = this;
+        let self = this
         let params = {};
         params = {
           readId: this.readId,
         }
-        const url = `/api/readBook/bookList`;
+        const url = `/readBook/bookList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -530,7 +723,7 @@
           readId: this.readId,
           bookId: id,
         }
-        const url = `/api/readBookCourse/courseList`;
+        const url = `/readBookCourse/courseList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -551,28 +744,50 @@
   /* @import '../../less/letiable'; */
 
   @import '../../less/util';
-
-  .home-main {
-    width: 750/@rem;
+  html,
+  body,
+  #app,
+  .index-main,
+  .home-main,
+  .home-type,
+  .home-detail {
+    width: 100%;
     height: 100%;
     overflow: scroll;
-    -webkit-overflow-scrolling: touch;
-    position: relative;
-    background: #fff;
-    font-size: 24/@rem;
-    .icon-nav {
-      height: 480/@rem;
-      border: 1px solid #ccc;
-    }
-    .home-test {
-      height: 100%;
-      overflow: scroll;
-      padding-top: 108/@rem;
+  }
+
+  .home-main {
+    .home-type {
+      padding-top: 100/@rem;
+      background: #f1f1f1;
+      padding-bottom: 100/@rem;
       box-sizing: border-box;
     }
-    .home-box {
-      height: 100%;
+    .home-service{
+      .size(100,100);
+      position: absolute;
+      right: 30/@rem;
+      bottom: 140/@rem;
+      background: url('http://yun.dui88.com/youfen/images/read_btn1.png') no-repeat center;
+      background-size: 100% 100%;
+      z-index: 888;
     }
+    .home-detail {
+      -webkit-overflow-scrolling: touch;
+      position: absolute;
+      transition: all 1s cubic-bezier(0.86, 0, 0.03, 1);
+      -webkit-transition: -webkit-all 1s cubic-bezier(0.86, 0, 0.03, 1);
+    }
+    .home-box {
+      position: relative;
+      background: #f1f1f1;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      padding-top: 100/@rem;
+
+    }
+
     .home-tab {
       position: fixed;
       top: 0;
@@ -580,16 +795,27 @@
       width: 100%;
       background: #fff;
       z-index: 999;
+      .item:after {
+        content: '';
+        height: 50/@rem;
+        background: #d8d8d8;
+        position: absolute;
+        bottom: 25/@rem;
+        left: 50%;
+        width: 1/@rem;
+        box-sizing: border-box;
+      }
       .item {
         width: 50%;
         float: left;
         text-align: center;
         span {
-          .size(126, 102);
-          .text(44, 102);
+          .size(126, 94);
+          .text(40, 94);
           display: inline-block;
           text-align: center;
-          color: #bbb;
+          color: #949494;
+          font-weight: 500;
         }
         .active {
           color: #333;
@@ -610,6 +836,7 @@
       padding-right: 386/@rem;
       box-sizing: border-box;
       text-align: right;
+      box-shadow: 0px -1px 20px 0px rgba(0, 0, 0, 0.1);
       .text-del {
         color: #777;
         text-decoration: line-through;
@@ -629,21 +856,41 @@
         background: #FF4C4C;
         color: #fff;
         text-align: center;
+        box-shadow: 0px -1px 20px 0px rgba(0, 0, 0, 0.1);
       }
+    }
+    .home-bottom.bottom {
+      bottom: 100/@rem;
+    }
+    .home-btn.bottom {
+      bottom: 100/@rem;
     }
     .home-content {
       img {
         display: block;
-        width: 750/@rem;
-        border-bottom: 20/@rem solid #f0f0f0;
+        width: 100%;
       }
     }
     .home-review {
+      background: #fff;
       padding-bottom: 120/@rem;
       h2 {
-        .text(40, 120);
+        .text(40, 56);
+        padding-top: 45/@rem;
         color: #333;
         text-align: center;
+      }
+      h3 {
+        .text(32, 120);
+        color: #888;
+        text-align: center;
+        font-weight: normal;
+        .iconfont {
+          .text(24, 120);
+          margin-left: 20/@rem;
+          color: #888;
+
+        }
       }
       .item {
         position: relative;
@@ -658,6 +905,7 @@
         }
         .item-name {
           /* .pos(118, 36); */
+          font-weight: bold;
           .text(30, 42);
           color: #333;
         }
@@ -670,18 +918,18 @@
         }
         .item-content {
           /* .pos(118, 130); */
-          font-size: 30/@rem;
+          max-height: 9999px;
+          font-size: 28/@rem;
           line-height: 42/@rem;
-          color: #666;
+          color: #333;
         }
         .item-book {
-          .size(596, 148);
+          .size(580, 148);
           /* .pos(118, 318); */
           position: relative;
           background: #eee;
           border-radius: 4/@rem;
           margin-top: 20/@rem;
-          margin-bottom: 35/@rem;
           .book-bg {}
           .book-img {
             .pos(30, 13);
@@ -709,7 +957,9 @@
           }
         }
         .item-bottom {
-          .size(22, 30);
+          .text(22, 30);
+          margin-top: 25/@rem;
+          color: #666;
           width: 100%;
           box-sizing: border-box;
           .iconfont {
@@ -728,7 +978,7 @@
         position: absolute;
         bottom: 0;
         left: 0;
-        width: 596/@rem;
+        width: 580/@rem;
         box-sizing: border-box;
       }
 
@@ -744,9 +994,14 @@
       z-index: 999;
       text-align: center;
     }
+    .home-bottom.bottom {
+      bottom: 100/@rem;
+    }
     .home-course {
       background: #f1f1f1;
-      padding: 40/@rem 0 120/@rem 0;
+      padding-top: 60/@rem;
+      padding-bottom: 120/@rem;
+      overflow-x: hidden;
 
       .item,
       .item-name,
@@ -765,8 +1020,9 @@
         /* Opera */
       }
       .item {
-        margin-bottom: 40/@rem;
-        padding: 0 45/@rem;
+        margin: 0 45/@rem 50/@rem 45/@rem;
+        border-radius: 20/@rem;
+        overflow: hidden;
         .item-box {
           border-radius: 20/@rem;
           overflow: hidden;
@@ -774,7 +1030,7 @@
         .item-top {
           height: 210/@rem;
           position: relative;
-          background: #FEED47;
+          background: #fff670;
           .item-none {
             .size(150, 117);
             position: absolute;
@@ -797,6 +1053,13 @@
             .text(26,
             37);
             color: #333;
+            i {
+              display: inline-block;
+              height: 20/@rem;
+              width: 2/@rem;
+              margin: 0 14/@rem;
+              background: #333;
+            }
           }
           .item-num {
             .pos(40,
@@ -815,8 +1078,13 @@
             right: 20/@rem;
             border: 1/@rem solid #333;
             border-radius: 10/@rem;
-            background: #FEED47;
+            background: #fff670;
             text-align: center;
+          }
+          .item-btn.red {
+            background: #FF4C4C;
+            border-color: #FF4C4C;
+            color: #fff;
           }
         }
         .item-bottom {
@@ -835,55 +1103,16 @@
       }
 
       .active {
-        padding: 0 20/@rem;
-        .item-box {
-          box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
-        }
+        transform: scale(1.1);
+        box-shadow: 0/@rem -2/@rem 14/@rem 5/@rem rgba(0, 0, 0, 0.2);
+        .item-box {}
         .item-top {
-          height: 220/@rem;
-          .item-name {
-            .pos(40,
-            22);
-            /* .text(48,
-            67); */
-          }
-          .item-msg {
-            .pos(40,
-            109);
-            /* .text(28,
-            40); */
-            color: #333;
-          }
-          .item-num {
-            .pos(40,
-            157);
-            /* .text(28,
-            40); */
-            color: #333;
-          }
-          .item-btn {
-            .size(130,
-            56);
-            /* .text(32,
-            56); */
-            position: absolute;
-            top: 124/@rem;
-            background: #FF4C4C;
-            border-color: #FF4C4C;
-            color: #fff;
-          }
+          background: #FEED47;
         }
-        .item-bottom {
-          /* height: 230/@rem; */
-          /* font-size: 30/@rem  !important; */
-          line-height: 52/@rem;
-          padding: 37/@rem 40/@rem;
-          /* span,
-          p,
-          div {
-            font-size: 30/@rem  !important;
-          } */
+        .item-btn {
+          background: #FEED47;
         }
+
       }
       .none {
         .item-top {
@@ -893,6 +1122,9 @@
           }
           .item-msg {
             color: #888;
+            i {
+              background: #888;
+            }
           }
           .item-num {
             color: #888;
@@ -914,11 +1146,16 @@
         text-align: center;
         padding-top: 65/@rem;
         color: #343434;
-        .icon-chenggong {
-          font-size: 56/@rem;
-          line-height: 56/@rem;
-          color: #FFE555;
+        .iconfont {
+          font-size: 0;
+          height: 56/@rem;
+          width: 56/@rem;
+          display: inline-block;
+          vertical-align: middle;
+          background: url('http://yun.dui88.com/youfen/images/read_icon.png') no-repeat center;
+          background-size: 100% 100%;
           margin-right: 24/@rem;
+          margin-bottom: 10/@rem
         }
       }
       .text-b {
@@ -945,7 +1182,7 @@
     }
     .home-nonevent {
       position: relative;
-      padding: 20/@rem 34/@rem;
+      padding: 50/@rem 34/@rem 20/@rem 34/@rem;
       text-align: center;
       padding-bottom: 116/@rem;
       .nonevent-box {
@@ -970,35 +1207,29 @@
           .text(30,
           42);
           margin-top: 15/@rem;
-          font-weight: bold;
+          /* font-weight: bold; */
         }
       }
       .ewm-bg {
-        background: url('http://yun.dui88.com/youfen/images/read_ewmborder.png') no-repeat center;
-        background-size: 100% 100%;
-        height: 326/@rem;
-        width: 326/@rem;
-        margin: 30/@rem auto;
-        padding: 15/@rem;
-        box-sizing: border-box;
         img {
+          margin: 24/@rem auto 36/@rem auto;
           display: block;
-          height: 280/@rem;
-          width: 280/@rem;
+          height: 430/@rem;
+          width: 369/@rem;
         }
       }
       .text-d {
         .text(36,
         50);
-        margin-top: 34/@rem;
+        margin-top: 70/@rem;
         font-weight: bold;
         color: #116EBC;
       }
       .text-e {
-        .text(22,
+        .text(24,
         30);
-        margin-top: 12/@rem;
-        color: #666;
+        margin-top: 20/@rem;
+        color: #333;
       }
       .text-f {
         .text(36,
@@ -1011,11 +1242,12 @@
         line-height: 40/@rem;
         color: #333;
         margin-top: 16/@rem;
+        font-weight: bold;
       }
       .text-h {
         position: fixed;
         height: 116/@rem;
-        background: #EEEEEE;
+        background: #666;
         color: #666;
         padding-top: 16/@rem;
         font-size: 26/@rem;
@@ -1051,11 +1283,16 @@
           box-sizing: border-box;
         }
         .book-name {
-          .pos(245,
+          .pos(0,
           30);
           .text(30,
           42);
           color: #333;
+          padding-left: 245/@rem;
+          padding-right: 32/@rem;
+          box-sizing: border-box;
+          width: 100%;
+
         }
         .book-msg {
           .pos(256,
@@ -1197,6 +1434,125 @@
         }
       }
     }
+    .home-pop {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 999;
+        .pop-bg {
+          position: fixed;
+          left: 0;
+          bottom: 0;
+          top: 0;
+          right: 0;
+          z-index: 999;
+          background: rgba(0, 0, 0, 0.5);
+        }
+        .pop-close{
+          .pos(604,185);
+          .size(56,56);
+          .text(24,56);
+          background:rgba(0,0,0,0.8);
+          color: #fff;
+          border-radius: 50%;
+          text-align: center;
+          z-index: 9999;
+        }
+        .pop-content{
+          .pos(55,284);
+          .size(640,614);
+          background: #fff;
+          border-radius: 12/@rem;
+          position: relative;
+          z-index: 9999;
+          h2{
+            .text(36, 55);
+            height: 210/@rem;
+            padding-top: 50/@rem;
+            text-align: center;
+            color: #333;
+            border-bottom: 1/@rem dashed #bbb;
+            letter-spacing: 8/@rem;
+            box-sizing: border-box;
+          }
+          .text-name{
+            .text(29,40);
+            .pos(266,300);
+            color: #333;
+            font-weight: bold;
+          }
+          .text-msg{
+            .text(26,37);
+            .pos(266,348);
+            color: #555;
+          }
+          img{
+            .pos(100,273);
+            .size(140,140);
+
+          }
+          .btn{
+            .pos(40,474);
+            .size(560,86);
+            .text(38,86);
+            text-align: center;
+            color: #fff;
+            background: #4799FA;
+            border-radius: 12/@rem;
+          }
+        }
+        .pop-top {
+          padding: 26/@rem 35/@rem;
+          background: #f5f5f8;
+          position: absolute;
+          left: 0;
+          bottom: 88/@rem;
+          z-index: 9999;
+          right: 0;
+          h3 {
+            .text(34,
+            40);
+            text-align: center;
+            margin-bottom: 60/@rem;
+            font-weight: normal;
+          }
+          .item {
+            .size(140,
+            64);
+            .text(40,
+            64);
+            text-align: center;
+            color: #444;
+            background: #FFE555;
+            border-radius: 10/@rem;
+            margin-right: 40/@rem;
+            margin-bottom: 30/@rem;
+            float: left;
+          }
+          .none {
+            background: #E6E6E6;
+            color: #bababa;
+          }
+          .item:nth-child(4n) {
+            margin-right: 0;
+          }
+        }
+
+        .pop-btn {
+          .text(30,
+          88);
+          position: absolute;
+          z-index: 9999;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          text-align: center;
+          color: #888;
+          background: #fff;
+        }
+      }
   }
 
 </style>

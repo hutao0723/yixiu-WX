@@ -13,8 +13,11 @@
       <div style="clear: both"></div>
     </div>
     <div class="comment-box">
-      <textarea placeholder="写下对这本书的感想和收获吧" v-model="content"></textarea>
+      <textarea @input="contentChange()" autofocus placeholder="写下对这本书的感想和收获吧" v-model="content">
+      </textarea>
+      <div class="placeDom" v-if="!content">不读书的人，思想都会停止。没有比读书更好的娱乐、更持久的满足了。你多久没读书了？</div>
     </div>
+    <span class="contentNum">{{conLenght}}/1000</span>
     <div class="sub-comment" @click="subComment()">提交并打卡</div>
   </div>
 </template>
@@ -30,26 +33,39 @@
         courseId:'',
         readId:'',
         courseDetail:'',
-        content:''
+        content:'',
+        conLenght:0,
+        bfscrolltop:''
       };
+    },
+    updated:function(){
+      // this.bfscrolltop = document.body.scrollTop;//获取软键盘唤起前浏览器滚动部分的高度
+      // console.log(this.bfscrolltop)
     },
     computed: {
       ...mapState({})
     },
     created() {
       this.getCourseId()
+
     },
     mounted () {
     },
     methods: {
+      contentChange(){
+        this.conLenght = this.content.length
+      },
       getCourseId(){
         this.courseId = this.$route.params.courseId;
         this.readId = this.$route.params.readId;
         console.log(this.courseId,this.readId)
-        this.$http.get('/readBookCourse/courseDetail?readId='+this.readId +'&courseId='+this.courseId).then(res=>{
+        this.$http.get('/api/readBookCourse/courseDetail?readId='+this.readId +'&courseId='+this.courseId).then(res=>{
           let resp = res.data;
           if(resp.success){
             this.courseDetail = resp.data;
+            if(!this.courseDetail.courseUrl){
+              this.courseDetail.courseUrl  = 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-book-cover.png'
+            }
           }
           console.log(resp)
         })
@@ -62,12 +78,18 @@
           dayNum:this.courseDetail.days
         }
         console.log(params)
-        this.$http.post('/user/read/clock',params,{emulateJSON: true}).then(res=>{
+        this.$http.post('/api/user/read/clock',params,{emulateJSON: true}).then(res=>{
           let resp = res.data;
           if(resp.success){
-            console.log(resp.data)
             let commentId = resp.data.commentId;
-            let lastClock = resp.data.lastClock;
+            let lastClock;
+            let isClock = 1;
+            if(resp.data.lastClock){
+              lastClock=1
+            }else{
+              lastClock=0
+            }
+            this.$router.push('/poster/'+commentId+'/'+lastClock+'/'+isClock)
           }
         })
       },
@@ -78,6 +100,13 @@
 <style lang="less">
   @import '../../less/variable';
   .comment-main {
+    .contentNum{
+      position:absolute;
+      right:29/@rem;
+      font-size:26/@rem;
+      color:#999999;
+      bottom:120/@rem;
+    }
     width: 750/@rem;
     height: 100%;
     position: absolute;
@@ -127,7 +156,8 @@
       }
     }
     .comment-box{
-      padding:32/@rem 30/@rem 0 30/@rem;
+      margin:32/@rem 30/@rem 0 30/@rem;
+      position:relative;
       textarea{
         width:100%;
         outline: none;
@@ -136,7 +166,18 @@
         height:364/@rem;
         line-height: 40/@rem;
       }
+      textarea::-webkit-input-placeholder{
+        color:#BFBFBF;
+      }
+      .placeDom{
+        color:#BFBFBF;
+        font-size:28/@rem;
+        line-height:40/@rem;
+        position:absolute;
+        top:95/@rem;
+      }
     }
+
     .sub-comment{
       font-size: 30/@rem;
       height:90/@rem;
@@ -144,7 +185,7 @@
       background: #FFE555;
       text-align: center;
       color:#333333;
-      position: fixed;
+      position: absolute;
       width:100%;
       bottom:0;
     }

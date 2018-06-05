@@ -50,7 +50,7 @@
             <i class="iconfont icon-close"></i>
         </div>
         <p class="des">你已完成今日课程，趁热打铁 来打卡吧！</p>
-        <p class="info">今日已打卡223人</p>
+        <p class="info">今日已打卡<span class="warm">{{clockCount}}</span>人</p>
         <div class="btn-card" @click="goComment">打卡</div>
       </div>
     </div>
@@ -67,6 +67,7 @@ import access from '../../mixins/accessHandler';
 export default {
   data () {
     return {
+      clockCount: ''
     };
   },
   computed: {
@@ -99,6 +100,8 @@ export default {
       store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
       store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
     }
+    // 获取打卡人数
+    this.clockCount = await play.getClockCount(this.readAudio.readId, this.readAudio.courseId);
   },
   methods: {
     audioPrev () {
@@ -130,7 +133,7 @@ export default {
       return mm + ':' + ss;
     }
   },
-  components:{ range},
+  components:{ range },
   mixins: [access]
 };
 </script>

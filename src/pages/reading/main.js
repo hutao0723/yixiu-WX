@@ -37,7 +37,11 @@ Vue.use(VueLazyload, {
   }
 });
 Vue.http.headers.common['from'] = 'read';
-Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWU3mytFEThAbUxgYoDsLSGVdXwpPoDchZnGyMnEVTKiS3QcAZ2Ht9pH8sRbLgX6CQVxH6ZszUt6pLDTdFDNYq8EpDs27xWbyhrFM6Qyr7d5gq3HCZKumRZVy3YKapJYDsivP8RgBwrZ';
+<<<<<<< HEAD
+//  Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWU3mytFEThAbVRbBsiG99J5L3AycHw9RQzaApFRydFrQ94M49MsJcX715G25172Pf1KBoFocRFwKY5dnB1hHqaxtZhKtX8vv65wehmLQumJMZem1Y7WHFSr4bvsC3XzQNP2toEM4HNa';
+=======
+// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjrgAVYrS2jWTFx5xqHDj2QQBH1uXBFMw3gMPxWGMYXWq992G8UBUUjtDPenDWhHayUB6cTjNCScruS3vsPcREhmMXmK2rxgixHsa31XHprvefiBtesVeVWdyJUbfVpW24eB5N';
+>>>>>>> 4c7c250934a8d44a22f12cd443a6a5e684a40ac1
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
@@ -45,28 +49,36 @@ Vue.http.interceptors.push((request, next) => {
   next((response) => { // 在响应之后传给then之前对response进行修改和逻辑判断。对于token时候已过期的判断，就添加在此处，页面中任何一次http请求都会先调用此处方法
     // response.body = '...';
     if (response.data.code == '000001') {
-      if (response.url = '/order/submit') {
-        let reqObj = JSON.parse(request.body)
-
-        
-        let o = '/' + window.location.href.split('/').slice(3).join('/')
-        const url = encodeURIComponent(o)+ (o.indexOf("？")?'&courseId=' +reqObj.itemId:'?courseId=' +reqObj.itemId);
-        location.href = "/loginH5?dbredirect=" + url;
-      }else{
-        const url = encodeURIComponent();
-        location.href = "/loginH5?dbredirect=" + url;
+      let o = '/' + window.location.href.split('/').slice(3).join('/')
+      let reqObj = JSON.parse(request.body)
+      let url;
+      if (response.url.indexOf('/order/submit') > -1) {
+        if (o.indexOf('?') > -1) {
+          url = o + '&courseId=' + reqObj.itemId;
+        } else {
+          url = o + '?courseId=' + reqObj.itemId;
+        }
+      } else {
+        url = o;
       }
-
+      Vue.http.get('/getH5LoginUrl', {
+        params: {
+          dbredirect: url
+        }
+      }).then(res => { // 获得签名配置
+        if (res.data.data) {
+          location.href = res.data.data
+        }
+      });
     }
-    return response;
   });
 });
 
 Vue.prototype.wxShare = function () {
   let msg = {
-    title: '我已经坚持在这读书23天了，一起来读书吧！', // 分享标题
-    desc: '每天阅读10分钟，培养阅读习惯，成就更好的自己。', // 分享描述
-    link: 'http://k.youfen666test.com/reading.html#/index/home', // 分享链接 默认以当前链接
+    title: '每天10分钟，轻松阅读，日有所得', // 分享标题
+    desc: '打卡满49天，退还所有学费，还可以获得奖学金！', // 分享描述
+    link: 'http://k.youfen666.com/reading.html#/index/home', // 分享链接 默认以当前链接
     imgUrl: 'http://yun.dui88.com/youfen/images/read_share.png', // 分享图标
   }
   const urlData = `/wechat/getJsapiSignature`;
@@ -125,10 +137,6 @@ Vue.prototype.wxShare = function () {
   });
 };
 
-router.beforeEach((to, from, next) => {
-  /* 路由发生变化修改页面title */
-  next()
-})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
