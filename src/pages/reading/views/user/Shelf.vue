@@ -34,7 +34,7 @@
         </div>
         <div class="alert-btn" @click="alertToggle = false;">取消</div>
         <div class="alert-bg" @click="alertToggle = false;"></div>
-      </div>  
+      </div>
     </div>
      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0" ></div>
      <AudioBar/>
@@ -87,7 +87,7 @@ export default {
     playAudio(readId,courseId){
       play.audioInit(readId,courseId,true)
       // 跳转到播放页
-      this.$router.push("/audio/Index/1");
+      this.$router.push("/audio/index/1");
     },
     async getSwipeInfo() {
       let objs = await user.getSwipeList();
@@ -98,7 +98,7 @@ export default {
           this.noData = true;
         }
         this.swipeList = [objs.data.content]
-        
+
       } else {
         console.log("获取数据失败")
       }
@@ -142,7 +142,7 @@ export default {
           } else {
             this.busy = true
             console.log("获取数据失败")
-          } 
+          }
 
         });
     },
@@ -154,9 +154,9 @@ export default {
         this.alertToggle = true
       } else {
         console.log("获取数据失败")
-      }  
+      }
     }
-    
+
   }
 }
 </script>
@@ -196,7 +196,7 @@ export default {
       border-radius: 5/@rem;
     }
   }
-  
+
   &:nth-child(3n-2){
     margin-left: 50/@rem;
   }
