@@ -86,7 +86,7 @@
         contentBox.style.height = '20%';
         if(this.isIos()){
           var bookHeader =  document.querySelector(".book-book");
-          num.style.bottom = '52%';
+         // num.style.bottom = '52%';
           setTimeout(function () {
             bookHeader.scrollIntoViewIfNeeded({behavior: 'smooth'})
           ,200})
