@@ -41,8 +41,8 @@ export default {
     },
     data () {
         return {
-            playbill:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527313092411&di=570284fc80fbc68d6dd211ec7f11a871&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201409%2F13%2F20140913140805_EZYKn.jpeg',
-            portrait:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527313812184&di=66835925969c776a10030dea414d2ece&imgtype=0&src=http%3A%2F%2Fimg3.duitang.com%2Fuploads%2Fitem%2F201507%2F09%2F20150709200521_nYZMX.thumb.700_0.jpeg',
+            playbill:'',
+            portrait:'',
             canvas:'',
             qrcUrl: '',
             swiperArr: [],
@@ -135,6 +135,13 @@ export default {
         },
 
         switchNumber(n){ // 根据屏幕计算出图片所需要的高度
+            let getStyle = function(obj,attr){
+                if(obj.currentStyle){
+                    return obj.currentStyle[attr];
+                }else{
+                    return document.defaultView.getComputedStyle(obj,null)[attr];
+                }
+            }
             let documentHeight = document.documentElement.offsetHeight;
             let posterMain = document.querySelector('.poster-main');
             let swiperHeight = document.querySelector('.poster-swiper').offsetHeight;
@@ -143,15 +150,6 @@ export default {
             let posterMainBottom = Number(getStyle(posterMain,'paddingBottom').match(/[0-9]+/)[0])
             let bkImgHeight = documentHeight - swiperHeight - pmNoticeHeight - posterMainTop - posterMainBottom
             return bkImgHeight
-
-            function getStyle(obj,attr){
-                if(obj.currentStyle){
-                    return obj.currentStyle[attr];
-                }
-                else{
-                    return document.defaultView.getComputedStyle(obj,null)[attr];
-                }
-            }
 
         },
         createCanvas(){
@@ -254,11 +252,12 @@ export default {
                     row.push(temp);
                     ctx.fillStyle = rpp.ctitleFontColor;
                     for(let b = 0; b < row.length; b++){
-                        ctx.fillText(row[b],conversion(bkImgWidth/2* scale),y+(b)*conversion(40* scale));
+                        ctx.fillText(row[b],conversion(bkImgWidth/2),y+(b)*conversion(40* scale));
                     }
                 }
                 // 绘制签名
                 ctx.font =conversion(rpp.ctitleFontSize* scale)+"px 宋体";
+                // ctx.textAlign = 'right';
                 rpp.ctitleDisplay && drawText('我在一修读书学习，邀请你成为我的同学，每天10分钟，养成读书习惯',conversion(rpp.ctitleLeftMargin* scale),conversion(rpp.ctitleTopMargin* scale),conversion(300* scale));
                     
                 self.createdImg()

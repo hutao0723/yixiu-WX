@@ -203,7 +203,8 @@ export default {
                     outline: none;
                     padding: 0;
                     &::-webkit-input-placeholder { /* WebKit browsers */
-                        height: 40px;  
+                        height: 126/@rem;
+                        line-height: normal;
                         vertical-align: middle;
                         .fontSize(30);
                     }

@@ -47,6 +47,7 @@
         },
         data() {
             return {
+                // 500170000
                 data: [{
                         name: '我的客户',
                         router: '/personal/share/correspondent',
@@ -75,11 +76,11 @@
                 },
                 redPointArr:[
                     {
-                        functionsType:'',
+                        functionsType: 1,
                         showStatus:''
                     },
                     {
-                        functionsType:'',
+                        functionsType: 2,
                         showStatus:''
                     }
                 ],
@@ -143,11 +144,8 @@
                 
                 //获取红点信息
                 sales.redPoint(functionsTypes).then((res) => {
-                    if(this.redPointArr.length){
+                    if(res.length){
                         this.redPointArr = JSON.parse(JSON.stringify(res))
-                        // console.log(this.redPointArr)
-                    }else{
-                        this.redPointArr = [...this.redPointArr, ...res]
                     }
                 })
             }
