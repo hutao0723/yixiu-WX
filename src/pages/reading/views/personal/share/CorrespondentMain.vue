@@ -6,11 +6,11 @@
                     <img :src="item.headImgurl" alt="" class="cml-image">
                     <div class="cml-info">
                         <strong>{{item.nickName}}</strong>
-                        <p class="cmli-date" v-if="Boolean(initIndex)">{{item.remainingBindTime}}</p>
+                        <p class="cmli-date" v-if="Boolean(initIndex)">{{`有效时间${item.remainingBindTime}小时`}}</p>
                     </div>
                 </div>
                 <div class="cml-sum">
-                    <p class="cmls-money cmls">共<em>{{item.totalTradeMoney}}</em>元</p>
+                    <p class="cmls-money cmls">共<em>{{item.totalPromotionEarnings}}</em>元</p>
                     <p class="cmls-count cmls">{{item.totalTradeNum}}笔</p>
                 </div>
             </li>
@@ -102,12 +102,13 @@ export default {
     @import '../../../less/variable';
     @import '../../../less/base';
     @import '../../../less/icon';
-    @mainColor:#F4F4F4;
-	@setionBackgroundColor:#FFF;
-    @fontColor:#333;
-    @deepRed:#FF464A;
-    @borderColor:#D8D8D8;
-    @undertintBalackColor:#999;
+    
+    @mainColor: #F4F4F4;
+	@setionBackgroundColor: #FFF;
+    @fontColor: #333;
+    @deepRed: #FF464A;
+    @borderColor: #D8D8D8;
+    @undertintBalackColor: #999;
     .correspondent-main {
         .cm-list {
             border-bottom: 1/@rem solid @borderColor;

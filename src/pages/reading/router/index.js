@@ -12,7 +12,7 @@ export default new Router({
         require.ensure([], function () {
           resolve(require('../views/Index'));
         }, 'reading_read');
-      }
+      },
     },
     {
       name: 'index',
@@ -130,6 +130,9 @@ export default new Router({
         require.ensure([], function () {
           resolve(require('../views/personal/share/Share'));
         }, 'reading_share');
+      },
+      meta: {
+        title: '分享中心'
       }
     },
     // 提现记录
@@ -139,6 +142,9 @@ export default new Router({
         require.ensure([], function () {
           resolve(require('../views/personal/share/CashHistory'));
         }, 'reading_cashHistory');
+      },
+      meta: {
+        title: '提现记录'
       }
     },
 
@@ -149,6 +155,9 @@ export default new Router({
         require.ensure([], function () {
           resolve(require('../views/personal/share/EarningHistory'));
         }, 'reading_earningHistory');
+      },
+      meta: {
+        title: '收益记录'
       }
     },
 
@@ -159,6 +168,9 @@ export default new Router({
         require.ensure([], function () {
           resolve(require('../views/personal/share/Correspondent'));
         }, 'reading_correspondent');
+      },
+      meta: {
+        title: '我的客户'
       }
     },
     // 提现中
@@ -168,6 +180,9 @@ export default new Router({
         require.ensure([], function () {
           resolve(require('../views/personal/share/DepositSuccess'));
         }, 'reading_depositSuccess');
+      },
+      meta: {
+        title: '提现中'
       }
     },
     // 提现
@@ -177,6 +192,9 @@ export default new Router({
         require.ensure([], function () {
           resolve(require('../views/personal/share/Cash'));
         }, 'reading_cash');
+      },
+      meta: {
+        title: '提现'
       }
     },
     // 海报
@@ -186,6 +204,9 @@ export default new Router({
         require.ensure([], function () {
           resolve(require('../views/personal/share/Poster'));
         }, 'reading_poster');
+      },
+      meta: {
+        title: '海报'
       }
     },
 
@@ -196,6 +217,9 @@ export default new Router({
         require.ensure([], function () {
           resolve(require('../views/personal/share/GeneralizeRule'));
         }, 'reading_generalizeRule');
+      },
+      meta: {
+        title: '推广规则'
       }
     },
     {

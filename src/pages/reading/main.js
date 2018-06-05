@@ -37,7 +37,11 @@ Vue.use(VueLazyload, {
   }
 });
 Vue.http.headers.common['from'] = 'read';
+<<<<<<< HEAD
 //  Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWU3mytFEThAbVRbBsiG99J5L3AycHw9RQzaApFRydFrQ94M49MsJcX715G25172Pf1KBoFocRFwKY5dnB1hHqaxtZhKtX8vv65wehmLQumJMZem1Y7WHFSr4bvsC3XzQNP2toEM4HNa';
+=======
+// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjrgAVYrS2jWTFx5xqHDj2QQBH1uXBFMw3gMPxWGMYXWq992G8UBUUjtDPenDWhHayUB6cTjNCScruS3vsPcREhmMXmK2rxgixHsa31XHprvefiBtesVeVWdyJUbfVpW24eB5N';
+>>>>>>> 4c7c250934a8d44a22f12cd443a6a5e684a40ac1
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
@@ -72,8 +76,8 @@ Vue.http.interceptors.push((request, next) => {
 
 Vue.prototype.wxShare = function () {
   let msg = {
-    title: '每天10分钟，改变从一点一滴开始！', // 分享标题
-    desc: '坚持49天，奖励一张京东购物卡。', // 分享描述
+    title: '每天10分钟，轻松阅读，日有所得', // 分享标题
+    desc: '打卡满49天，退还所有学费，还可以获得奖学金！', // 分享描述
     link: 'http://k.youfen666.com/reading.html#/index/home', // 分享链接 默认以当前链接
     imgUrl: 'http://yun.dui88.com/youfen/images/read_share.png', // 分享图标
   }

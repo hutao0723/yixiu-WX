@@ -21,13 +21,15 @@
               <div class="text">累计阅读</div>
             </li>
         </ul>
-      <div class="mt20 recommend bgfff">
-          <img :src="recommendUrl">
-          <div class="icon-tri column-center jiantou">
-              <i class="iconfont ear-icon"></i>
-          </div>
-      </div>
-      <router-link :to="{ path: '/journey' }">
+      <router-link :to="{ path: '/personal/share/poster' }">
+        <div class="mt20 recommend bgfff">
+            <img :src="recommendUrl">
+            <div class="icon-tri column-center jiantou">
+                <i class="iconfont ear-icon"></i>
+            </div>
+        </div>
+      </router-link>
+      <!-- <router-link :to="{ path: '/journey' }">
         <div class="bgfff">
           <div class="person-h90 row mt20 border" >
             <div class="icon-box column-center">
@@ -56,18 +58,27 @@
             <div class="row ft32 ml30">我的老师</div>
           </div>
         </div>
+      </router-link> -->
+      <router-link :to="{ path: '/personal/share' }">
+        <div class="bgfff">
+          <div class="person-h90 row mt20 " >
+            <div class="icon-box column-center">
+              <i class="iconfont icon-income person-icon"></i>
+            </div>
+            <div class="row ft32 ml30">我的收益</div>
+          </div>
+        </div>
       </router-link>
-      
-      <div class="bgfff" @click="contactToggle = true">
+      <!-- <div class="bgfff" @click="contactToggle = true">
         <div class="person-h90 row mt20" >
           <div class="icon-box column-center">
             <i class="iconfont icon-ear person-icon"></i>
           </div>
           <div class="row ft32 ml30" @click="contactToggle = true">联系客服</div>
         </div>
-      </div>
+      </div> -->
     </div>
-    <Contact v-show="contactToggle" v-on:success="success"/>
+    <!-- <Contact v-show="contactToggle" v-on:success="success"/> -->
     <bnav></bnav>
     <AudioBar/>
   </div>
@@ -90,8 +101,8 @@ export default {
       data: {},
       contactToggle: false,
 
-      imageUrl: 'https://yun.dui88.com/yoofans/images/201804/miniapp/help-center.png',
-      personname: '哈哈',
+      imageUrl: '',
+      personname: '',
 
       day: 0,
       minute: 0,
@@ -117,10 +128,10 @@ export default {
     async getNumberInfo (){
       let objs = await user.getInfo();
         if (objs.success) {
-          this.day = objs.data.clocks;
-          this.minute = objs.data.listens > 999?(objs.data.listens/60).toFixed(1): objs.data.listens;
-          this.time = objs.data.listens > 999?"小时": "分钟";
-          this.book = objs.data.books ? objs.data.books : 0;
+          // this.day = objs.data.clocks;
+          // this.minute = objs.data.listens > 999?(objs.data.listens/60).toFixed(1): objs.data.listens;
+          // this.time = objs.data.listens > 999?"小时": "分钟";
+          // this.book = objs.data.books ? objs.data.books : 0;
           this.personname = objs.data.userNickname;
           this.imageUrl = objs.data.userHeadImgUrl;
         } else {

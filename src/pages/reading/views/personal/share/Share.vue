@@ -73,7 +73,16 @@
                     'balance': '',
                     'totalPromotionEarnings': ''
                 },
-                redPointArr:[],
+                redPointArr:[
+                    {
+                        functionsType:'',
+                        showStatus:''
+                    },
+                    {
+                        functionsType:'',
+                        showStatus:''
+                    }
+                ],
                 earningMoney:'' // 
             };
         },
@@ -131,14 +140,27 @@
                 sales.info().then((res) => {
                     this.shareData = res
                 })
+                
                 //获取红点信息
                 sales.redPoint(functionsTypes).then((res) => {
-                    this.redPointArr = [...this.redPointArr, ...res]
+                    if(this.redPointArr.length){
+                        this.redPointArr = JSON.parse(JSON.stringify(res))
+                        // console.log(this.redPointArr)
+                    }else{
+                        this.redPointArr = [...this.redPointArr, ...res]
+                    }
                 })
             }
         },
         components: {
             ConfirmDialog
+        },
+        beforeRouteEnter: (to, from, next) => {
+            /* 路由发生变化修改页面title */
+            if (to.meta.title) {
+                document.title = to.meta.title
+            }
+            next()
         }
     };
 </script>

@@ -3,7 +3,7 @@
         <p class="cash-tit">提现金额</p>
         <div class="cash-import">
             <div class="ci-warp">
-                <input type="tel" v-model="cashNum" name="" id="" class="ciw-inp" :placeholder="`可提现${balance}元`" maxlength="8">
+                <input type="number" v-model="cashNum" name="" id="" class="ciw-inp" :placeholder="`可提现${balance}元`" maxlength="8">
             </div>
             <span class="ci-tip">2小时内到账</span>
         </div>
@@ -26,13 +26,7 @@ export default {
     },
     data () {
         return {
-            record:[
-                {
-                    text:'提交到微信 - 交易失败（微信未实名,请完善实名)',
-                    date:'2018-05-01 17:23:30',
-                    num:'0.00'
-                },
-            ],
+            record:[],
             cashNum:'', // 输入提现金额
             balance:'', // 可提现的额度
             promptText:'',  // 弹窗消息
@@ -52,9 +46,12 @@ export default {
             // 限制输入金额到小数点后两位
             this.cashNum = v.replace(/(\d*)(\.\d{0,2})?.*/, (match, p1, p2) => {
                 // p1整数部分，p2小数部分
-                // console.log(match)
-                console.log(p1)
-                return Number(p1) + (p2 || '');
+                if(p1 == (0 || '')){
+                    return ''                   
+                }else{
+                    return Number(p1) + (p2 || '');
+                }
+                
             });
         }
     },
@@ -62,17 +59,22 @@ export default {
         judgeCash(){// 判断是否达到提现的条件
             let money;
             this.cashNum = Number(this.cashNum)
-            if(this.cashNum < 20){// 提现不得小于20元
-                this.promptText = '至少提现<em>20</em>元'
-                this.dialog(this.promptText)
-            }else if(this.cashNum > this.balance){ // 不得超过额度
-                this.promptText = `最多可提现${this.balance}元`
-                this.dialog(this.promptText)
-            }else{
                 // 对传入的金额再次进行处理
                 money = this.dealWithMoney()
                 this.getData(money)
-            }
+
+                
+            // if(this.cashNum < 20){// 提现不得小于20元
+            //     this.promptText = '至少提现<em>20</em>元'
+            //     this.dialog(this.promptText)
+            // }else if(this.cashNum > this.balance){ // 不得超过额度
+            //     this.promptText = `最多可提现${this.balance}元`
+            //     this.dialog(this.promptText)
+            // }else{
+            //     // 对传入的金额再次进行处理
+            //     money = this.dealWithMoney()
+            //     this.getData(money)
+            // }
         },
         
         // 处理输入后的金额转成整数
@@ -113,7 +115,7 @@ export default {
 
         allCashing(){
             // 全部提现
-            this.cashNum = this.balance.split('.')[0];
+            this.cashNum = this.balance;
         },
 
         getData(money){
@@ -133,6 +135,13 @@ export default {
             })
         }
     },
+    beforeRouteEnter: (to, from, next) => {
+        /* 路由发生变化修改页面title */
+        if (to.meta.title) {
+            document.title = to.meta.title
+        }
+        next()
+    }
 };  
 </script>
 
