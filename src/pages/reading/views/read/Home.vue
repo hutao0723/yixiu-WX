@@ -180,7 +180,7 @@
         alertToggle: false,
         readId: '',
 
-        pageStatus: 0, // 页面状态
+        pageStatus: 10, // 页面状态
 
         selectCourseId: 0, // 已选课程
         selectCourseObj: {},
