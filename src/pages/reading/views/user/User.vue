@@ -115,8 +115,12 @@ export default {
   },
   created() {
     },
-  mounted () {
+  async mounted () {
     this.getNumberInfo()
+    let self = this;
+    let userState = await self.getThumbUp();
+      self.wxShare(userState.data.userId);
+      self.readId = userState.data.readId;
   },
   methods: {
     // 联系客服
@@ -136,7 +140,19 @@ export default {
           console.log("获取用户信息失败")
         }
      
-    }
+    },
+    async getThumbUp() {
+        let self = this;
+        let params = {};
+        params = {
+
+        }
+        const url = `/user/read/state`;
+        const res = await this.$http.get(url, {
+          params
+        });
+        return res.data;
+      },
   }
 };
 </script>
