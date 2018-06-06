@@ -159,6 +159,8 @@
       font-size:26/@rem;
       color:#999999;
       bottom:10%;
+      transition: bottom .2s ;
+      -webkit-transition: bottom .2s ;
     }
     width: 750/@rem;
     height: 100%;
