@@ -120,7 +120,6 @@ export default {
     let self = this;
     let userState = await self.getThumbUp();
       self.wxShare(userState.data.userId);
-      self.readId = userState.data.readId;
   },
   methods: {
     // 联系客服

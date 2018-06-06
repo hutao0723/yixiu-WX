@@ -4,7 +4,7 @@
       <li v-for="(item, index) in navlist" :style="bottomNavType ? 'width: 50%;' : 'width: 50%;'">
         <router-link :to="item.path" :class="item.path === $route.path ? 'active' : ''">
           <p>
-            <!-- <i class="iconfont" :class="item.path === $route.path ? item.active : item.icon"></i> -->
+            <i class="iconfont" :class="item.path === $route.path ? item.active : item.icon"></i>
             <img :src="item.imgUrl" alt="">
           </p>
           <p>{{item.title}}</p>
@@ -103,8 +103,14 @@
           font-size: 32/@rem;
         }
         .active {
-          color: #222222 !important;
-          position: relative;
+          i{
+            display: none;
+          }
+          img{
+            display: inline-block;
+          }
+          // color: #222222 !important;
+          // position: relative;
         }
         .tag {
           &:after {
@@ -119,9 +125,9 @@
           }
         }
         img{
+          display: none;
           width: 32/@rem;
           height: 32/@rem;
-          display: inline-block;
           text-align: center;
         }
       }
