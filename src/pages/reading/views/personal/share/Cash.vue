@@ -204,7 +204,7 @@ export default {
                     padding: 0;
                     &::-webkit-input-placeholder { /* WebKit browsers */
                         height: 126/@rem;
-                        line-height: normal;
+                        line-height: 126/@rem;
                         vertical-align: middle;
                         .fontSize(30);
                     }
