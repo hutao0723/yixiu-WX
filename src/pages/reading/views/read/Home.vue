@@ -1,7 +1,7 @@
 <template>
   <div class="home-main">
     <div class="home-type" v-show="pageStatus == 1 || pageStatus == 0">
-      <a href="https://kefu.easemob.com/webim/im.html?configId=xxxx" class="home-service"></a>
+      <a href="https://kefu.easemob.com/webim/im.html?configId=f56195f3-2ff6-412b-983e-0231f5586efb" class="home-service" :class="{bottom:bottomNavToggle}"></a>
       <div class="home-tab clearfix" id="hometab">
         <div class="item" @click="tabActiveToggle(true)">
           <span :class="{ active: tabActive}">简介</span>
@@ -773,6 +773,9 @@
       background: url('http://yun.dui88.com/youfen/images/read_btn1.png') no-repeat center;
       background-size: 100% 100%;
       z-index: 888;
+    }
+    .home-service.bottom{
+      bottom: 240/@rem;
     }
     .home-detail {
       -webkit-overflow-scrolling: touch;
