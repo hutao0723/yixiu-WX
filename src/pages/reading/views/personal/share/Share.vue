@@ -101,7 +101,7 @@
             withdrawDeposit() { // 判断是否达到提现的条件
                 if (Number(this.shareData.balance) < 20) {
                     this.$refs.dialog.confirm({
-                        text: '可提现金额需满<em>20</em>元 才可提现？',
+                        text: '可提现金额需满<em>20</em>元 才可提现',
                         showConfirmButton: false,
                         cancelButtonText: '我知道了',
                     }).then((response) => {
