@@ -66,7 +66,9 @@ Vue.http.interceptors.push((request, next) => {
     }
   });
 });
-
+Vue.prototype.setTitle = function (t) {
+  document.title = t;
+}
 Vue.prototype.wxShare = function (id) {
   let msg = {
     title: '每天10分钟，轻松阅读，日有所得', // 分享标题

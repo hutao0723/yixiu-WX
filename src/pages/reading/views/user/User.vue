@@ -117,6 +117,7 @@ export default {
     },
   async mounted () {
     this.getNumberInfo()
+    this.setTitle('一修读书')
     let self = this;
     let userState = await self.getThumbUp();
       self.wxShare(userState.data.userId);
