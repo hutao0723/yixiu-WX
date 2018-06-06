@@ -322,10 +322,7 @@
         ) {
           console.log('用户购买已关注未开课')
           self.pageStatus = 3;
-          self.teacherWxName = userState.data.teacherWxName;
-          self.teacherWxQrcodeUrl = userState.data.teacherWxQrcodeUrl;
-
-          self.courseDetail = self.readDetail();
+          self.readDetail();
           store.commit({
             type: 'setBottomNavToggle',
             bottomNavToggle: true
@@ -613,15 +610,16 @@
           this.selectCourseObj = item;
         }
       },
-      async readDetail() {
+      readDetail() {
         let self = this;
         let params = {};
         params = {}
         const url = `/user/read/detail`;
-        const res = await this.$http.get(url, {
+        this.$http.get(url, {
           params
+        }).then((res) => {
+          self.courseDetail = res.data.data
         });
-        return res.data.data;
       },
       async getThumbUp() {
         let self = this;
@@ -1028,7 +1026,7 @@
       padding-top: 60/@rem;
       padding-bottom: 120/@rem;
       overflow-x: hidden;
-
+      -webkit-overflow-scrolling: touch;
       .item,
       .item-name,
       .item-box,
