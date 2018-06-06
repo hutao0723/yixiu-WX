@@ -4,7 +4,8 @@
       <li v-for="(item, index) in navlist" :style="bottomNavType ? 'width: 50%;' : 'width: 50%;'">
         <router-link :to="item.path" :class="item.path === $route.path ? 'active' : ''">
           <p>
-            <i class="iconfont" :class="item.path === $route.path ? item.active : item.icon"></i>
+            <!-- <i class="iconfont" :class="item.path === $route.path ? item.active : item.icon"></i> -->
+            <img :src="item.imgUrl" alt="">
           </p>
           <p>{{item.title}}</p>
         </router-link>
@@ -54,7 +55,8 @@
               title: '阅读',
               icon: 'icon-book',
               active: 'icon-book active tag',
-              path: '/index/home'
+              path: '/index/home',
+              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav01.png'
             },
             // {
             //   title: '观点',
@@ -66,7 +68,8 @@
               title: '我的',
               icon: 'icon-user',
               active: 'icon-user active tag',
-              path: '/index/user'
+              path: '/index/user',
+              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav02.png'
             }
           ]
         }
@@ -106,7 +109,7 @@
         .tag {
           &:after {
             content: '';
-            width: 28/@rem;
+            width: 22/@rem;
             height: 8/@rem;
             background-color: @color-main;
             position: absolute;
@@ -114,6 +117,12 @@
             left: 6/@rem;
             z-index: 11;
           }
+        }
+        img{
+          width: 32/@rem;
+          height: 32/@rem;
+          display: inline-block;
+          text-align: center;
         }
       }
     }

@@ -276,7 +276,7 @@
           self.getReadList();
           store.commit({
             type: 'setBottomNavToggle',
-            bottomNavToggle: false
+            bottomNavToggle: true
           })
           store.commit({
             type: 'setBottomNavType',
@@ -293,7 +293,7 @@
           self.getReadList();
           store.commit({
             type: 'setBottomNavToggle',
-            bottomNavToggle: false
+            bottomNavToggle: true
           })
           store.commit({
             type: 'setBottomNavType',
