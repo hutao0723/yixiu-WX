@@ -21,8 +21,8 @@ export default {
         return {
             swiperOption: {
                 // 所有的参数同 swiper 官方 api 参数
-                slidesPerView: '3.5',
-                spaceBetween: 20,
+                slidesPerView: '3.646',
+                spaceBetween: 30,
             },
             tabIndex:'0'
         }
@@ -34,7 +34,7 @@ export default {
         }
     },
     created() {
-
+        
     },
     mounted() {
     },
