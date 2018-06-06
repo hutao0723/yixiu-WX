@@ -110,7 +110,7 @@
       </h2>
       <div class="already-book">
         <img :src="todayBookDetail.courseUrl" alt="" class="book-img">
-        <div class="book-name otw">{{todayBookDetail.courseTitle}}</div>
+        <div class="book-name otw">《{{todayBookDetail.courseTitle}}》</div>
         <div class="book-msg">{{todayBookDetail.courseSubTitle}}</div>
         <div class="book-btn" @click="playAudio(todayBookDetail.courseId)">播放
           <i class="iconfont icon-bofang"></i>
@@ -127,7 +127,7 @@
               <i class="iconfont icon-lock"></i>
             </div>
           </div>
-          <div class="item-name">{{item.title}}</div>
+          <div class="item-name">《{{item.title}}》</div>
         </div>
       </div>
       <div class="already-alert" v-show="alertToggle">
@@ -252,10 +252,6 @@
     created() {},
     async mounted() {
       let self = this;
-
-
-
-
       // 如果是支付流程直接支付
       if (this.$route.query.dcd && !this.$route.query.isPay) {
         this.getDcd(this.$route.query.dcd)
@@ -969,6 +965,7 @@
             box-sizing: border-box;
 
           }
+
           .book-author {
             .pos(0,
             75);
@@ -1074,6 +1071,17 @@
             62);
             color: #333;
             font-weight: blod;
+            padding-left: 24/@rem;
+          }
+          .item-name:after {
+            content: '';
+            height: 42/@rem;
+            width: 10/@rem;
+            background: #FF7E12;
+            position: absolute;
+            top: 10/@rem;
+            left: 0;
+            box-sizing: border-box;
           }
           .item-msg {
             .pos(40,
@@ -1133,6 +1141,7 @@
       .active {
         transform: scale(1.1);
         box-shadow: 0/@rem -2/@rem 14/@rem 5/@rem rgba(0, 0, 0, 0.2);
+        border: 2/@rem solid #FF4C4C;
         .item-box {}
         .item-top {
           background: #FEED47;
