@@ -24,9 +24,7 @@
       <router-link :to="{ path: '/personal/share/poster' }">
         <div class="mt20 recommend bgfff">
             <img :src="recommendUrl">
-            <div class="icon-tri column-center jiantou">
-                <i class="iconfont ear-icon"></i>
-            </div>
+            
         </div>
       </router-link>
       <!-- <router-link :to="{ path: '/journey' }">
@@ -109,7 +107,7 @@ export default {
       book: 0,
       time: "分钟",
       // 分享
-      recommendUrl: 'https://yun.duiba.com.cn/yoofans/images/201805/read/recommend.png'
+      recommendUrl: 'https://yun.duiba.com.cn/yoofans/images/201805/read/share2.png'
     };
   },
   computed: {

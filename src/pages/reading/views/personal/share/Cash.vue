@@ -8,7 +8,7 @@
             <span class="ci-tip">2小时内到账</span>
         </div>
         <div class="cash-remind">
-            <p class="cr-hint">今日提现最大金额2万元，单笔不低于20元</p>
+            <p class="cr-hint">单笔不低于20元</p>
             <a href="javascript:void(0)" class="cr-cashall" @click="allCashing">全部提现</a>
         </div>
         <button class="cash-btn" :disabled="!Boolean(this.cashNum)" @click="judgeCash">申请提现</button>
@@ -60,21 +60,20 @@ export default {
             let money;
             this.cashNum = Number(this.cashNum)
                 // 对传入的金额再次进行处理
+                // money = this.dealWithMoney()
+                // this.getData(money)
+                
+            if(this.cashNum < 20){// 提现不得小于20元
+                this.promptText = '至少提现<em>20</em>元'
+                this.dialog(this.promptText)
+            }else if(this.cashNum > this.balance){ // 不得超过额度
+                this.promptText = `最多可提现${this.balance}元`
+                this.dialog(this.promptText)
+            }else{
+                // 对传入的金额再次进行处理
                 money = this.dealWithMoney()
                 this.getData(money)
-
-                
-            // if(this.cashNum < 20){// 提现不得小于20元
-            //     this.promptText = '至少提现<em>20</em>元'
-            //     this.dialog(this.promptText)
-            // }else if(this.cashNum > this.balance){ // 不得超过额度
-            //     this.promptText = `最多可提现${this.balance}元`
-            //     this.dialog(this.promptText)
-            // }else{
-            //     // 对传入的金额再次进行处理
-            //     money = this.dealWithMoney()
-            //     this.getData(money)
-            // }
+            }
         },
         
         // 处理输入后的金额转成整数
@@ -180,14 +179,15 @@ export default {
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
-            align-items: center;
+            align-items: flex-end;
             margin-bottom: 28/@rem;
             border-bottom: 1/@rem solid @borderColor;
+            padding-bottom: 6/@rem;
             .ci-warp {
                 position: relative;
                     &::before {
                         content: '¥';
-                        .fontSize(68);
+                        .fontSize(70);
                         font-weight: bold;
                         color: @fontColor;
                         padding-right: 22/@rem;
@@ -202,11 +202,14 @@ export default {
                     border: 0;
                     outline: none;
                     padding: 0;
+                    box-sizing: border-box;
                     &::-webkit-input-placeholder { /* WebKit browsers */
                         height: 126/@rem;
-                        line-height: 126/@rem;
+                        line-height: (126+25)/@rem;
                         vertical-align: middle;
                         .fontSize(30);
+                        font-weight: normal;
+                        color: @inputPlaceholderTextColor;
                     }
                     
                 }
@@ -224,6 +227,7 @@ export default {
             }
             
             .ci-tip {
+                padding-bottom: (42-10)/@rem;
                 color: @cashTextTipColor;
                 .fontSize(26);
             }
@@ -251,6 +255,7 @@ export default {
             color: @setionBackgroundColor;
             outline: none;
             font-weight: bold;
+            border: 0;
             &:disabled {
                 background-color: @cashBtnDisabled;
                 color:rgba(255,255,255,0.5);
@@ -264,15 +269,13 @@ export default {
             justify-content: flex-start;
             align-items: stretch;
             width: 560/@rem;
-            height: 320/@rem;
             padding: 0 33/@rem;
             box-sizing: border-box;
             .modal-body {
-                padding: 45/@rem (113-33)/@rem;
+                padding: 45/@rem (113-33)/@rem 0;
                 .notice {
-                    height: 108/@rem;
                     line-height: (108/2)/@rem;
-                    padding: 0;
+                    padding-bottom: 45/@rem;
                     .fontSize(34);
                     em {
                         color: @deepRed;

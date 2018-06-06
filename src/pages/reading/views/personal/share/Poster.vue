@@ -1,6 +1,8 @@
 <template>
     <div class="poster">
         <div class="poster-main">
+            <!-- 跳转到推广规则 -->
+            <router-link to="/personal/share/generalize-rule" class="pm-tip"><i class="iconfont icon-guize"></i></router-link>
             <div class="pm-playbill" :style="{backgroundImage:`url(${playbill})`,opacity:0}">
                 <canvas id="qrccode-canvas" class="qrccode"></canvas>
                 <img src="" alt="" id="cImg">
@@ -26,6 +28,9 @@
                 <span>长按分享</span>
             </div>
         </div>
+        <!-- <div class="load">
+            <Loading :loading=loading v-show="test" />
+        </div> -->
     </div>
 </template>
 
@@ -34,10 +39,12 @@ import QRCode from 'qrcode'
 import { mapState } from 'vuex';
 import PosterSwiper from './Poster-swiper'
 import sales from '../../../api/sales'
+import Loading from '../../../components/basic/Loading'
 
 export default {
     components: {
-        PosterSwiper
+        PosterSwiper,
+        Loading
     },
     data () {
         return {
@@ -53,7 +60,9 @@ export default {
             basecode64:'',
             readPlanPostersArr:[],
             poster:'',
-            swiperIndex:0
+            swiperIndex:0,
+            loading: true,
+            test:true
         };
     },
     computed: {
@@ -63,6 +72,9 @@ export default {
         this.getUserInfo()
         this.readPlanPosters()
         
+    },
+    beforeMount(){
+        this.test = false
     },
     mounted () {
         // myCanvas.toDataURL("image/png");
@@ -142,13 +154,15 @@ export default {
                     return document.defaultView.getComputedStyle(obj,null)[attr];
                 }
             }
-            let documentHeight = document.documentElement.offsetHeight;
+            let documentHeight = document.body.clientHeight || document.documentElement.clientHeight;
+            let ratio = documentHeight / 1334;  // 750设计图 - 1334
             let posterMain = document.querySelector('.poster-main');
             let swiperHeight = document.querySelector('.poster-swiper').offsetHeight;
             let pmNoticeHeight = document.querySelector('.pm-notice').offsetHeight;
-            let posterMainTop = Number(getStyle(posterMain,'paddingTop').match(/[0-9]+/)[0])
-            let posterMainBottom = Number(getStyle(posterMain,'paddingBottom').match(/[0-9]+/)[0])
-            let bkImgHeight = documentHeight - swiperHeight - pmNoticeHeight - posterMainTop - posterMainBottom
+            let posterMainPaddingTop = Number(getStyle(posterMain,'paddingTop').match(/[0-9]+/)[0]) * ratio
+            let posterMainPaddingBottom = Number(getStyle(posterMain,'paddingBottom').match(/[0-9]+/)[0])
+            console.log(pmNoticeHeight)
+            let bkImgHeight = documentHeight - swiperHeight - 96 - posterMainPaddingTop - posterMainPaddingBottom
             return bkImgHeight
 
         },
@@ -198,7 +212,7 @@ export default {
                 return new Promise(function(resolve, reject){
                     if(rpp.portraitDisplay){
                         var iconImg = new Image();
-                        iconImg.crossOrigin = 'anonymous'; 
+                        iconImg.crossOrigin = 'anonymous';
                         iconImg.src = self.headimgurl;
                         iconImg.onload = function () {
 
@@ -224,10 +238,7 @@ export default {
             
             // 图像绘制完后进行文字绘制
             background.then(code).then(icon).then(()=>{
-                
                 //self.readPlanPostersArr[this.swiperIndex].nicknameFontSize 中的字段不存在则跳过
-                console.log(rpp.nicknameDisplay)
-
 
                 if(rpp.nicknameDisplay){ // 绘制昵称
                     ctx.font = conversion(rpp.nicknameFontSize* scale)+'px 宋体';
@@ -264,7 +275,8 @@ export default {
         
             })
             ctx.textAlign = "center";
-
+            // 海报下面的文字宽度
+            document.querySelector('.pm-notice').style.width = bkImgWidth+'px'
         }
     },
     beforeRouteEnter: (to, from, next) => {
@@ -303,9 +315,20 @@ export default {
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 50/@rem 0 23/@rem;
+            padding: 92/@rem 0 23/@rem;
             border-bottom: 1/@rem solid @borderColor;
             position: relative;
+            .pm-tip {
+                position: absolute;
+                right: 42/@rem;
+                top: 27/@rem;
+                // width: 42/@rem;
+                // height: 42/@rem;
+                z-index: 1;
+                i {
+                .fontSize(42);
+                }
+            }
             .pm-playbill {
                 display: flex;
                 flex-direction: column;
@@ -359,9 +382,11 @@ export default {
                 }
             }
             .pm-notice {
+                // width: 490/@rem;
                 padding-top: 24/@rem;
                 .fontSize(25);
                 color: @fontColor;
+                box-sizing: border-box;
                 em {
                     color: @deepRed;
                     font-style: normal;
@@ -448,6 +473,15 @@ export default {
 
         .qrccode {
             // opacity: 0;
+        }
+
+        .load {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99;
         }
     }
     

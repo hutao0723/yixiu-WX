@@ -123,7 +123,7 @@ export default new Router({
       },
     },
 
-    // 分享中心
+    // 我的收益
     {
       path: '/personal/share',
       component: function (resolve) {
@@ -132,7 +132,7 @@ export default new Router({
         }, 'reading_share');
       },
       meta: {
-        title: '分享中心'
+        title: '我的收益'
       }
     },
     // 提现记录
