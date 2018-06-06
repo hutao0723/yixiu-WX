@@ -21,16 +21,16 @@
               <div class="text">累计阅读</div>
             </li>
         </ul>
-      <div class="mt20 recommend bgfff">
-          <img :src="recommendUrl">
-          <div class="icon-tri share column-center jiantou">
-              <i class="iconfont ear-icon"></i>
-          </div>
-      </div>
-      <router-link :to="{ path: '/journey' }">
+      <router-link :to="{ path: '/personal/share/poster' }">
+        <div class="mt20 recommend bgfff">
+            <img :src="recommendUrl">
+            
+        </div>
+      </router-link>
+      <!-- <router-link :to="{ path: '/journey' }">
         <div class="bgfff">
           <div class="person-h90 row mt20 border" >
-            <div class="icon-box share column-center">
+            <div class="icon-box column-center">
               <i class="iconfont icon-clock person-icon"></i>
             </div>
             <div class="row ft32 ml30">我的历程</div>
@@ -40,7 +40,7 @@
       <router-link :to="{ path: '/shelf' }">
         <div class="bgfff">
           <div class="person-h90 row border">
-            <div class="icon-box share column-center">
+            <div class="icon-box column-center">
               <i class="iconfont icon-booklist person-icon"></i>
             </div>
             <div class="row ft32 ml30">往期书架</div>
@@ -50,26 +50,35 @@
       <router-link :to="{ path: '/lecturer' }">
         <div class="bgfff">
           <div class="person-h90 row" >
-            <div class="icon-box share column-center">
+            <div class="icon-box column-center">
               <i class="iconfont icon-user person-icon"></i>
             </div>
             <div class="row ft32 ml30">我的老师</div>
           </div>
         </div>
+      </router-link> -->
+      <router-link :to="{ path: '/personal/share' }">
+        <div class="bgfff">
+          <div class="person-h90 row mt20 " >
+            <div class="icon-box column-center">
+              <i class="iconfont icon-income person-icon"></i>
+            </div>
+            <div class="row ft32 ml30">我的收益</div>
+          </div>
+        </div>
       </router-link>
-      
-      <div class="bgfff" @click="contactToggle = true">
+      <!-- <div class="bgfff" @click="contactToggle = true">
         <div class="person-h90 row mt20" >
-          <div class="icon-box share column-center">
+          <div class="icon-box column-center">
             <i class="iconfont icon-ear person-icon"></i>
           </div>
           <div class="row ft32 ml30" @click="contactToggle = true">联系客服</div>
         </div>
-      </div>
+      </div> -->
     </div>
-    <Contact v-show="contactToggle" v-on:success="success"/>
+    <!-- <Contact v-show="contactToggle" v-on:success="success"/> -->
     <bnav></bnav>
-    <AudioBar/>
+    <!-- <AudioBar/> -->
   </div>
 
 </template>
@@ -90,15 +99,15 @@ export default {
       data: {},
       contactToggle: false,
 
-      imageUrl: 'https://yun.dui88.com/yoofans/images/201804/miniapp/help-center.png',
-      personname: '哈哈',
+      imageUrl: '',
+      personname: '',
 
       day: 0,
       minute: 0,
       book: 0,
       time: "分钟",
       // 分享
-      recommendUrl: 'https://yun.duiba.com.cn/yoofans/images/201805/read/recommend.png'
+      recommendUrl: 'https://yun.duiba.com.cn/yoofans/images/201805/read/share2.png'
     };
   },
   computed: {
@@ -106,8 +115,11 @@ export default {
   },
   created() {
     },
-  mounted () {
+  async mounted () {
     this.getNumberInfo()
+    let self = this;
+    let userState = await self.getThumbUp();
+      self.wxShare(userState.data.userId);
   },
   methods: {
     // 联系客服
@@ -117,17 +129,29 @@ export default {
     async getNumberInfo (){
       let objs = await user.getInfo();
         if (objs.success) {
-          this.day = objs.data.clocks;
-          this.minute = objs.data.listens > 999?(objs.data.listens/60).toFixed(1): objs.data.listens;
-          this.time = objs.data.listens > 999?"小时": "分钟";
-          this.book = objs.data.books ? objs.data.books : 0;
+          // this.day = objs.data.clocks;
+          // this.minute = objs.data.listens > 999?(objs.data.listens/60).toFixed(1): objs.data.listens;
+          // this.time = objs.data.listens > 999?"小时": "分钟";
+          // this.book = objs.data.books ? objs.data.books : 0;
           this.personname = objs.data.userNickname;
           this.imageUrl = objs.data.userHeadImgUrl;
         } else {
           console.log("获取用户信息失败")
         }
      
-    }
+    },
+    async getThumbUp() {
+        let self = this;
+        let params = {};
+        params = {
+
+        }
+        const url = `/user/read/state`;
+        const res = await this.$http.get(url, {
+          params
+        });
+        return res.data;
+      },
   }
 };
 </script>
@@ -165,6 +189,10 @@ export default {
         font-weight: bold;
         color: rgba(51,51,51,1);
         line-height: 110/@rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 440/@rem;
       }
     }
   }

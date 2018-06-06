@@ -25,7 +25,7 @@
                 </div>
               </div>
               <div class="row operate fr">
-                <router-link :to="{ path: '/poster/' + item.id+'/0'}">
+                <router-link :to="{ path: '/poster/' + item.id+'/0/1'}">
                   <div class="column-center operate-share">
                     <i class="iconfont icon-share"></i>
                   </div>
