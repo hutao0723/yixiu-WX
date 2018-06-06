@@ -234,9 +234,20 @@
         right:54/@rem;
       }
     }
+    .calendar_header:after{
+      content: '';
+      width:92%;
+      height:1px;
+      background: #E5E5E5;
+      position: absolute;
+      bottom:0;
+      left:50%;
+      margin-left: -46%;
+    }
     .calendar_header{
       height:136/@rem;
       background:#fff;
+      position: relative;
       .card-head{
         font-size: 26/@rem;
         padding:25/@rem 0 25/@rem 29/@rem;

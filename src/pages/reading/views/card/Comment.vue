@@ -13,9 +13,9 @@
       <div style="clear: both"></div>
     </div>
     <div class="comment-box">
-      <textarea id="textarea"  @click="getF()" @blur="blurF()"  @input="contentChange()"   placeholder="写下对这本书的感想和收获吧" v-model="content">
+      <textarea id="textarea"  @click="getFocus()" @blur="blurFocus()"  @input="contentChange()"   placeholder="写下对这本书的感想和收获吧" v-model="content">
       </textarea>
-      <div class="placeDom" v-if="!content">不读书的人，思想都会停止。没有比读书更好的娱乐、更持久的满足了。你多久没读书了？</div>
+      <div class="placeDom" @click="focusDom()" v-if="!content">不读书的人，思想都会停止。没有比读书更好的娱乐、更持久的满足了。你多久没读书了？</div>
     </div>
     <span class="contentNum" id="contentNum">{{conLenght}}/1000</span>
     <div id="subBtn" @click="subComment()" >提交并打卡</div>
@@ -77,7 +77,10 @@
       isIos: function () {  //ios终端
         return !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
       },
-      getF(){
+      focusDom(){
+        document.getElementById('textarea').focus();
+      },
+      getFocus(){
         var view = document.querySelector("#app");
         var num = document.querySelector("#contentNum");
         var contentBox = document.querySelector('.comment-box');
@@ -93,7 +96,7 @@
         }
       },
 
-      blurF(){
+      blurFocus(){
         var num = document.querySelector("#contentNum");
         var contentBox = document.querySelector('.comment-box');
         num.style.bottom = '10%';
