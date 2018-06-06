@@ -142,16 +142,16 @@
       </div>
     </div>
     <div class="home-pop" v-show="payCancelToggle">
-        <div class="pop-content">
-          <h2>还有疑问?</br>联系老师进一步了解</h2>
-            <img src="http://yun.dui88.com/youfen/images/read_headimg01.png" alt="">
-            <div class="text-name">小雪老师</div>
-            <div class="text-msg">智慧与美貌并存的读书达人</div>
-            <a class="btn" href="https://kefu.easemob.com/webim/im.html?configId=f56195f3-2ff6-412b-983e-0231f5586efb">跟她聊聊</a>
-        </div>
-        <div class="pop-bg"></div>
-        <i class="pop-close iconfont icon-close" @click="payCancelToggle = false;"></i>
+      <div class="pop-content">
+        <h2>还有疑问?</br>联系老师进一步了解</h2>
+        <img src="http://yun.dui88.com/youfen/images/read_headimg01.png" alt="">
+        <div class="text-name">小雪老师</div>
+        <div class="text-msg">智慧与美貌并存的读书达人</div>
+        <a class="btn" href="https://kefu.easemob.com/webim/im.html?configId=f56195f3-2ff6-412b-983e-0231f5586efb">跟她聊聊</a>
       </div>
+      <div class="pop-bg"></div>
+      <i class="pop-close iconfont icon-close" @click="payCancelToggle = false;"></i>
+    </div>
   </div>
 </template>
 
@@ -180,7 +180,7 @@
         alertToggle: false,
         readId: '',
 
-        pageStatus: 10, // 页面状态
+        pageStatus: 0, // 页面状态
 
         selectCourseId: 0, // 已选课程
         selectCourseObj: {},
@@ -252,14 +252,7 @@
     created() {},
     async mounted() {
       let self = this;
-      setTimeout(() => {
-        var maincontento = document.getElementById("maincontent");
-        var maincontenth = maincontento.offsetHeight; //高度
-        this.maincontent = maincontenth;
 
-        this.bodycontent = document.body.clientHeight;
-        console.log('maincontent高度:' + this.maincontent)
-      }, 500)
 
 
 
@@ -273,7 +266,6 @@
       }
       let userState = await this.getThumbUp();
       this.wxShare(userState.data.userId);
-
       this.readId = userState.data.readId;
       // 状态判断逻辑
       if (userState.data) {
@@ -382,6 +374,14 @@
       }
       this.changeLoginDays();
       this.changeReadStatus();
+      setTimeout(() => {
+        var maincontento = document.getElementById("maincontent");
+        var maincontenth = maincontento.offsetHeight; //高度
+        this.maincontent = maincontenth;
+
+        this.bodycontent = document.body.clientHeight;
+        console.log('maincontent高度:' + this.maincontent)
+      }, 500)
       // window.addEventListener('scroll', this.handleScroll,true);
       self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, true);
 
@@ -453,6 +453,7 @@
        */
       wxPay(payment) {
         let self = this;
+
         function onBridgeReady() {
           WeixinJSBridge.invoke(
             'getBrandWCPayRequest', {
@@ -716,7 +717,7 @@
         });
       },
       getCourseList(item) {
-        if(item.lockStatus){
+        if (item.lockStatus) {
           return false;
         }
         let self = this;
@@ -765,8 +766,8 @@
       padding-bottom: 100/@rem;
       box-sizing: border-box;
     }
-    .home-service{
-      .size(100,100);
+    .home-service {
+      .size(100, 100);
       position: absolute;
       right: 30/@rem;
       bottom: 140/@rem;
@@ -774,7 +775,7 @@
       background-size: 100% 100%;
       z-index: 888;
     }
-    .home-service.bottom{
+    .home-service.bottom {
       bottom: 240/@rem;
     }
     .home-detail {
@@ -815,8 +816,10 @@
         float: left;
         text-align: center;
         span {
-          .size(126, 94);
-          .text(40, 94);
+          .size(126,
+          94);
+          .text(40,
+          94);
           display: inline-block;
           text-align: center;
           color: #949494;
@@ -829,7 +832,8 @@
       }
     }
     .home-btn {
-      .text(24, 100);
+      .text(24,
+      100);
       position: fixed;
       right: 0;
       bottom: 0;
@@ -853,8 +857,10 @@
 
       }
       .btn-pay {
-        .size(360, 100);
-        .text(40, 100);
+        .size(360,
+        100);
+        .text(40,
+        100);
         position: absolute;
         right: 0;
         top: 0;
@@ -880,18 +886,21 @@
       background: #fff;
       padding-bottom: 120/@rem;
       h2 {
-        .text(40, 56);
+        .text(40,
+        56);
         padding-top: 45/@rem;
         color: #333;
         text-align: center;
       }
       h3 {
-        .text(32, 120);
+        .text(32,
+        120);
         color: #888;
         text-align: center;
         font-weight: normal;
         .iconfont {
-          .text(24, 120);
+          .text(24,
+          120);
           margin-left: 20/@rem;
           color: #888;
 
@@ -902,8 +911,10 @@
         /* height: 560/@rem; */
         padding: 36/@rem 36/@rem 30/@rem 118/@rem;
         .item-header {
-          .size(64, 64);
-          .pos(30, 40);
+          .size(64,
+          64);
+          .pos(30,
+          40);
           border-radius: 50%;
           overflow: hidden;
           background: #000;
@@ -911,12 +922,14 @@
         .item-name {
           /* .pos(118, 36); */
           font-weight: bold;
-          .text(30, 42);
+          .text(30,
+          42);
           color: #333;
         }
         .item-periods {
           /* .pos(118, 82); */
-          .text(24, 33);
+          .text(24,
+          33);
           color: #666;
           margin-top: 4/@rem;
           margin-bottom: 14/@rem;
@@ -929,7 +942,8 @@
           color: #333;
         }
         .item-book {
-          .size(580, 148);
+          .size(580,
+          148);
           /* .pos(118, 318); */
           position: relative;
           background: #eee;
@@ -937,13 +951,17 @@
           margin-top: 20/@rem;
           .book-bg {}
           .book-img {
-            .pos(30, 13);
-            .size(80, 112);
+            .pos(30,
+            13);
+            .size(80,
+            112);
             border: 5/@rem solid #fff;
           }
           .book-name {
-            .pos(0, 25);
-            .text(30, 42);
+            .pos(0,
+            25);
+            .text(30,
+            42);
             color: #555;
             width: 100%;
             padding-left: 134/@rem;
@@ -952,8 +970,10 @@
 
           }
           .book-author {
-            .pos(0, 75);
-            .text(26, 37);
+            .pos(0,
+            75);
+            .text(26,
+            37);
             color: #666;
             width: 100%;
             padding-left: 134/@rem;
@@ -962,7 +982,8 @@
           }
         }
         .item-bottom {
-          .text(22, 30);
+          .text(22,
+          30);
           margin-top: 25/@rem;
           color: #666;
           width: 100%;
@@ -989,7 +1010,8 @@
 
     }
     .home-bottom {
-      .text(40, 100);
+      .text(40,
+      100);
       position: fixed;
       left: 0;
       bottom: 0;
@@ -1037,7 +1059,8 @@
           position: relative;
           background: #fff670;
           .item-none {
-            .size(150, 117);
+            .size(150,
+            117);
             position: absolute;
             right: 0;
             top: 0;
@@ -1440,124 +1463,139 @@
       }
     }
     .home-pop {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      z-index: 999;
+      .pop-bg {
         position: fixed;
         left: 0;
-        top: 0;
         bottom: 0;
+        top: 0;
         right: 0;
         z-index: 999;
-        .pop-bg {
-          position: fixed;
-          left: 0;
-          bottom: 0;
-          top: 0;
-          right: 0;
-          z-index: 999;
-          background: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.5);
+      }
+      .pop-close {
+        .pos(604,
+        185);
+        .size(56,
+        56);
+        .text(24,
+        56);
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 50%;
+        text-align: center;
+        z-index: 9999;
+      }
+      .pop-content {
+        .pos(55,
+        284);
+        .size(640,
+        614);
+        background: #fff;
+        border-radius: 12/@rem;
+        position: relative;
+        z-index: 9999;
+        h2 {
+          .text(36,
+          55);
+          height: 210/@rem;
+          padding-top: 50/@rem;
+          text-align: center;
+          color: #333;
+          border-bottom: 1/@rem dashed #bbb;
+          letter-spacing: 8/@rem;
+          box-sizing: border-box;
         }
-        .pop-close{
-          .pos(604,185);
-          .size(56,56);
-          .text(24,56);
-          background:rgba(0,0,0,0.8);
+        .text-name {
+          .text(29,
+          40);
+          .pos(266,
+          300);
+          color: #333;
+          font-weight: bold;
+        }
+        .text-msg {
+          .text(26,
+          37);
+          .pos(266,
+          348);
+          color: #555;
+        }
+        img {
+          .pos(100,
+          273);
+          .size(140,
+          140);
+
+        }
+        .btn {
+          .pos(40,
+          474);
+          .size(560,
+          86);
+          .text(38,
+          86);
+          text-align: center;
           color: #fff;
-          border-radius: 50%;
-          text-align: center;
-          z-index: 9999;
-        }
-        .pop-content{
-          .pos(55,284);
-          .size(640,614);
-          background: #fff;
+          background: #4799FA;
           border-radius: 12/@rem;
-          position: relative;
-          z-index: 9999;
-          h2{
-            .text(36, 55);
-            height: 210/@rem;
-            padding-top: 50/@rem;
-            text-align: center;
-            color: #333;
-            border-bottom: 1/@rem dashed #bbb;
-            letter-spacing: 8/@rem;
-            box-sizing: border-box;
-          }
-          .text-name{
-            .text(29,40);
-            .pos(266,300);
-            color: #333;
-            font-weight: bold;
-          }
-          .text-msg{
-            .text(26,37);
-            .pos(266,348);
-            color: #555;
-          }
-          img{
-            .pos(100,273);
-            .size(140,140);
-
-          }
-          .btn{
-            .pos(40,474);
-            .size(560,86);
-            .text(38,86);
-            text-align: center;
-            color: #fff;
-            background: #4799FA;
-            border-radius: 12/@rem;
-          }
-        }
-        .pop-top {
-          padding: 26/@rem 35/@rem;
-          background: #f5f5f8;
-          position: absolute;
-          left: 0;
-          bottom: 88/@rem;
-          z-index: 9999;
-          right: 0;
-          h3 {
-            .text(34,
-            40);
-            text-align: center;
-            margin-bottom: 60/@rem;
-            font-weight: normal;
-          }
-          .item {
-            .size(140,
-            64);
-            .text(40,
-            64);
-            text-align: center;
-            color: #444;
-            background: #FFE555;
-            border-radius: 10/@rem;
-            margin-right: 40/@rem;
-            margin-bottom: 30/@rem;
-            float: left;
-          }
-          .none {
-            background: #E6E6E6;
-            color: #bababa;
-          }
-          .item:nth-child(4n) {
-            margin-right: 0;
-          }
-        }
-
-        .pop-btn {
-          .text(30,
-          88);
-          position: absolute;
-          z-index: 9999;
-          left: 0;
-          bottom: 0;
-          right: 0;
-          text-align: center;
-          color: #888;
-          background: #fff;
         }
       }
+      .pop-top {
+        padding: 26/@rem 35/@rem;
+        background: #f5f5f8;
+        position: absolute;
+        left: 0;
+        bottom: 88/@rem;
+        z-index: 9999;
+        right: 0;
+        h3 {
+          .text(34,
+          40);
+          text-align: center;
+          margin-bottom: 60/@rem;
+          font-weight: normal;
+        }
+        .item {
+          .size(140,
+          64);
+          .text(40,
+          64);
+          text-align: center;
+          color: #444;
+          background: #FFE555;
+          border-radius: 10/@rem;
+          margin-right: 40/@rem;
+          margin-bottom: 30/@rem;
+          float: left;
+        }
+        .none {
+          background: #E6E6E6;
+          color: #bababa;
+        }
+        .item:nth-child(4n) {
+          margin-right: 0;
+        }
+      }
+
+      .pop-btn {
+        .text(30,
+        88);
+        position: absolute;
+        z-index: 9999;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        text-align: center;
+        color: #888;
+        background: #fff;
+      }
+    }
   }
 
 </style>
