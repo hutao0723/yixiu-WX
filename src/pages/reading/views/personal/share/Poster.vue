@@ -205,7 +205,7 @@ export default {
                             if(rpp.portraitRoundProportion && rpp.portraitRoundProportion > 0){
                                 ctx.beginPath();
                                 ctx.save(); // 保存当前ctx的状态
-                                ctx.arc(myCanvas.width/2, conversion(rpp.portraitTopMargin* scale + rpp.portraitLength* scale/2), conversion(rpp.portraitLength* scale/2), 0, Math.PI*2, true); // 绘制圆
+                                ctx.arc(conversion(rpp.portraitLeftMargin* scale + rpp.portraitLength* scale/2), conversion(rpp.portraitTopMargin* scale + rpp.portraitLength* scale/2), conversion(rpp.portraitLength* scale/2), 0, Math.PI*2, true); // 绘制圆
                                 ctx.clip(); // 裁剪上面的圆形
                             }
                             
