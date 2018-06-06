@@ -11,7 +11,7 @@
               <div class="book-cover">
                 <img :src="item.imgUrl">
               </div>
-              <div class="book-name line2">{{item.title}}</div>
+              <div class="book-name line2">《{{item.title}}》</div>
             </div>
           </div>
         </div>
