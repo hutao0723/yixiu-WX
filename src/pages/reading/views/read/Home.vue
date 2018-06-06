@@ -1,7 +1,7 @@
 <template>
   <div class="home-main">
     <div class="home-type" v-show="pageStatus == 1 || pageStatus == 0">
-      <a href="http://www.baidu.com" class="home-service"></a>
+      <a href="https://kefu.easemob.com/webim/im.html?configId=xxxx" class="home-service"></a>
       <div class="home-tab clearfix" id="hometab">
         <div class="item" @click="tabActiveToggle(true)">
           <span :class="{ active: tabActive}">简介</span>
@@ -120,7 +120,7 @@
         <span> | 缺卡{{todayBookDetail.lackClockDays}}天</span>
       </h2>
       <div class="already-list clearfix">
-        <div class="item" v-for="(item,index) in historyBookList" :key="index" @click="getCourseList(item.id,item.title)">
+        <div class="item" v-for="(item,index) in historyBookList" :key="index" @click="getCourseList(item)">
           <div class="item-box">
             <img :src="item.imgUrl" alt="" class="item-img">
             <div class="item-lock" v-if="item.lockStatus">
@@ -147,7 +147,7 @@
             <img src="http://yun.dui88.com/youfen/images/read_headimg01.png" alt="">
             <div class="text-name">小雪老师</div>
             <div class="text-msg">智慧与美貌并存的读书达人</div>
-            <a class="btn" href="http://www.baidu.com">跟她聊聊</a>
+            <a class="btn" href="https://kefu.easemob.com/webim/im.html?configId=f56195f3-2ff6-412b-983e-0231f5586efb">跟她聊聊</a>
         </div>
         <div class="pop-bg"></div>
         <i class="pop-close iconfont icon-close" @click="payCancelToggle = false;"></i>
@@ -715,19 +715,22 @@
           this.historyBookList = res.data.data.content;
         });
       },
-      getCourseList(id, name) {
+      getCourseList(item) {
+        if(item.lockStatus){
+          return false;
+        }
         let self = this;
         let params = {};
         params = {
           readId: this.readId,
-          bookId: id,
+          bookId: item.id,
         }
         const url = `/readBookCourse/courseList`;
         this.$http.get(url, {
           params
         }).then((res) => {
           this.courseList = res.data.data;
-          this.bookName = name;
+          this.bookName = item.title;
           this.alertToggle = true;
         });
       }
