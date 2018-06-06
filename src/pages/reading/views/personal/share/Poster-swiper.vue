@@ -1,6 +1,6 @@
 <!-- The ref attr used to find the swiper instance -->
 <template>
-    <swiper :options="swiperOption" ref="mySwiper">
+    <swiper :options="swiperOption" ref="mySwiper" class="mySwiper">
         <!-- slides -->
         <swiper-slide class="swiper-slide" :class="{'active': index == tabIndex}" v-for="(item,index) in readPlanPostersArr" :style="{'background-image':`url(${item.smallPoster})`}" :key="index+1" @click.native="selectSwiper(index,item.poster)">
             <i class="iconfont icon-duihao"></i>
@@ -54,58 +54,61 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
     @import '../../../less/base';
     @import '../../../less/variable';
     @import '../../../assets/swiper.min.css';
     @setionBackgroundColor:#FFF;
     @deepRed:#FF464A;
-    .swiper-slide {
-        width: 120/@rem;
-        height: 120/@rem;
-        border-radius:10/@rem;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        overflow: hidden;
-        i {
-            display: none;
+    .mySwiper {
+        .swiper-slide {
+            width: 120/@rem;
+            height: 120/@rem;
+            border-radius:10/@rem;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            overflow: hidden;
+            i {
+                display: none;
+            }
+            // img {
+            //     border: 0 none;
+            //     width: auto\9;
+            //     height: auto;
+            //     max-width: 100%;
+            //     vertical-align: top;
+            //     -ms-interpolation-mode: bicubic;
+            // }
         }
-        // img {
-        //     border: 0 none;
-        //     width: auto\9;
-        //     height: auto;
-        //     max-width: 100%;
-        //     vertical-align: top;
-        //     -ms-interpolation-mode: bicubic;
-        // }
-    }
-    .active {
-        // background-color:rgba(0,0,0,0.4);
-        position: relative;
-        i {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color:rgba(0,0,0,0.4);
-            color: @setionBackgroundColor;
-            .fontSize(20);
-            &:before{
+        .active {
+            // background-color:rgba(0,0,0,0.4);
+            position: relative;
+            i {
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
                 align-items: center;
-                width: 48/@rem;
-                height: 48/@rem;
-                background: @deepRed;
-                border-radius: 24/@rem;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color:rgba(0,0,0,0.4);
+                color: @setionBackgroundColor;
+                .fontSize(20);
+                &:before{
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    width: 48/@rem;
+                    height: 48/@rem;
+                    background: @deepRed;
+                    border-radius: 24/@rem;
+                }
             }
         }
     }
+    
 </style>

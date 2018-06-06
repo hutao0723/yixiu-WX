@@ -40,7 +40,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
     @import '../../../less/variable';
     @import '../../../less/base';
     @import '../../../less/icon';
