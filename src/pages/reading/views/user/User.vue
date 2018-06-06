@@ -78,7 +78,7 @@
     </div>
     <!-- <Contact v-show="contactToggle" v-on:success="success"/> -->
     <bnav></bnav>
-    <AudioBar/>
+    <!-- <AudioBar/> -->
   </div>
 
 </template>
@@ -189,6 +189,10 @@ export default {
         font-weight: bold;
         color: rgba(51,51,51,1);
         line-height: 110/@rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 440/@rem;
       }
     }
   }

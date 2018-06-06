@@ -4,8 +4,9 @@
       <li v-for="(item, index) in navlist" :style="bottomNavType ? 'width: 50%;' : 'width: 50%;'">
         <router-link :to="item.path" :class="item.path === $route.path ? 'active' : ''">
           <p>
-            <i class="iconfont" :class="item.path === $route.path ? item.active : item.icon"></i>
-            <img :src="item.imgUrl" alt="">
+            <!-- <i class="iconfont" :class="item.path === $route.path ? item.active : item.icon"></i> -->
+            <img :src="item.imgUrl" alt="" v-show="item.path != $route.path">
+            <img :src="item.imgActiveUrl" alt="" v-show="item.path == $route.path">
           </p>
           <p>{{item.title}}</p>
         </router-link>
@@ -56,7 +57,8 @@
               icon: 'icon-book',
               active: 'icon-book active tag',
               path: '/index/home',
-              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav01.png'
+              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav03.png',
+              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav01.png'
             },
             // {
             //   title: '观点',
@@ -69,7 +71,9 @@
               icon: 'icon-user',
               active: 'icon-user active tag',
               path: '/index/user',
-              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav02.png'
+              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav04.png',
+              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav05.png'
+              
             }
           ]
         }
@@ -103,14 +107,8 @@
           font-size: 32/@rem;
         }
         .active {
-          i{
-            display: none;
-          }
-          img{
-            display: inline-block;
-          }
-          // color: #222222 !important;
-          // position: relative;
+          color: #222222 !important;
+          position: relative;
         }
         .tag {
           &:after {
@@ -125,9 +123,9 @@
           }
         }
         img{
-          display: none;
-          width: 32/@rem;
-          height: 32/@rem;
+          display: inline-block;
+          width: 40/@rem;
+          height: 40/@rem;
           text-align: center;
         }
       }
