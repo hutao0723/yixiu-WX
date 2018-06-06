@@ -3,7 +3,7 @@
         <ul class="cm-list">
             <li class="cm-item" v-for="item in record" :key="item.num">
                 <div class="cml-warp">
-                    <img :src="item.headImgurl" alt="" class="cml-image">
+                    <img :src="item.headImgurl?item.headImgurl:'http://yun.dui88.com/youfen/images/201806/portrait.png'" alt="" class="cml-image">
                     <div class="cml-info">
                         <strong>{{item.nickName}}</strong>
                         <p class="cmli-date" v-if="Boolean(initIndex)">{{`有效时间${item.remainingBindTime}小时`}}</p>
@@ -141,6 +141,8 @@ export default {
                     .cml-image {
                         width: 84/@rem;
                         height: 84/@rem;
+                        border-radius: (84/2)/@rem;
+                        border: 1/@rem solid #aaa;
                     }
                     .cml-info {
                         margin-left: 36/@rem;

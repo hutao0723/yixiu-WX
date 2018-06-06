@@ -21,8 +21,9 @@ export default {
         return {
             swiperOption: {
                 // 所有的参数同 swiper 官方 api 参数
-                slidesPerView: '3.646',
-                spaceBetween: 30,
+                // slidesPerView: '3.646',  750
+                slidesPerView: 'auto',
+                spaceBetween: 40,
             },
             tabIndex:'0'
         }
@@ -53,14 +54,14 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
     @import '../../../less/base';
     @import '../../../less/variable';
     @import '../../../assets/swiper.min.css';
     @setionBackgroundColor:#FFF;
     @deepRed:#FF464A;
     .swiper-slide {
-        width: 122/@rem;
+        width: 120/@rem;
         height: 120/@rem;
         border-radius:10/@rem;
         background-position: center;
@@ -96,7 +97,12 @@ export default {
             color: @setionBackgroundColor;
             .fontSize(20);
             &:before{
-                padding: 10/@rem;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                width: 48/@rem;
+                height: 48/@rem;
                 background: @deepRed;
                 border-radius: 24/@rem;
             }

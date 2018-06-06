@@ -96,7 +96,7 @@ export default {
 };  
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
     @import '../../../less/variable';
     @import '../../../less/base';
     @import '../../../less/icon';
