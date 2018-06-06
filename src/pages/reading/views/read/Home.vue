@@ -253,25 +253,27 @@
     async mounted() {
       let self = this;
       // 如果是支付流程直接支付
-      if (this.$route.query.dcd && !this.$route.query.isPay) {
-        this.getDcd(this.$route.query.dcd)
+      if (self.$route.query.dcd && !self.$route.query.isPay) {
+        self.getDcd(self.$route.query.dcd)
       }
-      if (this.$route.query.courseId && !this.$route.query.isPay) {
-        this.tabActive = false;
-        this.buy(this.$route.query.courseId, 4)
+      if (self.$route.query.courseId && !self.$route.query.isPay) {
+        self.tabActive = false;
+        self.buy(self.$route.query.courseId, 4)
       }
-      let userState = await this.getThumbUp();
-      this.wxShare(userState.data.userId);
-      this.readId = userState.data.readId;
+
+
+      let userState = await self.getThumbUp();
+      self.wxShare(userState.data.userId);
+      self.readId = userState.data.readId;
       // 状态判断逻辑
       if (userState.data) {
         if (
           userState.data.readState == -1
         ) {
           console.log('用户未购买未授权')
-          this.getCommentTop();
-          this.getReadList();
-          this.pageStatus = 0;
+          self.pageStatus = 0;
+          self.getCommentTop();
+          self.getReadList();
           store.commit({
             type: 'setBottomNavToggle',
             bottomNavToggle: false
@@ -286,9 +288,9 @@
           userState.data.readState == 0
         ) {
           console.log('用户未购买已授权')
-          this.getCommentTop();
-          this.getReadList();
-          this.pageStatus = 1;
+          self.pageStatus = 1;
+          self.getCommentTop();
+          self.getReadList();
           store.commit({
             type: 'setBottomNavToggle',
             bottomNavToggle: false
@@ -303,8 +305,8 @@
           userState.data.readState > 0 && !userState.data.followOfficialAccount
         ) {
           console.log('用户购买未关注')
-          this.pageStatus = 2;
-          this.tabActive = userState.data.readState != 4
+          self.pageStatus = 2;
+          self.tabActive = userState.data.readState != 4
           store.commit({
             type: 'setBottomNavToggle',
             bottomNavToggle: true
@@ -319,11 +321,11 @@
           userState.data.readState == 1 && userState.data.followOfficialAccount
         ) {
           console.log('用户购买已关注未开课')
-          this.teacherWxName = userState.data.teacherWxName;
-          this.teacherWxQrcodeUrl = userState.data.teacherWxQrcodeUrl;
+          self.pageStatus = 3;
+          self.teacherWxName = userState.data.teacherWxName;
+          self.teacherWxQrcodeUrl = userState.data.teacherWxQrcodeUrl;
 
-          this.courseDetail = await this.readDetail();
-          this.pageStatus = 3;
+          self.courseDetail = self.readDetail();
           store.commit({
             type: 'setBottomNavToggle',
             bottomNavToggle: true
@@ -338,9 +340,9 @@
           userState.data.readState == 2 && userState.data.followOfficialAccount
         ) {
           console.log('用户购买已关注已开课')
-          this.getDetail();
-          this.getBookList();
-          this.pageStatus = 4;
+          self.pageStatus = 4;
+          self.getDetail();
+          self.getBookList();
           store.commit({
             type: 'setBottomNavToggle',
             bottomNavToggle: true
@@ -355,9 +357,9 @@
           userState.data.readState == 3
         ) {
           console.log('用户购买已关注已读完')
-          this.getCommentTop();
-          this.getReadList();
-          this.pageStatus = 1;
+          self.pageStatus = 1;
+          self.getCommentTop();
+          self.getReadList();
           store.commit({
             type: 'setBottomNavToggle',
             bottomNavToggle: true
@@ -368,18 +370,18 @@
           })
         }
       }
-      this.changeLoginDays();
-      this.changeReadStatus();
-      setTimeout(() => {
-        var maincontento = document.getElementById("maincontent");
-        var maincontenth = maincontento.offsetHeight; //高度
-        this.maincontent = maincontenth;
+      self.changeLoginDays();
+      self.changeReadStatus();
+      // setTimeout(() => {
+      //   var maincontento = document.getElementById("maincontent");
+      //   var maincontenth = maincontento.offsetHeight; //高度
+      //   this.maincontent = maincontenth;
 
-        this.bodycontent = document.body.clientHeight;
-        console.log('maincontent高度:' + this.maincontent)
-      }, 500)
-      // window.addEventListener('scroll', this.handleScroll,true);
-      self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, true);
+      //   this.bodycontent = document.body.clientHeight;
+      //   console.log('maincontent高度:' + this.maincontent)
+      // }, 500)
+      // // window.addEventListener('scroll', this.handleScroll,true);
+      // self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, true);
 
     },
     methods: {
@@ -1075,11 +1077,11 @@
           }
           .item-name:after {
             content: '';
-            height: 42/@rem;
+            height: 38/@rem;
             width: 10/@rem;
             background: #FF7E12;
             position: absolute;
-            top: 10/@rem;
+            top: 12/@rem;
             left: 0;
             box-sizing: border-box;
           }
