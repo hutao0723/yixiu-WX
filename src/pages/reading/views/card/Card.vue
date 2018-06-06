@@ -309,6 +309,7 @@
         float: left;
         overflow:hidden;
         position:relative;
+        border-radius: 4/@rem;
         .book-audio{
           position:absolute;
           width:64/@rem;
