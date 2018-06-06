@@ -28,9 +28,7 @@
                 <span>长按分享</span>
             </div>
         </div>
-        <!-- <div class="load">
-            <Loading :loading=loading v-show="test" />
-        </div> -->
+        <Loading :loading=loading />
     </div>
 </template>
 
@@ -62,7 +60,6 @@ export default {
             poster:'',
             swiperIndex:0,
             loading: true,
-            test:true
         };
     },
     computed: {
@@ -74,10 +71,13 @@ export default {
         
     },
     beforeMount(){
-        this.test = false
+        setTimeout(() => {
+            this.loading = false
+        }, 500)
     },
     mounted () {
-        // myCanvas.toDataURL("image/png");
+
+        console.log('over') 
         
     },
     methods: {
@@ -161,7 +161,7 @@ export default {
             let pmNoticeHeight = document.querySelector('.pm-notice').offsetHeight;
             let posterMainPaddingTop = Number(getStyle(posterMain,'paddingTop').match(/[0-9]+/)[0]) * ratio
             let posterMainPaddingBottom = Number(getStyle(posterMain,'paddingBottom').match(/[0-9]+/)[0])
-            console.log(pmNoticeHeight)
+            // console.log(pmNoticeHeight)
             let bkImgHeight = documentHeight - swiperHeight - 96 - posterMainPaddingTop - posterMainPaddingBottom
             return bkImgHeight
 
