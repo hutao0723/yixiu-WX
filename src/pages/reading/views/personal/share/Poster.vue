@@ -41,8 +41,8 @@ export default {
     },
     data () {
         return {
-            playbill:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527313092411&di=570284fc80fbc68d6dd211ec7f11a871&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201409%2F13%2F20140913140805_EZYKn.jpeg',
-            portrait:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527313812184&di=66835925969c776a10030dea414d2ece&imgtype=0&src=http%3A%2F%2Fimg3.duitang.com%2Fuploads%2Fitem%2F201507%2F09%2F20150709200521_nYZMX.thumb.700_0.jpeg',
+            playbill:'',
+            portrait:'',
             canvas:'',
             qrcUrl: '',
             swiperArr: [],
@@ -60,7 +60,6 @@ export default {
         ...mapState({})
     },
     created() {
- 
         this.getUserInfo()
         this.readPlanPosters()
         
@@ -134,20 +133,42 @@ export default {
             this.swiperIndex = index
             this.createCanvas()
         },
+
+        switchNumber(n){ // 根据屏幕计算出图片所需要的高度
+            let getStyle = function(obj,attr){
+                if(obj.currentStyle){
+                    return obj.currentStyle[attr];
+                }else{
+                    return document.defaultView.getComputedStyle(obj,null)[attr];
+                }
+            }
+            let documentHeight = document.documentElement.offsetHeight;
+            let posterMain = document.querySelector('.poster-main');
+            let swiperHeight = document.querySelector('.poster-swiper').offsetHeight;
+            let pmNoticeHeight = document.querySelector('.pm-notice').offsetHeight;
+            let posterMainTop = Number(getStyle(posterMain,'paddingTop').match(/[0-9]+/)[0])
+            let posterMainBottom = Number(getStyle(posterMain,'paddingBottom').match(/[0-9]+/)[0])
+            let bkImgHeight = documentHeight - swiperHeight - pmNoticeHeight - posterMainTop - posterMainBottom
+            return bkImgHeight
+
+        },
         createCanvas(){
             const self = this;
             const rpp = self.readPlanPostersArr[self.swiperIndex]
             if(!this.poster){
                 this.poster = rpp.poster
             }
+
             // 图像大小适配
             function conversion(number) {
-                return number
+                return number 
             };
-
             var myCanvas = document.getElementById('myCanvas');
-            myCanvas.width = conversion(510);
-            myCanvas.height = conversion(820);
+            var bkImgHeight = this.switchNumber()
+            var bkImgWidth = bkImgHeight*510/820
+            var scale = bkImgHeight/820 // 屏幕尺寸的缩放比例
+            myCanvas.width = conversion(bkImgWidth);
+            myCanvas.height = conversion(bkImgHeight);
             var ctx =  myCanvas.getContext('2d');
             // 绘制背景图
             let background = new Promise(function(resolve, reject){
@@ -167,7 +188,7 @@ export default {
                     // codeImg.crossOrigin = 'anonymous';
                     codeImg.src = self.basecode64;
                     codeImg.onload = function () {
-                        ctx.drawImage(codeImg, conversion(rpp.qrcodeLeftMargin),conversion(rpp.qrcodeTopMargin),conversion(rpp.qrcodeLength),conversion(rpp.qrcodeLength));
+                        ctx.drawImage(codeImg, conversion(rpp.qrcodeLeftMargin * scale),conversion(rpp.qrcodeTopMargin * scale),conversion(rpp.qrcodeLength* scale),conversion(rpp.qrcodeLength * scale));
                         resolve('');
                     };
                 });
@@ -180,8 +201,19 @@ export default {
                         iconImg.crossOrigin = 'anonymous'; 
                         iconImg.src = self.headimgurl;
                         iconImg.onload = function () {
-                            ctx.drawImage(iconImg, conversion(rpp.portraitLeftMargin), conversion(rpp.portraitTopMargin),conversion(rpp.portraitLength),conversion(rpp.portraitLength));
-                            resolve('');
+
+                            if(rpp.portraitRoundProportion && rpp.portraitRoundProportion > 0){
+                                ctx.beginPath();
+                                ctx.save(); // 保存当前ctx的状态
+                                ctx.arc(myCanvas.width/2, conversion(rpp.portraitTopMargin* scale + rpp.portraitLength* scale/2), conversion(rpp.portraitLength* scale/2), 0, Math.PI*2, true); // 绘制圆
+                                ctx.clip(); // 裁剪上面的圆形
+                            }
+                            
+                            ctx.drawImage(iconImg, conversion(rpp.portraitLeftMargin* scale), conversion(rpp.portraitTopMargin* scale),conversion(rpp.portraitLength* scale),conversion(rpp.portraitLength* scale));
+                            ctx.restore(); // 还原状态
+                            resolve('')
+
+                            
                         };
                     }else{
                         resolve('');
@@ -194,43 +226,44 @@ export default {
             background.then(code).then(icon).then(()=>{
                 
                 //self.readPlanPostersArr[this.swiperIndex].nicknameFontSize 中的字段不存在则跳过
+                console.log(rpp.nicknameDisplay)
+
+
                 if(rpp.nicknameDisplay){ // 绘制昵称
-                    ctx.font = conversion(rpp.nicknameFontSize)+'px 宋体';
+                    ctx.font = conversion(rpp.nicknameFontSize* scale)+'px 宋体';
                     ctx.fillStyle = rpp.nicknameFontColor;
                     // ctx.textAlign = 'center';
-                    ctx.fillText(self.nickname,(conversion(510) - rpp.nicknameWidth) / 2, conversion(rpp.nicknameTopMargin)+conversion(20),);
-                    function drawText(t,x,y,w){
-                        let chr = t.split("");
-                        let temp = "";              
-                        let row = [];
-                        for(let a = 0; a < chr.length; a++){
-                            if( ctx.measureText(temp).width*1< w ){
-                            }else{
-                                row.push(temp);
-                                temp = ""; 
-                            }
-                            temp += chr[a];
-                        }
-                        row.push(temp);
-                        // console.log(self.swiperIndex)
-                        ctx.fillStyle = rpp.ctitleFontColor;
-                        for(let b = 0; b < row.length; b++){
-                            ctx.font =conversion(rpp.ctitleFontSize)+"px 宋体";
-                            ctx.textAlign = "center";
-                            console.log(x)
-                            ctx.fillText(row[b],conversion(255),y+(b)*conversion(40));
-                        }
-                    }
-                    // 绘制签名
-                    rpp.ctitleDisplay && drawText('我在一修读书学习，邀请你成为我的同学，每天10分钟，养成读书习惯',conversion(rpp.ctitleLeftMargin),conversion(rpp.ctitleTopMargin),conversion(300));
-                    
-                    self.createdImg()
+                    ctx.fillText(self.nickname,conversion(rpp.nicknameLeftMargin* scale + rpp.nicknameWidth* scale/2), conversion(rpp.nicknameTopMargin* scale)+conversion(20* scale),);
                 }
-                
 
+                function drawText(t,x,y,w){
+                    let chr = t.split("");
+                    let temp = "";              
+                    let row = [];
+                    for(let a = 0; a < chr.length; a++){
+                        if( ctx.measureText(temp).width*1< w ){
+
+                        }else{
+                            row.push(temp);
+                            temp = ""; 
+                        }
+                        temp += chr[a];
+                    }
+                    row.push(temp);
+                    ctx.fillStyle = rpp.ctitleFontColor;
+                    for(let b = 0; b < row.length; b++){
+                        ctx.fillText(row[b],conversion(bkImgWidth/2),y+(b)*conversion(40* scale));
+                    }
+                }
+                // 绘制签名
+                ctx.font =conversion(rpp.ctitleFontSize* scale)+"px 宋体";
+                // ctx.textAlign = 'right';
+                rpp.ctitleDisplay && drawText('我在一修读书学习，邀请你成为我的同学，每天10分钟，养成读书习惯',conversion(rpp.ctitleLeftMargin* scale),conversion(rpp.ctitleTopMargin* scale),conversion(300* scale));
+                    
+                self.createdImg()
         
             })
-            
+            ctx.textAlign = "center";
 
         }
     },
@@ -266,7 +299,11 @@ export default {
 
     .poster {
         .poster-main {
-            padding: 50/@rem 120/@rem 23/@rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 50/@rem 0 23/@rem;
             border-bottom: 1/@rem solid @borderColor;
             position: relative;
             .pm-playbill {
@@ -274,15 +311,19 @@ export default {
                 flex-direction: column;
                 justify-content: flex-start;
                 align-items: center;
-                width: 510/@rem;
-                height: 820/@rem;
-                padding: 54/@rem 59/@rem 89/@rem;
+                // width: 510/@rem;
+                // height: 820/@rem;
+                // padding: 54/@rem 0 89/@rem;
                 position: relative;
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: cover;
                 box-sizing: border-box;
-                position: relative;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 0;
+                height: 0;
                 // .pmp-image {
                 //     border: 0 none;
                 //     width: auto\9;
@@ -318,7 +359,7 @@ export default {
                 }
             }
             .pm-notice {
-                margin-top: 24/@rem;
+                padding-top: 24/@rem;
                 .fontSize(25);
                 color: @fontColor;
                 em {
@@ -328,13 +369,13 @@ export default {
             }
 
             .pm-warp {
-                position: relative;
+                // position: relative;
                 .pm-canvas {
-                    position: absolute;
-                    left: 0;
-                    top: -820/@rem;
-                    width: 510/@rem;
-                    height: 820/@rem;
+                    // position: absolute;
+                    // left: 0;
+                    // top: -820/@rem;
+                    // width: 510/@rem;
+                    // height: 820/@rem;
                     z-index: 1;
                     .canvas {
                         position: absolute;
@@ -345,9 +386,9 @@ export default {
                         opacity: 0;
                     }
                     img {
-                        position: absolute;
-                        left: 0;
-                        top: 0;
+                        // position: absolute;
+                        // left: 0;
+                        // top: 0;
                         width: 100%;
                         height: 100%;
                         border: 0 none;
