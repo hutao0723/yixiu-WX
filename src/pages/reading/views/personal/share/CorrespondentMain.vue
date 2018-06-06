@@ -183,7 +183,7 @@ export default {
 
         .page-none {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             position: absolute;
