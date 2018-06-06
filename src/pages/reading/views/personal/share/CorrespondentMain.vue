@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ul class="cm-list" :name="this.record.length" :style="{border:this.record.length <= 0 && '0'}">
+        <ul class="cm-list">
             <li class="cm-item" v-for="item in record" :key="item.num">
                 <div class="cml-warp">
                     <img :src="item.headImgurl?item.headImgurl:'http://yun.dui88.com/youfen/images/201806/portrait.png'" alt="" class="cml-image">
@@ -44,6 +44,13 @@ export default {
     data () {
         return {
             record:[
+                // {
+                //     name:'木小白',
+                //     date:'有效时间23小时',
+                //     money:'0.00',
+                //     count:'9',
+                //     imageUrl: 'https://yun.dui88.com/yoofans/images/201804/miniapp/help-center.png',
+                // },
             ],
             bindPageNum:1,
             unbindPageNum: 1,
@@ -56,10 +63,10 @@ export default {
         ...mapState({})
     },
     created() {
-        this.getList();
+        
     },
     mounted () {
-        
+        this.getList();
     },
     methods: {
         //getBindUsers
@@ -175,6 +182,10 @@ export default {
         }
 
         .page-none {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
             position: absolute;
             left: 50%;
             top: 50%;

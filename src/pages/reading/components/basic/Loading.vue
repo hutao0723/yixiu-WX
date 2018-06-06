@@ -45,32 +45,34 @@ export default{
             width: 60/@rem;
             height: 60/@rem;
         }
+
+        /*定义动画*/
+        @-webkit-keyframes spin { /*兼容性写法。spin是关键帧的动画名称*/
+            from { /*动画起始状态*/
+            -webkit-transform: rotate(0deg);
+            }
+            to { /*动画结束状态*/
+            -webkit-transform: rotate(360deg);
+            }
+        }
+        @keyframes spin {
+            from {
+            transform: rotate(0deg);
+            }
+            to {
+            transform: rotate(360deg);
+            }
+        }
+
+
+        img {
+            -webkit-animation: spin 1s linear infinite;/*infinite表示动画无限循环*/
+            animation: spin 1s linear infinite;    
+        }
     }
 
 
-/*定义动画*/
-  @-webkit-keyframes spin { /*兼容性写法。spin是关键帧的动画名称*/
-    from { /*动画起始状态*/
-      -webkit-transform: rotate(0deg);
-    }
-    to { /*动画结束状态*/
-      -webkit-transform: rotate(360deg);
-    }
-  }
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
 
-
-   img {
-    -webkit-animation: spin 1s linear infinite;/*infinite表示动画无限循环*/
-    animation: spin 1s linear infinite;    
-  }
 
 
 </style>
