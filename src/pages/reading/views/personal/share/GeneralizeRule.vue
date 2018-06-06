@@ -25,6 +25,9 @@
             <h2>6.遇到其他问题，可在个人中心联系客服</h2>
             <p></p>
         </div>
+        <div class="grw-last">
+            <p class="">本活动最终解释权归一修读书所有</p>
+        </div>
     </div>
 </template>
 
@@ -47,11 +50,25 @@ export default {
 
     @titleColor: #222;
     @paragraphColor:#444;
+
     .generalize-rule {
+
+        width: 750/@rem;
         height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        // overflow-x: hidden;
+        overflow-y: scroll;
+        box-sizing: border-box;
+        max-height: 9999px;
+        -webkit-overflow-scrolling: touch;
+
+        // height: 100%;
         padding: 52/@rem 50/@rem;
         background-color: #EFEFF4;
-        overflow: hidden;
+        // overflow: hidden;
         box-sizing: border-box;
         h1 {
             .fontSize(38);
@@ -75,6 +92,16 @@ export default {
                 .fontSize(30);
                 color: @paragraphColor;
             }
+        
+        }
+        .grw-last {
+            margin-top: 137/@rem;
+            p {
+                .fontSize(24);
+                color: #555;
+                text-align: center;
+            }
+
         }
     }
 </style>
