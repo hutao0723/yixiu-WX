@@ -4,6 +4,7 @@ import App from './App';
 import router from './router';
 import store from './vuex/store';
 import VueCookie from 'vue-cookie';
+import fingerprint from 'fingerprintjs2'
 var infiniteScroll = require('vue-infinite-scroll');
 Vue.use(infiniteScroll);
 
@@ -23,19 +24,15 @@ remChange();
 // // monitor 埋点
 // import { monitorHandler } from './components/utils/monitorHandler';
 // monitorHandler();
+// 设备id
+if (!window.localStorage.getItem('deviceId')) {
+  setTimeout(function(){
+    new fingerprint().get(function(deviceId) { 
+    window.localStorage.setItem('deviceId', deviceId) // a hash, representing your device fingerprint
+  })},100)
+}
 
-// lazyload 图片懒加载
-import VueLazyload from 'vue-lazyload';
-Vue.use(VueLazyload, {
-  preLoad: 1.3,
-  loading: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png',
-  attempt: 1,
-  filter: {
-    webp(listener, options) {
-      listener.src += !options.supportWebp ? '?x-oss-process=image/quality,Q_60' : '?x-oss-process=image/format,webp';
-    }
-  }
-});
+Vue.http.headers.common['deviceId'] = window.localStorage.getItem('deviceId');
 Vue.http.headers.common['from'] = 'read';
 // Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjrgAVYrS2jWTFx5xqHDj2QQBH1uXBFMw3gMPxWGMYXWq992G8UBUUjtDPenDWhHayUB6cTjNCScruS3vsPcREhmMXmK2rxgixHsa31XHprvefiBtesVeVWdyJUbfVpW24eB5N';
 Vue.http.interceptors.push((request, next) => {
