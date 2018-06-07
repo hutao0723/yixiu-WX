@@ -10,9 +10,9 @@
                     <em>累计收益金额(元)</em>
                 </div>
             </div>
-            <div class="sm-deposit">
+            <div class="sm-deposit" @click="withdrawDeposit">
                 <span class="smd-cashnum">可提现(元)：<em>{{shareData.balance}}</em></span>
-                <span class="smd-cash" @click="withdrawDeposit">提现<i class="iconfont icon-right"></i></span>
+                <span class="smd-cash">提现<i class="iconfont icon-right"></i></span>
             </div>
         </div>
         <div class="share-list">
@@ -47,8 +47,9 @@
         },
         data() {
             return {
+                // 500170000
                 data: [{
-                        name: '我的客户',
+                        name: '我的邀请',
                         router: '/personal/share/correspondent',
                         new: true
                     },
@@ -73,7 +74,16 @@
                     'balance': '',
                     'totalPromotionEarnings': ''
                 },
-                redPointArr:[],
+                redPointArr:[
+                    {
+                        functionsType: 1,
+                        showStatus:''
+                    },
+                    {
+                        functionsType: 2,
+                        showStatus:''
+                    }
+                ],
                 earningMoney:'' // 
             };
         },
@@ -83,15 +93,30 @@
         created() {
 
         },
-        mounted() {
+        async mounted() {
             this.getDate()
             this.shouldCongratulationDialogShow()
+            let self = this;
+    let userState = await self.getThumbUp();
+      self.wxShare(userState.data.userId);
         },
         methods: {
+            async getThumbUp() {
+        let self = this;
+        let params = {};
+        params = {
+
+        }
+        const url = `/user/read/state`;
+        const res = await this.$http.get(url, {
+          params
+        });
+        return res.data;
+      },
             withdrawDeposit() { // 判断是否达到提现的条件
-                if (this.shareData.balance < 0) {
+                if (Number(this.shareData.balance) < 20) {
                     this.$refs.dialog.confirm({
-                        text: '可提现金额需满<em>20</em>元 才可提现？',
+                        text: '可提现金额需满<em>20</em>元 才可提现',
                         showConfirmButton: false,
                         cancelButtonText: '我知道了',
                     }).then((response) => {
@@ -108,21 +133,29 @@
             },
             shouldCongratulationDialogShow() { // 有收益到账时的弹窗触发条件
                 this.earningMoney = this.$route.query.earningMoney
+                // let earn = this.getStore('earningMoney')
                 if (this.earningMoney && this.earningMoney != '0') {
                     this.congratulationDialog(this.earningMoney)
                 }
             },
             congratulationDialog(sh) { // 收益到账时的弹窗
                 this.$refs.cdialog.confirm({
-                    text: `你有一笔收益到账${sh}元`,
+                    text: `你有一笔收益到账<strong class="earn">${sh}</strong>元`,
                     cancelButtonText: '好的',
                     confirmButtonText: '查看',
                 }).then((response) => {
                     this.$router.push('/personal/share/earnings-history')
                     this.$refs.dialog.show = false
+                    // 点击确定或者是查看，去掉url的收益字段
+                    this.cutUrlParams()
                 }).catch((type) => {
-                    console.log(type)
+                    this.cutUrlParams()
                 })
+            },
+            cutUrlParams(){ // 点击确定或者是查看，去掉url的收益字段
+                let href = window.location.href
+                href = href.split('?')[0]
+                history.replaceState(null,null,href)
             },
             getDate() {
                 // 用户红点功能类型集合：1:我的客户;2:收益记录
@@ -131,14 +164,44 @@
                 sales.info().then((res) => {
                     this.shareData = res
                 })
+                
                 //获取红点信息
                 sales.redPoint(functionsTypes).then((res) => {
-                    this.redPointArr = [...this.redPointArr, ...res]
+                    if(res.length){
+                        this.redPointArr = JSON.parse(JSON.stringify(res))
+                    }
                 })
+            },
+
+
+            /**
+             * 存储localStorage
+             */
+            setStore(name, content) {
+                if (!name) return;
+                if (typeof content !== 'string') {
+                    content = JSON.stringify(content);
+                }
+                window.localStorage.setItem(name, content);
+            },
+
+            /**
+             * 获取localStorage
+             */
+            getStore(name){
+                if (!name) return;
+                return window.localStorage.getItem(name);
             }
         },
         components: {
             ConfirmDialog
+        },
+        beforeRouteEnter: (to, from, next) => {
+            /* 路由发生变化修改页面title */
+            if (to.meta.title) {
+                document.title = to.meta.title
+            }
+            next()
         }
     };
 </script>
@@ -312,6 +375,10 @@
                         padding-bottom: 38/@rem;
                         color: #FFF341;
                         .fontSize(28);
+                        .earn {
+                            display: inline-block;
+                            .fontSize(40)
+                        }
                     }
 
                 }

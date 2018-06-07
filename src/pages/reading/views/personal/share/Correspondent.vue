@@ -19,8 +19,8 @@ export default {
     data () {
         return {
             bind:[
-                {router:'/personal/share/correspondent/binding',text:'绑定中'},
-                {router:'/personal/share/correspondent/unbind',text:'已解绑'},
+                {router:'/personal/share/correspondent/binding',text:'邀请成功'},
+                {router:'/personal/share/correspondent/unbind',text:'谁来看过'},
             ],
             initIndex:0
         };
@@ -41,6 +41,13 @@ export default {
         count(ms){
             return new Promise((resolve) => {setTimeout(resolve,ms)})
         }
+    },
+    beforeRouteEnter: (to, from, next) => {
+        /* 路由发生变化修改页面title */
+        if (to.meta.title) {
+            document.title = to.meta.title
+        }
+        next()
     }
 };  
 </script>
@@ -89,6 +96,14 @@ export default {
                 background-color: @deepRed;
             }
         }
+    }
+
+    .correspondent-main {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
 
 </style>

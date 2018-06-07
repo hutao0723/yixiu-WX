@@ -24,9 +24,7 @@
       <router-link :to="{ path: '/personal/share/poster' }">
         <div class="mt20 recommend bgfff">
             <img :src="recommendUrl">
-            <div class="icon-tri column-center jiantou">
-                <i class="iconfont ear-icon"></i>
-            </div>
+            
         </div>
       </router-link>
       <router-link :to="{ path: '/journey' }">
@@ -80,7 +78,7 @@
     </div>
     <Contact v-show="contactToggle" v-on:success="success"/>
     <bnav></bnav>
-    <AudioBar/>
+    <!-- <AudioBar/> -->
   </div>
 
 </template>
@@ -109,7 +107,7 @@ export default {
       book: 0,
       time: "分钟",
       // 分享
-      recommendUrl: 'https://yun.duiba.com.cn/yoofans/images/201805/read/recommend.png'
+      recommendUrl: 'https://yun.duiba.com.cn/yoofans/images/201805/read/share2.png'
     };
   },
   computed: {
@@ -117,8 +115,12 @@ export default {
   },
   created() {
     },
-  mounted () {
+  async mounted () {
     this.getNumberInfo()
+    this.setTitle('一修读书')
+    let self = this;
+    let userState = await self.getThumbUp();
+      self.wxShare(userState.data.userId);
   },
   methods: {
     // 联系客服
@@ -138,7 +140,19 @@ export default {
           console.log("获取用户信息失败")
         }
      
-    }
+    },
+    async getThumbUp() {
+        let self = this;
+        let params = {};
+        params = {
+
+        }
+        const url = `/user/read/state`;
+        const res = await this.$http.get(url, {
+          params
+        });
+        return res.data;
+      },
   }
 };
 </script>
@@ -176,6 +190,10 @@ export default {
         font-weight: bold;
         color: rgba(51,51,51,1);
         line-height: 110/@rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 440/@rem;
       }
     }
   }

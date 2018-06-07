@@ -3,11 +3,11 @@
         <h1>推广规则</h1>
         <div class="gr-warp">
             <h2>1.怎么赚钱？</h2>
-            <p>通过分享专属海报/页面链接，好友在有效期内支付购买了课程，你将会得到相应的现金分红</p>
+            <p>当你购买了读书营课程后，通过分享你的【专属海报】或【任意页面】，好友在有效期内支付购买了课程，你将会得到相应的现金分红</p>
         </div>
         <div class="gr-warp">
             <h2>2.分销可赚多少钱？</h2>
-            <p>好友购买后，可获得相应比例的课程金额</p>
+            <p>每个好友购买，你可获得相应比例的课程金额（20元-50元），有效人数无上限。</p>
         </div>
         <div class="gr-warp">
             <h2>3.怎么查看我挣了多少钱？</h2>
@@ -15,7 +15,7 @@
         </div>
         <div class="gr-warp">
             <h2>4.提现规则：</h2>
-            <p>可提现金额满20元即可提现微信账户</p>
+            <p>“可提现金额”满20元即可提现微信账户</p>
         </div>
         <div class="gr-warp">
             <h2>5.我发链接/海报给我自己买，可以有钱赚吗？</h2>
@@ -25,12 +25,21 @@
             <h2>6.遇到其他问题，可在个人中心联系客服</h2>
             <p></p>
         </div>
+        <div class="grw-last">
+            <p class="">本活动最终解释权归一修读书所有</p>
+        </div>
     </div>
 </template>
 
 <script>
 export default {
-
+    beforeRouteEnter: (to, from, next) => {
+        /* 路由发生变化修改页面title */
+        if (to.meta.title) {
+            document.title = to.meta.title
+        }
+        next()
+    }
 }
 </script>
 
@@ -41,11 +50,25 @@ export default {
 
     @titleColor: #222;
     @paragraphColor:#444;
+
     .generalize-rule {
+
+        width: 750/@rem;
         height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        // overflow-x: hidden;
+        overflow-y: scroll;
+        box-sizing: border-box;
+        max-height: 9999px;
+        -webkit-overflow-scrolling: touch;
+
+        // height: 100%;
         padding: 52/@rem 50/@rem;
         background-color: #EFEFF4;
-        overflow: hidden;
+        // overflow: hidden;
         box-sizing: border-box;
         h1 {
             .fontSize(38);
@@ -69,6 +92,16 @@ export default {
                 .fontSize(30);
                 color: @paragraphColor;
             }
+        
+        }
+        .grw-last {
+            margin-top: 137/@rem;
+            p {
+                .fontSize(24);
+                color: #555;
+                text-align: center;
+            }
+
         }
     }
 </style>

@@ -1,23 +1,23 @@
 <template>
-    <div>
+    <div class="cm-wrap">
         <ul class="cm-list">
             <li class="cm-item" v-for="item in record" :key="item.num">
                 <div class="cml-warp">
-                    <img :src="item.headImgurl" alt="" class="cml-image">
+                    <img :src="item.headImgurl?item.headImgurl:'http://yun.dui88.com/youfen/images/201806/portrait.png'" alt="" class="cml-image">
                     <div class="cml-info">
                         <strong>{{item.nickName}}</strong>
-                        <p class="cmli-date" v-if="Boolean(initIndex)">{{item.remainingBindTime}}</p>
+                        <p class="cmli-date" v-if="Boolean(initIndex)">{{`有效时间${item.remainingBindTime}小时`}}</p>
                     </div>
                 </div>
                 <div class="cml-sum">
-                    <p class="cmls-money cmls">共<em>{{item.totalTradeMoney}}</em>元</p>
+                    <p class="cmls-money cmls">共<em>{{item.totalPromotionEarnings | dealEearning}}</em>元</p>
                     <p class="cmls-count cmls">{{item.totalTradeNum}}笔</p>
                 </div>
             </li>
         </ul>
         <div class="page-none" v-show="noData">
             <img src="http://yun.dui88.com/yoofans/images/201805/zanwukh.png" class="none-img" />
-            <p class="none-text">您还没有客户，快去邀请吧</p>
+            <p class="none-text">您暂时还没有邀请到朋友</p>
         </div>
         <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0" ></div>
     </div>
@@ -31,6 +31,11 @@ export default {
         //  initIndex: 1-绑定中 0-已解绑
         initIndex:{
             type: Number,
+        }
+    },
+    filters:{ // 后端返回的金额除以100
+        dealEearning:function(value){
+            return value / 100
         }
     },
     components: {
@@ -49,7 +54,7 @@ export default {
             ],
             bindPageNum:1,
             unbindPageNum: 1,
-            pageSize:20,
+            pageSize:100,
             busy: true,
             noData: false,
         };
@@ -102,13 +107,23 @@ export default {
     @import '../../../less/variable';
     @import '../../../less/base';
     @import '../../../less/icon';
-    @mainColor:#F4F4F4;
-	@setionBackgroundColor:#FFF;
-    @fontColor:#333;
-    @deepRed:#FF464A;
-    @borderColor:#D8D8D8;
-    @undertintBalackColor:#999;
-    .correspondent-main {
+    
+    @mainColor: #F4F4F4;
+	@setionBackgroundColor: #FFF;
+    @fontColor: #333;
+    @deepRed: #FF464A;
+    @borderColor: #D8D8D8;
+    @undertintBalackColor: #999;
+    .cm-wrap {
+        width: 750/@rem;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
         .cm-list {
             border-bottom: 1/@rem solid @borderColor;
             .cm-item {
@@ -135,6 +150,8 @@ export default {
                     .cml-image {
                         width: 84/@rem;
                         height: 84/@rem;
+                        border-radius: (84/2)/@rem;
+                        border: 1/@rem solid #aaa;
                     }
                     .cml-info {
                         margin-left: 36/@rem;
@@ -174,6 +191,10 @@ export default {
         }
 
         .page-none {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             position: absolute;
             left: 50%;
             top: 50%;

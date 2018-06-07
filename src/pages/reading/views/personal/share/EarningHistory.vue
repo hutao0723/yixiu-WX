@@ -6,7 +6,7 @@
                     <strong>{{`${item.consumerName}购买课程`}}</strong>
                     <p class="crli-date">{{item.finishTime}}</p>
                 </div>
-                <strong class="crl-num" :class="symbolClass">{{item.incomeAmount}}</strong>
+                <strong class="crl-num" :class="symbolClass">{{item.incomeAmount | dealEearning}}</strong>
             </li>
         </ul>
         <div class="page-none" v-show="noData">
@@ -40,6 +40,11 @@ export default {
             pageNum:1,     // 下拉页码
             busy: true,    // 下拉加载控制
         };
+    },
+    filters:{ // 后端返回的金额除以100
+        dealEearning:function(value){
+            return value / 100
+        }
     },
     computed: {
         ...mapState({})
@@ -79,6 +84,10 @@ export default {
 
     // 根据路由判断symbolClass是否显示
     beforeRouteEnter (to, from, next) {
+        /* 路由发生变化修改页面title */
+        if (to.meta.title) {
+            document.title = to.meta.title
+        }
         next(vm => {
             // 通过 `vm` 访问组件实例
             if(to.path.indexOf('earnings-history') > 0){
