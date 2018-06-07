@@ -288,8 +288,13 @@ export default {
           color: #7F7F7F;
           .book-title{
             .fontSize(26);
+            width: 460/@rem;
             margin-left: 80/@rem;
             margin-top: 3/@rem;
+            box-sizing: border-box;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
           .book-writer{
             .fontSize(24);
