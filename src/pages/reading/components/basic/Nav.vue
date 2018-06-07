@@ -1,7 +1,7 @@
 <template>
   <div class="bottom-nav" v-if="bottomNavToggle">
     <ul>
-      <li v-for="(item, index) in navlist" :style="bottomNavType ? 'width: 50%;' : 'width: 50%;'">
+      <li v-for="(item, index) in navlist" :style="bottomNavType ? 'width: 25%;' : 'width: 33.33%;'">
         <router-link :to="item.path" :class="item.path === $route.path ? 'active' : ''">
           <p>
             <!-- <i class="iconfont" :class="item.path === $route.path ? item.active : item.icon"></i> -->
