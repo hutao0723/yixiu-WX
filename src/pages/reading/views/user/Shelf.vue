@@ -184,14 +184,14 @@ export default {
   padding-top: 30/@rem;
 }
 .book-table{
-  margin: 40/@rem 0 0 70/@rem ;
+  margin: 40/@rem 0 0 62/@rem ;
   width: 170/@rem;
   float: left;
   .book-cover{
     margin-bottom: 20/@rem;
     img{
-      width: 170/@rem;
-      height: 238/@rem;
+      width: 180/@rem;
+      height: 240/@rem;
       display: block;
       border-radius: 5/@rem;
     }
