@@ -480,7 +480,7 @@
       width: 665/@rem;
       height: 260/@rem;
       display: block;
-      border-radius: 10/@rem;
+      border-radius:30/@rem;
       // box-shadow:0 10/@rem 10/@rem 0 rgba(235,235,235,0.6);
     }
   }
