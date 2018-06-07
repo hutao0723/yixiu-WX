@@ -21,8 +21,8 @@
     <div class="calendar-box" >
       <calendar-template  :calendarDate='c_date' @getDate="getDate" ></calendar-template>
     </div>
-    <div class="book-book" @click.stop="playAudio(readId,courseId)">
-      <div class="book-img">
+    <div class="book-book" >
+      <div class="book-img" @click.stop="playAudio(readId,courseId)">
         <img :src="courseDetail.courseUrl" alt="">
         <div class="book-audio" v-if="afterToday||isToday"></div>
         <div class="book-mark" v-else>
@@ -368,10 +368,14 @@
           color:#666;
           .book-btn{
             background: #FFE555;
-            padding:8/@rem 39/@rem;
+            width:130/@rem;
+            text-align: center;
+            height:54/@rem;
+            line-height: 54/@rem;
             border-radius: 25/@rem;
             position: absolute;
             right:30/@rem;
+            color:#333;
           }
         }
       }
