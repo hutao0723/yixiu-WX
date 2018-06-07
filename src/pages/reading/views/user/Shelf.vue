@@ -62,8 +62,8 @@ export default {
 
       alertToggle: false,
 
-      bookUrl: "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
-      bookName: "今天的网红经济",
+      bookUrl: "",
+      bookName: "",
       swipeList: [],
       bookList: [],
       dayNumList: [],
