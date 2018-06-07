@@ -14,7 +14,8 @@
       <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="!tabActive">
         <p>
           <span class="text-del">{{selectCourseObj.costPrice}}</span>
-          <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>元</p>
+          <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>
+        </p>
         <span @click="orderPay" class="btn-pay">立即购买</span>
       </div>
 
@@ -44,18 +45,15 @@
               <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
             </div>
             <div class="item-bottom">
-              <span @click="getCommentPraise(item.id,item.userPraise)" v-if="pageStatus != 0">
+              <!-- <span @click="getCommentPraise(item.id,item.userPraise)" v-if="pageStatus != 0">
                 <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
                 <span class="fr">{{item.praiseCount}}</span>
               </span>
               <router-link :to="{ path: '/poster/' + item.id+'/0/1'}" tag="a" class="iconfont icon-share fr"></router-link>
-              <span>{{item.releaseTime| timeTransition}}</span>
+              <span>{{item.releaseTime| timeTransition}}</span> -->
             </div>
           </div>
         </div>
-        <h3>上滑加载更多精彩课程
-          <i class="iconfont">&#xe61e;</i>
-        </h3>
       </div>
       <div class="home-course" v-show="!tabActive">
         <div class="item" v-for="(item,index) in readList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
@@ -253,6 +251,14 @@
     async mounted() {
       let self = this;
       // 如果是支付流程直接支付
+
+      // console.log(this.$route)
+
+      if(window.location.href.indexOf('from') != -1){
+        location.replace('http://k.youfen666.com/reading.html#/index/home?' + window.location.href.split('?')[2])
+      }
+      this.setTitle('一修读书')
+
       if (self.$route.query.dcd && !self.$route.query.isPay) {
         self.getDcd(self.$route.query.dcd)
       }
@@ -276,7 +282,7 @@
           self.getReadList();
           store.commit({
             type: 'setBottomNavToggle',
-            bottomNavToggle: true
+            bottomNavToggle: false
           })
           store.commit({
             type: 'setBottomNavType',
@@ -293,7 +299,7 @@
           self.getReadList();
           store.commit({
             type: 'setBottomNavToggle',
-            bottomNavToggle: true
+            bottomNavToggle: false
           })
           store.commit({
             type: 'setBottomNavType',
@@ -880,7 +886,7 @@
     }
     .home-review {
       background: #fff;
-      padding-bottom: 120/@rem;
+      padding-bottom: 240/@rem;
       h2 {
         .text(40,
         56);
@@ -1141,7 +1147,7 @@
       .active {
         transform: scale(1.1);
         box-shadow: 0/@rem -2/@rem 14/@rem 5/@rem rgba(0, 0, 0, 0.2);
-        border: 2/@rem solid #FF4C4C;
+        /* border: 2/@rem solid #FF4C4C; */
         .item-box {}
         .item-top {
           background: #FEED47;

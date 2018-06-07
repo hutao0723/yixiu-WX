@@ -8,7 +8,7 @@
     </header>
     <div class="calendar_header">
       <div class="card-head">
-        <span class="head-left" @click="noticeFlag = true ">坚持打卡送大礼 ></span>
+        <span class="head-left" @click="noticeFlag = true "> <i class="iconfont icon-gift"></i> 坚持打卡送大礼 ></span>
         <div class="head-right">
           <span><i></i> 已打卡</span>
           <span><i></i>未打卡</span>
@@ -25,7 +25,9 @@
       <div class="book-img">
         <img :src="courseDetail.courseUrl" alt="">
         <div class="book-audio" v-if="afterToday||isToday"></div>
-        <div class="book-mark" v-else></div>
+        <div class="book-mark" v-else>
+          <i class="iconfont icon-lock"></i>
+        </div>
       </div>
       <div class="book-detail">
         <div class="book-title">{{courseDetail.courseTitle}}</div>
@@ -232,14 +234,29 @@
         right:54/@rem;
       }
     }
+    .calendar_header:after{
+      content: '';
+      width:92%;
+      height:1px;
+      background: #E5E5E5;
+      position: absolute;
+      bottom:0;
+      left:50%;
+      margin-left: -46%;
+    }
     .calendar_header{
       height:136/@rem;
       background:#fff;
+      position: relative;
       .card-head{
         font-size: 26/@rem;
         padding:25/@rem 0 25/@rem 29/@rem;
         line-height: 37/@rem;
         background: #fff;
+        .icon-gift{
+          font-size: 40/@rem;
+          color:#FF9252;
+        }
         .head-right{
           float: right;
           font-size: 24/@rem;
@@ -292,6 +309,7 @@
         float: left;
         overflow:hidden;
         position:relative;
+        border-radius: 4/@rem;
         .book-audio{
           position:absolute;
           width:64/@rem;
@@ -322,6 +340,14 @@
           position:absolute;
           top:0;
           left:0;
+          .icon-lock {
+            font-size: 30/@rem;
+            color: #fff;
+            position:absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-35%,-50%);
+          }
         }
         img{
           width:100%;

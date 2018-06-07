@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="cm-wrap">
         <ul class="cm-list">
             <li class="cm-item" v-for="item in record" :key="item.num">
                 <div class="cml-warp">
@@ -17,7 +17,7 @@
         </ul>
         <div class="page-none" v-show="noData">
             <img src="http://yun.dui88.com/yoofans/images/201805/zanwukh.png" class="none-img" />
-            <p class="none-text">您还没有客户，快去邀请吧</p>
+            <p class="none-text">您暂时还没有邀请到朋友</p>
         </div>
         <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0" ></div>
     </div>
@@ -54,7 +54,7 @@ export default {
             ],
             bindPageNum:1,
             unbindPageNum: 1,
-            pageSize:20,
+            pageSize:100,
             busy: true,
             noData: false,
         };
@@ -114,7 +114,16 @@ export default {
     @deepRed: #FF464A;
     @borderColor: #D8D8D8;
     @undertintBalackColor: #999;
-    .correspondent-main {
+    .cm-wrap {
+        width: 750/@rem;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
         .cm-list {
             border-bottom: 1/@rem solid @borderColor;
             .cm-item {
