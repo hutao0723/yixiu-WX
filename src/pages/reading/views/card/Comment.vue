@@ -179,9 +179,9 @@
       position: relative;
       border-bottom: 1px solid #E5E5E5;
       .book-img{
-        width:122/@rem;
-        height:165/@rem;
-        margin-right: 18/@rem;
+        width:120/@rem;
+        height:160/@rem;
+          margin-right: 36/@rem;
         float: left;
         img{
           width:100%;
@@ -200,7 +200,6 @@
           font-size: 26/@rem;
           line-height: 37/@rem;
           color:#666;
-          padding-left: 17/@rem;
         }
       }
     }

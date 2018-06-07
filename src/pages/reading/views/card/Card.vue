@@ -303,9 +303,9 @@
       background: #fff;
       position: relative;
       .book-img{
-        width:122/@rem;
-        height:165/@rem;
-        margin-right: 18/@rem;
+        width:120/@rem;
+        height:160/@rem;
+        margin-right: 36/@rem;
         float: left;
         overflow:hidden;
         position:relative;
@@ -366,7 +366,6 @@
           font-size: 26/@rem;
           line-height: 37/@rem;
           color:#666;
-          padding-left: 17/@rem;
           .book-btn{
             background: #FFE555;
             padding:8/@rem 39/@rem;
