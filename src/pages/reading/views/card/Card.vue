@@ -8,7 +8,7 @@
     </header>
     <div class="calendar_header">
       <div class="card-head">
-        <span class="head-left" @click="noticeFlag = true ">坚持打卡送大礼 ></span>
+        <span class="head-left" @click="noticeFlag = true "> <i class="iconfont icon-gift"></i> 坚持打卡送大礼 ></span>
         <div class="head-right">
           <span><i></i> 已打卡</span>
           <span><i></i>未打卡</span>
@@ -21,11 +21,13 @@
     <div class="calendar-box" >
       <calendar-template  :calendarDate='c_date' @getDate="getDate" ></calendar-template>
     </div>
-    <div class="book-book" @click.stop="playAudio(readId,courseId)">
-      <div class="book-img">
+    <div class="book-book" >
+      <div class="book-img" @click.stop="playAudio(readId,courseId)">
         <img :src="courseDetail.courseUrl" alt="">
         <div class="book-audio" v-if="afterToday||isToday"></div>
-        <div class="book-mark" v-else></div>
+        <div class="book-mark" v-else>
+          <i class="iconfont icon-lock"></i>
+        </div>
       </div>
       <div class="book-detail">
         <div class="book-title">{{courseDetail.courseTitle}}</div>
@@ -109,7 +111,7 @@
       },
       //获取阅读状态
       getReadStatus(){
-        this.$http.get('/api/user/read/state').then(res =>{
+        this.$http.get('/user/read/state').then(res =>{
           let resp = res.data;
           if(resp.success){
             this.readInfo = resp.data;
@@ -119,7 +121,7 @@
       },
       //获取最新课程详情
       getReadDetail(){
-        this.$http.get('/api/user/read/detail').then(res=>{
+        this.$http.get('/user/read/detail').then(res=>{
           let resp = res.data;
           if(resp.success){
             this.readDetail = resp.data;
@@ -143,7 +145,7 @@
       //打卡日历
       getClockCalendar(){
         let _this = this;
-        _this.$http.get('/api/user/read/clockCalendar?readId='+this.readId).then(res=>{
+        _this.$http.get('/user/read/clockCalendar?readId='+this.readId).then(res=>{
           let resp = res.data;
           if(resp.success){
             _this.c_date = resp.data;
@@ -155,7 +157,7 @@
       //打卡课程详情
       getCourseDetail(date){
         let _this = this;
-        _this.$http.get('/api/readBookCourse/courseDetailByDate?readId='+_this.readId+'&date='+date).then(res=>{
+        _this.$http.get('/readBookCourse/courseDetailByDate?readId='+_this.readId+'&date='+date).then(res=>{
           let resp = res.data;
           if(resp.success){
             _this.courseDetail = resp.data;
@@ -232,14 +234,29 @@
         right:54/@rem;
       }
     }
+    .calendar_header:after{
+      content: '';
+      width:92%;
+      height:1px;
+      background: #E5E5E5;
+      position: absolute;
+      bottom:0;
+      left:50%;
+      margin-left: -46%;
+    }
     .calendar_header{
       height:136/@rem;
       background:#fff;
+      position: relative;
       .card-head{
         font-size: 26/@rem;
         padding:25/@rem 0 25/@rem 29/@rem;
         line-height: 37/@rem;
         background: #fff;
+        .icon-gift{
+          font-size: 40/@rem;
+          color:#FF9252;
+        }
         .head-right{
           float: right;
           font-size: 24/@rem;
@@ -286,12 +303,13 @@
       background: #fff;
       position: relative;
       .book-img{
-        width:122/@rem;
-        height:165/@rem;
-        margin-right: 18/@rem;
+        width:120/@rem;
+        height:160/@rem;
+        margin-right: 36/@rem;
         float: left;
         overflow:hidden;
         position:relative;
+        border-radius: 4/@rem;
         .book-audio{
           position:absolute;
           width:64/@rem;
@@ -322,6 +340,14 @@
           position:absolute;
           top:0;
           left:0;
+          .icon-lock {
+            font-size: 30/@rem;
+            color: #fff;
+            position:absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-35%,-50%);
+          }
         }
         img{
           width:100%;
@@ -340,13 +366,16 @@
           font-size: 26/@rem;
           line-height: 37/@rem;
           color:#666;
-          padding-left: 17/@rem;
           .book-btn{
             background: #FFE555;
-            padding:8/@rem 39/@rem;
+            width:130/@rem;
+            text-align: center;
+            height:54/@rem;
+            line-height: 54/@rem;
             border-radius: 25/@rem;
             position: absolute;
             right:30/@rem;
+            color:#333;
           }
         }
       }

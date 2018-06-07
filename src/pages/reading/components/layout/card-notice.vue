@@ -1,5 +1,5 @@
 <template>
-  <div class="cardNotice-box">
+  <div class="cardNotice-box" @click="hideNotice()">
     <div class="notice-box">
       <div class="notice-title">打卡须知</div>
       <ul class="notice-content">

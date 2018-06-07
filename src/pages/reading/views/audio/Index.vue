@@ -24,8 +24,9 @@
           <button type="primary" class="btn-switch" @click="audioPrev">
             <i class="iconfont icon-prev" :style="{color: `${readAudio.isPrev ? '#343434' : '#919191'}`}"></i>
           </button>
-          <button type="primary" class="btn-play" @click="togglePlay">
-            <i class="iconfont" :class="readPlaying ? 'icon-pause' : 'icon-play'" ></i>
+          <button type="primary" class="btn-play " :class="readLoadStart ? 'rotation' : ''" @click="togglePlay">
+            <i class="iconfont icon-musicload" v-if="readLoadStart"></i>
+            <i class="iconfont" :class="readPlaying ? 'icon-pause' : 'icon-play'" v-else></i>
           </button>
           <button type="primary" class="btn-switch" @click="audioNext">
             <i class="iconfont icon-next" :style="{color: `${readAudio.isNext ? '#343434' : '#919191'}`}"></i>
@@ -71,7 +72,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['readAudio','readPlaying','readCurrentTime','readDuration','showCardModal']),
+    ...mapState(['readAudio','readPlaying','readCurrentTime','readDuration','showCardModal','readLoadStart']),
     current() {
       return this.timerFomart(this.readCurrentTime)
     },
@@ -221,6 +222,22 @@ export default {
           color: #fff;
         }
       }
+      @-webkit-keyframes rotation{
+        from {-webkit-transform: rotate(0deg);}
+        to {-webkit-transform: rotate(360deg);}
+        }
+      @keyframes rotation{
+        from {-webkit-transform: rotate(0deg);}
+        to {-webkit-transform: rotate(360deg);}
+        }
+
+      .rotation{
+      animation: rotation 1s linear infinite;
+      -moz-animation: rotation 1s linear infinite;
+      -webkit-animation: rotation 1s linear infinite;
+      -o-animation: rotation 1s linear infinite;
+      }
+
     }
     .bottom{
       width:300/@rem;

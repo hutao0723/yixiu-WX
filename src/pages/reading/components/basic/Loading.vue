@@ -1,17 +1,7 @@
 <template>
-  <div>
     <div class="loadEffect" v-if="loading">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
+        <img src="http://yun.dui88.com/youfen/images/201806/loading.svg" alt="">
     </div>
-    <p v-if="!loading && empty">没有更多了</p>
-  </div>
 </template>
 <script>
 export default{
@@ -26,76 +16,63 @@ export default{
       type: Boolean,
       default: false
     }
+  },
+  data(){
+      return {
+
+      }
+  },
+  methods:{
+
   }
 };
 </script>
-<style>
-  .loadEffect{
-      width: 50px;
-      height: 50px;
-      position: relative;
-      margin: 0 auto;
-      margin-top:10px;
-  }
-  .loadEffect span{
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #666;
-      position: absolute;
-      -webkit-animation: load 1.04s ease infinite;
-  }
-  @-webkit-keyframes load{
-      0%{
-          opacity: 1;
-      }
-      100%{
-          opacity: 0.2;
-      }
-  }
-  .loadEffect span:nth-child(1){
-      left: 0;
-      top: 50%;
-      margin-top:-4px;
-      -webkit-animation-delay:0.13s;
-  }
-  .loadEffect span:nth-child(2){
-      left: 7px;
-      top: 7px;
-      -webkit-animation-delay:0.26s;
-  }
-  .loadEffect span:nth-child(3){
-      left: 50%;
-      top: 0;
-      margin-left: -4px;
-      -webkit-animation-delay:0.39s;
-  }
-  .loadEffect span:nth-child(4){
-      top: 7px;
-      right:7px;
-      -webkit-animation-delay:0.52s;
-  }
-  .loadEffect span:nth-child(5){
-      right: 0;
-      top: 50%;
-      margin-top:-4px;
-      -webkit-animation-delay:0.65s;
-  }
-  .loadEffect span:nth-child(6){
-      right: 7px;
-      bottom:7px;
-      -webkit-animation-delay:0.78s;
-  }
-  .loadEffect span:nth-child(7){
-      bottom: 0;
-      left: 50%;
-      margin-left: -4px;
-      -webkit-animation-delay:0.91s;
-  }
-  .loadEffect span:nth-child(8){
-      bottom: 7px;
-      left: 7px;
-      -webkit-animation-delay:1.04s;
-  }
+<style lang="less" scoped>
+    @import '../../less/base';
+    .loadEffect {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        z-index: 999;
+        img {
+            width: 60/@rem;
+            height: 60/@rem;
+        }
+
+        /*定义动画*/
+        @-webkit-keyframes spin { /*兼容性写法。spin是关键帧的动画名称*/
+            from { /*动画起始状态*/
+            -webkit-transform: rotate(0deg);
+            }
+            to { /*动画结束状态*/
+            -webkit-transform: rotate(360deg);
+            }
+        }
+        @keyframes spin {
+            from {
+            transform: rotate(0deg);
+            }
+            to {
+            transform: rotate(360deg);
+            }
+        }
+
+
+        img {
+            -webkit-animation: spin 1s linear infinite;/*infinite表示动画无限循环*/
+            animation: spin 1s linear infinite;    
+        }
+    }
+
+
+
+
+
 </style>
