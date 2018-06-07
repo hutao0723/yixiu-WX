@@ -2,7 +2,8 @@
   <div class="comment-main" ref="comment" >
     <div class="book-book">
       <div class="book-img">
-        <img :src="courseDetail.courseUrl" alt="">
+        <img v-if="courseDetail.courseUrl" :src="courseDetail.courseUrl" alt="">
+        <img v-else src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-book-cover.png" alt="">
       </div>
       <div class="book-detail">
         <div class="book-title">{{courseDetail.courseTitle}}</div>
@@ -118,9 +119,9 @@
           let resp = res.data;
           if(resp.success){
             this.courseDetail = resp.data;
-            if(!this.courseDetail.courseUrl){
-              this.courseDetail.courseUrl  = 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-book-cover.png'
-            }
+            // if(!this.courseDetail.courseUrl){
+            //   this.courseDetail.courseUrl  = 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-book-cover.png'
+            // }
           }
         })
       },
@@ -181,8 +182,10 @@
       .book-img{
         width:120/@rem;
         height:160/@rem;
-          margin-right: 36/@rem;
+        margin-right: 36/@rem;
         float: left;
+        overflow:hidden;
+        border-radius: 4/@rem;
         img{
           width:100%;
           height:100%;
