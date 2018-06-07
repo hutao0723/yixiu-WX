@@ -20,7 +20,7 @@
               <div class="clearfix book" :class="item.content?'btop':''">
                 <div class="fl book-img"><img :src="item.courseUrl"></div>
                 <div class="book-content">
-                  <div class="book-title">{{item.courseTitle}}</div>
+                  <div class="book-title">《{{item.courseTitle}}》</div>
                   <div class="book-writer">{{item.courseAuthor}}</div>
                 </div>
               </div>
