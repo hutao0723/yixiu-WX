@@ -78,7 +78,7 @@
     </div>
     <Contact v-show="contactToggle" v-on:success="success"/>
     <bnav></bnav>
-    <!-- <AudioBar/> -->
+    <AudioBar/>
   </div>
 
 </template>
