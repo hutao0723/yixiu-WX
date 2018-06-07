@@ -17,7 +17,7 @@
         </ul>
         <div class="page-none" v-show="noData">
             <img src="http://yun.dui88.com/yoofans/images/201805/zanwukh.png" class="none-img" />
-            <p class="none-text">您还没有客户，快去邀请吧</p>
+            <p class="none-text">您暂时还没有邀请到朋友</p>
         </div>
         <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0" ></div>
     </div>

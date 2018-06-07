@@ -19,8 +19,8 @@ export default {
     data () {
         return {
             bind:[
-                {router:'/personal/share/correspondent/binding',text:'绑定中'},
-                {router:'/personal/share/correspondent/unbind',text:'已解绑'},
+                {router:'/personal/share/correspondent/binding',text:'邀请成功'},
+                {router:'/personal/share/correspondent/unbind',text:'谁来看过'},
             ],
             initIndex:0
         };

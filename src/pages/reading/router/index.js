@@ -170,7 +170,7 @@ export default new Router({
         }, 'reading_correspondent');
       },
       meta: {
-        title: '我的客户'
+        title: '我的邀请'
       }
     },
     // 提现中

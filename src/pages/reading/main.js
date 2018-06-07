@@ -47,12 +47,12 @@ Vue.http.interceptors.push((request, next) => {
       let url;
       if (response.url.indexOf('/order/submit') > -1) {
         if (o.indexOf('?') > -1) {
-          url = o + '&courseId=' + reqObj.itemId;
+          url = encodeURIComponent(o + '&courseId=' + reqObj.itemId);
         } else {
-          url = o + '?courseId=' + reqObj.itemId;
+          url = encodeURIComponent(o + '?courseId=' + reqObj.itemId);
         }
       } else {
-        url = o;
+        url = encodeURIComponent(o);
       }
       Vue.http.get('/getH5LoginUrl', {
         params: {

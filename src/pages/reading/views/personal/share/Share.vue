@@ -49,7 +49,7 @@
             return {
                 // 500170000
                 data: [{
-                        name: '我的客户',
+                        name: '我的邀请',
                         router: '/personal/share/correspondent',
                         new: true
                     },
@@ -93,11 +93,26 @@
         created() {
 
         },
-        mounted() {
+        async mounted() {
             this.getDate()
             this.shouldCongratulationDialogShow()
+            let self = this;
+    let userState = await self.getThumbUp();
+      self.wxShare(userState.data.userId);
         },
         methods: {
+            async getThumbUp() {
+        let self = this;
+        let params = {};
+        params = {
+
+        }
+        const url = `/user/read/state`;
+        const res = await this.$http.get(url, {
+          params
+        });
+        return res.data;
+      },
             withdrawDeposit() { // 判断是否达到提现的条件
                 if (Number(this.shareData.balance) < 20) {
                     this.$refs.dialog.confirm({

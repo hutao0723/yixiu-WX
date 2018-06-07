@@ -14,7 +14,8 @@
       <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="!tabActive">
         <p>
           <span class="text-del">{{selectCourseObj.costPrice}}</span>
-          <span class="text-red">¥{{selectCourseObj.presentPrice}}</span></p>
+          <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>
+        </p>
         <span @click="orderPay" class="btn-pay">立即购买</span>
       </div>
 
@@ -250,8 +251,14 @@
     async mounted() {
       let self = this;
       // 如果是支付流程直接支付
+
+      // console.log(this.$route)
+
+      if(window.location.href.indexOf('from') != -1){
+        location.replace('http://k.youfen666.com/reading.html#/index/home?' + window.location.href.split('?')[2])
+      }
       this.setTitle('一修读书')
-      
+
       if (self.$route.query.dcd && !self.$route.query.isPay) {
         self.getDcd(self.$route.query.dcd)
       }
