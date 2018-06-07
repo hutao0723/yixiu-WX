@@ -49,7 +49,7 @@
       </router-link>
       <router-link :to="{ path: '/lecturer' }">
         <div class="bgfff">
-          <div class="person-h90 row" >
+          <div class="person-h90 row border" >
             <div class="icon-box column-center">
               <i class="iconfont icon-user person-icon"></i>
             </div>
