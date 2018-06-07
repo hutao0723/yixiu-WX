@@ -20,7 +20,7 @@
               <div class="clearfix book" :class="item.content?'btop':''">
                 <div class="fl book-img"><img :src="item.courseUrl"></div>
                 <div class="book-content">
-                  <div class="book-title">{{item.courseTitle}}</div>
+                  <div class="book-title">《{{item.courseTitle}}》</div>
                   <div class="book-writer">{{item.courseAuthor}}</div>
                 </div>
               </div>
@@ -95,7 +95,11 @@ export default {
         }
         this.journeyList.forEach((item,index)=>{
           // 获取时间
-          this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(5,7) + "." + item.releaseTime.substring(8,10)
+          if(parseInt(item.releaseTime.substring(5,7)) < 10){
+            this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(6,7) + "." + item.releaseTime.substring(8,10)
+          }else{
+            this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(5,7) + "." + item.releaseTime.substring(8,10)
+          }
         })
       }else{
         console.log("获取数据失败")

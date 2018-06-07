@@ -114,7 +114,7 @@
       getCourseId(){
         this.courseId = this.$route.params.courseId;
         this.readId = this.$route.params.readId;
-        this.$http.get('/api/readBookCourse/courseDetail?readId='+this.readId +'&courseId='+this.courseId).then(res=>{
+        this.$http.get('/readBookCourse/courseDetail?readId='+this.readId +'&courseId='+this.courseId).then(res=>{
           let resp = res.data;
           if(resp.success){
             this.courseDetail = resp.data;
@@ -131,7 +131,7 @@
           courseId:this.courseId,
           dayNum:this.courseDetail.days
         }
-        this.$http.post('/api/user/read/clock',params,{emulateJSON: true}).then(res=>{
+        this.$http.post('/user/read/clock',params,{emulateJSON: true}).then(res=>{
           let resp = res.data;
           if(resp.success){
             let commentId = resp.data.commentId;
@@ -179,9 +179,9 @@
       position: relative;
       border-bottom: 1px solid #E5E5E5;
       .book-img{
-        width:122/@rem;
-        height:165/@rem;
-        margin-right: 18/@rem;
+        width:120/@rem;
+        height:160/@rem;
+          margin-right: 36/@rem;
         float: left;
         img{
           width:100%;
@@ -200,7 +200,6 @@
           font-size: 26/@rem;
           line-height: 37/@rem;
           color:#666;
-          padding-left: 17/@rem;
         }
       }
     }
