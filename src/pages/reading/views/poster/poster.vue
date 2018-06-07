@@ -1,13 +1,19 @@
 <template>
     <div class="share">
-        <canvas id="sharePoster" v-if="!imgUrl"></canvas>
+        <div class="canvas" v-if="!imgUrl">
+            <canvas id="sharePoster"></canvas>
+        </div>
         <img :src="imgUrl" v-if="imgUrl" />
+        <div class="btn">
+            长按保存分享
+            <img :src="imgUrl" v-if="imgUrl" />    
+        </div>
         <Popup v-if="popup" v-on:success = "toCertificate" v-on:close = "closePopup"/>
     </div>
 </template>
 
 <script>
-    import Popup from './../../components/basic/Diploma'
+    import Popup from './../../components/basic/Diploma' 
     export default {
         data () {
             return {
@@ -22,15 +28,15 @@
         },
         mounted () {
             const _this = this;
-            _this.popup = _this.$route.query.lastClock*1;
-            _this.isSelf = _this.$route.query.isClock*1;
-            _this.getInfo();
+            _this.popup = _this.$route.params.lastClock*1;
+            _this.isSelf = _this.$route.params.isClock*1;
+            //_this.getInfo();
         },
         methods: {
             async getInfo() {
                 let _this = this;
                 let params = {
-                    commentId: _this.$route.query.commentId
+                    commentId: _this.$route.params.commentId
                 }
                 const url = `/comment/share`;
                 const res = await _this.$http.get(url, {
@@ -38,6 +44,11 @@
                 });
                 if(res.data.success){
                     _this.info = res.data.data;
+                    if(!_this.info.bookBgimgUrl){
+                        _this.info.bookBgimgUrl = 'http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg';
+                    }
+                    //二维码写死
+                    _this.info.readQrcodeImgUrl = "http://yun.dui88.com/youfen/images/read_ewm3.png"
                     _this.createdCanvas ();
                 }else{
                     console.log('获取数据失败')
@@ -47,10 +58,10 @@
                 this.$router.push('/graduation')
             },
             closePopup(){
-                this.popup = false;
+                this.popup = false;  
             },
             conversion(data){
-                return data
+                return data*2
             },
             createdCanvas () {
                 const _this = this;
@@ -63,13 +74,13 @@
                     let temp = "";
                     let row = [];
                     for(let a = 0; a < chr.length; a++){
-                        //宽度根据设计稿固定值
-                        if( ctx.measureText(temp).width< _this.conversion(w) ){
+                        //宽度根据设计稿固定值   
+                        if( ctx.measureText(temp).width< _this.conversion(w) ){ 
                         }else{
                             row.push(temp);
-                            temp = "";
+                            temp = ""; 
                         }
-                        temp += chr[a];
+                        temp += chr[a];  
                     }
                     row.push(temp);
                     return row
@@ -86,19 +97,19 @@
                     responseHeight = responseHeight - _this.conversion(135)
                 };
                 myCanvas.width = _this.conversion(750);
-                myCanvas.height = _this.conversion(1200)*1+responseHeight;
+                myCanvas.height = _this.conversion(1200)*1+responseHeight; 
                 ctx.fillStyle = "#fff";
-                ctx.fillRect(0,0, myCanvas.width, myCanvas.height);
-
+                ctx.fillRect(0,0, myCanvas.width, myCanvas.height);  
+                
                 // 绘制头部背景图
                 let headerImg = new Promise((resolve,reject) => {
-                    let drawImg = new Image();
+                    let drawImg = new Image();   
                     drawImg.crossOrigin = "Anonymous";
                     drawImg.src = _this.info.bookBgimgUrl;
                     drawImg.onload = function () {
                         ctx.drawImage(drawImg, 0, 0,_this.conversion(750),_this.conversion(545));
                         resolve();
-                    }
+                    } 
                 });
                 // 绘制方框
                 function createdBox(){
@@ -122,21 +133,21 @@
                             ctx.fillStyle = "#fff"
                             ctx.fill();
                         }
-                        roundRect(_this.conversion(34), _this.conversion(355), _this.conversion(680), _this.conversion(660)*1+responseHeight*1,_this.conversion(10));
-                        //清除阴影效果
+                        roundRect(_this.conversion(34), _this.conversion(355), _this.conversion(680), _this.conversion(660)*1+responseHeight*1,_this.conversion(10)); 
+                        //清除阴影效果 
                         ctx.shadowColor="rgba(0,0,0,0)";
                         resolve("");
                     })
                 };
                 //绘制虚线
-                function drawScreen() {
-                    ctx.setLineDash([15,10]);
+                function drawScreen() { 
+                    ctx.setLineDash([15,10]); 
                     ctx.lineWidth = 2;
                     ctx.strokeStyle = '#d6d6d6';
-                    ctx.beginPath();
+                    ctx.beginPath(); 
                     ctx.moveTo(_this.conversion(34),  _this.conversion(883)*1+responseHeight*1);
                     ctx.lineTo(_this.conversion(718),  _this.conversion(883)*1+responseHeight*1);
-                    ctx.stroke();
+                    ctx.stroke(); 
                     // 两个黄色点
                     ctx.beginPath()
                     ctx.fillStyle = "#f9d61d"
@@ -146,10 +157,10 @@
                     ctx.closePath();
 
                     ctx.font = _this.conversion(30)+"px 宋体";
-                    ctx.fillStyle = "#222";
+                    ctx.fillStyle = "#222";  
                     ctx.textBaseline = 'top';
-                    ctx.fillText("这是我坚持阅读的第"+_this.info.clocks+"天",  _this.conversion(110), _this.conversion(913)*1+responseHeight*1);
-                    ctx.fillText("已坚持阅读"+_this.info.books+"本书，累计"+_this.info.listens+"分钟",  _this.conversion(110), _this.conversion(963)*1+responseHeight*1);
+                    ctx.fillText("这是我坚持阅读的第"+_this.info.clocks+"天",  _this.conversion(110), _this.conversion(913)*1+responseHeight*1); 
+                    ctx.fillText("已坚持阅读"+_this.info.books+"本书，累计"+_this.info.listens+"分钟",  _this.conversion(110), _this.conversion(963)*1+responseHeight*1);   
 
                 }
                 //绘制二维码
@@ -157,47 +168,47 @@
                     return new Promise((resolve,reject) =>{
                         ctx.font = _this.conversion(24)+"px 宋体";
                         ctx.textBaseline = 'top';
-                        ctx.fillStyle = "#444";
-                        ctx.fillText("长按识别二维码", _this.conversion(227), _this.conversion(1109)*1+responseHeight*1);
-                        ctx.fillText("一修读书·"+_this.info.readName, _this.conversion(227), _this.conversion(1151)*1+responseHeight*1);
-                        let drawImg = new Image();
+                        ctx.fillStyle = "#444";  
+                        ctx.fillText("长按识别二维码", _this.conversion(227), _this.conversion(1109)*1+responseHeight*1);  
+                        ctx.fillText("一修读书·"+_this.info.readName, _this.conversion(227), _this.conversion(1151)*1+responseHeight*1); 
+                        let drawImg = new Image();   
                         drawImg.crossOrigin = "Anonymous";
                         drawImg.src = _this.info.readQrcodeImgUrl;
                         drawImg.onload = function () {
                             ctx.drawImage(drawImg, _this.conversion(80), _this.conversion(1057)*1+responseHeight*1,_this.conversion(117),_this.conversion(117));
                             resolve();
-                        }
+                        }    
                     })
                 }
                 // 绘制逗号
                 function createdComma(){
                     return new Promise((resolve,reject) =>{
-                        let drawImg = new Image();
+                        let drawImg = new Image();   
                         drawImg.crossOrigin = "Anonymous";
                         drawImg.src = "http://yun.dui88.com/yoofans/images/201805/read/poster_comma.png";
                         drawImg.onload = function () {
                             ctx.drawImage(drawImg, _this.conversion(64), _this.conversion(565),_this.conversion(80),_this.conversion(50));
                             resolve();
-                        }
+                        }     
                     })
                 };
                 //绘制头像
                 function createdIcon(){
                     return new Promise((resolve,reject) =>{
                         ctx.font = _this.conversion(24)+"px 宋体";
-                        ctx.fillStyle = "#444";
+                        ctx.fillStyle = "#444";  
                         ctx.textBaseline = 'top';
-                        ctx.fillText("今日读后感",  _this.conversion(179), _this.conversion(405));
+                        ctx.fillText("今日读后感",  _this.conversion(179), _this.conversion(405));  
                         //绘制书名
                         ctx.font = _this.conversion(38)+"px 宋体";
                         let string_h = stringHeight(_this.info.courseTitle,320)
                         for(let b = 0; b < string_h.length; b++){
-                            ctx.fillText(string_h[b],_this.conversion(179),_this.conversion(446)+(b)*_this.conversion(50));
+                            ctx.fillText(string_h[b],_this.conversion(179),_this.conversion(446)+(b)*_this.conversion(50));  
                         }
-                        let drawImg = new Image();
+                        let drawImg = new Image();   
                         drawImg.crossOrigin = "Anonymous";
-                        drawImg.src = _this.info.userImgUrl;
-
+                        drawImg.src = _this.info.userImgUrl;     
+                        
                         drawImg.onload = function () {
                             ctx.beginPath();
                             ctx.save(); // 保存当前ctx的状态
@@ -216,7 +227,7 @@
                         for(let b = 0; b < stringLength.length; b++){
                             ctx.font = _this.conversion(30)+"px 宋体";
                             ctx.textBaseline = "top";
-                            ctx.fillText(stringLength[b],_this.conversion(78),_this.conversion(640)+(b)*_this.conversion(50));
+                            ctx.fillText(stringLength[b],_this.conversion(78),_this.conversion(640)+(b)*_this.conversion(50));  
                         }
                         //绘制作者信息
                         ctx.font = _this.conversion(24)+"px 宋体";
@@ -235,14 +246,14 @@
 
                         ctx.fillStyle = '#FFF';
                         ctx.fillRect(_this.conversion(536), _this.conversion(320), _this.conversion(140),_this.conversion(190));
-                        let drawImg = new Image();
+                        let drawImg = new Image();   
                         drawImg.crossOrigin = "Anonymous";
                         drawImg.src = _this.info.courseUrl;
                         drawImg.onload = function () {
                             ctx.drawImage(drawImg, _this.conversion(542), _this.conversion(326),_this.conversion(128),_this.conversion(178));
                             resolve();
-                        }
-                    })
+                        }    
+                    })    
                 }
                 // 绘制所有canvas
                 headerImg.then(createdBox).then(createdIcon).then(createdCode).then(createdComma).then(createdBook).then(() =>{
@@ -250,9 +261,9 @@
                         drawScreen();
                     }
                     const myPoster = document.getElementById('sharePoster');
-                    let  toBase64 = myPoster.toDataURL("image/png");
+                    let  toBase64 = myPoster.toDataURL("image/png"); 
                     _this.imgUrl = toBase64;
-                })
+                })                
             }
         }
     };
@@ -273,6 +284,30 @@
         box-sizing: border-box;
         // z-index: 9;
         background: #f4f4f4;
+        padding: 42/@rem 55/@rem 0;
+        .canvas{
+            opacity: 0;
+        }
+        .btn{
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0; 
+            height: 100/@rem;  
+            background: #fbdb31; 
+            text-align: center;
+            line-height: 100/@rem; 
+            z-index: 10; 
+            font-size: 32/@rem; 
+            font-weight: 600;
+            img{
+                opacity: 0;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 10;
+            }
+        }
         img{
             width: 100%;
             display: block;
