@@ -32,7 +32,7 @@
                 let params = {
                     commentId: _this.$route.params.commentId
                 }
-                const url = `/api/comment/share`;
+                const url = `/comment/share`;
                 const res = await _this.$http.get(url, {
                     params
                 });
