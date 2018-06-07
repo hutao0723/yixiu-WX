@@ -4,6 +4,7 @@ import App from './App';
 import router from './router';
 import store from './vuex/store';
 import VueCookie from 'vue-cookie';
+import fingerprint from 'fingerprintjs2'
 var infiniteScroll = require('vue-infinite-scroll');
 Vue.use(infiniteScroll);
 
@@ -23,21 +24,17 @@ remChange();
 // // monitor 埋点
 // import { monitorHandler } from './components/utils/monitorHandler';
 // monitorHandler();
+// 设备id
+if (!window.localStorage.getItem('deviceId')) {
+  setTimeout(function(){
+    new fingerprint().get(function(deviceId) { 
+    window.localStorage.setItem('deviceId', deviceId) // a hash, representing your device fingerprint
+  })},100)
+}
 
-// lazyload 图片懒加载
-import VueLazyload from 'vue-lazyload';
-Vue.use(VueLazyload, {
-  preLoad: 1.3,
-  loading: 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png',
-  attempt: 1,
-  filter: {
-    webp(listener, options) {
-      listener.src += !options.supportWebp ? '?x-oss-process=image/quality,Q_60' : '?x-oss-process=image/format,webp';
-    }
-  }
-});
+Vue.http.headers.common['deviceId'] = window.localStorage.getItem('deviceId');
 Vue.http.headers.common['from'] = 'read';
-// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWU3mytFEThAbUxgYoDsLSGVdXwpPoDchZnGyMnEVTKiS3QcAZ2Ht9pH8sRbLgX6CQVxH6ZszUt6pLDTdFDNYq8EpDs27xWbyhrFM6Qyr7d5gq3HCZKumRZVy3YKapJYDsivP8RgBwrZ';
+// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjrgAVYrS2jWTFx5xqHDj2QQBH1uXBFMw3gMPxWGMYXWq992G8UBUUjtDPenDWhHayUB6cTjNCScruS3vsPcREhmMXmK2rxgixHsa31XHprvefiBtesVeVWdyJUbfVpW24eB5N';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
@@ -57,7 +54,6 @@ Vue.http.interceptors.push((request, next) => {
       } else {
         url = encodeURIComponent(o);
       }
-
       Vue.http.get('/getH5LoginUrl', {
         params: {
           dbredirect: url
@@ -70,12 +66,14 @@ Vue.http.interceptors.push((request, next) => {
     }
   });
 });
-
-Vue.prototype.wxShare = function () {
+Vue.prototype.setTitle = function (t) {
+  document.title = t;
+}
+Vue.prototype.wxShare = function (id) {
   let msg = {
-    title: '我已经坚持在这读书23天了，一起来读书吧！', // 分享标题
-    desc: '每天阅读10分钟，培养阅读习惯，成就更好的自己。', // 分享描述
-    link: 'http://k.youfen666test.com/reading.html#/index/home', // 分享链接 默认以当前链接
+    title: '每天10分钟，轻松阅读，日有所得', // 分享标题
+    desc: '打卡满49天，退还所有学费，还可以获得奖学金！', // 分享描述
+    link: id?'http://k.youfen666.com/reading.html#/index/home?dcd=u_'+ id:'http://k.youfen666.com/reading.html#/index/home', // 分享链接 默认以当前链接
     imgUrl: 'http://yun.dui88.com/youfen/images/read_share.png', // 分享图标
   }
   const urlData = `/wechat/getJsapiSignature`;

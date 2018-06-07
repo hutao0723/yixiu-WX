@@ -13,7 +13,8 @@
             return {
                 imgUrl:'',
                 popup:false,
-                info:{}
+                info:{},
+                isSelf:true,
             };
         },
         components:{
@@ -22,13 +23,14 @@
         mounted () {
             const _this = this;
             _this.popup = _this.$route.params.lastClock*1;
+            _this.isSelf = _this.$route.params.isClock*1;
             _this.getInfo();
         },
         methods: {
             async getInfo() {
                 let _this = this;
                 let params = {
-                    commentId: "50" // _this.$route.params.commentId
+                    commentId: _this.$route.params.commentId
                 }
                 const url = `/api/comment/share`;
                 const res = await _this.$http.get(url, {
@@ -72,13 +74,19 @@
                     row.push(temp);
                     return row
                 }
+                //得到拆分的字符串
                 let stringLength = stringHeight(_this.info.content,586);
-                let viewpointHeight = 0;
+                //响应高度，对应海报不同内容
+                let responseHeight = 0;
                 if(stringLength.length>3){
-                    viewpointHeight = (stringLength.length-3)*_this.conversion(50);
-                }
+                    responseHeight = (stringLength.length-3)*_this.conversion(50);
+                };
+                //判断是否是自己的分享，不是不显示打卡天数
+                if(!_this.isSelf){
+                    responseHeight = responseHeight - _this.conversion(135)
+                };
                 myCanvas.width = _this.conversion(750);
-                myCanvas.height = _this.conversion(1200)*1+viewpointHeight; 
+                myCanvas.height = _this.conversion(1200)*1+responseHeight; 
                 ctx.fillStyle = "#fff";
                 ctx.fillRect(0,0, myCanvas.width, myCanvas.height);  
                 
@@ -86,7 +94,7 @@
                 let headerImg = new Promise((resolve,reject) => {
                     let drawImg = new Image();   
                     drawImg.crossOrigin = "Anonymous";
-                    drawImg.src = 'https://yun.dui88.com/youfen/images/z6qj8zsviw.jpg';
+                    drawImg.src = _this.info.bookBgimgUrl;
                     drawImg.onload = function () {
                         ctx.drawImage(drawImg, 0, 0,_this.conversion(750),_this.conversion(545));
                         resolve();
@@ -114,7 +122,7 @@
                             ctx.fillStyle = "#fff"
                             ctx.fill();
                         }
-                        roundRect(_this.conversion(34), _this.conversion(355), _this.conversion(680), _this.conversion(660)*1+viewpointHeight*1,_this.conversion(10)); 
+                        roundRect(_this.conversion(34), _this.conversion(355), _this.conversion(680), _this.conversion(660)*1+responseHeight*1,_this.conversion(10)); 
                         //清除阴影效果 
                         ctx.shadowColor="rgba(0,0,0,0)";
                         resolve("");
@@ -124,24 +132,24 @@
                 function drawScreen() { 
                     ctx.setLineDash([15,10]); 
                     ctx.lineWidth = 2;
-                    ctx.strokeStyle = '#d6d6d6'; 
+                    ctx.strokeStyle = '#d6d6d6';
                     ctx.beginPath(); 
-                    ctx.moveTo(_this.conversion(34),  _this.conversion(883)*1+viewpointHeight*1); 
-                    ctx.lineTo(_this.conversion(714), _this.conversion(883)*1+viewpointHeight*1);
+                    ctx.moveTo(_this.conversion(34),  _this.conversion(883)*1+responseHeight*1);
+                    ctx.lineTo(_this.conversion(718),  _this.conversion(883)*1+responseHeight*1);
                     ctx.stroke(); 
-                    // 文字 打卡天数
+                    // 两个黄色点
                     ctx.beginPath()
                     ctx.fillStyle = "#f9d61d"
-                    ctx.arc(_this.conversion(93), _this.conversion(926)*1+viewpointHeight*1, _this.conversion(7), 0, Math.PI*2, true);
-                    ctx.arc(_this.conversion(93), _this.conversion(976)*1+viewpointHeight*1, _this.conversion(7), 0, Math.PI*2, true);
-                    ctx.fill();//画实心圆
+                    ctx.arc(_this.conversion(93), _this.conversion(926)*1+responseHeight*1, _this.conversion(7), 0, Math.PI*2, true);
+                    ctx.arc(_this.conversion(93), _this.conversion(976)*1+responseHeight*1, _this.conversion(7), 0, Math.PI*2, true);
+                    ctx.fill();
                     ctx.closePath();
 
                     ctx.font = _this.conversion(30)+"px 宋体";
                     ctx.fillStyle = "#222";  
                     ctx.textBaseline = 'top';
-                    ctx.fillText("这是我坚持阅读的第"+_this.info.clocks+"天",  _this.conversion(110), _this.conversion(913)*1+viewpointHeight*1); 
-                    ctx.fillText("已坚持阅读"+_this.info.books+"本书，累计"+_this.info.listens+"分钟",  _this.conversion(110), _this.conversion(963)*1+viewpointHeight*1);   
+                    ctx.fillText("这是我坚持阅读的第"+_this.info.clocks+"天",  _this.conversion(110), _this.conversion(913)*1+responseHeight*1); 
+                    ctx.fillText("已坚持阅读"+_this.info.books+"本书，累计"+_this.info.listens+"分钟",  _this.conversion(110), _this.conversion(963)*1+responseHeight*1);   
 
                 }
                 //绘制二维码
@@ -150,13 +158,13 @@
                         ctx.font = _this.conversion(24)+"px 宋体";
                         ctx.textBaseline = 'top';
                         ctx.fillStyle = "#444";  
-                        ctx.fillText("长按识别二维码", _this.conversion(227), _this.conversion(1109)*1+viewpointHeight*1);  
-                        ctx.fillText("一修读书·"+_this.info.readName, _this.conversion(227), _this.conversion(1151)*1+viewpointHeight*1); 
+                        ctx.fillText("长按识别二维码", _this.conversion(227), _this.conversion(1109)*1+responseHeight*1);  
+                        ctx.fillText("一修读书·"+_this.info.readName, _this.conversion(227), _this.conversion(1151)*1+responseHeight*1); 
                         let drawImg = new Image();   
                         drawImg.crossOrigin = "Anonymous";
                         drawImg.src = _this.info.readQrcodeImgUrl;
                         drawImg.onload = function () {
-                            ctx.drawImage(drawImg, _this.conversion(80), _this.conversion(1057)*1+viewpointHeight*1,_this.conversion(117),_this.conversion(117));
+                            ctx.drawImage(drawImg, _this.conversion(80), _this.conversion(1057)*1+responseHeight*1,_this.conversion(117),_this.conversion(117));
                             resolve();
                         }    
                     })
@@ -188,8 +196,7 @@
                         }
                         let drawImg = new Image();   
                         drawImg.crossOrigin = "Anonymous";
-                        //drawImg.src = _this.info.userImgUrl;    
-                        drawImg.src = "https://yun.duiba.com.cn/youfen/images/tvxra9poq7.png"    
+                        drawImg.src = _this.info.userImgUrl;     
                         
                         drawImg.onload = function () {
                             ctx.beginPath();
@@ -215,7 +222,7 @@
                         ctx.font = _this.conversion(24)+"px 宋体";
                         ctx.textBaseline = "top";
                         let string_w = ctx.measureText(_this.info.userNickname).width;
-                        ctx.fillText(_this.info.userNickname,_this.conversion(668)-string_w,_this.conversion(792)*1+viewpointHeight*1);
+                        ctx.fillText(_this.info.userNickname,_this.conversion(668)-string_w,_this.conversion(640)+(stringLength.length)*_this.conversion(50));
                         //转换时间格式
                         let createdTime = _this.info.releaseTime.replace(/-/g,'/');
                         createdTime = new Date(createdTime);
@@ -224,7 +231,7 @@
                         let day = createdTime.getDate();
                         let time ="于"+year+"."+month+"."+day+" "+_this.info.releaseTimeLabel;
                         string_w = ctx.measureText(time).width;
-                        ctx.fillText(time,_this.conversion(668)-string_w,_this.conversion(824)*1+viewpointHeight*1);
+                        ctx.fillText(time,_this.conversion(668)-string_w,_this.conversion(672)+(stringLength.length)*_this.conversion(50));
 
                         ctx.fillStyle = '#FFF';
                         ctx.fillRect(_this.conversion(536), _this.conversion(320), _this.conversion(140),_this.conversion(190));
@@ -239,7 +246,9 @@
                 }
                 // 绘制所有canvas
                 headerImg.then(createdBox).then(createdIcon).then(createdCode).then(createdComma).then(createdBook).then(() =>{
-                    drawScreen();
+                    if(_this.isSelf){
+                        drawScreen();
+                    }
                     const myPoster = document.getElementById('sharePoster');
                     let  toBase64 = myPoster.toDataURL("image/png"); 
                     _this.imgUrl = toBase64;

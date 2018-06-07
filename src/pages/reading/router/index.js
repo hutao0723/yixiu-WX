@@ -12,7 +12,7 @@ export default new Router({
         require.ensure([], function () {
           resolve(require('../views/Index'));
         }, 'reading_read');
-      }
+      },
     },
     {
       name: 'index',
@@ -32,7 +32,7 @@ export default new Router({
         }
       },
       {
-        path: '/index/card',
+        path: '/index/card/:isTodayClock',
         component: function (resolve) {
           require.ensure([], function () {
             resolve(require('../views/card/Card'));
@@ -113,6 +113,115 @@ export default new Router({
         }, 'reading_audiolist');
       }
     },
+    // 用户中心
+    {
+      path: '/personal',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/personal/Personal'));
+        }, 'reading_personal');
+      },
+    },
+
+    // 我的收益
+    {
+      path: '/personal/share',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/personal/share/Share'));
+        }, 'reading_share');
+      },
+      meta: {
+        title: '我的收益'
+      }
+    },
+    // 提现记录
+    {
+      path: '/personal/share/cash-history',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/personal/share/CashHistory'));
+        }, 'reading_cashHistory');
+      },
+      meta: {
+        title: '提现记录'
+      }
+    },
+
+    // 收益记录
+    {
+      path: '/personal/share/earnings-history',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/personal/share/EarningHistory'));
+        }, 'reading_earningHistory');
+      },
+      meta: {
+        title: '收益记录'
+      }
+    },
+
+    // 我的客户
+    {
+      path: '/personal/share/correspondent',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/personal/share/Correspondent'));
+        }, 'reading_correspondent');
+      },
+      meta: {
+        title: '我的邀请'
+      }
+    },
+    // 提现中
+    {
+      path: '/personal/share/deposit-success',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/personal/share/DepositSuccess'));
+        }, 'reading_depositSuccess');
+      },
+      meta: {
+        title: '提现中'
+      }
+    },
+    // 提现
+    {
+      path: '/personal/share/cash',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/personal/share/Cash'));
+        }, 'reading_cash');
+      },
+      meta: {
+        title: '提现'
+      }
+    },
+    // 海报
+    {
+      path: '/personal/share/poster',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/personal/share/Poster'));
+        }, 'reading_poster');
+      },
+      meta: {
+        title: '海报'
+      }
+    },
+
+    // 推广规则
+    {
+      path: '/personal/share/generalize-rule',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/personal/share/GeneralizeRule'));
+        }, 'reading_generalizeRule');
+      },
+      meta: {
+        title: '推广规则'
+      }
+    },
     {
       path: '/audio/article/:courseId',
       component: function (resolve) {
@@ -122,7 +231,7 @@ export default new Router({
       }
     },
     {
-      path: '/poster/:commentId/:lastClock',
+      path: '/poster/:commentId/:lastClock/:isClock',
       name:'poster',
       component: function (resolve) {
         require.ensure([], function () {

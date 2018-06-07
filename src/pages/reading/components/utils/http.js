@@ -3,7 +3,7 @@ import Vue from 'vue';
 // HTTP工具类
 export default class http {
 
-  static get (url, data) {
+  static get(url, data) {
     return Vue.http.get(url, data);
   }
 
@@ -11,8 +11,8 @@ export default class http {
     return Vue.http.put(url, data);
   }
 
-  static post (url, data) {
-    return Vue.http.post(url, data);
+  static post (url, data, opt) {
+    return Vue.http.post(url, data, opt);
   }
 
   static patch (url, data) {
