@@ -59,7 +59,7 @@
         this.courseId = this.$route.params.courseId;
         this.readId = this.$route.params.readId;
         console.log(this.courseId,this.readId)
-        this.$http.get('/api/readBookCourse/courseDetail?readId='+this.readId +'&courseId='+this.courseId).then(res=>{
+        this.$http.get('/readBookCourse/courseDetail?readId='+this.readId +'&courseId='+this.courseId).then(res=>{
           let resp = res.data;
           if(resp.success){
             this.courseDetail = resp.data;
@@ -78,7 +78,7 @@
           dayNum:this.courseDetail.days
         }
         console.log(params)
-        this.$http.post('/api/user/read/clock',params,{emulateJSON: true}).then(res=>{
+        this.$http.post('/user/read/clock',params,{emulateJSON: true}).then(res=>{
           let resp = res.data;
           if(resp.success){
             let commentId = resp.data.commentId;
