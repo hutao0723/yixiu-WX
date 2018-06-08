@@ -10,7 +10,8 @@
             <div v-show="item.show == 2" @click="unfoldToggle(1,index)" class="item-toggle">收起</div>
             <div class="item-book">
               <div class="book-bg">
-                <img class="book-img" :src="item.courseVerticalCover" alt="">
+                <img class="book-img" :src="item.courseVerticalCover" alt="" v-if="item.courseVerticalCover">
+                <img class="book-img" src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="" v-else>
               </div>
               <div class="book-name otw">{{item.courseTitle}}</div>
               <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
@@ -19,6 +20,7 @@
               <span @click="setCommentPraise(item.id,item.userPraise)" class="fr">
                 <i class="iconfont icon-dianzan" v-show="!item.userPraise"></i>
                 <i class="iconfont icon-heart" :style="{color:'red'}" v-show="item.userPraise"></i>
+                <span>{{item.praiseCount}}</span>
               </span>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr" v-if="userId == item.userId"></router-link>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr" v-if="userId != item.userId"></router-link>
@@ -65,7 +67,7 @@
         let valueDate = new Date(value)
         let valueDateNum = valueDate.getTime()
         // 获取当时的时间戳
-        let key = Number(nowDateNum) - Number(valueDateNum)
+        let key = parseInt(nowDateNum) - parseInt(valueDateNum)
 
         let today = new Date();
         today.setHours(0);
@@ -75,7 +77,7 @@
 
         let yesterday = new Date(today);
         let yesterdayNum = yesterday.getTime()
-        let yest = Number(valueDateNum) - Number(yesterdayNum);
+        let yest = parseInt(valueDateNum) - parseInt(yesterdayNum);
         
         let text = '';
         
