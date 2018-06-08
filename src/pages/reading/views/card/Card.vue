@@ -23,7 +23,7 @@
     </div>
     <div class="book-book" >
       <div class="book-detail-box" v-show="afterToday||isToday">
-        <div class="book-img" @click.stop="playAudio(readId,courseId)">
+        <div class="book-img" @click.stop="playAudio(readId,courseId)" v-show="courseDetail">
           <img v-if="courseDetail.courseUrl" :src="courseDetail.courseUrl" alt="">
           <img v-else src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-book-cover.png" alt="">
           <div class="book-audio" v-if="afterToday||isToday"></div>
@@ -34,11 +34,11 @@
         <div class="book-detail">
           <div class="book-title">{{courseDetail.courseTitle}}</div>
           <div class="book-author">
-            <span>{{courseDetail.author}}</span>
+            <span>{{courseDetail.author}} <span class="audio-right">著</span></span>
             <span class="book-btn" >
-              <span  v-show="courseDetail.clockState==1&&courseDetail.commentState==1" @click.stop="goPoster()">查看</span>
-              <span  v-show="courseDetail.clockState==1&&courseDetail.commentState==0" @click.stop="goComment()">写想法</span>
-              <span  v-show="courseDetail.clockState==0" @click.stop="goComment()">去打卡</span>
+              <span  v-show="courseDetail.clockState&&courseDetail.commentState" @click.stop="goPoster()">查看</span>
+              <span  v-show="courseDetail.clockState&&!courseDetail.commentState" @click.stop="goComment()">写想法</span>
+              <span  v-show="!courseDetail.clockState" @click.stop="goComment()">去打卡</span>
           </span>
           </div>
         </div>
@@ -167,6 +167,7 @@
           let resp = res.data;
           if(resp.success){
             _this.courseDetail = resp.data;
+            console.log(_this.courseDetail)
             // if(!_this.courseDetail.courseUrl){
             //   _this.courseDetail.courseUrl = 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-book-cover.png'
             // }
@@ -370,11 +371,15 @@
           font-size: 30/@rem;
           line-height: 42/@rem;
           margin-bottom: 45/@rem;
+          font-weight: 600;
         }
         .book-author{
           font-size: 26/@rem;
           line-height: 37/@rem;
           color:#666;
+          .audio-right{
+            margin-left: 16/@rem;
+          }
           .book-btn{
             background: #FFE555;
             width:130/@rem;

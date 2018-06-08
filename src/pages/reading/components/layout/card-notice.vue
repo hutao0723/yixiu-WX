@@ -60,6 +60,7 @@
         height: 90/@rem;
         line-height: 90/@rem;
         background: #FFE555;
+        font-weight: 600;
       }
       .notice-content{
         position: relative;
@@ -83,6 +84,7 @@
             text-align: center;
             line-height: 44/@rem;
             margin-bottom: 9/@rem;
+            font-weight: 600;
           }
           i{
             width:4/@rem;
@@ -102,6 +104,8 @@
         line-height: 82/@rem;
         font-size: 28/@rem;
         background: #fff;
+        font-weight: 600;
+
       }
       .notice-btn:active{
         background: #E5E5E5;
