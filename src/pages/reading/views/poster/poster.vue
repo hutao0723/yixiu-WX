@@ -409,7 +409,7 @@ export default {
   box-sizing: border-box;
   // z-index: 9;
   background: #f4f4f4;
-  padding: 42 / @rem 55 / @rem 0;
+  padding: 42/@rem 55/@rem 142/@rem 55/@rem;
   .canvas {
     opacity: 0;
   }
