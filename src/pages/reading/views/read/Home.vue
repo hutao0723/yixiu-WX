@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="home-bottom" @click="tabActiveToggle(false)" :class="{bottom:bottomNavToggle}" v-show="tabActive">去选课程</div>
-      <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="!tabActive&&readList.length>0">
+      <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="!tabActive&&readList.length>0&&payBtnShow">
         <p>
           <span class="text-del">{{selectCourseObj.costPrice}}</span>
           <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>
@@ -106,9 +106,9 @@
       <p class="text-g">微信添加老师后，你的专属老师会在课程</br>开始前邀请你进入对应班级群</p>
     </div>
     <!-- 已关注已开课 -->
-    <div class="home-already" v-if="pageStatus == 4">
+    <div class="home-already" v-if="pageStatus ==4">
       <AudioBar/>
-      <h2>今日学习
+      <h2>今日学习{{pageStatus}}
         <span> | 第{{todayBookDetail.days}}/{{todayBookDetail.totalDays}}天</span>
       </h2>
       <div class="already-book">
@@ -216,6 +216,7 @@
         maincontent: 0,
         bodycontent: 0,
         payCancelToggle: false,
+        payBtnShow: true,
 
 
       };
@@ -275,10 +276,8 @@
     created() {},
     async mounted() {
       let self = this;
-      console.log()
       // 设置标题
       this.setTitle('一修读书')
-
       // 如果微信分享链接=>去掉from
       if (window.location.href.indexOf('from') != -1) {
         location.replace('http://k.youfen666.com/reading.html#/index/home?' + window.location.href.split('?')[2])
@@ -294,11 +293,10 @@
       }
 
       // 获取用户信息
-      let userState = await self.getState();
+      let userState = await self.getUsetState();
       self.wxShare(userState.data.userId);
       self.readId = userState.data.readId;
-
-
+      
       if (userState.data) {
         if (
           userState.data.readState == -1
@@ -400,7 +398,7 @@
           })
         }
       }
-
+      
       self.changeLoginDays();
       self.changeReadStatus();
 
@@ -586,14 +584,14 @@
         });
       },
       // 获取用户信息
-      async getState() {
-
+      async getUsetState() {
         let self = this;
         let params = {};
-        const url = API.readState;
+        const url = '/user/read/state';
         const res = await this.$http.get(url, {
           params
         });
+        
         return res.data;
       },
       // 首页评论
@@ -654,8 +652,12 @@
         }).then((res) => {
           this.readList = res.data.data;
           if (res.data.data.length > 0) {
-            this.selectCourseId = res.data.data[0].readId
-            this.selectCourseObj = res.data.data[0];
+            if(res.data.data[0].purchased){
+              this.payBtnShow = false;
+            }else{
+              this.selectCourseId = res.data.data[0].readId
+              this.selectCourseObj = res.data.data[0];
+            }
           }
         });
       },
