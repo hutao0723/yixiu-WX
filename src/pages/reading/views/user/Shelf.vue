@@ -9,7 +9,7 @@
           <div class="book-table" v-for="(item, index) in bookList" >
             <div @click="getdayNumInfo(item.id,item.readId,item.title)">
               <div class="book-cover">
-                <img :src="item.imgUrl">
+                <img :src="item.imgUrl || frontImgUrl">
               </div>
               <div class="book-name line2">《{{item.title}}》</div>
             </div>
@@ -67,6 +67,8 @@ export default {
       swipeList: [],
       bookList: [],
       dayNumList: [],
+
+      frontImgUrl: "http://yun.dui88.com/youfen/images/read_course_none.png",
 
       readId: null,
       pageNum: 1,
@@ -206,6 +208,7 @@ export default {
     .fontSize(24);
     color: @color-strong;
     line-height: 33/@rem;
+    font-weight: bold;
   }
 }
 .no-book{
