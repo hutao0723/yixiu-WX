@@ -6,12 +6,13 @@
                     <img :src="item.headImgurl?item.headImgurl:'http://yun.dui88.com/youfen/images/201806/portrait.png'" alt="" class="cml-image">
                     <div class="cml-info">
                         <strong>{{item.nickName}}</strong>
-                        <p class="cmli-date" v-if="Boolean(initIndex)">{{`有效时间${item.remainingBindTime}小时`}}</p>
+                        <!-- <p class="cmli-date" v-if="Boolean(initIndex)">{{`有效时间${item.remainingBindTime}小时`}}</p> -->
                     </div>
                 </div>
                 <div class="cml-sum">
-                    <p class="cmls-money cmls">共<em>{{item.totalPromotionEarnings | dealEearning}}</em>元</p>
-                    <p class="cmls-count cmls">{{item.totalTradeNum}}笔</p>
+                    <p class="cmls-money cmls" v-if="!item.totalTradeNum || item.totalTradeNum == 0">未产生贡献</p>
+                    <p class="cmls-money cmls" v-else>贡献  <em>{{item.totalPromotionEarnings | dealEearning}}</em>元</p>
+                    <!-- <p class="cmls-count cmls">{{item.totalTradeNum}}笔</p> -->
                 </div>
             </li>
         </ul>

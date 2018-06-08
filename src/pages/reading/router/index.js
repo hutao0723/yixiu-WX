@@ -161,7 +161,7 @@ export default new Router({
       }
     },
 
-    // 我的客户
+    // 我的邀请
     {
       path: '/personal/share/correspondent',
       component: function (resolve) {
@@ -197,7 +197,7 @@ export default new Router({
         title: '提现'
       }
     },
-    // 海报
+    // 邀请海报
     {
       path: '/personal/share/poster',
       component: function (resolve) {
@@ -206,7 +206,7 @@ export default new Router({
         }, 'reading_poster');
       },
       meta: {
-        title: '海报'
+        title: '邀请海报'
       }
     },
 
