@@ -180,13 +180,14 @@
     changeLoginDays: testUrl + '/user/stat/changeLoginDays',
     changeReadStatus: testUrl + '/user/stat/changeReadStatus',
     readDetail: testUrl + '/user/read/detail',
-    readState: testUrl + '/user/read/state',
     commentTop: testUrl + '/comment/top',
     commonPraise: testUrl + '/common/praise',
     readList: testUrl + '/read/readList',
     courseDetailByDate: testUrl + '/readBookCourse/courseDetailByDate',
     bookList: testUrl + '/readBook/bookList',
     courseList: testUrl + '/readBookCourse/courseList',
+    userState: testUrl + '/user/read/state',
+    
   };
 
 
@@ -296,7 +297,7 @@
       let userState = await self.getUsetState();
       self.wxShare(userState.data.userId);
       self.readId = userState.data.readId;
-      
+      alert(userState.data.readState)
       if (userState.data) {
         if (
           userState.data.readState == -1
@@ -587,7 +588,8 @@
       async getUsetState() {
         let self = this;
         let params = {};
-        const url = '/user/read/state';
+        // const url = API.userState;
+        const url = API.userState;
         const res = await this.$http.get(url, {
           params
         });
