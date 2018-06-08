@@ -259,10 +259,10 @@
       }
       this.setTitle('一修读书')
 
-      if (self.$route.query.dcd && !self.$route.query.isPay) {
+      if (self.$route.query.dcd) {
         self.getDcd(self.$route.query.dcd)
       }
-      if (self.$route.query.courseId && !self.$route.query.isPay) {
+      if (self.$route.query.courseId) {
         self.tabActive = false;
         self.buy(self.$route.query.courseId, 4)
       }
@@ -400,7 +400,7 @@
         console.log('拉起支付')
         const orderId = await this.placeOrder({
           itemId,
-          itemType
+          itemType,
         });
         if (!orderId) {
           return false;
@@ -423,7 +423,8 @@
         const url = `/order/submit`;
         const res = await this.$http.post(url, {
           itemId,
-          itemType
+          itemType,
+          dcd: this.$route.query.dcd?this.$route.query.dcd: '',
         });
 
         if (!res.data.success) {
