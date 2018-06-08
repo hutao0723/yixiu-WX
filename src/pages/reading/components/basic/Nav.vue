@@ -38,7 +38,7 @@
               title: '打卡',
               icon: 'icon-date',
               active: 'icon-date active tag',
-              path: '/index/card/1',
+              path: '/index/card?isClock=1',
               imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav07.png',
               imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav08.png'
             },
@@ -83,7 +83,7 @@
               path: '/index/user',
               imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav04.png',
               imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav05.png'
-              
+
             }
           ]
         }
