@@ -76,11 +76,11 @@
 
         let yesterday = new Date(today);
         let yesterdayNum = yesterday.getTime()
-        let yes = valueDateNum - yesterdayNum;
+        let yest = valueDateNum - yesterdayNum;
         
         let text = '';
         
-        alert(key,yes)
+        alert(yest-key)
         if (key > 0 && key < 60 * 1000) {
           text = '刚刚'
         }
@@ -93,11 +93,11 @@
           text = '1小时前'
         }
 
-        if (key >= 2 * 60 * 60 * 1000 && key < yes) {
+        if (key >= 2 * 60 * 60 * 1000 && key < yest) {
           text = (valueDate.getHours() < 10 ? '0' + valueDate.getHours() : valueDate.getHours()) + ':' + (valueDate.getMinutes() < 10 ? '0' + valueDate.getMinutes() : valueDate.getMinutes())
         }
 
-        if (key >= yes) {
+        if (key >= yest) {
           text = (valueDate.getMonth() + 1 < 10 ? '0' + (valueDate.getMonth() + 1) : valueDate.getMonth() + 1) + '-' + (valueDate.getDate() < 10 ? '0' + valueDate.getDate() : valueDate.getDate())
         }
         return text
