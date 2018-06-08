@@ -96,9 +96,17 @@ export default {
         this.journeyList.forEach((item,index)=>{
           // 获取时间
           if(parseInt(item.releaseTime.substring(5,7)) < 10){
-            this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(6,7) + "." + item.releaseTime.substring(8,10)
+            if(parseInt(item.releaseTime.substring(8,10)) < 10){
+              this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(6,7) + "." + item.releaseTime.substring(9,10)
+            }else{
+              this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(6,7) + "." + item.releaseTime.substring(8,10)
+            }
           }else{
-            this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(5,7) + "." + item.releaseTime.substring(8,10)
+            if(parseInt(item.releaseTime.substring(8,10)) < 10){
+              this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(5,7) + "." + item.releaseTime.substring(9,10)
+            }else{
+              this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(5,7) + "." + item.releaseTime.substring(8,10)
+            }
           }
         })
       }else{
