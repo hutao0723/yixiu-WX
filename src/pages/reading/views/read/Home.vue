@@ -152,9 +152,7 @@
         <div class="alert-btn" @click="alertToggle = false;">取消</div>
         <div class="alert-bg" @click="alertToggle = false;"></div>
       </div>
-      <div v-show="noneValueAlert" class="already-no">
-        <p>内容还没有解锁喔！</p>
-      </div>
+      <div v-show="noneValueAlert" class="already-no">内容还没有解锁喔！</div>
     </div>
     <div class="home-pop" v-show="payCancelToggle">
       <div class="pop-content">
@@ -1341,6 +1339,8 @@
       overflow: scroll;
       position: relative;
       box-sizing: border-box;
+      -webkit-overflow-scrolling: touch;
+      
       .already-no{
         .text(32,90);
         .size(420,90);

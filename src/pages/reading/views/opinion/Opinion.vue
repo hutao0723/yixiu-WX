@@ -73,7 +73,7 @@
 
         let yesterday = new Date(today);
         let yesterdayNum = yesterday.getTime()
-        let yes = valueDateNum - yesterdayNum;
+        let yes = nowDateNum - yesterdayNum ;
 
         let Y, M, D, h, m, s;
         Y = valueDate.getFullYear() + '-';
@@ -82,7 +82,7 @@
         h = (valueDate.getHours() < 10 ? '0' + valueDate.getHours() : valueDate.getHours()) + ':';
         m = (valueDate.getMinutes() < 10 ? '0' + valueDate.getMinutes() : valueDate.getMinutes());
         let text = '';
-
+        console.log(key,yes)
         if (key > 0 && key < 60 * 1000) {
           text = '刚刚'
         }
