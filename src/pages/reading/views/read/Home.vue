@@ -256,14 +256,20 @@
       }
 
       // 防止cookie丢失
+      let refreshCookie = true;
       if (window.location.href.indexOf('afterLogin') == -1) {
         let res = await this.$http.get('/baseLogin', {
           params: {
             dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
           }
         })
-        if (res.data.success && res.data.data) location.href = res.data.data
+        if (res.data.success && res.data.data) {
+          refreshCookie = false;
+          location.href = res.data.data;
+        }
       }
+ 
+    if (refreshCookie) {
       this.setTitle('一修读书')
 
       if (self.$route.query.dcd) {
@@ -392,7 +398,7 @@
       // }, 500)
       // // window.addEventListener('scroll', this.handleScroll,true);
       // self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, true);
-
+     }
     },
     methods: {
 
