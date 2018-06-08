@@ -56,7 +56,11 @@
       }
     },
     mounted: function () {
-      this.isTodayClock = this.$route.query.isClock;
+      if(this.$route.query.isClock){
+        this.isTodayClock = this.$route.query.isClock
+      }else{
+        this.isTodayClock = 1
+      }
     },
     watch: {
       calendarDate (){
