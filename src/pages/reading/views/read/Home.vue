@@ -152,8 +152,8 @@
         <div class="alert-btn" @click="alertToggle = false;">取消</div>
         <div class="alert-bg" @click="alertToggle = false;"></div>
       </div>
-      <div v-show="noneValueAlert">
-        <p>没有结果</p>
+      <div v-show="noneValueAlert" class="already-no">
+        <p>内容还没有解锁喔！</p>
       </div>
     </div>
     <div class="home-pop" v-show="payCancelToggle">
@@ -568,6 +568,10 @@
       // 开始播放
       playAudio(id, lockStatus) {
         if (lockStatus) {
+          this.noneValueAlert = true;
+          setTimeout(()=>{
+            this.noneValueAlert = false;
+          }, 2000)
           return false;
         }
         play.audioInit(this.readId, id, true)
@@ -712,6 +716,9 @@
       getDetailList(item) {
         if (item.lockStatus) {
           this.noneValueAlert = true;
+          setTimeout(()=>{
+            this.noneValueAlert = false;
+          }, 2000)
           return false;
         }
         let self = this;
@@ -1327,11 +1334,24 @@
       }
     }
     .home-already {
-      height: 100%;
       padding: 0 36/@rem;
       padding-bottom: 100/@rem;
-      overflow-y: scroll;
-      -webkit-overflow-scrolling: touch;
+      width: 100%;
+      height: 100%;
+      overflow: scroll;
+      position: relative;
+      box-sizing: border-box;
+      .already-no{
+        .text(32,90);
+        .size(420,90);
+        .pos(165,600);
+        width:420px;
+        height:90px;
+        background:rgba(0,0,0,0.66);
+        border-radius:10px;
+        color: #fff;
+        text-align: center;
+      }
       h2 {
         .text(50,
         70);
@@ -1350,6 +1370,7 @@
         height: 300/@rem;
         border-radius: 20/@rem;
         position: relative;
+        width: 678/@rem;
         .book-img {
           .pos(40,
           30);
