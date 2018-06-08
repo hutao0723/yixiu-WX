@@ -70,7 +70,7 @@ export default {
 			this.popup = false;
 		},
 		conversion(data) {
-			return data * 2;
+			return data;
 		},
 		createdCanvas() {
 			const _this = this;
