@@ -23,7 +23,7 @@
               </span>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr" v-if="userId == item.userId"></router-link>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr" v-if="userId != item.userId"></router-link>
-              <span>{{item.releaseTime| timeTransition}}</span>
+              <span class="fl">{{item.releaseTime | timeTransition}}</span>
             </div>
           </div>
     </div>
@@ -82,7 +82,6 @@
         h = (valueDate.getHours() < 10 ? '0' + valueDate.getHours() : valueDate.getHours()) + ':';
         m = (valueDate.getMinutes() < 10 ? '0' + valueDate.getMinutes() : valueDate.getMinutes());
         let text = '';
-        console.log(key,yes)
         if (key > 0 && key < 60 * 1000) {
           text = '刚刚'
         }
