@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="home-bottom" @click="tabActiveToggle(false)" :class="{bottom:bottomNavToggle}" v-show="tabActive">去选课程</div>
-      <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="!tabActive">
+      <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="!tabActive&&readList.length>0">
         <p>
           <span class="text-del">{{selectCourseObj.costPrice}}</span>
           <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>
@@ -29,13 +29,13 @@
           <img src="http://yun.dui88.com/youfen/images/read_img05.jpg" alt="">
           <img src="http://yun.dui88.com/youfen/images/read_img06.jpg" alt="">
         </div>
-        <div class="home-review" v-if="reviewList.length> 0">
+        <div class="home-review" v-show="reviewList.length> 0">
           <h2>学员观点</h2>
           <div class="item" v-for="(item,index) in reviewList" :key="index">
             <img :src="item.userImgUrl" alt="" class="item-header">
             <div class="item-name">{{item.userNickname}}</div>
             <div class="item-periods">{{item.readName}}第{{item.readStageNum}}期学员</div>
-            <div class="item-content">{{item.content}}</div>
+            <div class="item-content" ref="cheight" :id="'content' + index">{{item.content}}</div>
             <div class="item-book">
               <div class="book-bg">
                 <img class="book-img" :src="item.courseUrl" alt="">
@@ -45,19 +45,19 @@
               <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
             </div>
             <div class="item-bottom">
-              <!-- <span @click="getCommentPraise(item.id,item.userPraise)" v-if="pageStatus != 0">
+              <span @click="getCommentPraise(item.id,item.userPraise)" v-if="pageStatus != 0">
                 <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
                 <span class="fr">{{item.praiseCount}}</span>
               </span>
               <router-link :to="{ path: '/poster/' + item.id+'/0/1'}" tag="a" class="iconfont icon-share fr"></router-link>
-              <span>{{item.releaseTime| timeTransition}}</span> -->
+              <!-- <span>{{item.releaseTime| timeTransition}}</span> -->
             </div>
           </div>
         </div>
       </div>
       <div class="home-course" v-show="!tabActive">
         <div class="item" v-for="(item,index) in readList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
-          @click="selectCourse(item)">
+          @click="selectCourse(item)" v-show="readList.length > 0">
           <div class="item-box">
             <div class="item-top">
               <div class="item-none" v-if="item.purchased"></div>
@@ -72,6 +72,10 @@
               <p v-html="item.briefer"></p>
             </div>
           </div>
+        </div>
+        <div v-show="!readList.length" class="item-none">
+          <img src="https://yun.duiba.com.cn/yoofans/images/201805/read/index.png" alt="">
+          <p>暂无可购买的</p>
         </div>
       </div>
     </div>
@@ -115,10 +119,14 @@
         </div>
       </div>
       <h2>我的书架
-        <span> | 缺卡{{todayBookDetail.lackClockDays}}天</span>
+        <span> |
+          <a href="/index/card/0">缺卡{{todayBookDetail.lackClockDays}}天 ></a>
+        </span>
+
       </h2>
       <div class="already-list clearfix">
-        <div class="item" v-for="(item,index) in historyBookList" :key="index" @click="getCourseList(item)">
+        <div class="item" v-for="(item,index) in historyBookList" :key="index" @click="getDetailList
+        (item)">
           <div class="item-box">
             <img :src="item.imgUrl" alt="" class="item-img">
             <div class="item-lock" v-if="item.lockStatus">
@@ -254,7 +262,7 @@
 
       // console.log(this.$route)
 
-      if(window.location.href.indexOf('from') != -1){
+      if (window.location.href.indexOf('from') != -1) {
         location.replace('http://k.youfen666.com/reading.html#/index/home?' + window.location.href.split('?')[2])
       }
       this.setTitle('一修读书')
@@ -420,7 +428,7 @@
         itemType
       }) {
         console.log('下单')
-        const url = `/order/submit`;
+        const url = `/api/order/submit`;
         const res = await this.$http.post(url, {
           itemId,
           itemType
@@ -441,7 +449,7 @@
       }) {
         console.log('预支付')
         const payType = 'WECHATREADH5APAY';
-        const url = `/pay/submit`;
+        const url = `/api/pay/submit`;
         const res = await this.$http.post(url, {
           orderId,
           payType
@@ -573,7 +581,7 @@
         params = {
           dcd: dcd,
         }
-        const url = `/distribution/binding`;
+        const url = `/api/distribution/binding`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -584,7 +592,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/stat/changeLoginDays`;
+        const url = `/api/user/stat/changeLoginDays`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -595,7 +603,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/stat/changeReadStatus`;
+        const url = `/api/user/stat/changeReadStatus`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -620,7 +628,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/read/detail`;
+        const url = `/api/user/read/detail`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -628,12 +636,13 @@
         });
       },
       async getThumbUp() {
+
         let self = this;
         let params = {};
         params = {
 
         }
-        const url = `/user/read/state`;
+        const url = `/api/user/read/state`;
         const res = await this.$http.get(url, {
           params
         });
@@ -641,25 +650,56 @@
       },
 
       getCommentTop() {
+
         let self = this;
         let params = {};
         params = {}
-        const url = `/comment/top`;
+        const url = `/api/comment/top`;
         this.$http.get(url, {
           params
         }).then((res) => {
           this.reviewList = res.data.data.content;
 
+          function countLines(ele) {
+            var styles = window.getComputedStyle(ele, null);
+            var lh = parseInt(styles.lineHeight, 10);
+            var h = parseInt(styles.height, 10);
+            var lc = Math.round(h / lh);
+            console.log('line count:', lc, 'line-height:', lh, 'height:', h);
+            return lc;
+          }
+          this.$mount()
+
+ 
+          // setTimeout(() => {
+            let oo = document.getElementById('content1')
+            console.log(countLines(oo))
+          // }, 500)
+
+
+          // for (let i = 0; i < this.reviewList.length; i++) {
+          //   const element = this.reviewList[i];
+
+          //   let textLength = document.getElementById('content1').getClientRects().length
+          //   let valueHeight = this.$refs.cheight[1].getBoundingClientRect().height;
+
+          //   console.log(document.getElementById('content1'))
+
+          // }
+
         });
       },
       getCommentPraise(id, status) {
+        if (this.pageStatus == 0) {
+          return false;
+        }
         let self = this;
         let params = {};
         params = {
           status: status ? 0 : 1,
           commentId: id
         }
-        const url = `/comment/praise`;
+        const url = `/api/comment/praise`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -670,7 +710,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/read/readList`;
+        const url = `/api/read/readList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -678,7 +718,6 @@
           if (res.data.data.length > 0) {
             this.selectCourseId = res.data.data[0].readId
             this.selectCourseObj = res.data.data[0];
-
           }
         });
       },
@@ -698,7 +737,7 @@
           readId: this.readId,
           date: date,
         }
-        const url = `/readBookCourse/courseDetailByDate`;
+        const url = `/api/readBookCourse/courseDetailByDate`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -711,14 +750,15 @@
         params = {
           readId: this.readId,
         }
-        const url = `/readBook/bookList`;
+        const url = `/api/readBook/bookList`;
         this.$http.get(url, {
           params
         }).then((res) => {
           this.historyBookList = res.data.data.content;
         });
       },
-      getCourseList(item) {
+
+      getDetailList(item) {
         if (item.lockStatus) {
           return false;
         }
@@ -728,7 +768,7 @@
           readId: this.readId,
           bookId: item.id,
         }
-        const url = `/readBookCourse/courseList`;
+        const url = `/api/readBookCourse/courseList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -763,9 +803,7 @@
 
   .home-main {
     .home-type {
-      padding-top: 100/@rem;
       background: #f1f1f1;
-      padding-bottom: 100/@rem;
       box-sizing: border-box;
     }
     .home-service {
@@ -781,6 +819,8 @@
       bottom: 240/@rem;
     }
     .home-detail {
+      padding-top: 100/@rem;
+      /* padding-bottom: 100/@rem; */
       -webkit-overflow-scrolling: touch;
       position: absolute;
       transition: all 1s cubic-bezier(0.86, 0, 0.03, 1);
@@ -1029,10 +1069,12 @@
     }
     .home-course {
       background: #f1f1f1;
-      padding-top: 60/@rem;
+      padding-top: 160/@rem;
       padding-bottom: 120/@rem;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
+      height: 100%;
+      box-sizing: border-box;
       .item,
       .item-name,
       .item-box,
@@ -1048,6 +1090,30 @@
         /* Safari and Chrome */
         -o-transition: all 0.25s ease;
         /* Opera */
+      }
+      .item-none {
+        height: 100%;
+        background: #fff;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        img {
+          .pos(220,
+          153);
+          .size(310,
+          310);
+        }
+        p {
+          .text(32,
+          45);
+          .pos(0,
+          492);
+          text-align: center;
+          color: #888;
+          width: 100%;
+        }
       }
       .item {
         margin: 0 45/@rem 50/@rem 45/@rem;

@@ -89,6 +89,8 @@ export default {
       let objs = await user.getJourneyList();
       if (objs.success) {
         this.journeyList = objs.data
+
+      
         if(!this.journeyList.length) {
           this.noData = true
           return
