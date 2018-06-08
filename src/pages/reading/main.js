@@ -33,15 +33,24 @@ if (!window.localStorage.getItem('deviceId')) {
 }
 
 // 防止cookie丢失
-Vue.http.get('/baseLogin', {
-  params: {
-    dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
+if (window.location.href.indexOf('afterLogin') == -1) {
+  let o = '/' + window.location.href.split('/').slice(3).join('/')
+  let baseUrl;
+  if (o.indexOf('?') > -1) {
+    baseUrl = o + '&afterLogin=1';
+  } else {
+    baseUrl = o + '?afterLogin=1';
   }
-}).then(res => { // 获得签名配置
-  if (res.data.success && res.data.data) {
-    location.href = res.data.data
-  }
-});
+  Vue.http.get('/baseLogin', {
+    params: {
+      dbredirect: baseUrl
+    }
+  }).then(res => { // 获得签名配置
+    if (res.data.success && res.data.data) {
+      location.href = res.data.data
+    }
+  });
+}
 
 Vue.http.headers.common['deviceId'] = window.localStorage.getItem('deviceId');
 Vue.http.headers.common['from'] = 'read';
