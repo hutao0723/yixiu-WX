@@ -48,7 +48,7 @@ export default {
 				state.audioelement.pause()
 			}
 		} else {
-			state.showCardModal = true;
+			if (state.readAudio.curRead) state.showCardModal = true;
 			play.syncProgress(state.readAudio.readId, state.readAudio.courseId, state.readCurrentTime)
 			state.readAudio.playbackProgress = 0
 			state.audioelement.load()
