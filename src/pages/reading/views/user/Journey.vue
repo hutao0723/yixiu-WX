@@ -32,7 +32,7 @@
                   <span class="operate-num">{{item.praiseCount}}</span>
                 </div>
                 <div class="column-center" @click.stop="thumbsUp(item,$index)">
-                  <i class="iconfont icon-heart" :class="(item.userPraise==0) ? '':'zan' "></i>
+                  <i class="iconfont" :class="(item.userPraise==0) ? 'icon-dianzan':'icon-heart zan'"></i>
                 </div>
               </div>
             </div>
