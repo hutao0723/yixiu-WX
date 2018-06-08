@@ -140,7 +140,8 @@
             }else{
               lastClock=0
             }
-            this.$router.push('/poster/'+commentId+'/'+lastClock+'/'+isClock)
+            //this.$router.push('/poster/'+commentId+'/'+lastClock+'/'+isClock)
+            this.$router.push({name:'poster',query:{commentId:commentId,lastClock:lastClock,isClock:isClock}})
           }
         })
       },
