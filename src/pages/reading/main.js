@@ -32,6 +32,8 @@ if (!window.localStorage.getItem('deviceId')) {
   })},100)
 }
 
+Vue.http.headers.common['deviceId'] = window.localStorage.getItem('deviceId');
+Vue.http.headers.common['from'] = 'read';
 // 防止cookie丢失
 if (window.location.href.indexOf('afterLogin') == -1) {
   let o = '/' + window.location.href.split('/').slice(3).join('/')
@@ -52,8 +54,6 @@ if (window.location.href.indexOf('afterLogin') == -1) {
   });
 }
 
-Vue.http.headers.common['deviceId'] = window.localStorage.getItem('deviceId');
-Vue.http.headers.common['from'] = 'read';
 // Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjrgAVYrS2jWTFx5xqHDj2QQBH1uXBFMw3gMPxWGMYXWq992G8UBUUjtDPenDWhHayUB6cTjNCScruS3vsPcREhmMXmK2rxgixHsa31XHprvefiBtesVeVWdyJUbfVpW24eB5N';
 Vue.http.interceptors.push((request, next) => {
   // modify request
