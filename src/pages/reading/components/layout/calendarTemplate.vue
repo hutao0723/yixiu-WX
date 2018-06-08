@@ -17,7 +17,7 @@
               {'isToday':item3.isToday&&item3.isClick},
               {'isRange':item3.isRange},
               {'isNotClock':item3.isRange&&!item3.isClock&&item3.afterToday},
-              {'borderClick':item3.isClick&&item3.isClock&&item3.afterToday||item3.isClick&&!item3.isClock&&item3.afterToday}]">
+              {'borderClick':item3.isClick&&item3.isClock&&item3.isToday||item3.isClick&&item3.isClock&&item3.afterToday||item3.isClick&&!item3.isClock&&item3.afterToday}]">
                 <span v-if="item3.isToday">今</span>
                 <span v-else>{{item3.index+1}}</span>
               </div>

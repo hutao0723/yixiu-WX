@@ -35,9 +35,9 @@
             <img :src="item.userImgUrl" alt="" class="item-header">
             <div class="item-name">{{item.userNickname}}</div>
             <div class="item-periods">{{item.readName}}第{{item.readStageNum}}期学员</div>
-            <div class="item-content" ref="cheight" :id="'content' + index" :class="{show:!item.show}">{{item.content}}</div>
-            <div v-show="item.show == 1">展开</div>
-            <div v-show="item.show == 2">收起</div>
+            <div class="item-content" ref="cheight" :id="'content' + index" :class="{show:item.show == 1}">{{item.content}}</div>
+            <div v-show="item.show == 1" @click="itemToggle(2,index)" class="item-toggle">展开</div>
+            <div v-show="item.show == 2" @click="itemToggle(1,index)" class="item-toggle">收起</div>
             <div class="item-book">
               <div class="book-bg">
                 <img class="book-img" :src="item.courseUrl" alt="">
@@ -122,7 +122,7 @@
       </div>
       <h2>我的书架
         <span> |
-            <router-link :to="{ path: '/index/card/0' + item.id+'/0/1'}" tag="a">缺卡{{todayBookDetail.lackClockDays}}天 ></router-link>
+          <router-link :to="{ path: '/index/card/0' + item.id+'/0/1'}" tag="a">缺卡{{todayBookDetail.lackClockDays}}天 ></router-link>
         </span>
       </h2>
       <div class="already-list clearfix">
@@ -386,16 +386,6 @@
       }
       self.changeLoginDays();
       self.changeReadStatus();
-      // setTimeout(() => {
-      //   var maincontento = document.getElementById("maincontent");
-      //   var maincontenth = maincontento.offsetHeight; //高度
-      //   this.maincontent = maincontenth;
-
-      //   this.bodycontent = document.body.clientHeight;
-      //   console.log('maincontent高度:' + this.maincontent)
-      // }, 500)
-      // // window.addEventListener('scroll', this.handleScroll,true);
-      // self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, true);
 
     },
     methods: {
@@ -403,7 +393,11 @@
 
       // 支付
 
-
+      itemToggle(n,index){
+        let self = this;
+        this.reviewList[index].show= n
+        this.$set(self.reviewList,index,self.reviewList[index])
+      },
       /**
        * 拉起支付
        */
@@ -431,7 +425,7 @@
         itemType
       }) {
         console.log('下单')
-        const url = `/api/order/submit`;
+        const url = `/order/submit`;
         const res = await this.$http.post(url, {
           itemId,
           itemType
@@ -452,7 +446,7 @@
       }) {
         console.log('预支付')
         const payType = 'WECHATREADH5APAY';
-        const url = `/api/pay/submit`;
+        const url = `/pay/submit`;
         const res = await this.$http.post(url, {
           orderId,
           payType
@@ -584,7 +578,7 @@
         params = {
           dcd: dcd,
         }
-        const url = `/api/distribution/binding`;
+        const url = `/distribution/binding`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -595,7 +589,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/user/stat/changeLoginDays`;
+        const url = `/user/stat/changeLoginDays`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -606,7 +600,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/user/stat/changeReadStatus`;
+        const url = `/user/stat/changeReadStatus`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -616,8 +610,8 @@
       orderPay() {
         this.buy(this.selectCourseId, 4)
       },
-      playAudio(id,lockStatus) {
-        if(lockStatus){
+      playAudio(id, lockStatus) {
+        if (lockStatus) {
           return false;
         }
         play.audioInit(this.readId, id, true)
@@ -634,7 +628,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/user/read/detail`;
+        const url = `/user/read/detail`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -648,7 +642,7 @@
         params = {
 
         }
-        const url = `/api/user/read/state`;
+        const url = `/user/read/state`;
         const res = await this.$http.get(url, {
           params
         });
@@ -660,12 +654,11 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/comment/top`;
+        const url = `/comment/top`;
         this.$http.get(url, {
           params
         }).then((res) => {
           this.reviewList = res.data.data.content;
-
           function countLines(ele) {
             var styles = window.getComputedStyle(ele, null);
             var lh = parseInt(styles.lineHeight, 10);
@@ -675,24 +668,12 @@
             return lc;
           }
           this.$mount()
-
-
-          // setTimeout(() => {
-          let oo = document.getElementById('content1')
-          console.log(countLines(oo))
-          // }, 500)
-
-
-          // for (let i = 0; i < this.reviewList.length; i++) {
-          //   const element = this.reviewList[i];
-
-          //   let textLength = document.getElementById('content1').getClientRects().length
-          //   let valueHeight = this.$refs.cheight[1].getBoundingClientRect().height;
-
-          //   console.log(document.getElementById('content1'))
-
-          // }
-
+          this.reviewList.forEach((item, index) => {
+            let dom = document.getElementById('content' + index)
+            if (countLines(dom) > 3) {
+              item['show'] = 1
+            }
+          })
         });
       },
       getCommentPraise(id, status) {
@@ -705,7 +686,7 @@
           status: status ? 0 : 1,
           commentId: id
         }
-        const url = `/api/comment/praise`;
+        const url = `/comment/praise`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -716,7 +697,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/read/readList`;
+        const url = `/read/readList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -743,7 +724,7 @@
           readId: this.readId,
           date: date,
         }
-        const url = `/api/readBookCourse/courseDetailByDate`;
+        const url = `/readBookCourse/courseDetailByDate`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -756,7 +737,7 @@
         params = {
           readId: this.readId,
         }
-        const url = `/api/readBook/bookList`;
+        const url = `/readBook/bookList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -774,7 +755,7 @@
           readId: this.readId,
           bookId: item.id,
         }
-        const url = `/api/readBookCourse/courseList`;
+        const url = `/readBookCourse/courseList`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -990,11 +971,14 @@
           color: #333;
         }
         .item-content.show {
-          overflow:hidden; 
-text-overflow:ellipsis;
-display:-webkit-box; 
--webkit-box-orient:vertical;
--webkit-line-clamp:2;
+          height: 126/@rem;
+          overflow: hidden;
+        }
+        .item-toggle{
+          max-height: 9999px;
+          font-size: 28/@rem;
+          line-height: 42/@rem;
+          color: #4A669D;
         }
         .item-book {
           .size(580,
@@ -1391,7 +1375,7 @@ display:-webkit-box;
           font-size: 26/@rem
         }
 
-        a{
+        a {
           color: #38558F;
         }
       }
