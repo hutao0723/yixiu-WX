@@ -32,7 +32,7 @@ export default new Router({
         }
       },
       {
-        path: '/index/card/:isTodayClock',
+        path: '/index/card',
         component: function (resolve) {
           require.ensure([], function () {
             resolve(require('../views/card/Card'));

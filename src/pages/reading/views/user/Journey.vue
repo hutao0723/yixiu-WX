@@ -31,7 +31,7 @@
                 <div class="row">
                   <span class="operate-num">{{item.praiseCount}}</span>
                 </div>
-                <div class="column-center" @click.stop="thumbsUp(item,$index)">
+                <div class="column-center" @click.stop="thumbsUp(item,$index)" :class="point?'point':''">
                   <i class="iconfont" :class="(item.userPraise==0) ? 'icon-dianzan':'icon-heart zan'"></i>
                 </div>
               </div>
@@ -72,7 +72,8 @@ export default {
       // 统计内容为空的数据条数
       contentNum: 0,
 
-      flag: false
+      flag: false,
+      point: false
     };
   },
   computed: {
@@ -117,13 +118,10 @@ export default {
 
     },
     async thumbsUp(row,index) {
+      this.point = true
       let praise = row.userPraise == 0 ? 1 : 0
-      if(this.flag){
-        return 
-      }
       let objs = await user.getThumbUp(praise,row.id);
       if (objs.success) {
-        this.falg = true 
         if(praise){
           this.journeyList[index].praiseCount += 1
         }else{
@@ -132,7 +130,7 @@ export default {
         // await this.getJourneyInfo();
         // this.init();
         this.journeyList[index].userPraise = praise
-        this.flag = false 
+        this.point = false
       }else{
         console.log("获取数据失败")
       }
@@ -218,6 +216,9 @@ export default {
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+}
+.point{
+  pointer-events: none;
 }
 .journey-main{
   padding: 41/@rem 33/@rem 0 50/@rem;
