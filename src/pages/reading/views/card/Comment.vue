@@ -68,7 +68,7 @@
     },
     created() {
       this.getCourseId();
-
+      this.getContent();
     },
     mounted () {
 
@@ -80,6 +80,17 @@
       },
       focusDom(){
         document.getElementById('textarea').focus();
+      },
+      getContent(){
+        let courseId = this.$route.params.courseId;
+        let readId = this.$route.params.readId;
+        this.$http.get('/comment/getByReadAndCourse?readId='+readId +'&courseId='+courseId).then(res=>{
+          let resp = res.data;
+          if(resp.success){
+            console.log(resp.data)
+            this.content = resp.data.content
+          }
+        })
       },
       getFocus(){
         var view = document.querySelector("#app");
