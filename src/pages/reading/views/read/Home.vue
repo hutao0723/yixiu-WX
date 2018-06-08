@@ -122,7 +122,7 @@
       </div>
       <h2>我的书架
         <span> |
-          <router-link :to="{ path: '/index/card/0' + item.id+'/0/1'}" tag="a">缺卡{{todayBookDetail.lackClockDays}}天 ></router-link>
+          <router-link :to="{ path: '/index/card/0'}" tag="a">缺卡{{todayBookDetail.lackClockDays}}天 ></router-link>
         </span>
       </h2>
       <div class="already-list clearfix">
@@ -171,6 +171,23 @@
   import {
     mapState
   } from 'vuex';
+
+  const testUrl = window.location.hostname == 'localhost' ? '/api' : '';
+  const API = {
+    orderSubmit: testUrl + '/order/submit',
+    paySubmit: testUrl + '/pay/submit',
+    distributionBinding: testUrl + '/distribution/binding',
+    changeLoginDays: testUrl + '/user/stat/changeLoginDays',
+    changeReadStatus: testUrl + '/user/stat/changeReadStatus',
+    readDetail: testUrl + '/user/read/detail',
+    readState: testUrl + '/user/read/state',
+    commentTop: testUrl + '/comment/top',
+    commonPraise: testUrl + '/common/praise',
+    readList: testUrl + '/read/readList',
+    courseDetailByDate: testUrl + '/readBookCourse/courseDetailByDate',
+    bookList: testUrl + '/readBook/bookList',
+    courseList: testUrl + '/readBookCourse/courseList',
+  };
 
 
   export default {
@@ -258,6 +275,7 @@
     created() {},
     async mounted() {
       let self = this;
+      console.log()
       // 设置标题
       this.setTitle('一修读书')
 
@@ -349,7 +367,7 @@
         }
 
         if (
-          userState.data.readState == 2 && userState.data.followOfficialAccount
+          userState.data.readState == 2 && userState.data.followOfficialAccoun
         ) {
           console.log('用户购买已关注已开课')
           self.pageStatus = 4;
@@ -418,7 +436,7 @@
         itemType
       }) {
         console.log('下单')
-        const url = `/order/submit`;
+        const url = API.orderSubmit;
         const res = await this.$http.post(url, {
           itemId,
           itemType
@@ -436,7 +454,7 @@
       }) {
         console.log('预支付')
         const payType = 'WECHATREADH5APAY';
-        const url = `/pay/submit`;
+        const url = API.paySubmit;
         const res = await this.$http.post(url, {
           orderId,
           payType
@@ -508,7 +526,7 @@
         params = {
           dcd: dcd,
         }
-        const url = `/distribution/binding`;
+        const url = API.distributionBinding;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -518,7 +536,7 @@
       changeLoginDays() {
         let self = this;
         let params = {};
-        const url = `/user/stat/changeLoginDays`;
+        const url = API.changeLoginDays;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -529,7 +547,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/stat/changeReadStatus`;
+        const url = API.changeReadStatus;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -560,7 +578,7 @@
       getReadDetail() {
         let self = this;
         let params = {};
-        const url = `/user/read/detail`;
+        const url = API.readDetail;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -572,7 +590,7 @@
 
         let self = this;
         let params = {};
-        const url = `/user/read/state`;
+        const url = API.readState;
         const res = await this.$http.get(url, {
           params
         });
@@ -582,11 +600,12 @@
       getCommentTop() {
         let self = this;
         let params = {};
-        const url = `/comment/top`;
+        const url = API.commentTop;
         this.$http.get(url, {
           params
         }).then((res) => {
           this.reviewList = res.data.data.content;
+
           function countLines(ele) {
             var styles = window.getComputedStyle(ele, null);
             var lh = parseInt(styles.lineHeight, 10);
@@ -595,13 +614,15 @@
             console.log('line count:', lc, 'line-height:', lh, 'height:', h);
             return lc;
           }
-          this.$mount()
-          this.reviewList.forEach((item, index) => {
-            let dom = document.getElementById('content' + index)
-            if (countLines(dom) > 3) {
-              item['show'] = 1
-            }
-          })
+          if (this.reviewList.length > 0) {
+            this.$mount()
+            this.reviewList.forEach((item, index) => {
+              let dom = document.getElementById('content' + index)
+              if (countLines(dom) > 3) {
+                item['show'] = 1
+              }
+            })
+          }
         });
       },
       // 点赞
@@ -615,7 +636,7 @@
           status: status ? 0 : 1,
           commentId: id
         }
-        const url = `/comment/praise`;
+        const url = API.commonPraise;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -627,7 +648,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/read/readList`;
+        const url = API.readList;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -654,7 +675,7 @@
           readId: this.readId,
           date: date,
         }
-        const url = `/readBookCourse/courseDetailByDate`;
+        const url = API.courseDetailByDate;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -668,7 +689,7 @@
         params = {
           readId: this.readId,
         }
-        const url = `/readBook/bookList`;
+        const url = API.bookList;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -686,7 +707,7 @@
           readId: this.readId,
           bookId: item.id,
         }
-        const url = `/readBookCourse/courseList`;
+        const url = API.courseList;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -702,7 +723,6 @@
 </script>
 
 <style lang="less">
-
   @import '../../less/util';
   html,
   body,
