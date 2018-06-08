@@ -19,7 +19,6 @@
               <span @click="setCommentPraise(item.id,item.userPraise)" class="fr">
                 <i class="iconfont icon-dianzan" v-show="!item.userPraise"></i>
                 <i class="iconfont icon-heart" :style="{color:'red'}" v-show="item.userPraise"></i>
-                <span>{{item.praiseCount}}{{item.releaseTime}}</span>
               </span>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr" v-if="userId == item.userId"></router-link>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr" v-if="userId != item.userId"></router-link>
