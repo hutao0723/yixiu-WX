@@ -1344,11 +1344,14 @@
       .already-no{
         .text(32,90);
         .size(420,90);
-        .pos(165,600);
+        position: fixed;
+        top: 600/@rem;
+        left: 165/@rem;
         background:rgba(0,0,0,0.66);
         border-radius:10/@rem;
         color: #fff;
         text-align: center;
+        z-index: 10000;
       }
       h2 {
         .text(50,

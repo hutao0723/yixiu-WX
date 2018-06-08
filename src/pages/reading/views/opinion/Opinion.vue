@@ -142,7 +142,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/api/comment/page`;
+        const url = `/comment/page`;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -175,7 +175,7 @@
           status: status ? 0 : 1,
           commentId: id
         }
-        const url = `/api/comment/praise`;
+        const url = `/comment/praise`;
         this.$http.get(url, {
           params
         }).then((res) => {
