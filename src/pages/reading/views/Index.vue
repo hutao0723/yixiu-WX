@@ -4,15 +4,17 @@
     <router-view></router-view>
     </keep-alive>  
     <bnav></bnav>
+    <AudioBar/>
   </div>
 </template>
 
 <script>
 // import store from '../vuex/store'
 import bnav from '../components/basic/Nav';
+import AudioBar from '../components/basic/Audio_Bar';
 export default {
   components: {
-    bnav
+    bnav, AudioBar
   },
   data () {
     return {
