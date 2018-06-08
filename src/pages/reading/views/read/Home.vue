@@ -46,9 +46,9 @@
               <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
             </div>
             <div class="item-bottom">
-              <span @click="getCommentPraise(item.id,item.userPraise)" v-if="pageStatus != 0">
-                <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
-                <span class="fr">{{item.praiseCount}}</span>
+              <span @click="setCommentPraise(item.id,item.userPraise)" class="fr">
+                <i class="iconfont icon-heart" :style="{color:item.userPraise?'red':'#000'}"></i>
+                <span>{{item.praiseCount}}</span>
               </span>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"></router-link>
               <!-- <span>{{item.releaseTime| timeTransition}}</span> -->
@@ -172,9 +172,6 @@
     mapState
   } from 'vuex';
 
-  const api = {
-
-  }
 
   export default {
     components: {
@@ -340,7 +337,7 @@
         ) {
           console.log('用户购买已关注未开课')
           self.pageStatus = 3;
-          self.readDetail();
+          self.getReadDetail();
           store.commit({
             type: 'setBottomNavToggle',
             bottomNavToggle: true
@@ -385,6 +382,7 @@
           })
         }
       }
+
       self.changeLoginDays();
       self.changeReadStatus();
 
@@ -498,68 +496,12 @@
       },
 
 
-
+      // 课程详情切换
       tabActiveToggle(e) {
         this.$refs.homemain.scrollTop = 0
         this.tabActive = e;
       },
-      dispatchScroll(e) {
-        console.log(this.$refs.homemain.scrollTop + document.body.clientHeight)
-        let self = this;
-        var startX = 0,
-          startY = 0,
-          isTrue = 0;
-
-        function touchStart(evt) {
-          try {
-            var touch = evt.touches[0], //获取第一个触点
-              x = Number(touch.pageX), //页面触点X坐标
-              y = Number(touch.pageY); //页面触点Y坐标
-            //记录触点初始位置
-            startX = x;
-            startY = y;
-          } catch (e) {
-            console.log(e.message)
-          }
-        }
-
-        function touchMove(evt) {
-          try {
-            var touch = evt.touches[0], //获取第一个触点
-              x = Number(touch.pageX), //页面触点X坐标
-              y = Number(touch.pageY); //页面触点Y坐标
-
-
-            // //判断滑动方向
-            // if (startY - y > 200) {
-            //   console.log('到底部并且上滑了')
-            //   isTrue = 1;
-            // } else if (y - startY > 200) {
-            //   console.log('下滑了')
-            //   isTrue = 2;
-            // } else {
-            //   isTrue = 0;
-            // }
-
-
-          } catch (e) {}
-        }
-
-        function touchEnd() {
-          if (isTrue == 1) {
-            self.$refs.homemain.scrollTop = 0
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
-            window.scrollTo(0, 0);
-            self.tabActive = false;
-          }
-        }
-
-        //绑定事件
-        document.addEventListener('touchstart', touchStart, false);
-        document.addEventListener('touchmove', touchMove, false);
-        document.addEventListener('touchend', touchEnd, false);
-      },
+      // ded
       getDcd(dcd) {
         let self = this;
         let params = {};
@@ -576,7 +518,6 @@
       changeLoginDays() {
         let self = this;
         let params = {};
-        params = {}
         const url = `/user/stat/changeLoginDays`;
         this.$http.get(url, {
           params
@@ -595,9 +536,11 @@
 
         });
       },
+      // 开始支付
       orderPay() {
         this.buy(this.selectCourseId, 4)
       },
+      // 开始播放
       playAudio(id, lockStatus) {
         if (lockStatus) {
           return false;
@@ -606,16 +549,17 @@
         // 跳转到播放页
         this.$router.push('/audio/index/1')
       },
+      // 选择课程
       selectCourse(item) {
         if (this.selectCourseId != item.readId && !item.purchased) {
           this.selectCourseId = item.readId;
           this.selectCourseObj = item;
         }
       },
-      readDetail() {
+      // 阅读详情
+      getReadDetail() {
         let self = this;
         let params = {};
-        params = {}
         const url = `/user/read/detail`;
         this.$http.get(url, {
           params
@@ -623,31 +567,26 @@
           self.courseDetail = res.data.data
         });
       },
+      // 获取用户信息
       async getState() {
 
         let self = this;
         let params = {};
-        params = {
-
-        }
         const url = `/user/read/state`;
         const res = await this.$http.get(url, {
           params
         });
         return res.data;
       },
-
+      // 首页评论
       getCommentTop() {
-
         let self = this;
         let params = {};
-        params = {}
         const url = `/comment/top`;
         this.$http.get(url, {
           params
         }).then((res) => {
           this.reviewList = res.data.data.content;
-
           function countLines(ele) {
             var styles = window.getComputedStyle(ele, null);
             var lh = parseInt(styles.lineHeight, 10);
@@ -665,7 +604,8 @@
           })
         });
       },
-      getCommentPraise(id, status) {
+      // 点赞
+      setCommentPraise(id, status) {
         if (this.pageStatus == 0) {
           return false;
         }
@@ -682,6 +622,7 @@
           this.getCommentTop();
         });
       },
+      // 获取阅读计划
       getReadList() {
         let self = this;
         let params = {};
@@ -697,7 +638,7 @@
           }
         });
       },
-
+      // 获取阅读详情
       getDetail() {
         let self = this;
         let params = {};
@@ -720,6 +661,7 @@
           this.todayBookDetail = res.data.data;
         });
       },
+      // 获取书list
       getBookList() {
         let self = this
         let params = {};
@@ -733,7 +675,7 @@
           this.historyBookList = res.data.data.content;
         });
       },
-
+      // 获取详情list
       getDetailList(item) {
         if (item.lockStatus) {
           return false;
@@ -754,15 +696,12 @@
         });
       }
 
-
-
     }
   };
 
 </script>
 
 <style lang="less">
-  /* @import '../../less/letiable'; */
 
   @import '../../less/util';
   html,
@@ -1191,6 +1130,7 @@
           span,
           p,
           div {
+            max-height: 9999px;
             font-size: 28/@rem  !important;
           }
         }
