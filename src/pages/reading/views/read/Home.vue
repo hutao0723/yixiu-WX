@@ -122,7 +122,7 @@
       </div>
       <h2>我的书架
         <span> |
-          <router-link :to="{ path: '/index/card/0'}" tag="a">缺卡{{todayBookDetail.lackClockDays}}天 ></router-link>
+          <router-link :to="{ path: '/index/card/0'}" tag="a"> 缺卡{{todayBookDetail.lackClockDays}}天 ></router-link>
         </span>
       </h2>
       <div class="already-list clearfix">
@@ -737,6 +737,7 @@
   }
 
   .home-main {
+    background: #fff;
     .home-type {
       background: #f1f1f1;
       box-sizing: border-box;
