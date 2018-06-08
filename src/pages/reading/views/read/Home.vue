@@ -152,6 +152,9 @@
         <div class="alert-btn" @click="alertToggle = false;">取消</div>
         <div class="alert-bg" @click="alertToggle = false;"></div>
       </div>
+      <div v-show="noneValueAlert">
+        <p>没有结果</p>
+      </div>
     </div>
     <div class="home-pop" v-show="payCancelToggle">
       <div class="pop-content">
@@ -222,6 +225,7 @@
         bodycontent: 0,
         payCancelToggle: false,
         payBtnShow: true,
+        noneValueAlert: false,
 
 
       };
@@ -370,7 +374,7 @@
         }
 
         if (
-          userState.data.readState == 2 && !userState.data.followOfficialAccount
+          userState.data.readState == 2 && userState.data.followOfficialAccount
         ) {
           console.log('用户购买已关注已开课')
           self.pageStatus = 4;
@@ -707,6 +711,7 @@
       // 获取详情list
       getDetailList(item) {
         if (item.lockStatus) {
+          this.noneValueAlert = true;
           return false;
         }
         let self = this;
