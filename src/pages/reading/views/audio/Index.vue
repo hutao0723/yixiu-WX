@@ -2,9 +2,7 @@
   <div class="audio-main">
     <div class="audio-page">
       <div class=" banner">
-        <img class="course-img" :src="readAudio.verticalCover" v-if="readAudio.verticalCover && ! readAudio.lateralCover"/>
-        <img class="course-img-lateral" :src="readAudio.lateralCover" v-if="readAudio.lateralCover"/>
-        <img class="course-img-lateral" src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png" v-if="!readAudio.lateralCover && !readAudio.verticalCover"/>
+        <img class="course-img" :src="readAudio.verticalCover ? readAudio.verticalCover : 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png'" />
         <span class="xl black line1 detail-word">{{readAudio.courseTitle}}</span>
       </div>
       <div class="controler column-between">
@@ -164,14 +162,14 @@ export default {
         box-shadow: -5/@rem 0/@rem 10/@rem 4/@rem rgba(225,225,225,0.5);
         border-radius: 10/@rem;
       }
-      .course-img-lateral{
-        width: 494/@rem;
-        height: 360/@rem;
-        margin: 136/@rem auto 0;
-        display: block;
-        border-radius: 10/@rem;
-        box-shadow: -5/@rem 0/@rem 10/@rem 4/@rem rgba(225,225,225,0.5);
-      }
+      // .course-img-lateral{
+      //   width: 494/@rem;
+      //   height: 360/@rem;
+      //   margin: 136/@rem auto 0;
+      //   display: block;
+      //   border-radius: 10/@rem;
+      //   box-shadow: -5/@rem 0/@rem 10/@rem 4/@rem rgba(225,225,225,0.5);
+      // }
       .detail-word{
         margin-top: 52/@rem;;
         text-align: center;
