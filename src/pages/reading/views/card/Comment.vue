@@ -7,8 +7,8 @@
       </div>
       <div class="book-detail">
         <div class="book-title">{{courseDetail.courseTitle}}</div>
-        <div class="book-author">
-          <span>{{courseDetail.author}}</span>
+        <div class="book-author" v-show="courseDetail.author">
+          <span>{{courseDetail.author}}<span class="audio-right">著</span></span>
         </div>
       </div>
       <div style="clear: both"></div>
@@ -192,6 +192,8 @@
       }
       .book-detail{
         padding-top: 10/@rem;
+        float: left;
+        width:76%;
         .book-title{
           font-size: 30/@rem;
           line-height: 42/@rem;
@@ -201,6 +203,9 @@
           font-size: 26/@rem;
           line-height: 37/@rem;
           color:#666;
+          .audio-right{
+            margin-left: 16/@rem;
+          }
         }
       }
     }
