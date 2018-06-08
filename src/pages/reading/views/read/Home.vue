@@ -35,7 +35,7 @@
             <img :src="item.userImgUrl" alt="" class="item-header">
             <div class="item-name">{{item.userNickname}}</div>
             <div class="item-periods">{{item.readName}}第{{item.readStageNum}}期学员</div>
-            <div class="item-content" ref="cheight" :id="'content' + index" :class="{show:item.show}">{{item.content}}</div>
+            <div class="item-content" ref="cheight" :id="'content' + index" :class="{show:!item.show}">{{item.content}}</div>
             <div v-show="item.show == 1">展开</div>
             <div v-show="item.show == 2">收起</div>
             <div class="item-book">
@@ -673,8 +673,8 @@
 
 
           // setTimeout(() => {
-            let oo = document.getElementById('content1')
-            console.log(countLines(oo))
+          let oo = document.getElementById('content1')
+          console.log(countLines(oo))
           // }, 500)
 
 
@@ -984,8 +984,10 @@
           line-height: 42/@rem;
           color: #333;
         }
-        .item-content.show{
-          
+        .item-content.show {
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 3;
         }
         .item-book {
           .size(580,
