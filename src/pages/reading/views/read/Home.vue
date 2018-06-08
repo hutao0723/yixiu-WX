@@ -106,7 +106,7 @@
       <p class="text-g">微信添加老师后，你的专属老师会在课程</br>开始前邀请你进入对应班级群</p>
     </div>
     <!-- 已关注已开课 -->
-    <div class="home-already" v-if="pageStatus ==4">
+    <div class="home-already" v-if="pageStatus == 4">
       <AudioBar/>
       <h2>今日学习{{pageStatus}}
         <span> | 第{{todayBookDetail.days}}/{{todayBookDetail.totalDays}}天</span>
@@ -297,7 +297,6 @@
       let userState = await self.getUsetState();
       self.wxShare(userState.data.userId);
       self.readId = userState.data.readId;
-      alert(userState.data.readState)
       if (userState.data) {
         if (
           userState.data.readState == -1
@@ -366,7 +365,7 @@
         }
 
         if (
-          userState.data.readState == 2 && userState.data.followOfficialAccoun
+          userState.data.readState == 2 && userState.data.followOfficialAccount
         ) {
           console.log('用户购买已关注已开课')
           self.pageStatus = 4;
