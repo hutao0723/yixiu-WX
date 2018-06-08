@@ -42,8 +42,8 @@
   left: 0;
 }
 .service{
-  width: 480/@rem;
-  height: 312/@rem; 
+  width: 580/@rem;
+  height: 320/@rem; 
   background:rgba(255,251,251,1);
   border-radius: 9/@rem; 
   position: fixed;
@@ -52,17 +52,17 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
-  padding: 72/@rem 0 52/@rem;
+  padding: 77/@rem 0 52/@rem;
   .text{
     color: @color-strong;
     text-align: center;
-    .fontSize(26);
+    .fontSize(28);
     p{
-      line-height: 37/@rem;
+      line-height: 40/@rem;
     }
   }
   .btn{
-    width: 340/@rem;
+    width: 460/@rem;
     height: 68/@rem;
     background: rgba(255,219,67,1);
     border-radius: 6/@rem; 
