@@ -423,7 +423,8 @@
         const url = `/order/submit`;
         const res = await this.$http.post(url, {
           itemId,
-          itemType
+          itemType,
+          dcd: this.$route.query.dcd?this.$route.query.dcd:''
         });
 
         if (!res.data.success) {
