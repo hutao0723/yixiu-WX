@@ -5,7 +5,7 @@
       <ul class="notice-content">
         <div class="notice-order">
           <span>1</span>
-          <i v-for="item in [1,2,3,4,5,6,7,8]"></i>
+          <i v-for="item in [1,2,3,4,5,6,7,8,9]"></i>
           <span>2</span>
         </div>
         <li>点击xx页面，完成当日学习目标后，将自动弹出弹窗提醒打卡。或者在收听页面，点击“打卡“按钮进行打卡</li>
@@ -47,42 +47,45 @@
     left:0;
     color:#333;
     .notice-box{
-      width:536/@rem;
+      width:580/@rem;
+      height:640/@rem;
       border-radius: 8/@rem;
       position: absolute;
       top:50%;
       left:50%;
       transform: translate(-50%,-50%);
       overflow: hidden;
+      background: #fff;
       .notice-title{
-        font-size: 30/@rem;
+        font-size: 34/@rem;
         text-align: center;
-        height: 90/@rem;
-        line-height: 90/@rem;
+        height: 94/@rem;
+        line-height: 94/@rem;
         background: #FFE555;
         font-weight: 600;
       }
       .notice-content{
+        padding:32/@rem 27/@rem 0 100/@rem;
         position: relative;
         background: #fff;
-        padding: 57/@rem 30/@rem 33/@rem 103/@rem;
         li{
-          margin-bottom: 45/@rem;
+          margin-bottom: 70/@rem;
           color:#555555;
-          font-size: 24/@rem;
+          font-size: 28/@rem;
           line-height: 37/@rem;
         }
         .notice-order{
           position: absolute;
-          left:39/@rem;
+          left:30/@rem;
           span{
-            width:44/@rem;
-            height:44/@rem;
+            font-size: 30/@rem;
+            width:50/@rem;
+            height:50/@rem;
             background: #FFE555;
             border-radius: 50%;
             display: block;
             text-align: center;
-            line-height: 44/@rem;
+            line-height: 50/@rem;
             margin-bottom: 9/@rem;
             font-weight: 600;
           }
@@ -99,13 +102,15 @@
       }
       .notice-btn{
         text-align: center;
-        border-top: 1px solid #E5E5E5;
-        height:82/@rem;
-        line-height: 82/@rem;
-        font-size: 28/@rem;
+        border-top: 1px dotted #E5E5E5;
+        height:90/@rem;
+        line-height: 90/@rem;
+        font-size: 30/@rem;
         background: #fff;
         font-weight: 600;
-
+        position: absolute;
+        width:100%;
+        bottom:0;
       }
       .notice-btn:active{
         background: #E5E5E5;
