@@ -166,10 +166,9 @@ export default {
 // }
 .user{
   background:rgba(244,244,244,1);
-  height: 100%;
 }
 .person-main {
-  
+  padding-bottom: 240/@rem;
   .person-box{
     width: 750/@rem;
     background: rgba(255,255,255,1);
