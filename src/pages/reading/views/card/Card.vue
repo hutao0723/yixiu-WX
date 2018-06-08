@@ -23,7 +23,7 @@
     </div>
     <div class="book-book" >
       <div class="book-detail-box" v-show="afterToday||isToday">
-        <div class="book-img" @click.stop="playAudio(readId,courseId)" v-show="courseDetail">
+        <div class="book-img" @click.stop="playAudio(readId,courseId)" >
           <img v-if="courseDetail.courseUrl" :src="courseDetail.courseUrl" alt="">
           <img v-else src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="">
           <div class="book-audio" v-if="afterToday||isToday"></div>
@@ -34,12 +34,12 @@
         <div class="book-detail">
           <div class="book-title">{{courseDetail.courseTitle}}</div>
           <div class="book-author">
-            <span>{{courseDetail.author}} <span class="audio-right">著</span></span>
-            <span class="book-btn" >
+            <span>{{courseDetail.author}}<span class="audio-right">著</span></span>
+          </div>
+          <div class="book-btn">
               <span  v-show="courseDetail.clockState&&courseDetail.commentState" @click.stop="goPoster()">查看</span>
               <span  v-show="courseDetail.clockState&&!courseDetail.commentState" @click.stop="goComment()">写想法</span>
               <span  v-show="!courseDetail.clockState" @click.stop="goComment()">去打卡</span>
-          </span>
           </div>
         </div>
         <div style="clear: both"></div>
@@ -167,10 +167,6 @@
           let resp = res.data;
           if(resp.success){
             _this.courseDetail = resp.data;
-            console.log(_this.courseDetail)
-            // if(!_this.courseDetail.courseUrl){
-            //   _this.courseDetail.courseUrl = 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-book-cover.png'
-            // }
             if( _this.courseDetail.commentId){
               _this.commentId =  _this.courseDetail.commentId
             }
@@ -192,7 +188,6 @@
 
   .card-main {
     width: 750/@rem;
-    height: 100%;
     position: absolute;
     left: 0;
     top: 0;
@@ -200,8 +195,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    // z-index: 9;
-    background: #f4f4f4;
+    background: #F4F4F4;
     font-size: 24/@rem;
     color:#333;
     .hideNoticeStyle{
@@ -304,18 +298,19 @@
       height:440/@rem;
       overflow: auto;
       background:#fff;
+      -webkit-overflow-scrolling: touch
     }
     .book-book{
       height:255/@rem;
       background: #fff;
       position: relative;
       .book-detail-box{
-        padding:42/@rem 30/@rem 49/@rem 36/@rem;
+        padding:42/@rem 0 49/@rem 36/@rem;
       }
       .book-img{
         width:120/@rem;
         height:160/@rem;
-        margin-right: 36/@rem;
+        margin-right: 39/@rem;
         float: left;
         overflow:hidden;
         position:relative;
@@ -366,31 +361,33 @@
         }
       }
       .book-detail{
-        padding-top: 10/@rem;
+        float: left;
+        width:76%;
         .book-title{
           font-size: 30/@rem;
           line-height: 42/@rem;
-          margin-bottom: 45/@rem;
+          margin-bottom: 12/@rem;
           font-weight: 600;
         }
         .book-author{
           font-size: 26/@rem;
           line-height: 37/@rem;
           color:#666;
+          margin-bottom: 13/@rem;
           .audio-right{
             margin-left: 16/@rem;
           }
-          .book-btn{
-            background: #FFE555;
-            width:130/@rem;
-            text-align: center;
-            height:54/@rem;
-            line-height: 54/@rem;
-            border-radius: 25/@rem;
-            position: absolute;
-            right:30/@rem;
-            color:#333;
-          }
+        }
+        .book-btn span{
+          display: inline-block;
+          font-size: 26/@rem;
+          background: #FFE555;
+          width:130/@rem;
+          text-align: center;
+          height:54/@rem;
+          line-height: 54/@rem;
+          border-radius: 25/@rem;
+          color:#333;
         }
       }
     }
@@ -400,6 +397,7 @@
       color:#C1C1C1;
       height:95/@rem;
       line-height:95/@rem;
+      padding-bottom: 100/@rem;
     }
   }
 </style>
