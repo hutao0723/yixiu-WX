@@ -5,9 +5,9 @@ export default {
 	// 是否有在读课程
 	readMission: true,
 	// 是否有在读课程
-	bottomNavType: true,
+	bottomNavType: false,
 	// 是否有在读课程
-	bottomNavToggle: true,
+	bottomNavToggle: false,
 	// audio信息
 	readAudio: {},
 	// 是否正在播放
