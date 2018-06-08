@@ -70,7 +70,9 @@ export default {
       expandStatus: [],
 
       // 统计内容为空的数据条数
-      contentNum: 0
+      contentNum: 0,
+
+      flag: false
     };
   },
   computed: {
@@ -116,8 +118,12 @@ export default {
     },
     async thumbsUp(row,index) {
       let praise = row.userPraise == 0 ? 1 : 0
+      if(this.flag){
+        return 
+      }
       let objs = await user.getThumbUp(praise,row.id);
       if (objs.success) {
+        this.falg = true 
         if(praise){
           this.journeyList[index].praiseCount += 1
         }else{
@@ -126,6 +132,7 @@ export default {
         // await this.getJourneyInfo();
         // this.init();
         this.journeyList[index].userPraise = praise
+        this.flag = false 
       }else{
         console.log("获取数据失败")
       }
