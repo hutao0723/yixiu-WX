@@ -251,11 +251,18 @@
     async mounted() {
       let self = this;
       // 如果是支付流程直接支付
-
-      // console.log(this.$route)
-
       if(window.location.href.indexOf('from') != -1){
         location.replace('http://k.youfen666.com/reading.html#/index/home?' + window.location.href.split('?')[2])
+      }
+
+      // 防止cookie丢失
+      if (window.location.href.indexOf('afterLogin') == -1) {
+        let res = await this.$http.get('/baseLogin', {
+          params: {
+            dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
+          }
+        })
+        if (res.success && res.data) location.replace(res.data.data)
       }
       this.setTitle('一修读书')
 
