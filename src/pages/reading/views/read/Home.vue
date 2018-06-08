@@ -1345,10 +1345,8 @@
         .text(32,90);
         .size(420,90);
         .pos(165,600);
-        width:420px;
-        height:90px;
         background:rgba(0,0,0,0.66);
-        border-radius:10px;
+        border-radius:10/@rem;
         color: #fff;
         text-align: center;
       }
