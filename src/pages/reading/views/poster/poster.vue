@@ -301,7 +301,6 @@ export default {
 			display: block;
 			padding: 42/@rem 55/@rem 142/@rem;
 			box-sizing: border-box;
-			height: 4000px;
 		}
 		.btn {
 			position: fixed;
