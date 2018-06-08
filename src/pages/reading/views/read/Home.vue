@@ -35,12 +35,13 @@
             <img :src="item.userImgUrl" alt="" class="item-header">
             <div class="item-name">{{item.userNickname}}</div>
             <div class="item-periods">{{item.readName}}第{{item.readStageNum}}期学员</div>
-            <div class="item-content" ref="cheight" :id="'content' + index">{{item.content}}</div>
+            <div class="item-content" ref="cheight" :id="'content' + index" :class="{show:item.show}">{{item.content}}</div>
+            <div v-show="item.show == 1">展开</div>
+            <div v-show="item.show == 2">收起</div>
             <div class="item-book">
               <div class="book-bg">
                 <img class="book-img" :src="item.courseUrl" alt="">
               </div>
-
               <div class="book-name otw">{{item.courseTitle}}</div>
               <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
             </div>
@@ -670,7 +671,7 @@
           }
           this.$mount()
 
- 
+
           // setTimeout(() => {
             let oo = document.getElementById('content1')
             console.log(countLines(oo))
@@ -982,6 +983,9 @@
           font-size: 28/@rem;
           line-height: 42/@rem;
           color: #333;
+        }
+        .item-content.show{
+          
         }
         .item-book {
           .size(580,
