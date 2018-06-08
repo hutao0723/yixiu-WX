@@ -122,7 +122,7 @@
       </div>
       <h2>我的书架
         <span> |
-          <a href="/index/card/0">缺卡{{todayBookDetail.lackClockDays}}天 ></a>
+            <router-link :to="{ path: '/index/card/0' + item.id+'/0/1'}" tag="a">缺卡{{todayBookDetail.lackClockDays}}天 ></router-link>
         </span>
       </h2>
       <div class="already-list clearfix">
@@ -143,7 +143,7 @@
         <div class="alert-top">
           <h3>{{bookName}}</h3>
           <div class="clearfix">
-            <div class="item" v-for="(item,index) in courseList" :key="index" :class="{none: item.lockStatus}" @click="playAudio(item.courseId)">{{index+1}}</div>
+            <div class="item" v-for="(item,index) in courseList" :key="index" :class="{none: item.lockStatus}" @click="playAudio(item.courseId,item.lockStatus)">{{index+1}}</div>
           </div>
         </div>
         <div class="alert-btn" @click="alertToggle = false;">取消</div>
@@ -616,7 +616,10 @@
       orderPay() {
         this.buy(this.selectCourseId, 4)
       },
-      playAudio(id) {
+      playAudio(id,lockStatus) {
+        if(lockStatus){
+          return false;
+        }
         play.audioInit(this.readId, id, true)
         // 跳转到播放页
         this.$router.push('/audio/index/1')
@@ -1386,6 +1389,10 @@ display:-webkit-box;
         margin-bottom: 30/@rem;
         span {
           font-size: 26/@rem
+        }
+
+        a{
+          color: #38558F;
         }
       }
       .already-book {
