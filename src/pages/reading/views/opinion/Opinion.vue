@@ -61,12 +61,10 @@
       timeTransition: function (value) {
         let nowDate = new Date()
         let nowDateNum = nowDate.getTime()
-        alert('获取现在的时间戳' + nowDateNum)
         // 获取现在的时间戳
 
         let valueDate = new Date(value)
         let valueDateNum = valueDate.getTime()
-        alert('获取当时的时间戳' + nowDateNum)
         // 获取当时的时间戳
         let key = nowDateNum - valueDateNum
 
@@ -79,17 +77,8 @@
         let yesterday = new Date(today);
         let yesterdayNum = yesterday.getTime()
         let yes = valueDateNum - yesterdayNum;
-        alert('获取昨天的时间戳' + nowDateNum)
         
-        // 昨天的时间戳
-        let Y, M, D, h, m;
-        Y = valueDate.getFullYear() + '-';
-        M = (valueDate.getMonth() + 1 < 10 ? '0' + (valueDate.getMonth() + 1) : valueDate.getMonth() + 1) + '-';
-        D = (valueDate.getDate() < 10 ? '0' + valueDate.getDate() : valueDate.getDate()) + ' ';
-        h = (valueDate.getHours() < 10 ? '0' + valueDate.getHours() : valueDate.getHours()) + ':';
-        m = (valueDate.getMinutes() < 10 ? '0' + valueDate.getMinutes() : valueDate.getMinutes());
         let text = '';
-        console.log(Y, M, D, h, m)
 
         if (key > 0 && key < 60 * 1000) {
           text = '刚刚'
@@ -104,13 +93,13 @@
         }
 
         if (key >= 2 * 60 * 60 * 1000 && key < yes) {
-          text = h + m
+          text = (valueDate.getHours() < 10 ? '0' + valueDate.getHours() : valueDate.getHours()) + ':' + (valueDate.getMinutes() < 10 ? '0' + valueDate.getMinutes() : valueDate.getMinutes())
         }
 
         if (key >= yes) {
-          text = M + D
+          text = (valueDate.getMonth() + 1 < 10 ? '0' + (valueDate.getMonth() + 1) : valueDate.getMonth() + 1) + '-' + (valueDate.getDate() < 10 ? '0' + valueDate.getDate() : valueDate.getDate())
         }
-        console.log('结果'+ text)
+        alert('结果'+ text)
         return text
       },
     },
