@@ -39,16 +39,16 @@
          {{text}}
       </div>
     </div> 
-    <div class="modal" v-if="showCardModal">
+    <div class="card-modal" v-if="showCardModal" >
       <div class="pop-mask"></div>
-      <div class="container">
+      <div class="modalbar">
         <div class="btn-yes column-center">
             <i class="iconfont icon-yes"></i>
         </div>
         <div class="btn-close column-center" @click="hideModal">
             <i class="iconfont icon-close"></i>
         </div>
-        <p class="des">你已完成今日课程，趁热打铁 来打卡吧！</p>
+        <p class="des">你已完成今日课程，趁热打铁来打卡吧！</p>
         <p class="info">今日已打卡<span class="warm">{{clockCount}}</span>人</p>
         <div class="btn-card" @click="goComment">打卡</div>
       </div>
@@ -123,7 +123,11 @@ export default {
     },
     goComment () {
       store.commit('resetShowCardModal');
-      this.$router.push(`/comment/${this.readAudio.readId}/${this.readAudio.courseId}`);
+      if (this.text == '查看') {
+        this.$router.push({name:'poster',query:{commentId:this.readAudio.commentId,lastClock:0,isClock:1}})
+      } else {
+        this.$router.push(`/comment/${this.readAudio.readId}/${this.readAudio.courseId}`);
+      }
     },
     timerFomart (time) {
       if (isNaN(time)) return '00:00';
@@ -261,7 +265,7 @@ export default {
     top: 0;
     left: 0;
   }
-  .container{
+  .modalbar{
     width: 590/@rem;
     height: 448/@rem; 
     background:rgba(255,251,251,1);
@@ -302,7 +306,7 @@ export default {
     .des{
       width:390/@rem;
       height:84/@rem;
-      margin: 50/@rem auto 0;
+      margin: 145/@rem auto 0;
       text-align: center;
       font-size:30/@rem;
       font-family:PingFangSC-Medium;

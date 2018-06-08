@@ -2,7 +2,7 @@
   <div>
     <div class="audio-controler row"  @click="goAudioPage"> 
       <div class="right-bar row-around" style="background-repeat:no-repeat;background-size:100% 100%;" 
-      :style="{backgroundImage:`url(${readAudio.lateralCover || readAudio.verticalCover || baseImg}`}" >
+      :style="{backgroundImage:`url(${readAudio.verticalCover || baseImg}`}" >
         <div class="icon-state column-center" :class="!readPlaying ? 'line' : 'mask'">
           <i class="iconfont icon-play" v-if="!readPlaying"></i>
           <img class="" src="../../images/audio.svg" v-else/>
