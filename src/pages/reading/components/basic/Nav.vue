@@ -57,7 +57,6 @@
               path: '/index/user',
               imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav04.png',
               imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav05.png'
-              
             }
           ]
         } else {

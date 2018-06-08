@@ -18,7 +18,7 @@
                     <img src="" id="img">
                 </div>
             </div>
-            <p class="pm-notice">分享此海报给好友，好友通过该海报购买后,您将获得“<em>分红</em>”</p>
+            <p class="pm-notice">分享此海报给好友，好友通过该海报购买后，您将获得”<em>收益</em>“</p>
         </div>
         <div class="poster-swiper">
             <PosterSwiper :readPlanPostersArr=readPlanPostersArr @getSwiperIndex=getSwiperIndex />
@@ -71,14 +71,10 @@ export default {
         
     },
     beforeMount(){
-        setTimeout(() => {
-            this.loading = false
-        }, 500)
+
     },
     mounted () {
 
-        console.log('over') 
-        
     },
     methods: {
 
@@ -137,6 +133,9 @@ export default {
             var toBase64 = myCanvas.toDataURL("image/png");
             img.setAttribute('src', toBase64)
             fxImg.setAttribute('src', toBase64)
+            img.onload = () => {
+                this.loading = false
+            }
         },
 
         //  

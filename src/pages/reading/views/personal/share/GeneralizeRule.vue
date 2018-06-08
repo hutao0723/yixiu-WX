@@ -15,7 +15,7 @@
         </div>
         <div class="gr-warp">
             <h2>4.提现规则：</h2>
-            <p>“可提现金额”满20元即可提现微信账户</p>
+            <p>“可提现金额”满50元即可提现微信账户；每笔邀请收益在3日后即可提现</p>
         </div>
         <div class="gr-warp">
             <h2>5.我发链接/海报给我自己买，可以有钱赚吗？</h2>
@@ -43,14 +43,14 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
     @import '../../../less/variable';
     @import '../../../less/base';
     @import '../../../less/icon';
 
     @titleColor: #222;
     @paragraphColor:#444;
-
+    body *{ max-height: 999999px; }
     .generalize-rule {
 
         width: 750/@rem;
@@ -66,7 +66,7 @@ export default {
         -webkit-overflow-scrolling: touch;
 
         // height: 100%;
-        padding: 52/@rem 50/@rem;
+        padding: 52/@rem 50/@rem 30/@rem;
         background-color: #EFEFF4;
         // overflow: hidden;
         box-sizing: border-box;
@@ -79,9 +79,9 @@ export default {
         }
         .gr-warp {
             padding-left: 10/@rem;
-            padding-bottom: 66/@rem;
+            padding-bottom: 50/@rem;
             h2 {
-                padding-bottom: 29/@rem;
+                padding-bottom: 20/@rem;
                 .fontSize(30);
                 color: @paragraphColor;
                 font-weight: bold;
@@ -95,7 +95,7 @@ export default {
         
         }
         .grw-last {
-            margin-top: 137/@rem;
+            margin-top: 60/@rem;
             p {
                 .fontSize(24);
                 color: #555;

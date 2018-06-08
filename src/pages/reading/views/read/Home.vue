@@ -25,9 +25,9 @@
           <img src="http://yun.dui88.com/youfen/images/read_img01.jpg" alt="">
           <img src="http://yun.dui88.com/youfen/images/read_img02.jpg" alt="">
           <img src="http://yun.dui88.com/youfen/images/read_img03.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/read_img04.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/read_img05.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/read_img06.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/read_img07.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/read_img08.jpg" alt="">
+          <!-- <img src="http://yun.dui88.com/youfen/images/read_img06.jpg" alt=""> -->
         </div>
         <div class="home-review" v-show="reviewList.length> 0">
           <h2>学员观点</h2>
