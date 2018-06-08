@@ -74,7 +74,7 @@
             </div>
           </div>
         </div>
-        <div v-show="!readList.length" class="item-none">
+        <div v-show="!readList.length" class="course-none">
           <img src="https://yun.duiba.com.cn/yoofans/images/201805/read/index.png" alt="">
           <p>暂无可购买的</p>
         </div>
@@ -1088,7 +1088,7 @@
         -o-transition: all 0.25s ease;
         /* Opera */
       }
-      .item-none {
+      .course-none {
         height: 100%;
         background: #fff;
         position: absolute;
