@@ -31,9 +31,9 @@
         <div class="bgfff">
           <div class="person-h90 row mt20 border" >
             <div class="icon-box column-center">
-              <i class="iconfont icon-clock person-icon"></i>
+              <i class="iconfont icon-wodelicheng person-icon"></i>
             </div>
-            <div class="row ft32 ml30">我的历程</div>
+            <div class="row ft28 ml30 ftbold">我的历程</div>
           </div>
         </div>
       </router-link>
@@ -43,7 +43,7 @@
             <div class="icon-box column-center">
               <i class="iconfont icon-booklist person-icon"></i>
             </div>
-            <div class="row ft32 ml30">往期书架</div>
+            <div class="row ft28 ml30 ftbold">往期书架</div>
           </div>
         </div>
       </router-link>
@@ -51,9 +51,9 @@
         <div class="bgfff">
           <div class="person-h90 row border" >
             <div class="icon-box column-center">
-              <i class="iconfont icon-user person-icon"></i>
+              <i class="iconfont icon-teacher person-icon"></i>
             </div>
-            <div class="row ft32 ml30">我的老师</div>
+            <div class="row ft28 ml30 ftbold">我的老师</div>
           </div>
         </div>
       </router-link>
@@ -63,7 +63,7 @@
             <div class="icon-box column-center">
               <i class="iconfont icon-income person-icon"></i>
             </div>
-            <div class="row ft32 ml30">我的收益</div>
+            <div class="row ft28 ml30 ftbold">我的收益</div>
           </div>
         </div>
       </router-link>
@@ -72,7 +72,7 @@
           <div class="icon-box column-center">
             <i class="iconfont icon-ear person-icon"></i>
           </div>
-          <div class="row ft32 ml30" @click="contactToggle = true">联系客服</div>
+          <div class="row ft28 ml30 ftbold" @click="contactToggle = true">联系客服</div>
         </div>
       </div>
     </div>
@@ -239,12 +239,17 @@ export default {
   .person-h90{
     height: 90/@rem;
     margin:0 42/@rem;
-    font-weight: bold;
     border-radius:0;
     color: @color-strong;
   }
+  .ftbold{
+    font-weight: bold;
+  }
   .ft32{
     .fontSize(32);
+  }
+  .ft28{
+    .fontSize(28);
   }
   .ml30{
     margin-left:30/@rem;
