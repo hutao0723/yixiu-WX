@@ -262,7 +262,7 @@
             dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
           }
         })
-        if (res.success && res.data) location.replace(res.data)
+        if (res.data.success && res.data.data) location.replace(res.data.data)
       }
       this.setTitle('一修读书')
 
