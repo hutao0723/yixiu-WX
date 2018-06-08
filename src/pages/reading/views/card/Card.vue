@@ -25,7 +25,7 @@
       <div class="book-detail-box" v-show="afterToday||isToday">
         <div class="book-img" @click.stop="playAudio(readId,courseId)" v-show="courseDetail">
           <img v-if="courseDetail.courseUrl" :src="courseDetail.courseUrl" alt="">
-          <img v-else src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-book-cover.png" alt="">
+          <img v-else src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="">
           <div class="book-audio" v-if="afterToday||isToday"></div>
           <div class="book-mark" v-else>
             <i class="iconfont icon-lock"></i>
