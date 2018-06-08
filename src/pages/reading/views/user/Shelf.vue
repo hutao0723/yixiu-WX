@@ -117,7 +117,7 @@ export default {
         this.bookList = []
       }
       this.readId = readId
-      const url = `/api/readBook/bookList`;
+      const url = `/readBook/bookList`;
       let params = {}
         params = {
           readId: this.readId,

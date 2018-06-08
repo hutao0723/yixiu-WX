@@ -7,7 +7,7 @@ export default class user extends base {
    * 获取统计数据我和老师微信账号
    */
   static async getInfo() {
-    const url = `/api/user/stat/detail`;
+    const url = `/user/stat/detail`;
     const res = await this.get(url);
     return res.data;
   }
@@ -16,7 +16,7 @@ export default class user extends base {
    * 获取历程列表
    */
   static async getJourneyList() {
-    const url = `/api/user/read/journey`;
+    const url = `/user/read/journey`;
     const res = await this.get(url);
     return res.data;
   }
@@ -30,7 +30,7 @@ export default class user extends base {
         status: status,
         commentId: commentId
       }
-    const url = `/api/comment/praise`;
+    const url = `/comment/praise`;
     const res = await this.get(url, {
       params
     });
@@ -47,7 +47,7 @@ export default class user extends base {
         pageNum: 1,
         pageSize: 20
       }
-    const url = `/api/read/past`;
+    const url = `/read/past`;
     const res = await this.get(url,{params});
     return res.data;
   }
@@ -62,7 +62,7 @@ export default class user extends base {
   //     pageNum: pageNum,
   //     pageSize: 12
   //   }
-  //   const url = `/api/readBook/bookList`;
+  //   const url = `/readBook/bookList`;
   //   const res = await this.get(url, {
   //     params
   //   });
@@ -78,7 +78,7 @@ export default class user extends base {
       bookId: bookId,
       readId: readId
     }
-    const url = `/api/readBookCourse/courseList`;
+    const url = `/readBookCourse/courseList`;
     const res = await this.get(url, {
       params
     });
@@ -95,7 +95,7 @@ export default class user extends base {
     params = {
       readId: readId
     }
-    const url = `/api/user/read/diplomaImgUrl`;
+    const url = `/user/read/diplomaImgUrl`;
     const res = await this.get(url, {
       params
     });
