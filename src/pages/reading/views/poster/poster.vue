@@ -28,15 +28,15 @@
         },
         mounted () {
             const _this = this;
-            _this.popup = _this.$route.params.lastClock*1;
-            _this.isSelf = _this.$route.params.isClock*1;
-            //_this.getInfo();
+            _this.popup = _this.$route.query.lastClock*1;
+            _this.isSelf = _this.$route.query.isClock*1;
+            _this.getInfo();
         },
         methods: {
             async getInfo() {
                 let _this = this;
                 let params = {
-                    commentId: _this.$route.params.commentId
+                    commentId: _this.$route.query.commentId
                 }
                 const url = `/comment/share`;
                 const res = await _this.$http.get(url, {
