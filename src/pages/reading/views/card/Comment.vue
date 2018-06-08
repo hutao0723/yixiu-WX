@@ -3,7 +3,7 @@
     <div class="book-book">
       <div class="book-img">
         <img v-if="courseDetail.courseUrl" :src="courseDetail.courseUrl" alt="">
-        <img v-else src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-book-cover.png" alt="">
+        <img v-else src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="">
       </div>
       <div class="book-detail">
         <div class="book-title">{{courseDetail.courseTitle}}</div>
@@ -119,9 +119,6 @@
           let resp = res.data;
           if(resp.success){
             this.courseDetail = resp.data;
-            // if(!this.courseDetail.courseUrl){
-            //   this.courseDetail.courseUrl  = 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-book-cover.png'
-            // }
           }
         })
       },
@@ -143,7 +140,8 @@
             }else{
               lastClock=0
             }
-            this.$router.push('/poster/'+commentId+'/'+lastClock+'/'+isClock)
+            //this.$router.push('/poster/'+commentId+'/'+lastClock+'/'+isClock)
+            this.$router.push({name:'poster',query:{commentId:commentId,lastClock:lastClock,isClock:isClock}})
           }
         })
       },
@@ -182,7 +180,7 @@
       .book-img{
         width:120/@rem;
         height:160/@rem;
-        margin-right: 36/@rem;
+        margin-right: 39/@rem;
         float: left;
         overflow:hidden;
         border-radius: 4/@rem;

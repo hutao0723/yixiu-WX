@@ -5,26 +5,28 @@
         <img :src="item.userImgUrl" alt="" class="item-header">
         <div class="item-name">{{item.userNickname}}</div>
         <div class="item-periods">{{item.readName}}第{{item.readStageNum}}期学员</div>
-        <div class="item-content">{{item.content}}</div>
+        <div class="item-content" ref="cheight" :id="'content' + index" :class="{show:item.show == 1}">{{item.content}}</div>
+        <div v-show="item.show == 1" @click="itemToggle(2,index)" class="item-toggle">展开</div>
+        <div v-show="item.show == 2" @click="itemToggle(1,index)" class="item-toggle">收起</div>
         <div class="item-book">
           <div class="book-bg">
             <img class="book-img" :src="item.courseUrl" alt="">
           </div>
-
           <div class="book-name otw">{{item.courseTitle}}</div>
           <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
         </div>
         <div class="item-bottom">
-          <span @click="getCommentPraise(item)">
+          <span @click="getCommentPraise(item.id,item.userPraise)" v-if="pageStatus != 0">
             <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
             <span class="fr">{{item.praiseCount}}</span>
           </span>
-          <!-- <router-link :to="{ path: '/poster/' + item.id}" tag="a" class="iconfont icon-share fr"></router-link> -->
-          <span>{{item.releaseTime| timeTransition}}</span>
+          <router-link :to="{ path: '/poster/' + item.id+'/0/1'}" tag="a" class="iconfont icon-share fr"></router-link>
+          <!-- <span>{{item.releaseTime| timeTransition}}</span> -->
         </div>
       </div>
     </div>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0"></div>
+    <AudioBar/>
   </div>
 </template>
 
@@ -32,6 +34,8 @@
   import {
     mapState
   } from 'vuex';
+  import AudioBar from '../../components/basic/Audio_Bar';
+
   export default {
     components: {},
     data() {
@@ -42,6 +46,9 @@
 
         busy: true
       };
+    },
+    components: {
+      AudioBar
     },
     computed: {
       ...mapState({})
@@ -106,43 +113,48 @@
         this.getCommentTop()
       },
       getCommentTop() {
+
         let self = this;
         let params = {};
-        params = {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize,
-
-        }
-        const url = `/comment/page`;
+        params = {}
+        const url = `/comment/top`;
         this.$http.get(url, {
           params
         }).then((res) => {
-          if (res.data.data.content && res.data.data.content.length > 0) {
-            this.busy = false;
-            if (!this.reviewList) {
-                this.reviewList = res.data.data.content;
-              } else {
-                this.reviewList = this.reviewList.concat(res.data.data.content);
-              };
-          } else {
-            this.busy = true;
-          }
+          this.reviewList = res.data.data.content;
 
+          function countLines(ele) {
+            var styles = window.getComputedStyle(ele, null);
+            var lh = parseInt(styles.lineHeight, 10);
+            var h = parseInt(styles.height, 10);
+            var lc = Math.round(h / lh);
+            console.log('line count:', lc, 'line-height:', lh, 'height:', h);
+            return lc;
+          }
+          this.$mount()
+          this.reviewList.forEach((item, index) => {
+            let dom = document.getElementById('content' + index)
+            if (countLines(dom) > 3) {
+              item['show'] = 1
+            }
+          })
         });
       },
-      getCommentPraise(item) {
+      getCommentPraise(id, status) {
+        if (this.pageStatus == 0) {
+          return false;
+        }
         let self = this;
         let params = {};
         params = {
-          status: item.userPraise ? 0 : 1,
-          commentId: item.id
+          status: status ? 0 : 1,
+          commentId: id
         }
         const url = `/comment/praise`;
         this.$http.get(url, {
           params
         }).then((res) => {
-          item.userPraise = item.userPraise? 0:1
-          item.praiseCount = !item.userPraise?item.praiseCount-1:item.praiseCount+1
+          this.getCommentTop();
         });
       },
     }
@@ -172,58 +184,95 @@
       border: 1px solid #ccc;
     }
     .home-review {
-      padding-bottom: 120/@rem;
+      background: #fff;
+      padding-bottom: 240/@rem;
       h2 {
-        .text(40, 120);
+        .text(40,
+        56);
+        padding-top: 45/@rem;
         color: #333;
         text-align: center;
+      }
+      h3 {
+        .text(32,
+        120);
+        color: #888;
+        text-align: center;
+        font-weight: normal;
+        .iconfont {
+          .text(24,
+          120);
+          margin-left: 20/@rem;
+          color: #888;
+
+        }
       }
       .item {
         position: relative;
         /* height: 560/@rem; */
         padding: 36/@rem 36/@rem 30/@rem 118/@rem;
         .item-header {
-          .size(64, 64);
-          .pos(30, 40);
+          .size(64,
+          64);
+          .pos(30,
+          40);
           border-radius: 50%;
           overflow: hidden;
           background: #000;
         }
         .item-name {
           /* .pos(118, 36); */
-          .text(30, 42);
+          font-weight: bold;
+          .text(30,
+          42);
           color: #333;
         }
         .item-periods {
           /* .pos(118, 82); */
-          .text(24, 33);
+          .text(24,
+          33);
           color: #666;
           margin-top: 4/@rem;
           margin-bottom: 14/@rem;
         }
         .item-content {
           /* .pos(118, 130); */
-          font-size: 30/@rem;
+          max-height: 9999px;
+          font-size: 28/@rem;
           line-height: 42/@rem;
-          color: #666;
+          color: #333;
+        }
+        .item-content.show {
+          height: 126/@rem;
+          overflow: hidden;
+        }
+        .item-toggle {
+          max-height: 9999px;
+          font-size: 28/@rem;
+          line-height: 42/@rem;
+          color: #4A669D;
         }
         .item-book {
-          .size(596, 148);
+          .size(580,
+          148);
           /* .pos(118, 318); */
           position: relative;
           background: #eee;
           border-radius: 4/@rem;
           margin-top: 20/@rem;
-          margin-bottom: 35/@rem;
           .book-bg {}
           .book-img {
-            .pos(30, 13);
-            .size(80, 112);
+            .pos(30,
+            13);
+            .size(80,
+            112);
             border: 5/@rem solid #fff;
           }
           .book-name {
-            .pos(0, 25);
-            .text(30, 42);
+            .pos(0,
+            25);
+            .text(30,
+            42);
             color: #555;
             width: 100%;
             padding-left: 134/@rem;
@@ -231,9 +280,12 @@
             box-sizing: border-box;
 
           }
+
           .book-author {
-            .pos(0, 75);
-            .text(26, 37);
+            .pos(0,
+            75);
+            .text(26,
+            37);
             color: #666;
             width: 100%;
             padding-left: 134/@rem;
@@ -242,10 +294,10 @@
           }
         }
         .item-bottom {
-          .size(22, 30);
-          /* position: absolute; */
-          /* bottom: 30/@rem; */
-          /* left: 0; */
+          .text(22,
+          30);
+          margin-top: 25/@rem;
+          color: #666;
           width: 100%;
           box-sizing: border-box;
           .iconfont {
@@ -264,7 +316,7 @@
         position: absolute;
         bottom: 0;
         left: 0;
-        width: 596/@rem;
+        width: 580/@rem;
         box-sizing: border-box;
       }
 

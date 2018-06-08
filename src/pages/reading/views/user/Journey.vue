@@ -31,8 +31,8 @@
                 <div class="row">
                   <span class="operate-num">{{item.praiseCount}}</span>
                 </div>
-                <div class="column-center" @click.stop="thumbsUp(item,$index)">
-                  <i class="iconfont icon-heart" :class="(item.userPraise==0) ? '':'zan' "></i>
+                <div class="column-center" @click.stop="thumbsUp(item,$index)" :class="point?'point':''">
+                  <i class="iconfont" :class="(item.userPraise==0) ? 'icon-dianzan':'icon-heart zan'"></i>
                 </div>
               </div>
             </div>
@@ -70,7 +70,10 @@ export default {
       expandStatus: [],
 
       // 统计内容为空的数据条数
-      contentNum: 0
+      contentNum: 0,
+
+      flag: false,
+      point: false
     };
   },
   computed: {
@@ -96,9 +99,17 @@ export default {
         this.journeyList.forEach((item,index)=>{
           // 获取时间
           if(parseInt(item.releaseTime.substring(5,7)) < 10){
-            this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(6,7) + "." + item.releaseTime.substring(8,10)
+            if(parseInt(item.releaseTime.substring(8,10)) < 10){
+              this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(6,7) + "." + item.releaseTime.substring(9,10)
+            }else{
+              this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(6,7) + "." + item.releaseTime.substring(8,10)
+            }
           }else{
-            this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(5,7) + "." + item.releaseTime.substring(8,10)
+            if(parseInt(item.releaseTime.substring(8,10)) < 10){
+              this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(5,7) + "." + item.releaseTime.substring(9,10)
+            }else{
+              this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(5,7) + "." + item.releaseTime.substring(8,10)
+            }
           }
         })
       }else{
@@ -107,6 +118,7 @@ export default {
 
     },
     async thumbsUp(row,index) {
+      this.point = true
       let praise = row.userPraise == 0 ? 1 : 0
       let objs = await user.getThumbUp(praise,row.id);
       if (objs.success) {
@@ -118,6 +130,7 @@ export default {
         // await this.getJourneyInfo();
         // this.init();
         this.journeyList[index].userPraise = praise
+        this.point = false
       }else{
         console.log("获取数据失败")
       }
@@ -203,6 +216,9 @@ export default {
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+}
+.point{
+  pointer-events: none;
 }
 .journey-main{
   padding: 41/@rem 33/@rem 0 50/@rem;
