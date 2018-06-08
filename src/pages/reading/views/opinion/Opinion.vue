@@ -66,8 +66,7 @@
         let valueDate = new Date(value)
         let valueDateNum = valueDate.getTime()
         // 获取当时的时间戳
-        let key = nowDateNum - valueDateNum
-        alert('现在' + key)
+        let key = Number(nowDateNum) - Number(valueDateNum)
 
         let today = new Date();
         today.setHours(0);
@@ -81,7 +80,6 @@
         
         let text = '';
         
-        alert('昨天' + yest)
         if (key > 0 && key < 60 * 1000) {
           text = '刚刚'
         }
@@ -101,7 +99,6 @@
         if (key >= yest) {
           text = (valueDate.getMonth() + 1 < 10 ? '0' + (valueDate.getMonth() + 1) : valueDate.getMonth() + 1) + '-' + (valueDate.getDate() < 10 ? '0' + valueDate.getDate() : valueDate.getDate())
         }
-        alert('结果' + text)
         
         return text
       },
