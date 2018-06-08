@@ -252,7 +252,7 @@
       let self = this;
       // 如果是支付流程直接支付
       if(window.location.href.indexOf('from') != -1){
-        location.replace('http://k.youfen666.com/reading.html#/index/home?' + window.location.href.split('?')[2])
+        location.replace('/reading.html#/index/home?' + window.location.href.split('?')[2])
       }
 
       // 防止cookie丢失
