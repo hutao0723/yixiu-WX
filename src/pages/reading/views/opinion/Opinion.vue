@@ -10,7 +10,7 @@
             <div v-show="item.show == 2" @click="unfoldToggle(1,index)" class="item-toggle">收起</div>
             <div class="item-book">
               <div class="book-bg">
-                <img class="book-img" :src="item.courseUrl" alt="">
+                <img class="book-img" :src="item.courseVerticalCover" alt="">
               </div>
               <div class="book-name otw">{{item.courseTitle}}</div>
               <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
@@ -61,8 +61,13 @@
       timeTransition: function (value) {
         let nowDate = new Date()
         let nowDateNum = nowDate.getTime()
+        alert('获取现在的时间戳' + nowDateNum)
+        // 获取现在的时间戳
+
         let valueDate = new Date(value)
         let valueDateNum = valueDate.getTime()
+        alert('获取当时的时间戳' + nowDateNum)
+        // 获取当时的时间戳
         let key = nowDateNum - valueDateNum
 
         let today = new Date();
@@ -73,15 +78,19 @@
 
         let yesterday = new Date(today);
         let yesterdayNum = yesterday.getTime()
-        let yes = nowDateNum - yesterdayNum ;
-
-        let Y, M, D, h, m, s;
+        let yes = valueDateNum - yesterdayNum;
+        alert('获取昨天的时间戳' + nowDateNum)
+        
+        // 昨天的时间戳
+        let Y, M, D, h, m;
         Y = valueDate.getFullYear() + '-';
         M = (valueDate.getMonth() + 1 < 10 ? '0' + (valueDate.getMonth() + 1) : valueDate.getMonth() + 1) + '-';
         D = (valueDate.getDate() < 10 ? '0' + valueDate.getDate() : valueDate.getDate()) + ' ';
         h = (valueDate.getHours() < 10 ? '0' + valueDate.getHours() : valueDate.getHours()) + ':';
         m = (valueDate.getMinutes() < 10 ? '0' + valueDate.getMinutes() : valueDate.getMinutes());
         let text = '';
+        console.log(Y, M, D, h, m)
+
         if (key > 0 && key < 60 * 1000) {
           text = '刚刚'
         }
@@ -101,6 +110,7 @@
         if (key >= yes) {
           text = M + D
         }
+        console.log('结果'+ text)
         return text
       },
     },

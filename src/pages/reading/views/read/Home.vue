@@ -227,56 +227,9 @@
       };
     },
     computed: {
-      ...mapState(['bottomNavToggle', 'bottomNavType'])
+      ...mapState(['bottomNavToggle', 'bottomNavType','videoToggle'])
     },
     filters: {
-      // 时长
-      timeTransition: function (value) {
-        let nowDate = new Date()
-        let nowDateNum = nowDate.getTime()
-        let valueDate = new Date(value)
-        let valueDateNum = valueDate.getTime()
-        let key = nowDateNum - valueDateNum
-
-        let today = new Date();
-        today.setHours(0);
-        today.setMinutes(0);
-        today.setSeconds(0);
-        today.setMilliseconds(0);
-
-        let yesterday = new Date(today);
-        let yesterdayNum = yesterday.getTime()
-        let yes = valueDateNum - yesterdayNum;
-
-        let Y, M, D, h, m, s;
-        Y = valueDate.getFullYear() + '-';
-        M = (valueDate.getMonth() + 1 < 10 ? '0' + (valueDate.getMonth() + 1) : valueDate.getMonth() + 1) + '-';
-        D = (valueDate.getDate() < 10 ? '0' + valueDate.getDate() : valueDate.getDate()) + ' ';
-        h = (valueDate.getHours() < 10 ? '0' + valueDate.getHours() : valueDate.getHours()) + ':';
-        m = (valueDate.getMinutes() < 10 ? '0' + valueDate.getMinutes() : valueDate.getMinutes());
-        let text = '';
-
-        if (key > 0 && key < 60 * 1000) {
-          text = '刚刚'
-        }
-
-        if (key >= 60 * 1000 && key < 60 * 60 * 1000) {
-          text = Math.floor(key / (60 * 1000)) + '分钟前'
-        }
-
-        if (key >= 60 * 60 * 1000 && key < 2 * 60 * 60 * 1000) {
-          text = '1小时前'
-        }
-
-        if (key >= 2 * 60 * 60 * 1000 && key < yes) {
-          text = h + m
-        }
-
-        if (key >= yes) {
-          text = M + D
-        }
-        return text
-      },
     },
     created() {},
     async mounted() {
@@ -318,6 +271,10 @@
             type: 'setBottomNavType',
             bottomNavType: false
           })
+          store.commit({
+            type: 'setVideoToggle',
+            videoToggle: false
+          })
 
         }
         if (
@@ -335,6 +292,11 @@
             type: 'setBottomNavType',
             bottomNavType: false
           })
+          store.commit({
+            type: 'setVideoToggle',
+            videoToggle: false
+          })
+          
         }
 
         if (
@@ -351,6 +313,10 @@
             type: 'setBottomNavType',
             bottomNavType: false
           })
+          store.commit({
+            type: 'setVideoToggle',
+            videoToggle: false
+          })
         }
 
         if (
@@ -366,6 +332,10 @@
           store.commit({
             type: 'setBottomNavType',
             bottomNavType: false
+          })
+          store.commit({
+            type: 'setVideoToggle',
+            videoToggle: false
           })
         }
 
@@ -384,6 +354,10 @@
             type: 'setBottomNavType',
             bottomNavType: true
           })
+          store.commit({
+            type: 'setVideoToggle',
+            videoToggle: true
+          })
         }
 
         if (
@@ -400,6 +374,10 @@
           store.commit({
             type: 'setBottomNavType',
             bottomNavType: false
+          })
+          store.commit({
+            type: 'setVideoToggle',
+            videoToggle: false
           })
         }
       }

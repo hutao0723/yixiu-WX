@@ -43,7 +43,7 @@ import { mapState } from 'vuex';
       };
     },
     computed: {
-      ...mapState(['readAudio','readPlaying'])
+      ...mapState(['readAudio','readPlaying','videoToggle'])
     },
     methods: {
       goAudioPage: function() {
