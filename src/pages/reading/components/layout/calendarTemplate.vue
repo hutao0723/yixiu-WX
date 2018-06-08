@@ -68,7 +68,7 @@
         let child;
         let father = document.querySelector('.calendar-box');
         if(this.isFrist){
-          if(this.isTodayClock){
+          if(this.isTodayClock==1){
             //定位当天
             console.log('当天定位')
             child = document.querySelector('.isToday_def');
