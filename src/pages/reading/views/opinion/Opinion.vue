@@ -1,29 +1,30 @@
 <template>
   <div class="opinion-main">
     <div class="home-review">
-      <div class="item" v-for="(item,index) in reviewList" :key="index">
-        <img :src="item.userImgUrl" alt="" class="item-header">
-        <div class="item-name">{{item.userNickname}}</div>
-        <div class="item-periods">{{item.readName}}第{{item.readStageNum}}期学员</div>
-        <div class="item-content" ref="cheight" :id="'content' + index" :class="{show:item.show == 1}">{{item.content}}</div>
-        <div v-show="item.show == 1" @click="itemToggle(2,index)" class="item-toggle">展开</div>
-        <div v-show="item.show == 2" @click="itemToggle(1,index)" class="item-toggle">收起</div>
-        <div class="item-book">
-          <div class="book-bg">
-            <img class="book-img" :src="item.courseUrl" alt="">
+        <div class="item" v-for="(item,index) in reviewList" :key="index">
+            <img :src="item.userImgUrl" alt="" class="item-header">
+            <div class="item-name">{{item.userNickname}}</div>
+            <div class="item-periods">{{item.readName}}第{{item.readStageNum}}期学员</div>
+            <div class="item-content" ref="cheight" :id="'content' + index" :class="{show:item.show == 1}">{{item.content}}</div>
+            <div v-show="item.show == 1" @click="unfoldToggle(2,index)" class="item-toggle">展开</div>
+            <div v-show="item.show == 2" @click="unfoldToggle(1,index)" class="item-toggle">收起</div>
+            <div class="item-book">
+              <div class="book-bg">
+                <img class="book-img" :src="item.courseUrl" alt="">
+              </div>
+              <div class="book-name otw">{{item.courseTitle}}</div>
+              <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
+            </div>
+            <div class="item-bottom">
+              <span @click="setCommentPraise(item.id,item.userPraise)" class="fr">
+                <i class="iconfont icon-dianzan" v-show="!item.userPraise"></i>
+                <i class="iconfont icon-heart" :style="{color:'red'}" v-show="item.userPraise"></i>
+                <span>{{item.praiseCount}}</span>
+              </span>
+              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"></router-link>
+              <!-- <span>{{item.releaseTime| timeTransition}}</span> -->
+            </div>
           </div>
-          <div class="book-name otw">{{item.courseTitle}}</div>
-          <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
-        </div>
-        <div class="item-bottom">
-          <span @click="getCommentPraise(item.id,item.userPraise)">
-            <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
-            <span class="fr">{{item.praiseCount}}</span>
-          </span>
-          <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"></router-link>
-          <span>{{item.releaseTime| timeTransition}}</span>
-        </div>
-      </div>
     </div>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0"></div>
     <AudioBar/>
@@ -269,10 +270,10 @@
           margin-top: 20/@rem;
           .book-bg {}
           .book-img {
-            .pos(30,
-            13);
+            .pos(27,
+            20);
             .size(80,
-            112);
+            108);
             border: 5/@rem solid #fff;
           }
           .book-name {
@@ -285,6 +286,7 @@
             padding-left: 134/@rem;
             padding-right: 10/@rem;
             box-sizing: border-box;
+            font-weight: bold;
 
           }
 

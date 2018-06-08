@@ -47,7 +47,8 @@
             </div>
             <div class="item-bottom">
               <span @click="setCommentPraise(item.id,item.userPraise)" class="fr">
-                <i class="iconfont icon-heart" :style="{color:item.userPraise?'red':'#000'}"></i>
+                <i class="iconfont icon-dianzan" v-show="!item.userPraise"></i>
+                <i class="iconfont icon-heart" :style="{color:'red'}" v-show="item.userPraise"></i>
                 <span>{{item.praiseCount}}</span>
               </span>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"></router-link>
@@ -108,7 +109,7 @@
     <!-- 已关注已开课 -->
     <div class="home-already" v-if="pageStatus == 4">
       <AudioBar/>
-      <h2>今日学习{{pageStatus}}
+      <h2>今日学习
         <span> | 第{{todayBookDetail.days}}/{{todayBookDetail.totalDays}}天</span>
       </h2>
       <div class="already-book">
@@ -122,7 +123,7 @@
       </div>
       <h2>我的书架
         <span> |
-          <router-link :to="{ path: '/index/card/0'}" tag="a"> 缺卡{{todayBookDetail.lackClockDays}}天 ></router-link>
+          <router-link :to="{ path: '/index/card?isclock=0', }" tag="a"> 缺卡{{todayBookDetail.lackClockDays}}天 ></router-link>
         </span>
       </h2>
       <div class="already-list clearfix">
@@ -942,10 +943,10 @@
           margin-top: 20/@rem;
           .book-bg {}
           .book-img {
-            .pos(30,
-            13);
+            .pos(27,
+            20);
             .size(80,
-            112);
+            108);
             border: 5/@rem solid #fff;
           }
           .book-name {
@@ -958,6 +959,7 @@
             padding-left: 134/@rem;
             padding-right: 10/@rem;
             box-sizing: border-box;
+            font-weight: bold;
 
           }
 
@@ -1319,6 +1321,8 @@
     }
     .home-already {
       padding: 0 36/@rem;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
       h2 {
         .text(50,
         70);
@@ -1393,14 +1397,14 @@
           margin-right: 70/@rem;
           overflow: hidden;
           position: relative;
-          width: 170/@rem;
+          width: 180/@rem;
           .item-box {
             position: relative;
             border-radius: 6/@rem;
             overflow: hidden;
           }
           .item-img {
-            .size(170,
+            .size(180,
             240);
             display: block;
           }
@@ -1409,7 +1413,8 @@
             line-height: 32/@rem;
             color: #333;
             margin-top: 20/@rem;
-            margin-bottom: 36/@rem;
+            margin-bottom: 34/@rem;
+            font-weight: bold;
           }
           .item-lock {
             background: rgba(0, 0, 0, 0.7);
