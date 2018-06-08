@@ -1,7 +1,13 @@
 <template>
     <div class="share">
-        <canvas id="sharePoster" v-if="!imgUrl"></canvas>
+        <div class="canvas" v-if="!imgUrl">
+            <canvas id="sharePoster"></canvas>
+        </div>
         <img :src="imgUrl" v-if="imgUrl" />
+        <div class="btn">
+            长按保存分享
+            <img :src="imgUrl" v-if="imgUrl" />    
+        </div>
         <Popup v-if="popup" v-on:success = "toCertificate" v-on:close = "closePopup"/>
     </div>
 </template>
@@ -24,7 +30,7 @@
             const _this = this;
             _this.popup = _this.$route.params.lastClock*1;
             _this.isSelf = _this.$route.params.isClock*1;
-            _this.getInfo();
+            //_this.getInfo();
         },
         methods: {
             async getInfo() {
@@ -38,6 +44,11 @@
                 });
                 if(res.data.success){
                     _this.info = res.data.data;
+                    if(!_this.info.bookBgimgUrl){
+                        _this.info.bookBgimgUrl = 'http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg';
+                    }
+                    //二维码写死
+                    _this.info.readQrcodeImgUrl = "http://yun.dui88.com/youfen/images/read_ewm3.png"
                     _this.createdCanvas ();
                 }else{
                     console.log('获取数据失败')
@@ -50,7 +61,7 @@
                 this.popup = false;  
             },
             conversion(data){
-                return data
+                return data*2
             },
             createdCanvas () {
                 const _this = this;
@@ -273,6 +284,30 @@
         box-sizing: border-box;
         // z-index: 9;
         background: #f4f4f4;
+        padding: 42/@rem 55/@rem 0;
+        .canvas{
+            opacity: 0;
+        }
+        .btn{
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0; 
+            height: 100/@rem;  
+            background: #fbdb31; 
+            text-align: center;
+            line-height: 100/@rem; 
+            z-index: 10; 
+            font-size: 32/@rem; 
+            font-weight: 600;
+            img{
+                opacity: 0;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 10;
+            }
+        }
         img{
             width: 100%;
             display: block;

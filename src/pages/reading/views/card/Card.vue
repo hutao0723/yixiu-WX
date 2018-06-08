@@ -22,25 +22,28 @@
       <calendar-template  :calendarDate='c_date' @getDate="getDate" ></calendar-template>
     </div>
     <div class="book-book" >
-      <div class="book-img" @click.stop="playAudio(readId,courseId)">
-        <img :src="courseDetail.courseUrl" alt="">
-        <div class="book-audio" v-if="afterToday||isToday"></div>
-        <div class="book-mark" v-else>
-          <i class="iconfont icon-lock"></i>
+      <div class="book-detail-box" v-show="afterToday||isToday">
+        <div class="book-img" @click.stop="playAudio(readId,courseId)">
+          <img v-if="courseDetail.courseUrl" :src="courseDetail.courseUrl" alt="">
+          <img v-else src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-book-cover.png" alt="">
+          <div class="book-audio" v-if="afterToday||isToday"></div>
+          <div class="book-mark" v-else>
+            <i class="iconfont icon-lock"></i>
+          </div>
         </div>
-      </div>
-      <div class="book-detail">
-        <div class="book-title">{{courseDetail.courseTitle}}</div>
-        <div class="book-author">
-          <span>{{courseDetail.author}}</span>
-          <span class="book-btn" v-if="afterToday||isToday">
-              <span  v-if="courseDetail.clockState==1&&courseDetail.commentState==1" @click.stop="goPoster()">查看</span>
-              <span  v-if="courseDetail.clockState==1&&courseDetail.commentState==0" @click.stop="goComment()">写想法</span>
-              <span  v-if="courseDetail.clockState==0" @click.stop="goComment()">去打卡</span>
+        <div class="book-detail">
+          <div class="book-title">{{courseDetail.courseTitle}}</div>
+          <div class="book-author">
+            <span>{{courseDetail.author}}</span>
+            <span class="book-btn" >
+              <span  v-show="courseDetail.clockState==1&&courseDetail.commentState==1" @click.stop="goPoster()">查看</span>
+              <span  v-show="courseDetail.clockState==1&&courseDetail.commentState==0" @click.stop="goComment()">写想法</span>
+              <span  v-show="courseDetail.clockState==0" @click.stop="goComment()">去打卡</span>
           </span>
+          </div>
         </div>
+        <div style="clear: both"></div>
       </div>
-      <div style="clear: both"></div>
     </div>
     <div class="card_bottom_text">听得见的知识 看得见的成长</div>
     <bnav></bnav>
@@ -134,10 +137,13 @@
         if(msg.isRange){
           _this.afterToday = msg.afterToday;
           _this.isToday = msg.isToday;
+          if(msg.afterToday||msg.isToday){
+            _this.getCourseDetail(msg.date)
+          }
           if(msg.dayNum){
             _this.dayNum = msg.dayNum;
           }
-          _this.getCourseDetail(msg.date)
+
           _this.courseId = msg.courseId;
         }
 
@@ -161,9 +167,9 @@
           let resp = res.data;
           if(resp.success){
             _this.courseDetail = resp.data;
-            if(!_this.courseDetail.courseUrl){
-              _this.courseDetail.courseUrl = 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-book-cover.png'
-            }
+            // if(!_this.courseDetail.courseUrl){
+            //   _this.courseDetail.courseUrl = 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-book-cover.png'
+            // }
             if( _this.courseDetail.commentId){
               _this.commentId =  _this.courseDetail.commentId
             }
@@ -174,7 +180,7 @@
         this.$router.push({name:'comment',params:{readId:this.readId,courseId:this.courseId}})
       },
       goPoster(){
-        this.$router.push('/poster/'+this.commentId+'/0/1')
+        this.$router.push({name:'poster',query:{commentId:this.commentId,lastClock:0,isClock:1}})
       }
     }
   };
@@ -299,9 +305,12 @@
       background:#fff;
     }
     .book-book{
-      padding:42/@rem 30/@rem 49/@rem 36/@rem;
+      height:255/@rem;
       background: #fff;
       position: relative;
+      .book-detail-box{
+        padding:42/@rem 30/@rem 49/@rem 36/@rem;
+      }
       .book-img{
         width:120/@rem;
         height:160/@rem;

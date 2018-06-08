@@ -7,7 +7,7 @@
         </div>
         <div class="clearfix">
           <div class="book-table" v-for="(item, index) in bookList" >
-            <div @click="getdayNumInfo(item.id,item.readId)">
+            <div @click="getdayNumInfo(item.id,item.readId,item.title)">
               <div class="book-cover">
                 <img :src="item.imgUrl">
               </div>
@@ -27,7 +27,7 @@
 
       <div class="already-alert" v-show="alertToggle">
         <div class="alert-top">
-          <h3>{{bookName}}</h3>
+          <h3>《{{bookName}}》</h3>
           <div class="clearfix book-box" >
             <div class="item" v-for="(item,index) in dayNumList" :key="index" @click.stop="playAudio(item.readId,item.courseId)">{{index+1}}</div>
           </div>
@@ -147,9 +147,10 @@ export default {
         });
     },
     // 获取弹框列表
-    async getdayNumInfo (bookId,readId) {
+    async getdayNumInfo (bookId,readId,title) {
       let objs = await user.getdayNum(bookId,readId);
       if (objs.success) {
+        this.bookName = title
         this.dayNumList = objs.data
         this.alertToggle = true
       } else {
@@ -184,14 +185,14 @@ export default {
   padding-top: 30/@rem;
 }
 .book-table{
-  margin: 40/@rem 0 0 70/@rem ;
+  margin: 40/@rem 0 0 62/@rem ;
   width: 170/@rem;
   float: left;
   .book-cover{
     margin-bottom: 20/@rem;
     img{
-      width: 170/@rem;
-      height: 238/@rem;
+      width: 180/@rem;
+      height: 240/@rem;
       display: block;
       border-radius: 5/@rem;
     }

@@ -12,7 +12,7 @@
             <div class="text-container clearfix">
               <div class="content-container">
                 <div  class="content" ref="cheight" :class="item.expand?'h132':''">{{item.content}}</div>
-                <div v-if="item.line"> 
+                <div v-if="item.line">
                   <div class="letter" v-if="(item.letter == 1 )&& (item.expand)" @click.stop="handleChange(item)">全部</div>
                   <div class="letter" v-if="(item.letter == 2 )&& (!item.expand)" @click.stop="handleChange(item)">收起</div>
                 </div>
@@ -25,11 +25,9 @@
                 </div>
               </div>
               <div class="row operate fr">
-                <router-link :to="{ path: '/poster/' + item.id+'/0/1'}">
-                  <div class="column-center operate-share">
-                    <i class="iconfont icon-share"></i>
-                  </div>
-                </router-link>
+                <div class="column-center operate-share" @click="goPoster(item.id)">
+                  <i class="iconfont icon-share"></i>
+                </div>
                 <div class="row">
                   <span class="operate-num">{{item.praiseCount}}</span>
                 </div>
@@ -106,7 +104,7 @@ export default {
       }else{
         console.log("获取数据失败")
       }
-      
+
     },
     async thumbsUp(row,index) {
       let praise = row.userPraise == 0 ? 1 : 0
@@ -123,9 +121,9 @@ export default {
       }else{
         console.log("获取数据失败")
       }
-      
+
     },
-    init() {  
+    init() {
       if(!this.journeyList.length) {
         this.noData = true
         return
@@ -158,7 +156,7 @@ export default {
           // line属性是否展示全部收起这个属性
           this.$set(this.journeyList[index],'line', false)
         }
-        
+
       })
     },
     formatDateNew(date) {
@@ -182,6 +180,10 @@ export default {
         this.$set(row,'letter', 1)
       }
       this.$set(row,'expand', this.expandStatus[row.id])
+    },
+    goPoster(id){
+      console.log(id)
+      this.$router.push({name:'poster',query:{commentId:id,lastClock:0,isClock:1}})
     }
   }
 };
@@ -206,7 +208,7 @@ export default {
   padding: 41/@rem 33/@rem 0 50/@rem;
   .module{
     .date{
-      position: relative; 
+      position: relative;
       height: 42/@rem;
       padding: 0 0 0 24/@rem;
       .fontSize(30);
@@ -230,9 +232,9 @@ export default {
     }
     .text-journal{
       width: 630/@rem;
-      height: 83/@rem; 
+      height: 83/@rem;
       background: rgba(243,243,243,1);
-      border-radius: 8/@rem ; 
+      border-radius: 8/@rem ;
       line-height: 83/@rem;
       box-sizing: border-box;
       padding-left: 22/@rem;
@@ -281,7 +283,7 @@ export default {
         .book-img{
           img{
             box-sizing: border-box;
-            width: 64/@rem; 
+            width: 64/@rem;
             height: 88/@rem;
             border-radius: 5/@rem;
           }
@@ -290,8 +292,13 @@ export default {
           color: #7F7F7F;
           .book-title{
             .fontSize(26);
+            width: 460/@rem;
             margin-left: 80/@rem;
             margin-top: 3/@rem;
+            box-sizing: border-box;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
           .book-writer{
             .fontSize(24);
@@ -350,9 +357,9 @@ export default {
 
 
 
-  
+
 }
 
-  
+
 </style>
 
