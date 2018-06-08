@@ -44,11 +44,19 @@ export default {
 			});
 			if (res.data.success) {
 				_this.info = res.data.data;
+				//头部背景图
 				if (!_this.info.bookBgimgUrl) {
 					_this.info.bookBgimgUrl = "http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg";
-				}
+				};
+				if(!_this.info.courseUrl){
+					_this.info.courseUrl = 'http://yun.dui88.com/youfen/images/read_course_none.png';
+				};
 				//二维码写死
 				_this.info.readQrcodeImgUrl = "http://yun.dui88.com/youfen/images/read_ewm3.png";
+				//默认观点
+				if(!_this.info.content){
+					_this.info.content = "不读书的人，思想就会停止。这是我在【一修阅读】读书的第"+_this.info.clocks+"天。"
+				};
 				_this.createdCanvas();
 			} else {
 				console.log("获取数据失败");
@@ -74,13 +82,13 @@ export default {
 				let temp = "";
 				let row = [];
 				for (let a = 0; a < chr.length; a++) {
-				//宽度根据设计稿固定值
-				if (ctx.measureText(temp).width < _this.conversion(w)) {
-				} else {
-					row.push(temp);
-					temp = "";
-				}
-				temp += chr[a];
+					//宽度根据设计稿固定值
+					if (ctx.measureText(temp).width < _this.conversion(w)) {
+					} else {
+						row.push(temp);
+						temp = "";
+					}
+					temp += chr[a];
 				}
 				row.push(temp);
 				return row;
@@ -133,13 +141,7 @@ export default {
 						ctx.fillStyle = "#fff";
 						ctx.fill();
 					}
-					roundRect(
-						_this.conversion(34),
-						_this.conversion(355),
-						_this.conversion(680),
-						_this.conversion(660) * 1 + responseHeight * 1,
-						_this.conversion(10)
-					);
+					roundRect(_this.conversion(34),_this.conversion(355),_this.conversion(680),_this.conversion(660) * 1 + responseHeight * 1,_this.conversion(10));
 					//清除阴影效果
 					ctx.shadowColor = "rgba(0,0,0,0)";
 					resolve("");
@@ -174,8 +176,8 @@ export default {
 					ctx.font = _this.conversion(24) + "px 宋体";
 					ctx.textBaseline = "top";
 					ctx.fillStyle = "#444";
-					ctx.fillText("长按识别二维码",_this.conversion(227),_this.conversion(1109) * 1 + responseHeight * 1);
-					ctx.fillText("一修读书·" + _this.info.readName,_this.conversion(227),_this.conversion(1151) * 1 + responseHeight * 1);
+					ctx.fillText("长按识别二维码",_this.conversion(227),_this.conversion(1101) * 1 + responseHeight * 1);
+					ctx.fillText("一修读书·" + _this.info.readName,_this.conversion(227),_this.conversion(1137) * 1 + responseHeight * 1);
 					let drawImg = new Image();
 					drawImg.crossOrigin = "Anonymous";
 					drawImg.src = _this.info.readQrcodeImgUrl;
@@ -275,7 +277,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	@import "../../less/variable";
 	.share {
 		width: 750 / @rem;
