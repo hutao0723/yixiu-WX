@@ -3,7 +3,7 @@
     <div class="book-book">
       <div class="book-img">
         <img v-if="courseDetail.courseUrl" :src="courseDetail.courseUrl" alt="">
-        <img v-else src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-book-cover.png" alt="">
+        <img v-else src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="">
       </div>
       <div class="book-detail">
         <div class="book-title">{{courseDetail.courseTitle}}</div>
