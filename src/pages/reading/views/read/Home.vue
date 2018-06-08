@@ -36,8 +36,8 @@
             <div class="item-name">{{item.userNickname}}</div>
             <div class="item-periods">{{item.readName}}第{{item.readStageNum}}期学员</div>
             <div class="item-content" ref="cheight" :id="'content' + index" :class="{show:item.show == 1}">{{item.content}}</div>
-            <div v-show="item.show == 1" @click="itemToggle(2,index)" class="item-toggle">展开</div>
-            <div v-show="item.show == 2" @click="itemToggle(1,index)" class="item-toggle">收起</div>
+            <div v-show="item.show == 1" @click="unfoldToggle(2,index)" class="item-toggle">展开</div>
+            <div v-show="item.show == 2" @click="unfoldToggle(1,index)" class="item-toggle">收起</div>
             <div class="item-book">
               <div class="book-bg">
                 <img class="book-img" :src="item.courseUrl" alt="">
@@ -50,7 +50,7 @@
                 <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
                 <span class="fr">{{item.praiseCount}}</span>
               </span>
-              <router-link :to="{ path: '/poster/' + item.id+'/0/1'}" tag="a" class="iconfont icon-share fr"></router-link>
+              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"></router-link>
               <!-- <span>{{item.releaseTime| timeTransition}}</span> -->
             </div>
           </div>
@@ -74,7 +74,7 @@
             </div>
           </div>
         </div>
-        <div v-show="!readList.length" class="item-none">
+        <div v-show="!readList.length" class="course-none">
           <img src="https://yun.duiba.com.cn/yoofans/images/201805/read/index.png" alt="">
           <p>暂无可购买的</p>
         </div>
@@ -168,13 +168,13 @@
   import AudioBar from '../../components/basic/Audio_Bar';
   import play from '../../api/play';
   import store from '../../vuex/store';
-
-
   import {
     mapState
   } from 'vuex';
 
+  const api = {
 
+  }
 
   export default {
     components: {
@@ -261,28 +261,29 @@
     created() {},
     async mounted() {
       let self = this;
-      // 如果是支付流程直接支付
+      // 设置标题
+      this.setTitle('一修读书')
 
-      // console.log(this.$route)
-
+      // 如果微信分享链接=>去掉from
       if (window.location.href.indexOf('from') != -1) {
         location.replace('http://k.youfen666.com/reading.html#/index/home?' + window.location.href.split('?')[2])
       }
-      this.setTitle('一修读书')
-
-      if (self.$route.query.dcd && !self.$route.query.isPay) {
+      // 发送dcd绑定分销
+      if (self.$route.query.dcd) {
         self.getDcd(self.$route.query.dcd)
       }
-      if (self.$route.query.courseId && !self.$route.query.isPay) {
+      // 如果是支付流程直接支付
+      if (self.$route.query.courseId) {
         self.tabActive = false;
         self.buy(self.$route.query.courseId, 4)
       }
 
-
-      let userState = await self.getThumbUp();
+      // 获取用户信息
+      let userState = await self.getState();
       self.wxShare(userState.data.userId);
       self.readId = userState.data.readId;
-      // 状态判断逻辑
+
+
       if (userState.data) {
         if (
           userState.data.readState == -1
@@ -390,17 +391,14 @@
     },
     methods: {
 
+      // 展开收起
+      unfoldToggle(n, index) {
+        let self = this;
+        this.reviewList[index].show = n
+        this.$set(self.reviewList, index, self.reviewList[index])
+      },
 
       // 支付
-
-      itemToggle(n,index){
-        let self = this;
-        this.reviewList[index].show= n
-        this.$set(self.reviewList,index,self.reviewList[index])
-      },
-      /**
-       * 拉起支付
-       */
       async buy(itemId, itemType) {
         console.log('拉起支付')
         const orderId = await this.placeOrder({
@@ -416,10 +414,7 @@
         this.wxPay(payment);
       },
 
-
-      /**
-       * 下单
-       */
+      // 下单
       async placeOrder({
         itemId,
         itemType
@@ -430,7 +425,6 @@
           itemId,
           itemType
         });
-
         if (!res.data.success) {
           location.href = '/reading.html#/index/home';
           return false;
@@ -438,9 +432,7 @@
         return res.data.data;
       },
 
-      /**
-       * 预支付
-       */
+      // 预支付
       async wxPrePay({
         orderId
       }) {
@@ -454,9 +446,7 @@
         return res.data.data;
       },
 
-      /**
-       * 支付
-       */
+      // 支付
       wxPay(payment) {
         let self = this;
 
@@ -473,8 +463,7 @@
             function (res) {
               if (res.err_msg == "get_brand_wcpay_request:ok") {
 
-                // } 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
-
+                // 给url+时间戳
                 function url_add_hash(url, key) {
                   var key = (key || 't') + '='; //默认是"t"  
                   var reg = new RegExp(key + '\\d+'); //正则：t=1472286066028  
@@ -489,7 +478,6 @@
                     }
                   }
                 }
-
                 window.location.href = url_add_hash(window.location.href)
               } else {
                 self.payCancelToggle = true;
@@ -635,7 +623,7 @@
           self.courseDetail = res.data.data
         });
       },
-      async getThumbUp() {
+      async getState() {
 
         let self = this;
         let params = {};
@@ -659,6 +647,7 @@
           params
         }).then((res) => {
           this.reviewList = res.data.data.content;
+
           function countLines(ele) {
             var styles = window.getComputedStyle(ele, null);
             var lh = parseInt(styles.lineHeight, 10);
@@ -974,7 +963,7 @@
           height: 126/@rem;
           overflow: hidden;
         }
-        .item-toggle{
+        .item-toggle {
           max-height: 9999px;
           font-size: 28/@rem;
           line-height: 42/@rem;
@@ -1088,7 +1077,7 @@
         -o-transition: all 0.25s ease;
         /* Opera */
       }
-      .item-none {
+      .course-none {
         height: 100%;
         background: #fff;
         position: absolute;
