@@ -56,7 +56,7 @@
       }
     },
     mounted: function () {
-      this.isTodayClock = this.$route.params.isTodayClock;
+      this.isTodayClock = this.$route.query.isClock;
     },
     watch: {
       calendarDate (){
