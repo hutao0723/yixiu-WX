@@ -112,7 +112,8 @@
         <span> | 第{{todayBookDetail.days}}/{{todayBookDetail.totalDays}}天</span>
       </h2>
       <div class="already-book">
-        <img :src="todayBookDetail.courseUrl" alt="" class="book-img">
+        <img :src="todayBookDetail.courseUrl" alt="" class="book-img" v-if="todayBookDetail.courseUrl">
+        <img src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="" class="book-img" v-else>
         <div class="book-name otw">《{{todayBookDetail.courseTitle}}》</div>
         <div class="book-msg">{{todayBookDetail.courseSubTitle}}</div>
         <div class="book-btn" @click="playAudio(todayBookDetail.courseId)">播放
@@ -123,13 +124,14 @@
         <span> |
           <a href="/index/card/0">缺卡{{todayBookDetail.lackClockDays}}天 ></a>
         </span>
-
       </h2>
       <div class="already-list clearfix">
         <div class="item" v-for="(item,index) in historyBookList" :key="index" @click="getDetailList
         (item)">
           <div class="item-box">
-            <img :src="item.imgUrl" alt="" class="item-img">
+            <img :src="item.imgUrl" alt="" class="item-img" v-if="item.imgUrl">
+            <img src="http://yun.dui88.com/youfen/images/read_course_none.png
+            " alt="" class="item-img" v-else>
             <div class="item-lock" v-if="item.lockStatus">
               <i class="iconfont icon-lock"></i>
             </div>
@@ -985,9 +987,11 @@
           color: #333;
         }
         .item-content.show {
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 3;
+          overflow:hidden; 
+text-overflow:ellipsis;
+display:-webkit-box; 
+-webkit-box-orient:vertical;
+-webkit-line-clamp:2;
         }
         .item-book {
           .size(580,
