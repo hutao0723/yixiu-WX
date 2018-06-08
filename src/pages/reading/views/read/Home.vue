@@ -51,9 +51,8 @@
                 <i class="iconfont icon-heart" :style="{color:'red'}" v-show="item.userPraise"></i>
                 <span>{{item.praiseCount}}</span>
               </span>
-              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr" v-if="userId == item.userId"></router-link>
-              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr" v-if="userId != item.userId"></router-link>
-              
+              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr" v-if="userId == item.userId&&pageStatus !=0"></router-link>
+              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr" v-if="userId != item.userId&&pageStatus !=0"></router-link>
               <!-- <span>{{item.releaseTime| timeTransition}}</span> -->
             </div>
           </div>
@@ -110,7 +109,6 @@
     </div>
     <!-- 已关注已开课 -->
     <div class="home-already" v-if="pageStatus == 4">
-      <AudioBar/>
       <h2>今日学习
         <span> | 第{{todayBookDetail.days}}/{{todayBookDetail.totalDays}}天</span>
       </h2>
