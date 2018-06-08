@@ -9,7 +9,7 @@
         <div class="dateBgView">
           <div class="dateEmptyView" v-for="item2 in empytGrids[index1]">{{item2.index}}
           </div>
-          <div class="dateView" :class="[{isToday_def:item3.isToday},{isFirstLackCard:item3.lackCard}]" v-for="(item3,index) in days[index1]"  :key="index" @click="clickDay(index1,index,item3)">
+          <div class="dateView" v-for="(item3,index) in days[index1]"  :class="[{isToday_def:item3.isToday},{isFirstLackCard:item3.lackCard}]" :key="index" @click="clickDay(index1,index,item3)">
             <a href="javascript:;" >
               <div class="datesView"  :class="[
               {'isClock':item3.isClock},
@@ -132,6 +132,7 @@
         this._month = _month;
         this.today = today;
         for(let i = 0;i<_this.caledarArr.length;i++){
+          console.log(_this.caledarArr)
           this.calculateEmptyGrids(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
           /**调用计算空格子*/
           this.calculateDays(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
@@ -186,7 +187,7 @@
           _this.empytGrids.push(empytGrids);
         } else {
           _this.hasEmptyGrid = false;
-          _this.empytGrids = []
+          _this.empytGrids.push([]);
         }
       },
       calculateDays(year, month) {
