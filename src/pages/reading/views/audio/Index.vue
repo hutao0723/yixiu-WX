@@ -36,9 +36,9 @@
             <span class="xxs primary">播放列表</span>
           </button>
         </div>
-        <div class="bottom" @click="goComment">
-           {{text}}
-        </div>
+      </div>
+      <div class="bottom" @click="goComment" v-if="readAudio.curRead">
+         {{text}}
       </div>
     </div> 
     <div class="modal" v-if="showCardModal">
@@ -151,14 +151,14 @@ export default {
     padding: 0 30/@rem;
     .banner{
       width: 100%;
-      height: 62%;
+      height: 54%;
       position: relative;
       padding: 1/@rem;
       box-sizing: border-box;
       border:none;
       .course-img{
-        width: 240/@rem;
-        height: 336/@rem;
+        width: 246/@rem;
+        height: 330/@rem;
         display: block;
         margin: 142/@rem auto 0;
         box-shadow: -5/@rem 0/@rem 10/@rem 4/@rem rgba(225,225,225,0.5);
@@ -181,7 +181,7 @@ export default {
       }
     }
     .controler{
-      height: 38%;
+      height: 20%;
     }
     .slider-bar{
       width: 690/@rem;
@@ -242,6 +242,7 @@ export default {
     .bottom{
       width:300/@rem;
       height: 70/@rem;
+      margin: 18% auto;
       line-height: 70/@rem;
       text-align: center;
       margin-bottom: 70/@rem;

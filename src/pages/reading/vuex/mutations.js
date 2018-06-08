@@ -43,12 +43,14 @@ export default {
 				play.audioNext()
 			} else {
 				play.syncProgress(state.readAudio.readId, state.readAudio.courseId, state.readCurrentTime)
+				state.readAudio.playbackProgress = 0
 				state.audioelement.load()
 				state.audioelement.pause()
 			}
 		} else {
 			state.showCardModal = true;
 			play.syncProgress(state.readAudio.readId, state.readAudio.courseId, state.readCurrentTime)
+			state.readAudio.playbackProgress = 0
 			state.audioelement.load()
 			state.audioelement.pause()
 		}	
