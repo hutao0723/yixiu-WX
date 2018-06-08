@@ -67,7 +67,7 @@
         let valueDate = new Date(value)
         let valueDateNum = valueDate.getTime()
         // 获取当时的时间戳
-        let key = parseInt(nowDateNum) - parseInt(valueDateNum)
+        let key = Number(nowDateNum) - Number(valueDateNum)
 
         let today = new Date();
         today.setHours(0);
@@ -77,7 +77,7 @@
 
         let yesterday = new Date(today);
         let yesterdayNum = yesterday.getTime()
-        let yest = parseInt(valueDateNum) - parseInt(yesterdayNum);
+        let yest = Number(valueDateNum) - Number(yesterdayNum);
         
         let text = '';
         
