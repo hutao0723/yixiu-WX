@@ -21,8 +21,9 @@
                 <i class="iconfont icon-heart" :style="{color:'red'}" v-show="item.userPraise"></i>
                 <span>{{item.praiseCount}}</span>
               </span>
-              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"></router-link>
-              <!-- <span>{{item.releaseTime| timeTransition}}</span> -->
+              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr" v-if="userId == item.userId"></router-link>
+              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr" v-if="userId != item.userId"></router-link>
+              <span>{{item.releaseTime| timeTransition}}</span>
             </div>
           </div>
     </div>
@@ -45,7 +46,8 @@
         pageNum: 1,
         pageSize: 20,
 
-        busy: true
+        busy: true,
+        userId: '',
       };
     },
     components: {
@@ -104,10 +106,25 @@
       },
     },
     created() {},
-    mounted() {
+    async mounted() {
       this.getCommentTop();
+      let userState = await this.getUsetState();
+      this.userId = userState.data.userId;
+      
     },
     methods: {
+      // 获取用户信息
+      async getUsetState() {
+        let self = this;
+        let params = {};
+        // const url = API.userState;
+        const url = API.userState;
+        const res = await this.$http.get(url, {
+          params
+        });
+        
+        return res.data;
+      },
       // 展开收起
       unfoldToggle(n, index) {
         let self = this;
@@ -148,7 +165,7 @@
           })
         });
       },
-      getCommentPraise(id, status) {
+      setCommentPraise(id, status) {
         if (this.pageStatus == 0) {
           return false;
         }
@@ -270,8 +287,8 @@
           margin-top: 20/@rem;
           .book-bg {}
           .book-img {
-            .pos(27,
-            20);
+            .pos(22,
+            15);
             .size(80,
             108);
             border: 5/@rem solid #fff;
@@ -286,8 +303,6 @@
             padding-left: 134/@rem;
             padding-right: 10/@rem;
             box-sizing: border-box;
-            font-weight: bold;
-
           }
 
           .book-author {

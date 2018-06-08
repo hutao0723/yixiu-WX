@@ -51,7 +51,9 @@
                 <i class="iconfont icon-heart" :style="{color:'red'}" v-show="item.userPraise"></i>
                 <span>{{item.praiseCount}}</span>
               </span>
-              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"></router-link>
+              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr" v-if="userId == item.userId"></router-link>
+              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr" v-if="userId != item.userId"></router-link>
+              
               <!-- <span>{{item.releaseTime| timeTransition}}</span> -->
             </div>
           </div>
@@ -204,6 +206,7 @@
         bookName: '',
         alertToggle: false,
         readId: '',
+        userId: '',
 
         pageStatus: 10, // 页面状态
 
@@ -297,6 +300,7 @@
       // 获取用户信息
       let userState = await self.getUsetState();
       self.wxShare(userState.data.userId);
+      self.userId = userState.data.userId;
       self.readId = userState.data.readId;
       if (userState.data) {
         if (
@@ -943,8 +947,8 @@
           margin-top: 20/@rem;
           .book-bg {}
           .book-img {
-            .pos(27,
-            20);
+            .pos(22,
+            15);
             .size(80,
             108);
             border: 5/@rem solid #fff;
@@ -959,8 +963,6 @@
             padding-left: 134/@rem;
             padding-right: 10/@rem;
             box-sizing: border-box;
-            font-weight: bold;
-
           }
 
           .book-author {
@@ -1394,7 +1396,7 @@
         padding: 0 14/@rem;
         .item {
           float: left;
-          margin-right: 70/@rem;
+          margin-right: 55/@rem;
           overflow: hidden;
           position: relative;
           width: 180/@rem;
