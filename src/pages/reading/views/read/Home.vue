@@ -370,7 +370,7 @@
         }
 
         if (
-          userState.data.readState == 2 && userState.data.followOfficialAccount
+          userState.data.readState == 2 && !userState.data.followOfficialAccount
         ) {
           console.log('用户购买已关注已开课')
           self.pageStatus = 4;
@@ -1322,7 +1322,9 @@
       }
     }
     .home-already {
+      height: 100%;
       padding: 0 36/@rem;
+      padding-bottom: 100/@rem;
       overflow-y: scroll;
       -webkit-overflow-scrolling: touch;
       h2 {
