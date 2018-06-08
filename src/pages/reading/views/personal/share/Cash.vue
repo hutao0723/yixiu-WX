@@ -8,7 +8,7 @@
             <span class="ci-tip">2小时内到账</span>
         </div>
         <div class="cash-remind">
-            <p class="cr-hint">单笔不低于50元</p>
+            <p class="cr-hint">单笔不低于20元</p>
             <a href="javascript:void(0)" class="cr-cashall" @click="allCashing">全部提现</a>
         </div>
         <button class="cash-btn" :disabled="!Boolean(this.cashNum)" @click="judgeCash">申请提现</button>
@@ -63,8 +63,8 @@ export default {
                 // money = this.dealWithMoney()
                 // this.getData(money)
                 
-            if(this.cashNum < 50){// 提现不得小于50元
-                this.promptText = '至少提现<em>50</em>元'
+            if(this.cashNum < 20){// 提现不得小于20元
+                this.promptText = '至少提现<em>20</em>元'
                 this.dialog(this.promptText)
             }else if(this.cashNum > this.balance){ // 不得超过额度
                 this.promptText = `最多可提现${this.balance}元`
