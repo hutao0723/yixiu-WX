@@ -16,12 +16,12 @@
           <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
         </div>
         <div class="item-bottom">
-          <span @click="getCommentPraise(item.id,item.userPraise)" v-if="pageStatus != 0">
+          <span @click="getCommentPraise(item.id,item.userPraise)">
             <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
             <span class="fr">{{item.praiseCount}}</span>
           </span>
-          <router-link :to="{ path: '/poster/' + item.id+'/0/1'}" tag="a" class="iconfont icon-share fr"></router-link>
-          <!-- <span>{{item.releaseTime| timeTransition}}</span> -->
+          <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"></router-link>
+          <span>{{item.releaseTime| timeTransition}}</span>
         </div>
       </div>
     </div>
@@ -107,6 +107,13 @@
       this.getCommentTop();
     },
     methods: {
+      // 展开收起
+      unfoldToggle(n, index) {
+        let self = this;
+        this.reviewList[index].show = n
+        this.$set(self.reviewList, index, self.reviewList[index])
+      },
+
       loadMore() {
         this.busy = true;
         this.pageNum++;
