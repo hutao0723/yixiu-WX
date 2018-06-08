@@ -183,7 +183,7 @@
     changeReadStatus: testUrl + '/user/stat/changeReadStatus',
     readDetail: testUrl + '/user/read/detail',
     commentTop: testUrl + '/comment/top',
-    commonPraise: testUrl + '/common/praise',
+    commentPraise: testUrl + '/comment/praise',
     readList: testUrl + '/read/readList',
     courseDetailByDate: testUrl + '/readBookCourse/courseDetailByDate',
     bookList: testUrl + '/readBook/bookList',
@@ -644,7 +644,7 @@
           status: status ? 0 : 1,
           commentId: id
         }
-        const url = API.commonPraise;
+        const url = API.commentPraise;
         this.$http.get(url, {
           params
         }).then((res) => {
