@@ -259,7 +259,7 @@ export default {
 			.ball{
 				display:inline-block;
 				position:absolute;
-				width:10/@rem;
+				width:12/@rem;
 				height:22/@rem;
 				left:-7/@rem;
 				margin-top:-9/@rem;

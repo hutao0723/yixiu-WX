@@ -97,7 +97,7 @@ import { mapState } from 'vuex';
         font-size: 40/@rem;
       }
       .icon-play{
-        color: rgba(0,0,0,0.4753)
+        color: #fff;
       }
     }
   }
