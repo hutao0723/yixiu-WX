@@ -424,7 +424,7 @@
         const res = await this.$http.post(url, {
           itemId,
           itemType,
-          dcd: this.$route.query.dcd?this.$route.query.dcd:''
+          dcd: this.$route.query.dcd?this.$route.query.dcd:'',
         });
 
         if (!res.data.success) {
