@@ -265,7 +265,7 @@
         })
         if (res.data.success && res.data.data) {
           refreshCookie = false;
-          location.href = res.data.data;
+          location.replace(res.data.data);
         }
       }
  
