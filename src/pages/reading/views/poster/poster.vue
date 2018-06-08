@@ -1,15 +1,16 @@
 <template>
-    <div class="share">
-        <div class="canvas" v-if="!imgUrl">
-            <canvas id="sharePoster"></canvas>
-        </div>
-        <img :src="imgUrl" v-if="imgUrl" />
-        <div class="btn">
-            长按保存分享
-            <img :src="imgUrl" v-if="imgUrl" />    
-        </div>
-        <Popup v-if="popup" v-on:success = "toCertificate" v-on:close = "closePopup"/>
-    </div>
+    <div class="share" >
+		<div class="canvas" v-if="!imgUrl">
+			<canvas id="sharePoster"></canvas>
+		</div>
+
+		<img :src="imgUrl" v-if="imgUrl"  class="pic"/>
+		<div class="btn">
+			长按保存分享
+			<img :src="imgUrl" v-if="imgUrl" />    
+		</div>
+		<Popup v-if="popup" v-on:success = "toCertificate" v-on:close = "closePopup"/>
+	</div>
 </template>
 
 <script>
@@ -55,7 +56,7 @@ export default {
 				_this.info.readQrcodeImgUrl = "http://yun.dui88.com/youfen/images/read_ewm3.png";
 				//默认观点
 				if(!_this.info.content){
-					_this.info.content = "不读书的人，思想就会停止。这是我在【一修阅读】读书的第"+_this.info.clocks+"天。"
+					_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
 				};
 				_this.createdCanvas();
 			} else {
@@ -282,7 +283,7 @@ export default {
 	.share {
 		width: 750 / @rem;
 		height: 100%;
-		position: absolute;
+		position: relative;
 		left: 0;
 		top: 0;
 		bottom: 0;
@@ -292,9 +293,15 @@ export default {
 		box-sizing: border-box;
 		// z-index: 9;
 		background: #f4f4f4;
-		padding: 42/@rem 55/@rem 142/@rem 55/@rem;
 		.canvas {
 			opacity: 0;
+		}
+		.pic {
+			width: 100%;
+			display: block;
+			padding: 42/@rem 55/@rem 142/@rem;
+			box-sizing: border-box;
+			height: 4000px;
 		}
 		.btn {
 			position: fixed;
@@ -314,11 +321,8 @@ export default {
 				top: 0;
 				left: 0;
 				z-index: 10;
+				width: 100%;
 			}
-		}
-		img {
-			width: 100%;
-			display: block;
 		}
 	}
 </style>
