@@ -2,15 +2,17 @@
   <div class="index-main">
     <router-view></router-view>
     <bnav></bnav>
+    <AudioBar/>
   </div>
 </template>
 
 <script>
 // import store from '../vuex/store'
 import bnav from '../components/basic/Nav';
+import AudioBar from '../components/basic/Audio_Bar';
 export default {
   components: {
-    bnav
+    bnav, AudioBar
   },
   data () {
     return {
