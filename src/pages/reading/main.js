@@ -32,6 +32,17 @@ if (!window.localStorage.getItem('deviceId')) {
   })},100)
 }
 
+// 防止cookie丢失
+Vue.http.get('/baseLogin', {
+  params: {
+    dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
+  }
+}).then(res => { // 获得签名配置
+  if (res.data.success && res.data.data) {
+    location.href = res.data.data
+  }
+});
+
 Vue.http.headers.common['deviceId'] = window.localStorage.getItem('deviceId');
 Vue.http.headers.common['from'] = 'read';
 // Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjrgAVYrS2jWTFx5xqHDj2QQBH1uXBFMw3gMPxWGMYXWq992G8UBUUjtDPenDWhHayUB6cTjNCScruS3vsPcREhmMXmK2rxgixHsa31XHprvefiBtesVeVWdyJUbfVpW24eB5N';
