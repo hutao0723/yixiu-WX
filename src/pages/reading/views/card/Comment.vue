@@ -186,6 +186,7 @@
     width: 750/@rem;
     height: 100%;
     position: relative;
+    overflow: hidden;
     // z-index: 9;
     background: #fff;
     font-size: 24/@rem;

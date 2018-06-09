@@ -109,7 +109,6 @@
       this.getReadDetail();
     },
     updated(){
-
     },
     mounted () {
       this.getReadStatus()
