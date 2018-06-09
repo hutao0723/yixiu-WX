@@ -60,8 +60,8 @@ export default {
   }
   .code{
     margin:0 auto 30/@rem;
-    width: 524/@rem;
-    height: 524/@rem;
+    width: 540/@rem;
+    height: 630/@rem;
     display: block;
   }
   .name{
