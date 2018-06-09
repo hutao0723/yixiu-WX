@@ -1,6 +1,6 @@
 <template>
     <div class="cm-wrap">
-        <ul class="cm-list">
+        <ul class="cm-list" :style="{borderBottom:this.record.length ? '1px solid #D8D8D8':'none'}">
             <li class="cm-item" v-for="item in record" :key="item.num">
                 <div class="cml-warp">
                     <img :src="item.headImgurl?item.headImgurl:'http://yun.dui88.com/youfen/images/201806/portrait.png'" alt="" class="cml-image">
@@ -126,7 +126,7 @@ export default {
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         .cm-list {
-            border-bottom: 1/@rem solid @borderColor;
+            padding-top: 120/@rem; 
             .cm-item {
                 display: flex;
                 flex-direction: row;
