@@ -237,6 +237,7 @@
       z-index:999;
       transition:all .3s ease ;
       -webkit-transition:all .3s ease ;
+    }
     .cardNotice-box{
       width:100%;
       height: 100%;
