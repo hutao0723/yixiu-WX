@@ -32,9 +32,11 @@
           </div>
         </div>
         <div class="book-detail">
-          <div class="book-title">{{courseDetail.courseTitle}}</div>
-          <div class="book-author" v-show="courseDetail.author">
-            <span>{{courseDetail.author}}<span class="audio-right">著</span></span>
+          <div class="book-title">{{courseDetail.courseTitle}}罗密欧与朱丽叶</div>
+          <div class="book-author">
+            <div v-show="courseDetail.author">
+              <span>{{courseDetail.author}}<span class="audio-right">著</span></span>
+            </div>
           </div>
           <div class="book-btn">
               <span  v-show="courseDetail.clockState&&courseDetail.commentState" @click.stop="goPoster()">查看</span>
@@ -143,7 +145,6 @@
           if(msg.dayNum){
             _this.dayNum = msg.dayNum;
           }
-
           _this.courseId = msg.courseId;
         }
 
@@ -183,12 +184,12 @@
   };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import '../../less/variable';
 
   .card-main {
     width: 750/@rem;
-    position: absolute;
+    position: relative;
     left: 0;
     top: 0;
     bottom: 0;
@@ -368,8 +369,12 @@
           line-height: 42/@rem;
           margin-bottom: 12/@rem;
           font-weight: 600;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         .book-author{
+          height:40/@rem;
           font-size: 26/@rem;
           line-height: 37/@rem;
           color:#666;
