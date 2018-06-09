@@ -1,5 +1,6 @@
 <template>
   <div class="index-main">
+    <keep-alive>  
     <router-view></router-view>
   </div>
 </template>

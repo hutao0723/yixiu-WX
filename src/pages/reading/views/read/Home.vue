@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="home-bottom" @click="tabActiveToggle(false)" :class="{bottom:bottomNavToggle}" v-show="tabActive">去选课程</div>
-      <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="!tabActive&&readList.length>0">
+      <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="!tabActive&&readList.length>0&&payBtnShow">
         <p>
           <span class="text-del">{{selectCourseObj.costPrice}}</span>
           <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>
@@ -46,11 +46,15 @@
               <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
             </div>
             <div class="item-bottom">
-              <span @click="getCommentPraise(item.id,item.userPraise)" v-if="pageStatus != 0">
-                <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
-                <span class="fr">{{item.praiseCount}}</span>
+              <span @click="setCommentPraise(item.id,item.userPraise)" class="fr">
+                  <span>{{item.praiseCount}}</span>
+                <i class="iconfont icon-dianzan" v-show="!item.userPraise"></i>
+                <i class="iconfont icon-heart" :style="{color:'red'}" v-show="item.userPraise"></i>
               </span>
-              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"></router-link>
+              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"
+                v-if="userId == item.userId&&pageStatus !=0"></router-link>
+              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr"
+                v-if="userId != item.userId&&pageStatus !=0"></router-link>
               <!-- <span>{{item.releaseTime| timeTransition}}</span> -->
             </div>
           </div>
@@ -107,7 +111,6 @@
     </div>
     <!-- 已关注已开课 -->
     <div class="home-already" v-if="pageStatus == 4">
-      <AudioBar/>
       <h2>今日学习
         <span> | 第{{todayBookDetail.days}}/{{todayBookDetail.totalDays}}天</span>
       </h2>
@@ -122,7 +125,7 @@
       </div>
       <h2>我的书架
         <span> |
-          <router-link :to="{ path: '/index/card/0' + item.id+'/0/1'}" tag="a">缺卡{{todayBookDetail.lackClockDays}}天 ></router-link>
+          <router-link :to="{ path: '/index/card?isclock=0', }" tag="a"> 缺卡{{todayBookDetail.lackClockDays}}天 ></router-link>
         </span>
       </h2>
       <div class="already-list clearfix">
@@ -149,6 +152,7 @@
         <div class="alert-btn" @click="alertToggle = false;">取消</div>
         <div class="alert-bg" @click="alertToggle = false;"></div>
       </div>
+      <div v-show="noneValueAlert" class="already-no">内容还没有解锁喔！</div>
     </div>
     <div class="home-pop" v-show="payCancelToggle">
       <div class="pop-content">
@@ -174,9 +178,24 @@
     mapState
   } from 'vuex';
 
-  const api = {
+  const testUrl = window.location.hostname == 'localhost' ? '/api' : '';
+  const API = {
+    orderSubmit: testUrl + '/order/submit',
+    paySubmit: testUrl + '/pay/submit',
+    distributionBinding: testUrl + '/distribution/binding',
+    changeLoginDays: testUrl + '/user/stat/changeLoginDays',
+    changeReadStatus: testUrl + '/user/stat/changeReadStatus',
+    readDetail: testUrl + '/user/read/detail',
+    commentTop: testUrl + '/comment/top',
+    commentPraise: testUrl + '/comment/praise',
+    readList: testUrl + '/read/readList',
+    courseDetailByDate: testUrl + '/readBookCourse/courseDetailByDate',
+    bookList: testUrl + '/readBook/bookList',
+    courseList: testUrl + '/readBookCourse/courseList',
+    userState: testUrl + '/user/read/state',
 
-  }
+  };
+
 
   export default {
     components: {
@@ -190,6 +209,7 @@
         bookName: '',
         alertToggle: false,
         readId: '',
+        userId: '',
 
         pageStatus: 10, // 页面状态
 
@@ -204,68 +224,21 @@
         maincontent: 0,
         bodycontent: 0,
         payCancelToggle: false,
+        payBtnShow: true,
+        noneValueAlert: false,
 
 
       };
     },
     computed: {
-      ...mapState(['bottomNavToggle', 'bottomNavType'])
+      ...mapState(['bottomNavToggle', 'bottomNavType', 'videoToggle'])
     },
-    filters: {
-      // 时长
-      timeTransition: function (value) {
-        let nowDate = new Date()
-        let nowDateNum = nowDate.getTime()
-        let valueDate = new Date(value)
-        let valueDateNum = valueDate.getTime()
-        let key = nowDateNum - valueDateNum
-
-        let today = new Date();
-        today.setHours(0);
-        today.setMinutes(0);
-        today.setSeconds(0);
-        today.setMilliseconds(0);
-
-        let yesterday = new Date(today);
-        let yesterdayNum = yesterday.getTime()
-        let yes = valueDateNum - yesterdayNum;
-
-        let Y, M, D, h, m, s;
-        Y = valueDate.getFullYear() + '-';
-        M = (valueDate.getMonth() + 1 < 10 ? '0' + (valueDate.getMonth() + 1) : valueDate.getMonth() + 1) + '-';
-        D = (valueDate.getDate() < 10 ? '0' + valueDate.getDate() : valueDate.getDate()) + ' ';
-        h = (valueDate.getHours() < 10 ? '0' + valueDate.getHours() : valueDate.getHours()) + ':';
-        m = (valueDate.getMinutes() < 10 ? '0' + valueDate.getMinutes() : valueDate.getMinutes());
-        let text = '';
-
-        if (key > 0 && key < 60 * 1000) {
-          text = '刚刚'
-        }
-
-        if (key >= 60 * 1000 && key < 60 * 60 * 1000) {
-          text = Math.floor(key / (60 * 1000)) + '分钟前'
-        }
-
-        if (key >= 60 * 60 * 1000 && key < 2 * 60 * 60 * 1000) {
-          text = '1小时前'
-        }
-
-        if (key >= 2 * 60 * 60 * 1000 && key < yes) {
-          text = h + m
-        }
-
-        if (key >= yes) {
-          text = M + D
-        }
-        return text
-      },
-    },
+    filters: {},
     created() {},
     async mounted() {
       let self = this;
       // 设置标题
       this.setTitle('一修读书')
-
       // 如果微信分享链接=>去掉from
       if (window.location.href.indexOf('from') != -1) {
         location.replace('http://k.youfen666.com/reading.html#/index/home?' + window.location.href.split('?')[2])
@@ -281,11 +254,10 @@
       }
 
       // 获取用户信息
-      let userState = await self.getState();
+      let userState = await self.getUsetState();
       self.wxShare(userState.data.userId);
+      self.userId = userState.data.userId;
       self.readId = userState.data.readId;
-
-
       if (userState.data) {
         if (
           userState.data.readState == -1
@@ -301,6 +273,10 @@
           store.commit({
             type: 'setBottomNavType',
             bottomNavType: false
+          })
+          store.commit({
+            type: 'setVideoToggle',
+            videoToggle: false
           })
 
         }
@@ -319,6 +295,11 @@
             type: 'setBottomNavType',
             bottomNavType: false
           })
+          store.commit({
+            type: 'setVideoToggle',
+            videoToggle: false
+          })
+
         }
 
         if (
@@ -335,6 +316,10 @@
             type: 'setBottomNavType',
             bottomNavType: false
           })
+          store.commit({
+            type: 'setVideoToggle',
+            videoToggle: false
+          })
         }
 
         if (
@@ -342,7 +327,7 @@
         ) {
           console.log('用户购买已关注未开课')
           self.pageStatus = 3;
-          self.readDetail();
+          self.getReadDetail();
           store.commit({
             type: 'setBottomNavToggle',
             bottomNavToggle: true
@@ -350,6 +335,10 @@
           store.commit({
             type: 'setBottomNavType',
             bottomNavType: false
+          })
+          store.commit({
+            type: 'setVideoToggle',
+            videoToggle: false
           })
         }
 
@@ -368,6 +357,10 @@
             type: 'setBottomNavType',
             bottomNavType: true
           })
+          store.commit({
+            type: 'setVideoToggle',
+            videoToggle: true
+          })
         }
 
         if (
@@ -385,8 +378,13 @@
             type: 'setBottomNavType',
             bottomNavType: false
           })
+          store.commit({
+            type: 'setVideoToggle',
+            videoToggle: false
+          })
         }
       }
+
       self.changeLoginDays();
       self.changeReadStatus();
 
@@ -422,7 +420,7 @@
         itemType
       }) {
         console.log('下单')
-        const url = `/order/submit`;
+        const url = API.orderSubmit;
         const res = await this.$http.post(url, {
           itemId,
           itemType
@@ -440,7 +438,7 @@
       }) {
         console.log('预支付')
         const payType = 'WECHATREADH5APAY';
-        const url = `/pay/submit`;
+        const url = API.paySubmit;
         const res = await this.$http.post(url, {
           orderId,
           payType
@@ -500,75 +498,19 @@
       },
 
 
-
+      // 课程详情切换
       tabActiveToggle(e) {
         this.$refs.homemain.scrollTop = 0
         this.tabActive = e;
       },
-      dispatchScroll(e) {
-        console.log(this.$refs.homemain.scrollTop + document.body.clientHeight)
-        let self = this;
-        var startX = 0,
-          startY = 0,
-          isTrue = 0;
-
-        function touchStart(evt) {
-          try {
-            var touch = evt.touches[0], //获取第一个触点
-              x = Number(touch.pageX), //页面触点X坐标
-              y = Number(touch.pageY); //页面触点Y坐标
-            //记录触点初始位置
-            startX = x;
-            startY = y;
-          } catch (e) {
-            console.log(e.message)
-          }
-        }
-
-        function touchMove(evt) {
-          try {
-            var touch = evt.touches[0], //获取第一个触点
-              x = Number(touch.pageX), //页面触点X坐标
-              y = Number(touch.pageY); //页面触点Y坐标
-
-
-            // //判断滑动方向
-            // if (startY - y > 200) {
-            //   console.log('到底部并且上滑了')
-            //   isTrue = 1;
-            // } else if (y - startY > 200) {
-            //   console.log('下滑了')
-            //   isTrue = 2;
-            // } else {
-            //   isTrue = 0;
-            // }
-
-
-          } catch (e) {}
-        }
-
-        function touchEnd() {
-          if (isTrue == 1) {
-            self.$refs.homemain.scrollTop = 0
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
-            window.scrollTo(0, 0);
-            self.tabActive = false;
-          }
-        }
-
-        //绑定事件
-        document.addEventListener('touchstart', touchStart, false);
-        document.addEventListener('touchmove', touchMove, false);
-        document.addEventListener('touchend', touchEnd, false);
-      },
+      // ded
       getDcd(dcd) {
         let self = this;
         let params = {};
         params = {
           dcd: dcd,
         }
-        const url = `/distribution/binding`;
+        const url = API.distributionBinding;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -578,8 +520,7 @@
       changeLoginDays() {
         let self = this;
         let params = {};
-        params = {}
-        const url = `/user/stat/changeLoginDays`;
+        const url = API.changeLoginDays;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -590,61 +531,65 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/stat/changeReadStatus`;
+        const url = API.changeReadStatus;
         this.$http.get(url, {
           params
         }).then((res) => {
 
         });
       },
+      // 开始支付
       orderPay() {
         this.buy(this.selectCourseId, 4)
       },
+      // 开始播放
       playAudio(id, lockStatus) {
         if (lockStatus) {
+          this.noneValueAlert = true;
+          setTimeout(() => {
+            this.noneValueAlert = false;
+          }, 2000)
           return false;
         }
         play.audioInit(this.readId, id, true)
         // 跳转到播放页
         this.$router.push('/audio/index/1')
       },
+      // 选择课程
       selectCourse(item) {
         if (this.selectCourseId != item.readId && !item.purchased) {
           this.selectCourseId = item.readId;
           this.selectCourseObj = item;
         }
       },
-      readDetail() {
+      // 阅读详情
+      getReadDetail() {
         let self = this;
         let params = {};
-        params = {}
-        const url = `/user/read/detail`;
+        const url = API.readDetail;
         this.$http.get(url, {
           params
         }).then((res) => {
           self.courseDetail = res.data.data
         });
       },
-      async getState() {
-
+      // 获取用户信息
+      async getUsetState() {
         let self = this;
         let params = {};
-        params = {
-
-        }
-        const url = `/user/read/state`;
+        // const url = API.userState;
+        const url = API.userState;
         const res = await this.$http.get(url, {
           params
         });
+
         return res.data;
       },
-
+      // 首页评论
       getCommentTop() {
-
         let self = this;
         let params = {};
-        params = {}
-        const url = `/comment/top`;
+        const url = API.commentTop;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -658,16 +603,19 @@
             console.log('line count:', lc, 'line-height:', lh, 'height:', h);
             return lc;
           }
-          this.$mount()
-          this.reviewList.forEach((item, index) => {
-            let dom = document.getElementById('content' + index)
-            if (countLines(dom) > 3) {
-              item['show'] = 1
-            }
-          })
+          if (this.reviewList.length > 0) {
+            this.$mount()
+            this.reviewList.forEach((item, index) => {
+              let dom = document.getElementById('content' + index)
+              if (countLines(dom) > 3) {
+                item['show'] = 1
+              }
+            })
+          }
         });
       },
-      getCommentPraise(id, status) {
+      // 点赞
+      setCommentPraise(id, status) {
         if (this.pageStatus == 0) {
           return false;
         }
@@ -677,29 +625,34 @@
           status: status ? 0 : 1,
           commentId: id
         }
-        const url = `/comment/praise`;
+        const url = API.commentPraise;
         this.$http.get(url, {
           params
         }).then((res) => {
           this.getCommentTop();
         });
       },
+      // 获取阅读计划
       getReadList() {
         let self = this;
         let params = {};
         params = {}
-        const url = `/read/readList`;
+        const url = API.readList;
         this.$http.get(url, {
           params
         }).then((res) => {
           this.readList = res.data.data;
           if (res.data.data.length > 0) {
-            this.selectCourseId = res.data.data[0].readId
-            this.selectCourseObj = res.data.data[0];
+            if (res.data.data[0].purchased) {
+              this.payBtnShow = false;
+            } else {
+              this.selectCourseId = res.data.data[0].readId
+              this.selectCourseObj = res.data.data[0];
+            }
           }
         });
       },
-
+      // 获取阅读详情
       getDetail() {
         let self = this;
         let params = {};
@@ -715,29 +668,34 @@
           readId: this.readId,
           date: date,
         }
-        const url = `/readBookCourse/courseDetailByDate`;
+        const url = API.courseDetailByDate;
         this.$http.get(url, {
           params
         }).then((res) => {
           this.todayBookDetail = res.data.data;
         });
       },
+      // 获取书list
       getBookList() {
         let self = this
         let params = {};
         params = {
           readId: this.readId,
         }
-        const url = `/readBook/bookList`;
+        const url = API.bookList;
         this.$http.get(url, {
           params
         }).then((res) => {
           this.historyBookList = res.data.data.content;
         });
       },
-
+      // 获取详情list
       getDetailList(item) {
         if (item.lockStatus) {
+          this.noneValueAlert = true;
+          setTimeout(() => {
+            this.noneValueAlert = false;
+          }, 2000)
           return false;
         }
         let self = this;
@@ -746,7 +704,7 @@
           readId: this.readId,
           bookId: item.id,
         }
-        const url = `/readBookCourse/courseList`;
+        const url = API.courseList;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -756,16 +714,12 @@
         });
       }
 
-
-
     }
   };
 
 </script>
 
 <style lang="less">
-  /* @import '../../less/letiable'; */
-
   @import '../../less/util';
   html,
   body,
@@ -780,6 +734,7 @@
   }
 
   .home-main {
+    background: #fff;
     .home-type {
       background: #f1f1f1;
       box-sizing: border-box;
@@ -970,6 +925,7 @@
           font-size: 28/@rem;
           line-height: 42/@rem;
           color: #4A669D;
+          margin-top: 9/@rem;
         }
         .item-book {
           .size(580,
@@ -981,10 +937,10 @@
           margin-top: 20/@rem;
           .book-bg {}
           .book-img {
-            .pos(30,
-            13);
+            .pos(22,
+            15);
             .size(80,
-            112);
+            108);
             border: 5/@rem solid #fff;
           }
           .book-name {
@@ -997,7 +953,6 @@
             padding-left: 134/@rem;
             padding-right: 10/@rem;
             box-sizing: border-box;
-
           }
 
           .book-author {
@@ -1018,6 +973,7 @@
           margin-top: 25/@rem;
           color: #666;
           width: 100%;
+          padding-right: 6/@rem;
           box-sizing: border-box;
           .iconfont {
             line-height: 30/@rem;
@@ -1038,7 +994,6 @@
         width: 580/@rem;
         box-sizing: border-box;
       }
-
     }
     .home-bottom {
       .text(40,
@@ -1132,6 +1087,10 @@
             color: #333;
             font-weight: blod;
             padding-left: 24/@rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 596/@rem;
           }
           .item-name:after {
             content: '';
@@ -1193,6 +1152,7 @@
           span,
           p,
           div {
+            max-height: 9999px;
             font-size: 28/@rem  !important;
           }
         }
@@ -1357,6 +1317,28 @@
     }
     .home-already {
       padding: 0 36/@rem;
+      padding-bottom: 100/@rem;
+      width: 100%;
+      height: 100%;
+      overflow: scroll;
+      position: relative;
+      box-sizing: border-box;
+      -webkit-overflow-scrolling: touch;
+
+      .already-no {
+        .text(32,
+        90);
+        .size(420,
+        90);
+        position: fixed;
+        top: 600/@rem;
+        left: 165/@rem;
+        background: rgba(0, 0, 0, 0.66);
+        border-radius: 10/@rem;
+        color: #fff;
+        text-align: center;
+        z-index: 10000;
+      }
       h2 {
         .text(50,
         70);
@@ -1375,6 +1357,7 @@
         height: 300/@rem;
         border-radius: 20/@rem;
         position: relative;
+        width: 678/@rem;
         .book-img {
           .pos(40,
           30);
@@ -1428,17 +1411,17 @@
         padding: 0 14/@rem;
         .item {
           float: left;
-          margin-right: 70/@rem;
+          margin-right: 55/@rem;
           overflow: hidden;
           position: relative;
-          width: 170/@rem;
+          width: 180/@rem;
           .item-box {
             position: relative;
             border-radius: 6/@rem;
             overflow: hidden;
           }
           .item-img {
-            .size(170,
+            .size(180,
             240);
             display: block;
           }
@@ -1447,7 +1430,8 @@
             line-height: 32/@rem;
             color: #333;
             margin-top: 20/@rem;
-            margin-bottom: 36/@rem;
+            margin-bottom: 34/@rem;
+            font-weight: bold;
           }
           .item-lock {
             background: rgba(0, 0, 0, 0.7);
