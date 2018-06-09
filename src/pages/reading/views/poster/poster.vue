@@ -341,7 +341,8 @@ export default {
 			position: absolute;
 			top: 50%;
 			left: 50%;
-			transform: translate(-50%,-50%);
+			margin-top: -0.4rem;
+    		margin-left: -0.4rem;
 			width: 60/@rem;
 			height: 60/@rem;
 			-webkit-animation: spin 600ms linear infinite;/*infinite表示动画无限循环*/
