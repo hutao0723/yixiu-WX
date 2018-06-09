@@ -337,13 +337,17 @@ export default {
 			//绘制黄点
 			function createdYellowPoint() {
 				return new Promise((resolve, reject) => {
-					let drawImg = new Image();
-					drawImg.crossOrigin = "Anonymous";
-					drawImg.src =  "http://yun.dui88.com/yoofans/images/201806/Oval7.png";;
-					drawImg.onload = function() {
-						ctx.drawImage(drawImg,_this.conversion(80),_this.conversion(935) * 1 + responseHeight * 1,_this.conversion(12),_this.conversion(12));
-						resolve();
-					};	
+					if (_this.isSelf) {
+						let drawImg = new Image();
+						drawImg.crossOrigin = "Anonymous";
+						drawImg.src =  "http://yun.dui88.com/yoofans/images/201806/Oval7.png";;
+						drawImg.onload = function() {
+							ctx.drawImage(drawImg,_this.conversion(80),_this.conversion(935) * 1 + responseHeight * 1,_this.conversion(12),_this.conversion(12));
+							resolve();
+						};
+					}else{
+						resolve();	
+					}
 				})
 			}
 			// 绘制所有canvas
