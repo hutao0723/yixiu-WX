@@ -8,7 +8,7 @@
     </header>
     <div class="calendar_header">
       <div class="card-head">
-        <span class="head-left" @click="noticeFlag = true "> <i class="iconfont icon-gift"></i> 坚持打卡送大礼 ></span>
+        <span class="head-left" @click="noticeFlag = true "> <i class="iconfont icon-gift"></i>坚持打卡送大礼<i class="iconfont icon-right"></i> </span>
         <div class="head-right">
           <span><i></i> 已打卡</span>
           <span><i></i>未打卡</span>
@@ -260,6 +260,15 @@
         .icon-gift{
           font-size: 40/@rem;
           color:#FF9252;
+          margin-right: 10/@rem;
+
+        }
+        .icon-right{
+          font-size: 14/@rem;
+          color:#9B9B9B;
+          display: inline-block;
+          vertical-align: middle;
+          margin-left: 13/@rem;
         }
         .head-right{
           float: right;
