@@ -165,11 +165,13 @@
       <div class="pop-bg"></div>
       <i class="pop-close iconfont icon-close" @click="payCancelToggle = false;"></i>
     </div>
+    <bnav></bnav>
   </div>
 </template>
 
 <script>
   import AudioBar from '../../components/basic/Audio_Bar';
+  import bnav from '../../components/basic/Nav';
   import play from '../../api/play';
   import store from '../../vuex/store';
   import {
@@ -197,7 +199,7 @@
 
   export default {
     components: {
-      AudioBar
+      AudioBar, bnav
     },
     data() {
       return {

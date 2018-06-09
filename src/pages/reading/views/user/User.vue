@@ -78,7 +78,7 @@
     </div>
     <Contact v-show="contactToggle" v-on:success="success"/>
     <bnav></bnav>
-    
+    <AudioBar/>
   </div>
 
 </template>
@@ -166,6 +166,15 @@ export default {
 // }
 .user{
   background:rgba(244,244,244,1);
+  width: 750/@rem;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .person-main {
   padding-bottom: 240/@rem;
