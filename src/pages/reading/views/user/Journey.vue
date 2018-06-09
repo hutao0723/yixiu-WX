@@ -5,7 +5,7 @@
         <div class="module" v-for="(item, $index) in journeyList" :style="item.content?'':'display:none'">
           <div class="date">{{item.releaseTime}}</div>
           <div class="text-box">
-            <div class="text-journal" v-if="item.diploma"><span>{{item.readName}}{{item.readStageNum}}期毕业</span>
+            <div class="text-journal" v-if="item.diploma"><span class="otw-title">{{item.readName}}{{item.readStageNum}}期毕业</span>
 
               <router-link :to="{ path: '/look/' + item.readId}"><span class="look">查看证书></span></router-link>
             </div>
@@ -257,6 +257,13 @@ export default {
       box-sizing: border-box;
       padding-left: 22/@rem;
       margin-bottom: 30/@rem;
+      .otw-title{
+        float: left;
+        width: 6rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
       .fontSize(30);
       .look{
         color: #FF4C4C;
