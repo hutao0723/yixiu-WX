@@ -132,8 +132,9 @@
       calTouchMove:function(ev) {
         ev = ev || event;
         let bodyScroll = document.querySelector('.card-main');
-        bodyScroll.style.overflowY = 'hidden'
-        ev.preventDefault();
+        bodyScroll.style.overflowY = 'hidden';
+        console.log(ev)
+       // ev.preventDefault();
       },
       hideNotice(){
         this.noticeFlag = false
