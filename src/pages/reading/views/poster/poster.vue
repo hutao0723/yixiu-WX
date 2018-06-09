@@ -1,12 +1,13 @@
 <template>
     <div class="share" >
+		<img src="http://yun.dui88.com/youfen/images/201806/loading.svg" alt="" class="waiting" v-if="!imgUrl">
 		<div class="canvas" v-if="!imgUrl">
 			<canvas id="sharePoster"></canvas>
 		</div>
 		<img :src="imgUrl" v-if="imgUrl"  class="pic"/>
-		<div class="btn">
+		<div class="btn" v-if="btn" >
 			长按保存分享
-			<img :src="imgUrl" v-if="imgUrl" />    
+			<img :src="imgUrl" />    
 		</div>
 		<Popup v-if="popup" v-on:success = "toCertificate" v-on:close = "closePopup"/>
 	</div>
@@ -20,7 +21,8 @@ export default {
 			imgUrl: "",
 			popup: false,
 			info: {},
-			isSelf: true
+			isSelf: true,
+			btn:false
 		};
   	},
   	components: {
@@ -69,7 +71,7 @@ export default {
 			this.popup = false;
 		},
 		conversion(data) {
-			return data;
+			return data*0.8;
 		},
 		createdCanvas() {
 			const _this = this;
@@ -269,8 +271,13 @@ export default {
 					drawScreen();
 				}
 				const myPoster = document.getElementById("sharePoster");
-				let toBase64 = myPoster.toDataURL("image/png");
+				let toBase64 = myPoster.toDataURL('image/jpeg');
 				_this.imgUrl = toBase64;
+				this.$nextTick(function () {
+					setTimeout(function(){
+						_this.btn = true;
+					},0)
+				})
 			});
 		}
   	}
@@ -279,6 +286,22 @@ export default {
 
 <style lang="less" scoped>
 	@import "../../less/variable";
+	@-webkit-keyframes spin { /*兼容性写法。spin是关键帧的动画名称*/
+		from { /*动画起始状态*/
+		-webkit-transform: rotate(0deg);
+		}
+		to { /*动画结束状态*/
+		-webkit-transform: rotate(360deg);
+		}
+	}
+	@keyframes spin {
+		from {
+		transform: rotate(0deg);
+		}
+		to {
+		transform: rotate(360deg);
+		}
+	}
 	.share {
 		width: 750 / @rem;
 		height: 100%;
@@ -292,6 +315,19 @@ export default {
 		box-sizing: border-box;
 		// z-index: 9;
 		background: #f4f4f4;
+		.waiting{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+			width: 60/@rem;
+			height: 60/@rem;
+			-webkit-animation: spin 600ms linear infinite;/*infinite表示动画无限循环*/
+			animation: spin 600ms linear infinite;
+			&.endWait{
+				display: none;
+			}
+		}
 		.canvas {
 			opacity: 0;
 		}
@@ -313,6 +349,7 @@ export default {
 			z-index: 10;
 			font-size: 32 / @rem;
 			font-weight: 600;
+			overflow: hidden;
 			img {
 				opacity: 0;
 				position: absolute;
