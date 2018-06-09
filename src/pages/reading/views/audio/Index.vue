@@ -204,7 +204,7 @@ export default {
           background: white;
           border: none;
           .iconfont{
-            width: 36/@rem;
+            width: 40/@rem;
             height: 40/@rem;
             font-size: 40/@rem;
             color: @color-black;
