@@ -26,6 +26,7 @@
       </div>
     </div>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0"></div>
+    <bnav></bnav>
     <AudioBar/>
   </div>
 </template>
@@ -35,6 +36,7 @@
     mapState
   } from 'vuex';
   import AudioBar from '../../components/basic/Audio_Bar';
+  import bnav from '../../components/basic/Nav';
 
   export default {
     components: {},
@@ -48,7 +50,7 @@
       };
     },
     components: {
-      AudioBar
+      AudioBar, bnav
     },
     computed: {
       ...mapState({})
