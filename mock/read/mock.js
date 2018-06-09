@@ -15,6 +15,11 @@ var setOnline = [
     name: 'readDetail',
     type: 'get',
     url: '/readBookCourse/courseDetail'
+  },
+  { 
+    name: 'baseLogin',
+    type: 'get',
+    url: '/baseLogin'
   }
 ];
 
