@@ -90,11 +90,11 @@ export default {
     }
   },
   async mounted () {
-    if (this.$route.params.type == 0 && !store.getters.getAudioElement.getAttribute('src')) {
-      let readAudio = this.readAudio;
-      readAudio.src = await play.getAudioUrl(store.getters.getAudioInfo.readId, store.getters.getAudioInfo.courseId);
-      store.commit({ type: 'setAudio', readAudio: readAudio });
-    }
+    let readAudio = this.readAudio;
+    let freshAudio = await play.getReadDetail(readAudio.readId, readAudio.courseId);
+    Object.assign(readAudio, freshAudio);
+    readAudio.src = await play.getAudioUrl(store.getters.getAudioInfo.readId, store.getters.getAudioInfo.courseId);
+    store.commit({ type: 'setAudio', readAudio: readAudio });
     if (!store.getters.getAudioElement.getAttribute('src')){
       store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
       store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
@@ -153,7 +153,7 @@ export default {
     padding: 0 30/@rem;
     .banner{
       width: 100%;
-      height: 54%;
+      height: 58%;
       position: relative;
       padding: 1/@rem;
       box-sizing: border-box;

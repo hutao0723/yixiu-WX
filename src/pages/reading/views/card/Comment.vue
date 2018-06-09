@@ -7,8 +7,8 @@
       </div>
       <div class="book-detail">
         <div class="book-title">{{courseDetail.courseTitle}}</div>
-        <div class="book-author">
-          <span>{{courseDetail.author}}</span>
+        <div class="book-author" v-show="courseDetail.author">
+          <span>{{courseDetail.author}}<span class="audio-right">著</span></span>
         </div>
       </div>
       <div style="clear: both"></div>
@@ -68,7 +68,7 @@
     },
     created() {
       this.getCourseId();
-
+      this.getContent();
     },
     mounted () {
 
@@ -80,6 +80,17 @@
       },
       focusDom(){
         document.getElementById('textarea').focus();
+      },
+      getContent(){
+        let courseId = this.$route.params.courseId;
+        let readId = this.$route.params.readId;
+        this.$http.get('/comment/getByReadAndCourse?readId='+readId +'&courseId='+courseId).then(res=>{
+          let resp = res.data;
+          if(resp.success){
+            console.log(resp.data)
+            this.content = resp.data.content
+          }
+        })
       },
       getFocus(){
         var view = document.querySelector("#app");
@@ -192,6 +203,8 @@
       }
       .book-detail{
         padding-top: 10/@rem;
+        float: left;
+        width:76%;
         .book-title{
           font-size: 30/@rem;
           line-height: 42/@rem;
@@ -201,6 +214,9 @@
           font-size: 26/@rem;
           line-height: 37/@rem;
           color:#666;
+          .audio-right{
+            margin-left: 16/@rem;
+          }
         }
       }
     }

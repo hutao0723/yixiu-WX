@@ -33,7 +33,7 @@
         </div>
         <div class="book-detail">
           <div class="book-title">{{courseDetail.courseTitle}}</div>
-          <div class="book-author">
+          <div class="book-author" v-show="courseDetail.author">
             <span>{{courseDetail.author}}<span class="audio-right">著</span></span>
           </div>
           <div class="book-btn">
