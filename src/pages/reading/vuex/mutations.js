@@ -2,7 +2,7 @@ import play from '../api/play'
 export default {
     // play设置
 	play (state) {
-		state.readPlaying = true;
+		// state.readPlaying = true;
 		state.audioelement.play()
 	},
 	// 暂停设置
@@ -64,6 +64,7 @@ export default {
 	// 设置音乐是否正在加载
 	setReadLoadStart (state, obj) {
 		state.readLoadStart = obj.isloadstart;
+		state.readPlaying = true;
 	},
 	// 设置音乐停止播放状态
 	setPlaying (state) {
