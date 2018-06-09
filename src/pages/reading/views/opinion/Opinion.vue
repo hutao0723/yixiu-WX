@@ -213,9 +213,10 @@
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    padding-top: 20/@rem; // z-index: 9;
+    padding-top: 20/@rem;
     background: #fff;
     font-size: 24/@rem;
+    z-index:100;
     .icon-nav {
       height: 480/@rem;
       border: 1px solid #ccc;

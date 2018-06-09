@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="audio-bar">
     <div class="audio-controler row"  @click="goAudioPage"> 
       <div class="right-bar row-around" style="background-repeat:no-repeat;background-size:100% 100%;" 
       :style="{backgroundImage:`url(${readAudio.verticalCover || baseImg}`}" >

@@ -38,7 +38,7 @@
       <calendar-template  :calendarDate='c_date' @getDate="getDate" ></calendar-template>
     </div>
     <div class="book-book" >
-      <div class="book-detail-box" v-show="afterToday||isToday">
+      <div class="book-detail-box" v-show="afterToday||isToday" >
         <div class="book-img" @click.stop="playAudio(readId,courseId)" >
           <img v-if="courseDetail.courseUrl" :src="courseDetail.courseUrl" alt="">
           <img v-else src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="">
@@ -50,7 +50,7 @@
           </div>
         </div>
         <div class="book-detail">
-          <div class="book-title">{{courseDetail.courseTitle}}</div>
+          <div class="book-title">《{{contentSlice(courseDetail.courseTitle)}}》</div>
           <div class="book-author">
             <div v-show="courseDetail.author">
               <span>{{courseDetail.author}}<span class="audio-right">著</span></span>
@@ -123,6 +123,13 @@
 
       hideNotice(){
         this.noticeFlag = false
+      },
+      contentSlice(str){
+        if(str&&str.length>12){
+          return str.slice(0,12) + '...'
+        }else{
+          return str
+        }
       },
       playAudio(readId,courseId){
         if(this.afterToday||this.isToday){
@@ -218,6 +225,19 @@
     background: #F4F4F4;
     font-size: 24/@rem;
     color:#333;
+    z-index:100;
+    .hideNoticeStyle{
+      opacity: 0;
+      z-index: -1;
+      transition:all .3s ease ;
+      -webkit-transition:all .3s ease ;
+    }
+    .showNoticeStyle{
+      opacity:1;
+      z-index:999;
+      transition:all .3s ease ;
+      -webkit-transition:all .3s ease ;
+    }
     .cardNotice-box{
       width:100%;
       height: 100%;
@@ -250,7 +270,7 @@
           position: relative;
           background: #fff;
           li:nth-of-type(1){
-            margin-bottom: 60/@rem;
+            margin-bottom: 64/@rem;
           }
           li{
             color:#555555;
@@ -287,7 +307,7 @@
         }
         .notice-btn{
           text-align: center;
-          border-top: 1px dotted #E5E5E5;
+          border-top: 1px dashed #C4C4C4;
           height:90/@rem;
           line-height: 90/@rem;
           font-size: 30/@rem;
@@ -345,6 +365,7 @@
         font-size: 26/@rem;
         padding:25/@rem 0 25/@rem 29/@rem;
         line-height: 37/@rem;
+        height: 37/@rem;
         background: #fff;
         .icon-gift{
           font-size: 40/@rem;
@@ -358,13 +379,16 @@
           display: inline-block;
           vertical-align: middle;
           margin-left: 13/@rem;
+          margin-top: -3/@rem;
         }
         .head-right{
           float: right;
           font-size: 24/@rem;
           color:#666;
-          line-height: 33/@rem;
+          line-height: 37/@rem;
+          padding-top: 5/@rem;
           span{
+            display: inline-block;
             margin-right: 35/@rem;
           }
           span:nth-of-type(2) i{
@@ -411,7 +435,7 @@
       .book-img{
         width:120/@rem;
         height:160/@rem;
-        margin-right: 39/@rem;
+        margin-right: 24/@rem;
         float: left;
         overflow:hidden;
         position:relative;
@@ -473,6 +497,7 @@
           height:40/@rem;
           font-size: 26/@rem;
           line-height: 37/@rem;
+          margin-left: 14/@rem;
           color:#666;
           margin-bottom: 13/@rem;
           .audio-right{
@@ -489,6 +514,7 @@
           line-height: 54/@rem;
           border-radius: 25/@rem;
           color:#333;
+          margin-left: 12/@rem;
         }
       }
     }

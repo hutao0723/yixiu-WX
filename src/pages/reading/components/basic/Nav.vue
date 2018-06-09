@@ -96,7 +96,7 @@
   @import url('../../less/variable.less');
   .bottom-nav {
     position: fixed;
-    z-index: 100;
+    z-index: 10;
     bottom: -1px;
     right: 0;
     left: 0;
