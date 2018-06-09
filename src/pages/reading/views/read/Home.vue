@@ -49,7 +49,7 @@
             </div>
             <div class="item-bottom">
               <p @click="setCommentPraise(item.id,item.userPraise)">
-                <span class="fr">{{item.praiseCount}}</span>
+                <span class="fr" v-show="item.praiseCount>0">{{item.praiseCount}}</span>
                 <i class="iconfont icon-dianzan fr" v-show="!item.userPraise"></i>
                 <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
               </p>
@@ -244,7 +244,7 @@
     async mounted() {
       let self = this;
       // 如果是支付流程直接支付
-      if(window.location.href.indexOf('from') != -1){
+      if (window.location.href.indexOf('from') != -1) {
         location.replace('/reading.html#/index/home?' + window.location.href.split('?')[2])
       }
 
@@ -261,153 +261,153 @@
           location.replace(res.data.data);
         }
       }
- 
-    if (refreshCookie) {
-      this.setTitle('一修读书')
 
-      if (self.$route.query.dcd) {
-        self.getDcd(self.$route.query.dcd)
+      if (refreshCookie) {
+        this.setTitle('一修读书')
+
+        if (self.$route.query.dcd) {
+          self.getDcd(self.$route.query.dcd)
+        }
+        if (self.$route.query.courseId) {
+          self.tabActive = false;
+          self.buy(self.$route.query.courseId, 4)
+        }
+
+        // 获取用户信息
+        let userState = await self.getUsetState();
+        self.wxShare(userState.data.userId);
+        self.userId = userState.data.userId;
+        self.readId = userState.data.readId;
+        if (userState.data) {
+          if (
+            userState.data.readState == -1
+          ) {
+            console.log('用户未购买未授权')
+            self.pageStatus = 0;
+            self.getCommentTop();
+            self.getReadList();
+            store.commit({
+              type: 'setBottomNavToggle',
+              bottomNavToggle: false
+            })
+            store.commit({
+              type: 'setBottomNavType',
+              bottomNavType: false
+            })
+            store.commit({
+              type: 'setVideoToggle',
+              videoToggle: false
+            })
+
+          }
+          if (
+            userState.data.readState == 0
+          ) {
+            console.log('用户未购买已授权')
+            self.pageStatus = 1;
+            self.getCommentTop();
+            self.getReadList();
+            store.commit({
+              type: 'setBottomNavToggle',
+              bottomNavToggle: false
+            })
+            store.commit({
+              type: 'setBottomNavType',
+              bottomNavType: false
+            })
+            store.commit({
+              type: 'setVideoToggle',
+              videoToggle: false
+            })
+
+          }
+
+          if (
+            userState.data.readState > 0 && !userState.data.followOfficialAccount
+          ) {
+            console.log('用户购买未关注')
+            self.pageStatus = 2;
+            self.tabActive = userState.data.readState != 4
+            store.commit({
+              type: 'setBottomNavToggle',
+              bottomNavToggle: true
+            })
+            store.commit({
+              type: 'setBottomNavType',
+              bottomNavType: false
+            })
+            store.commit({
+              type: 'setVideoToggle',
+              videoToggle: false
+            })
+          }
+
+          if (
+            userState.data.readState == 1 && userState.data.followOfficialAccount
+          ) {
+            console.log('用户购买已关注未开课')
+            self.pageStatus = 3;
+            self.getReadDetail();
+            store.commit({
+              type: 'setBottomNavToggle',
+              bottomNavToggle: true
+            })
+            store.commit({
+              type: 'setBottomNavType',
+              bottomNavType: false
+            })
+            store.commit({
+              type: 'setVideoToggle',
+              videoToggle: false
+            })
+          }
+
+          if (
+            userState.data.readState == 2 && userState.data.followOfficialAccount
+          ) {
+            console.log('用户购买已关注已开课')
+            self.pageStatus = 4;
+            self.getDetail();
+            self.getBookList();
+            store.commit({
+              type: 'setBottomNavToggle',
+              bottomNavToggle: true
+            })
+            store.commit({
+              type: 'setBottomNavType',
+              bottomNavType: true
+            })
+            store.commit({
+              type: 'setVideoToggle',
+              videoToggle: true
+            })
+          }
+
+          if (
+            userState.data.readState == 3
+          ) {
+            console.log('用户购买已关注已读完')
+            self.pageStatus = 1;
+            self.getCommentTop();
+            self.getReadList();
+            store.commit({
+              type: 'setBottomNavToggle',
+              bottomNavToggle: true
+            })
+            store.commit({
+              type: 'setBottomNavType',
+              bottomNavType: false
+            })
+            store.commit({
+              type: 'setVideoToggle',
+              videoToggle: false
+            })
+          }
+        }
+
+        self.changeLoginDays();
+        self.changeReadStatus();
       }
-      if (self.$route.query.courseId) {
-        self.tabActive = false;
-        self.buy(self.$route.query.courseId, 4)
-      }
-
-      // 获取用户信息
-      let userState = await self.getUsetState();
-      self.wxShare(userState.data.userId);
-      self.userId = userState.data.userId;
-      self.readId = userState.data.readId;
-      if (userState.data) {
-        if (
-          userState.data.readState == -1
-        ) {
-          console.log('用户未购买未授权')
-          self.pageStatus = 0;
-          self.getCommentTop();
-          self.getReadList();
-          store.commit({
-            type: 'setBottomNavToggle',
-            bottomNavToggle: false
-          })
-          store.commit({
-            type: 'setBottomNavType',
-            bottomNavType: false
-          })
-          store.commit({
-            type: 'setVideoToggle',
-            videoToggle: false
-          })
-
-        }
-        if (
-          userState.data.readState == 0
-        ) {
-          console.log('用户未购买已授权')
-          self.pageStatus = 1;
-          self.getCommentTop();
-          self.getReadList();
-          store.commit({
-            type: 'setBottomNavToggle',
-            bottomNavToggle: false
-          })
-          store.commit({
-            type: 'setBottomNavType',
-            bottomNavType: false
-          })
-          store.commit({
-            type: 'setVideoToggle',
-            videoToggle: false
-          })
-
-        }
-
-        if (
-          userState.data.readState > 0 && !userState.data.followOfficialAccount
-        ) {
-          console.log('用户购买未关注')
-          self.pageStatus = 2;
-          self.tabActive = userState.data.readState != 4
-          store.commit({
-            type: 'setBottomNavToggle',
-            bottomNavToggle: true
-          })
-          store.commit({
-            type: 'setBottomNavType',
-            bottomNavType: false
-          })
-          store.commit({
-            type: 'setVideoToggle',
-            videoToggle: false
-          })
-        }
-
-        if (
-          userState.data.readState == 1 && userState.data.followOfficialAccount
-        ) {
-          console.log('用户购买已关注未开课')
-          self.pageStatus = 3;
-          self.getReadDetail();
-          store.commit({
-            type: 'setBottomNavToggle',
-            bottomNavToggle: true
-          })
-          store.commit({
-            type: 'setBottomNavType',
-            bottomNavType: false
-          })
-          store.commit({
-            type: 'setVideoToggle',
-            videoToggle: false
-          })
-        }
-
-        if (
-          userState.data.readState == 2 && userState.data.followOfficialAccount
-        ) {
-          console.log('用户购买已关注已开课')
-          self.pageStatus = 4;
-          self.getDetail();
-          self.getBookList();
-          store.commit({
-            type: 'setBottomNavToggle',
-            bottomNavToggle: true
-          })
-          store.commit({
-            type: 'setBottomNavType',
-            bottomNavType: true
-          })
-          store.commit({
-            type: 'setVideoToggle',
-            videoToggle: true
-          })
-        }
-
-        if (
-          userState.data.readState == 3
-        ) {
-          console.log('用户购买已关注已读完')
-          self.pageStatus = 1;
-          self.getCommentTop();
-          self.getReadList();
-          store.commit({
-            type: 'setBottomNavToggle',
-            bottomNavToggle: true
-          })
-          store.commit({
-            type: 'setBottomNavType',
-            bottomNavType: false
-          })
-          store.commit({
-            type: 'setVideoToggle',
-            videoToggle: false
-          })
-        }
-      }
-
-      self.changeLoginDays();
-      self.changeReadStatus();
-
     },
     methods: {
 
@@ -444,7 +444,7 @@
         const res = await this.$http.post(url, {
           itemId,
           itemType,
-          dcd: this.$route.query.dcd?this.$route.query.dcd: '',
+          dcd: this.$route.query.dcd ? this.$route.query.dcd : '',
         });
         if (!res.data.success) {
           location.href = '/reading.html#/index/home';
@@ -761,11 +761,11 @@
 
   .home-main {
     background: #fff;
-    z-index:100;
+    z-index: 100;
     .home-type {
       background: #f1f1f1;
       box-sizing: border-box;
-      z-index:100;
+      z-index: 100;
     }
     .home-service {
       .size(100, 100);
@@ -1243,7 +1243,7 @@
       }
     }
     .home-wechat {
-      z-index:100;
+      z-index: 100;
       .text-a {
         .text(40,
         56);
@@ -1286,7 +1286,7 @@
       }
     }
     .home-nonevent {
-      z-index:100;
+      z-index: 100;
       position: relative;
       padding: 50/@rem 34/@rem 20/@rem 34/@rem;
       text-align: center;
