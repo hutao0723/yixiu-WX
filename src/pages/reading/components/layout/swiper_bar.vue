@@ -87,7 +87,7 @@
     }
     .journal-number{
       width:100/@rem;
-      text-align: center;
+      padding-left: 16/@rem;
       height: 30/@rem;
       border-left: 3/@rem solid #333;
       margin-top: 25/@rem;
