@@ -1396,7 +1396,7 @@
         .book-img {
           .pos(30,
           30);
-          .size(170,
+          .size(180,
           240);
           border: 5/@rem solid #fff;
           box-sizing: border-box;

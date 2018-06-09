@@ -317,7 +317,7 @@
             42);
             color: #555;
             width: 100%;
-            padding-left: 134/@rem;
+            padding-left: 121/@rem;
             padding-right: 10/@rem;
             box-sizing: border-box;
           }
