@@ -59,7 +59,7 @@ export default {
     margin-bottom: 58/@rem;
   }
   .code{
-    margin:0 auto 30/@rem;
+    margin:0 auto 60/@rem;
     width: 524/@rem;
     height: 524/@rem;
     display: block;

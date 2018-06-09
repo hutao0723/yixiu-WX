@@ -259,13 +259,12 @@ export default {
 			.ball{
 				display:inline-block;
 				position:absolute;
-				width:12/@rem;
+				width:10/@rem;
 				height:22/@rem;
 				left:-7/@rem;
 				margin-top:-9/@rem;
 				background:@color-black;
-				// transform:translate(-50%,0);
-				border-radius:3/@rem;
+				border-radius: 20%;
 				cursor:pointer;
 			}
 			}
