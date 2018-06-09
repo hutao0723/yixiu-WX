@@ -21,7 +21,7 @@
                 <div class="fl book-img"><img :src="item.courseVerticalCover || frontImgUrl"></div>
                 <div class="book-content">
                   <div class="book-title">《{{item.courseTitle}}》</div>
-                  <div class="book-writer">{{item.courseAuthor}}</div>
+                  <div class="book-writer" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
                 </div>
               </div>
               <div class="row operate fr">
