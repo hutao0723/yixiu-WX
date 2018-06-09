@@ -50,7 +50,7 @@
           </div>
         </div>
         <div class="book-detail">
-          <div class="book-title">《{{courseDetail.courseTitle}}》</div>
+          <div class="book-title">《{{contentSlice(courseDetail.courseTitle)}}》</div>
           <div class="book-author">
             <div v-show="courseDetail.author">
               <span>{{courseDetail.author}}<span class="audio-right">著</span></span>
@@ -123,6 +123,13 @@
 
       hideNotice(){
         this.noticeFlag = false
+      },
+      contentSlice(str){
+        if(str&&str.length>12){
+          return str.slice(0,12) + '...'
+        }else{
+          return str
+        }
       },
       playAudio(readId,courseId){
         if(this.afterToday||this.isToday){
@@ -415,7 +422,7 @@
       .book-img{
         width:120/@rem;
         height:160/@rem;
-        margin-right: 39/@rem;
+        margin-right: 24/@rem;
         float: left;
         overflow:hidden;
         position:relative;
@@ -477,6 +484,7 @@
           height:40/@rem;
           font-size: 26/@rem;
           line-height: 37/@rem;
+          margin-left: 14/@rem;
           color:#666;
           margin-bottom: 13/@rem;
           .audio-right{
