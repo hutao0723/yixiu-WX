@@ -218,6 +218,7 @@
           line-height: 42/@rem;
           margin-bottom: 45/@rem;
           font-weight: bold;
+          white-space: nowrap;
         }
         .book-author{
           font-size: 26/@rem;
