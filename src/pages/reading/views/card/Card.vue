@@ -477,8 +477,6 @@
           margin-bottom: 12/@rem;
           font-weight: bold;
           white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
         }
         .book-author{
           height:40/@rem;
