@@ -68,7 +68,7 @@ import { mapState } from 'vuex';
 .audio-controler{
   @size: 90/@rem;
   position: fixed;
-  right: 60/@rem;
+  right: 40/@rem;
   bottom: 130/@rem;
   z-index: 20;
   &.bt130{

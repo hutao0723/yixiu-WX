@@ -407,7 +407,7 @@
 
       self.changeLoginDays();
       self.changeReadStatus();
-
+    }
     },
     methods: {
 
