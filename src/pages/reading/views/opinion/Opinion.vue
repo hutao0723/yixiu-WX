@@ -17,11 +17,11 @@
               <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
             </div>
             <div class="item-bottom">
-              <span @click="setCommentPraise(item.id,item.userPraise)" class="fr">
-                  <span>{{item.praiseCount}}</span>
-                <i class="iconfont icon-dianzan" v-show="!item.userPraise"></i>
-                <i class="iconfont icon-heart" :style="{color:'red'}" v-show="item.userPraise"></i>
-              </span>
+              <p @click="setCommentPraise(item.id,item.userPraise)">
+                  <span class="fr">{{item.praiseCount}}</span>
+                <i class="iconfont icon-dianzan fr" v-show="!item.userPraise"></i>
+                <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
+              </p>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr" v-if="userId == item.userId"></router-link>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr" v-if="userId != item.userId"></router-link>
               <span class="fl">{{item.releaseTime | timeTransition}}</span>
@@ -333,17 +333,27 @@
           }
         }
         .item-bottom {
-          .text(22,
-          30);
+          width: 580/@rem;
+          .text(26,37);
           margin-top: 25/@rem;
-          color: #666;
-          width: 100%;
-          padding-right: 6/@rem;
+          color: #949494;
           box-sizing: border-box;
+          vertical-align: middle;
           .iconfont {
-            line-height: 30/@rem;
-            font-size: 24/@rem;
-            padding: 0 10/@rem
+            display: block;
+            height: 37/@rem;
+            width: 37/@rem;
+            line-height:37/@rem;
+            font-size: 28/@rem;
+            margin-right: 8/@rem;
+            text-align: center;
+          }
+          .icon-share{
+            margin-right: 54/@rem;
+            color: #949494;
+          }
+          span{
+            .text(26,37);
           }
         }
       }
