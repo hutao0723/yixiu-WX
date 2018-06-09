@@ -190,14 +190,15 @@ export default {
 					ctx.font = _this.conversion(24) + "px 宋体";
 					ctx.textBaseline = "top";
 					ctx.fillStyle = "#444";
-					ctx.fillText("一修读书·" + _this.info.readName,_this.conversion(150),_this.conversion(1071) * 1 + responseHeight * 1);
+					ctx.fillText("一修读书·" + _this.info.readName,_this.conversion(126),_this.conversion(1071) * 1 + responseHeight * 1);
 					ctx.fillStyle = "#999";
-					ctx.fillText("长按识别二维码",_this.conversion(150),_this.conversion(1108) * 1 + responseHeight * 1);
+					ctx.font = _this.conversion(22) + "px 宋体";
+					ctx.fillText("长按识别二维码",_this.conversion(126),_this.conversion(1108) * 1 + responseHeight * 1);
 					let drawImg = new Image();
 					drawImg.crossOrigin = "Anonymous";
 					drawImg.src = _this.info.readQrcodeImgUrl;
 					drawImg.onload = function() {
-						ctx.drawImage(drawImg,_this.conversion(582),_this.conversion(1051) * 1 + responseHeight * 1,_this.conversion(100),_this.conversion(100));
+						ctx.drawImage(drawImg,_this.conversion(600),_this.conversion(1051) * 1 + responseHeight * 1,_this.conversion(100),_this.conversion(100));
 						resolve();
 					};
 				});
@@ -286,7 +287,7 @@ export default {
 					drawImg.crossOrigin = "Anonymous";
 					drawImg.src = "http://yun.dui88.com/yoofans/images/201806/yixiuLogo.png";
 					drawImg.onload = function() {
-						ctx.drawImage(drawImg,_this.conversion(68),_this.conversion(1056) * 1 + responseHeight * 1,_this.conversion(66),_this.conversion(88));
+						ctx.drawImage(drawImg,_this.conversion(40),_this.conversion(1056) * 1 + responseHeight * 1,_this.conversion(66),_this.conversion(88));
 						resolve();
 					};	
 				})
@@ -341,7 +342,8 @@ export default {
 			position: absolute;
 			top: 50%;
 			left: 50%;
-			transform: translate(-50%,-50%);
+			margin-top: -0.4rem;
+    		margin-left: -0.4rem;
 			width: 60/@rem;
 			height: 60/@rem;
 			-webkit-animation: spin 600ms linear infinite;/*infinite表示动画无限循环*/
