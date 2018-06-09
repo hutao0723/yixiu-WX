@@ -1,6 +1,22 @@
 <template>
   <div class="card-main">
-    <cardNotice class="hideNoticeStyle" :class="{showNoticeStyle:noticeFlag}" :noticeFlag="noticeFlag" @changFlag="changeFlag"></cardNotice>
+    <div class="cardNotice-box" @click="hideNotice()" v-show="noticeFlag" @touchmove.prevent>
+      <div class="notice-box">
+        <div class="notice-title">打卡须知</div>
+        <ul class="notice-content">
+          <div class="notice-order">
+            <span>1</span>
+            <i v-for="item in [1,2,3,4,5,6,7,8,9,10,11,12]"></i>
+            <span>2</span>
+          </div>
+          <li>点击xx页面，完成当日学习目标后，将自动弹出弹窗提醒打卡。或者在收听页面，点击“打卡“按钮进行打卡</li>
+          <li>分享打卡图片至微信朋友圈，并把分享截图发送至班级群，坚持49天即可获得一修阅读定制音响</li>
+        </ul>
+        <div class="notice-btn" @click="hideNotice()">我知道了</div>
+      </div>
+    </div>
+
+
     <header>
       <div>{{readDetail.title}}第{{readDetail.stageNum}}期</div>
       <h2>第{{dayNum}}天</h2>
@@ -8,7 +24,7 @@
     </header>
     <div class="calendar_header">
       <div class="card-head">
-        <span class="head-left" @click="noticeFlag = true "> <i class="iconfont icon-gift"></i> 坚持打卡送大礼 ></span>
+        <span class="head-left" @click="noticeFlag = true "> <i class="iconfont icon-gift"></i>坚持打卡送大礼<i class="iconfont icon-right"></i> </span>
         <div class="head-right">
           <span><i></i> 已打卡</span>
           <span><i></i>未打卡</span>
@@ -22,17 +38,19 @@
       <calendar-template  :calendarDate='c_date' @getDate="getDate" ></calendar-template>
     </div>
     <div class="book-book" >
-      <div class="book-detail-box" v-show="afterToday||isToday">
+      <div class="book-detail-box" v-show="afterToday||isToday" >
         <div class="book-img" @click.stop="playAudio(readId,courseId)" >
           <img v-if="courseDetail.courseUrl" :src="courseDetail.courseUrl" alt="">
           <img v-else src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="">
-          <div class="book-audio" v-if="afterToday||isToday"></div>
+          <div class="book-audio" v-if="afterToday||isToday">
+            <i class="iconfont icon-play"></i>
+          </div>
           <div class="book-mark" v-else>
             <i class="iconfont icon-lock"></i>
           </div>
         </div>
         <div class="book-detail">
-          <div class="book-title">{{courseDetail.courseTitle}}罗密欧与朱丽叶</div>
+          <div class="book-title">《{{contentSlice(courseDetail.courseTitle)}}》</div>
           <div class="book-author">
             <div v-show="courseDetail.author">
               <span>{{courseDetail.author}}<span class="audio-right">著</span></span>
@@ -47,9 +65,10 @@
         <div style="clear: both"></div>
       </div>
     </div>
-    <div class="card_bottom_text">听得见的知识 看得见的成长</div>
-    <bnav></bnav>
+    <div class="card_bottom_text">轻松阅读，日有所得</div>
     <AudioBar></AudioBar>
+    <bnav></bnav>
+
   </div>
 </template>
 
@@ -57,13 +76,11 @@
   import { mapState } from 'vuex';
   import bnav from '../../components/basic/Nav';
   import calendarTemplate from '../../components/layout/calendarTemplate';
-  import cardNotice from '../../components/layout/card-notice';
   import AudioBar from '../../components/basic/Audio_Bar';
   import play from '../../api/play'
   export default {
     components: {
       bnav,
-      cardNotice,
       calendarTemplate,
       AudioBar
     },
@@ -103,8 +120,16 @@
      }
    },
     methods: {
-      changeFlag(msg){
-        this.noticeFlag = msg;
+
+      hideNotice(){
+        this.noticeFlag = false
+      },
+      contentSlice(str){
+        if(str&&str.length>15){
+          return str.slice(0,15) + '...'
+        }else{
+          return str
+        }
       },
       playAudio(readId,courseId){
         if(this.afterToday||this.isToday){
@@ -189,7 +214,8 @@
 
   .card-main {
     width: 750/@rem;
-    position: relative;
+    height: 100%;
+    position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
@@ -199,17 +225,89 @@
     background: #F4F4F4;
     font-size: 24/@rem;
     color:#333;
-    .hideNoticeStyle{
-      opacity: 0;
-      z-index: -1;
-      transition:all .3s ease ;
-      -webkit-transition:all .3s ease ;
-    }
-    .showNoticeStyle{
-      opacity:1;
-      z-index:999;
-      transition:all .3s ease ;
-      -webkit-transition:all .3s ease ;
+    .cardNotice-box{
+      width:100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 999;
+      position: fixed;
+      top:0;
+      left:0;
+      color:#333;
+      .notice-box{
+        width:580/@rem;
+        height:640/@rem;
+        border-radius: 8/@rem;
+        position: absolute;
+        top:50%;
+        left:50%;
+        transform: translate(-50%,-50%);
+        overflow: hidden;
+        background: #fff;
+        .notice-title{
+          font-size: 34/@rem;
+          text-align: center;
+          height: 94/@rem;
+          line-height: 94/@rem;
+          background: #FFE555;
+          font-weight: bold;
+        }
+        .notice-content{
+          padding:32/@rem 30/@rem 0 100/@rem;
+          position: relative;
+          background: #fff;
+          li:nth-of-type(1){
+            margin-bottom: 56/@rem;
+          }
+          li{
+            color:#555555;
+            font-size: 28/@rem;
+            line-height: 37/@rem;
+            height:163/@rem;
+            letter-spacing: 1px;
+          }
+          .notice-order{
+            position: absolute;
+            left:30/@rem;
+            span{
+              font-size: 30/@rem;
+              width:50/@rem;
+              height:50/@rem;
+              background: #FFE555;
+              border-radius: 50%;
+              display: block;
+              text-align: center;
+              line-height: 50/@rem;
+              margin-bottom: 9/@rem;
+              font-weight: bold;
+            }
+            i{
+              width:4/@rem;
+              height:4/@rem;
+              background: #F7DC7B;
+              border-radius: 50%;
+              display: block;
+              margin: 0 auto;
+              margin-bottom: 9/@rem;
+            }
+          }
+        }
+        .notice-btn{
+          text-align: center;
+          border-top: 1px dashed #C4C4C4;
+          height:90/@rem;
+          line-height: 90/@rem;
+          font-size: 30/@rem;
+          background: #fff;
+          font-weight: bold;
+          position: absolute;
+          width:100%;
+          bottom:0;
+        }
+        .notice-btn:active{
+          background: #E5E5E5;
+        }
+      }
     }
     header{
       height:158/@rem;
@@ -254,17 +352,30 @@
         font-size: 26/@rem;
         padding:25/@rem 0 25/@rem 29/@rem;
         line-height: 37/@rem;
+        height: 37/@rem;
         background: #fff;
         .icon-gift{
           font-size: 40/@rem;
           color:#FF9252;
+          margin-right: 10/@rem;
+
+        }
+        .icon-right{
+          font-size: 14/@rem;
+          color:#9B9B9B;
+          display: inline-block;
+          vertical-align: middle;
+          margin-left: 13/@rem;
+          margin-top: -3/@rem;
         }
         .head-right{
           float: right;
           font-size: 24/@rem;
           color:#666;
-          line-height: 33/@rem;
+          line-height: 37/@rem;
+          padding-top: 5/@rem;
           span{
+            display: inline-block;
             margin-right: 35/@rem;
           }
           span:nth-of-type(2) i{
@@ -311,7 +422,7 @@
       .book-img{
         width:120/@rem;
         height:160/@rem;
-        margin-right: 39/@rem;
+        margin-right: 24/@rem;
         float: left;
         overflow:hidden;
         position:relative;
@@ -326,18 +437,14 @@
           left:50%;
           margin-top:-32/@rem;
           margin-left:-32/@rem;
-        }
-        .book-audio:after{
-          content:'';
-          width:0;
-          height:0;
-          border-top: 14/@rem solid transparent;
-          border-left:23/@rem solid #fff;
-          border-bottom:14/@rem solid transparent;
-          position:absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-35%,-50%);
+          .icon-play{
+            font-size: 28/@rem;
+            color:#fff;
+            position: absolute;
+            top:50%;
+            left:50%;
+            transform: translate(-40%,-50%);
+          }
         }
         .book-mark{
           width:100%;
@@ -368,7 +475,7 @@
           font-size: 30/@rem;
           line-height: 42/@rem;
           margin-bottom: 12/@rem;
-          font-weight: 600;
+          font-weight: bold;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -377,6 +484,7 @@
           height:40/@rem;
           font-size: 26/@rem;
           line-height: 37/@rem;
+          margin-left: 14/@rem;
           color:#666;
           margin-bottom: 13/@rem;
           .audio-right{
@@ -393,6 +501,7 @@
           line-height: 54/@rem;
           border-radius: 25/@rem;
           color:#333;
+          margin-left: 12/@rem;
         }
       }
     }
