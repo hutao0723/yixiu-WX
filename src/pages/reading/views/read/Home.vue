@@ -1,5 +1,6 @@
 <template>
   <div class="home-main">
+    <bnav></bnav>
     <div class="home-type" v-show="pageStatus == 1 || pageStatus == 0">
       <a href="https://kefu.easemob.com/webim/im.html?configId=f56195f3-2ff6-412b-983e-0231f5586efb" class="home-service" :class="{bottom:bottomNavToggle}"></a>
       <div class="home-tab clearfix" id="hometab">
@@ -60,7 +61,7 @@
           </div>
         </div>
       </div>
-      <div class="home-course" v-show="!tabActive">
+      <div class="home-course" v-show="!tabActive" :class="{bottom:bottomNavToggle}">
         <div class="item" v-for="(item,index) in readList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
           @click="selectCourse(item)" v-show="readList.length > 0">
           <div class="item-box">
@@ -111,6 +112,7 @@
     </div>
     <!-- 已关注已开课 -->
     <div class="home-already" v-if="pageStatus == 4">
+      <AudioBar/>
       <h2>今日学习
         <span> | 第{{todayBookDetail.days}}/{{todayBookDetail.totalDays}}天</span>
       </h2>
@@ -144,7 +146,7 @@
       </div>
       <div class="already-alert" v-show="alertToggle">
         <div class="alert-top">
-          <h3>{{bookName}}</h3>
+          <h3>《{{bookName}}》</h3>
           <div class="clearfix">
             <div class="item" v-for="(item,index) in courseList" :key="index" :class="{none: item.lockStatus}" @click="playAudio(item.courseId,item.lockStatus)">{{index+1}}</div>
           </div>
@@ -165,7 +167,6 @@
       <div class="pop-bg"></div>
       <i class="pop-close iconfont icon-close" @click="payCancelToggle = false;"></i>
     </div>
-    <bnav></bnav>
   </div>
 </template>
 
@@ -343,7 +344,7 @@
         }
 
         if (
-          userState.data.readState == 2 && userState.data.followOfficialAccount
+          userState.data.readState == 2 && !userState.data.followOfficialAccount
         ) {
           console.log('用户购买已关注已开课')
           self.pageStatus = 4;
@@ -460,7 +461,7 @@
               "signType": payment.signType, //微信签名方式：     
               "paySign": payment.paySign //微信签名 
             },
-            function (res) {
+            async function (res) {
               if (res.err_msg == "get_brand_wcpay_request:ok") {
 
                 // 给url+时间戳
@@ -478,7 +479,12 @@
                     }
                   }
                 }
-                window.location.href = url_add_hash(window.location.href)
+                setInterval(async function (){
+                  let userState = await self.getUsetState();
+                  if(userState.data.readState > 0){
+                    window.location.href = url_add_hash(window.location.href)
+                  }
+                },1000)
               } else {
                 self.payCancelToggle = true;
               }
@@ -1010,13 +1016,16 @@
     .home-bottom.bottom {
       bottom: 100/@rem;
     }
+    .home-course.bottom{
+      padding-bottom: 200/@rem;
+    }
     .home-course {
       background: #f1f1f1;
       padding-top: 160/@rem;
-      padding-bottom: 120/@rem;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       height: 100%;
+      padding-bottom: 100/@rem;
       box-sizing: border-box;
       .item,
       .item-name,
@@ -1359,7 +1368,7 @@
         position: relative;
         width: 678/@rem;
         .book-img {
-          .pos(40,
+          .pos(30,
           30);
           .size(170,
           240);
