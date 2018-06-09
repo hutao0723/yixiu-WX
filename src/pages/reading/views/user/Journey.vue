@@ -244,7 +244,7 @@ export default {
       }
     }
     .text-box{
-      padding: 20/@rem 0 30/@rem 24/@rem;
+      padding: 20/@rem 0 50/@rem 24/@rem;
       border-left-width: 3/@rem;
       border-left-style: solid;
       border-left-color: #B7B7B7;
