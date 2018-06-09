@@ -17,7 +17,6 @@
 
 <script>
 import Popup from "./../../components/basic/Diploma";
-import icon from './Oval7.png'
 export default {
   	data() {
 		return {
