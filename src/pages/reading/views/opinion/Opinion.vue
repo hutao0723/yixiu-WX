@@ -71,11 +71,20 @@
         let nowDate = new Date()
         let nowDateNum = nowDate.getTime()
         // 获取现在的时间戳
+        alert('现在的时间戳' + nowDateNum)
 
         let valueDate = new Date(value)
         let valueDateNum = valueDate.getTime()
+        alert('当时的时间戳' + valueDateNum)
+        
         // 获取当时的时间戳
         let key = parseInt(nowDateNum) - parseInt(valueDateNum)
+        let keya = parseInt(nowDateNum - valueDateNum)
+        
+
+        alert('a'+ key)
+        alert('b'+ keya)
+        
 
         let today = new Date();
         today.setHours(0);
