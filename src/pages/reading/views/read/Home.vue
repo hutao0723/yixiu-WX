@@ -344,7 +344,7 @@
         }
 
         if (
-          userState.data.readState == 2 && !userState.data.followOfficialAccount
+          userState.data.readState == 2 && userState.data.followOfficialAccount
         ) {
           console.log('用户购买已关注已开课')
           self.pageStatus = 4;
