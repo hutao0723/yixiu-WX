@@ -241,7 +241,7 @@ export default {
 					drawImg.crossOrigin = "Anonymous";
 					drawImg.src = "http://yun.dui88.com/yoofans/images/201805/read/poster_comma.png";
 					drawImg.onload = function() {
-						ctx.drawImage(drawImg,_this.conversion(64),_this.conversion(565),_this.conversion(80),_this.conversion(50));
+						ctx.drawImage(drawImg,_this.conversion(64),_this.conversion(555),_this.conversion(80),_this.conversion(50));
 						resolve();
 					};
 				});
@@ -294,13 +294,13 @@ export default {
 							num=0;
 							sum++;
 						}
-						ctx.fillText(item,_this.conversion(78)*1+point_w*num,_this.conversion(640)*1+sum*_this.conversion(52) );
+						ctx.fillText(item,_this.conversion(78)*1+point_w*num,_this.conversion(630)*1+sum*_this.conversion(52) );
 					})
 					//绘制作者信息
 					ctx.font = _this.conversion(24) + "px pingFangSC-Light";
 					ctx.textBaseline = "top";
 					let string_w = ctx.measureText(_this.info.userNickname).width;
-					ctx.fillText(_this.info.userNickname,_this.conversion(668) - string_w,_this.conversion(658) + line_number * _this.conversion(50));
+					ctx.fillText(_this.info.userNickname,_this.conversion(668) - string_w,_this.conversion(648) + line_number * _this.conversion(50));
 					//转换时间格式
 					let createdTime = _this.info.releaseTime.replace(/-/g, "/");
 					createdTime = new Date(createdTime);
@@ -309,7 +309,7 @@ export default {
 					let day = createdTime.getDate();
 					let time ="于" +year +"." +month +"." +day +"  " +_this.info.releaseTimeLabel;
 					string_w = ctx.measureText(time).width;
-					ctx.fillText(time,_this.conversion(668) - string_w,_this.conversion(690) + line_number * _this.conversion(50));
+					ctx.fillText(time,_this.conversion(668) - string_w,_this.conversion(680) + line_number * _this.conversion(50));
 
 					ctx.fillStyle = "#FFF";
 					ctx.fillRect(_this.conversion(536),_this.conversion(320),_this.conversion(140),_this.conversion(190));
