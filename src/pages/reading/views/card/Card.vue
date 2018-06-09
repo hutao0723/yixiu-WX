@@ -124,16 +124,18 @@
      }
    },
     methods: {
+      //bodyHidden bodyScroll
       bodyTouchMove(ev){
         ev = ev || event;
         let bodyScroll = document.querySelector('.card-main');
-        bodyScroll.style.overflowY = 'auto'
+        bodyScroll.classList.add('bodyScroll')
+        bodyScroll.classList.remove('bodyHidden')
       },
       calTouchMove:function(ev) {
         ev = ev || event;
         let bodyScroll = document.querySelector('.card-main');
-        bodyScroll.style.overflowY = 'hidden';
-        console.log(ev)
+        bodyScroll.classList.add('bodyHidden')
+        bodyScroll.classList.remove('bodyScroll')
        // ev.preventDefault();
       },
       hideNotice(){
@@ -226,7 +228,14 @@
 
 <style lang="less" scoped>
   @import '../../less/variable';
-
+  .bodyHidden{
+    overflow-y: hidden!important;
+    -webkit-overflow-scrolling: auto!important;
+  }
+  .bodyScroll{
+    overflow-y: auto!important;
+    -webkit-overflow-scrolling: touch!important;
+  }
   .card-main {
     width: 750/@rem;
     height: 100%;
