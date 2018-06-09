@@ -76,7 +76,7 @@
           font-size: 28/@rem;
           line-height: 37/@rem;
           height:163/@rem;
-          width:453/@rem;
+          letter-spacing: 1px;
         }
         .notice-order{
           position: absolute;
