@@ -1,6 +1,7 @@
 <template>
   <div class="home-main">
     <div class="home-type" v-show="pageStatus == 1 || pageStatus == 0">
+      <bnav></bnav>
       <a href="https://kefu.easemob.com/webim/im.html?configId=f56195f3-2ff6-412b-983e-0231f5586efb" class="home-service" :class="{bottom:bottomNavToggle}"></a>
       <div class="home-tab clearfix" id="hometab">
         <div class="item" @click="tabActiveToggle(true)">
@@ -40,27 +41,28 @@
             <div v-show="item.show == 2" @click="unfoldToggle(1,index)" class="item-toggle">收起</div>
             <div class="item-book">
               <div class="book-bg">
-                <img class="book-img" :src="item.courseUrl" alt="">
+                <img class="book-img" :src="item.courseVerticalCover" alt="" v-if="item.courseVerticalCover">
+                <img class="book-img" src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="" v-else>
               </div>
-              <div class="book-name otw">{{item.courseTitle}}</div>
+              <div class="book-name otw">《{{item.courseTitle}}》</div>
               <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
             </div>
             <div class="item-bottom">
-              <span @click="setCommentPraise(item.id,item.userPraise)" class="fr">
-                  <span>{{item.praiseCount}}</span>
-                <i class="iconfont icon-dianzan" v-show="!item.userPraise"></i>
-                <i class="iconfont icon-heart" :style="{color:'red'}" v-show="item.userPraise"></i>
-              </span>
+              <p @click="setCommentPraise(item.id,item.userPraise)">
+                <span class="fr">{{item.praiseCount}}</span>
+                <i class="iconfont icon-dianzan fr" v-show="!item.userPraise"></i>
+                <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
+              </p>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"
-                v-if="userId == item.userId&&pageStatus !=0"></router-link>
+                v-if="userId == item.userId"></router-link>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr"
-                v-if="userId != item.userId&&pageStatus !=0"></router-link>
-              <!-- <span>{{item.releaseTime| timeTransition}}</span> -->
+                v-if="userId != item.userId"></router-link>
+              <span class="fl">{{item.releaseTime | timeTransition}}</span>
             </div>
           </div>
         </div>
       </div>
-      <div class="home-course" v-show="!tabActive">
+      <div class="home-course" v-show="!tabActive" :class="{bottom:bottomNavToggle}">
         <div class="item" v-for="(item,index) in readList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
           @click="selectCourse(item)" v-show="readList.length > 0">
           <div class="item-box">
@@ -89,6 +91,7 @@
 
     <!-- 报名未关注 -->
     <div class="home-wechat" v-if="pageStatus == 2">
+      <bnav></bnav>
       <p class="text-a">
         <i class="iconfont"></i>您已成功报名</p>
       <p class="text-b">长按识别二维码</p>
@@ -97,6 +100,7 @@
     </div>
     <!-- 报名未开课 -->
     <div class="home-nonevent" v-if="pageStatus == 3">
+      <bnav></bnav>
       <div class="nonevent-box">
         <p class="text-a">您已成功报名</p>
         <p class="text-b">「 {{courseDetail.title}} 」</p>
@@ -111,6 +115,8 @@
     </div>
     <!-- 已关注已开课 -->
     <div class="home-already" v-if="pageStatus == 4">
+      <bnav></bnav>
+      <AudioBar/>
       <h2>今日学习
         <span> | 第{{todayBookDetail.days}}/{{todayBookDetail.totalDays}}天</span>
       </h2>
@@ -144,7 +150,7 @@
       </div>
       <div class="already-alert" v-show="alertToggle">
         <div class="alert-top">
-          <h3>{{bookName}}</h3>
+          <h3>《{{bookName}}》</h3>
           <div class="clearfix">
             <div class="item" v-for="(item,index) in courseList" :key="index" :class="{none: item.lockStatus}" @click="playAudio(item.courseId,item.lockStatus)">{{index+1}}</div>
           </div>
@@ -165,7 +171,6 @@
       <div class="pop-bg"></div>
       <i class="pop-close iconfont icon-close" @click="payCancelToggle = false;"></i>
     </div>
-    <bnav></bnav>
   </div>
 </template>
 
@@ -199,7 +204,8 @@
 
   export default {
     components: {
-      AudioBar, bnav
+      AudioBar,
+      bnav
     },
     data() {
       return {
@@ -237,17 +243,31 @@
     created() {},
     async mounted() {
       let self = this;
-      // 设置标题
-      this.setTitle('一修读书')
-      // 如果微信分享链接=>去掉from
-      if (window.location.href.indexOf('from') != -1) {
-        location.replace('http://k.youfen666.com/reading.html#/index/home?' + window.location.href.split('?')[2])
+      // 如果是支付流程直接支付
+      if(window.location.href.indexOf('from') != -1){
+        location.replace('/reading.html#/index/home?' + window.location.href.split('?')[2])
       }
-      // 发送dcd绑定分销
+
+      // 防止cookie丢失
+      let refreshCookie = true;
+      if (window.location.href.indexOf('afterLogin') == -1) {
+        let res = await this.$http.get('/baseLogin', {
+          params: {
+            dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
+          }
+        })
+        if (res.data.success && res.data.data) {
+          refreshCookie = false;
+          location.replace(res.data.data);
+        }
+      }
+ 
+    if (refreshCookie) {
+      this.setTitle('一修读书')
+
       if (self.$route.query.dcd) {
         self.getDcd(self.$route.query.dcd)
       }
-      // 如果是支付流程直接支付
       if (self.$route.query.courseId) {
         self.tabActive = false;
         self.buy(self.$route.query.courseId, 4)
@@ -387,7 +407,7 @@
 
       self.changeLoginDays();
       self.changeReadStatus();
-
+    }
     },
     methods: {
 
@@ -403,7 +423,7 @@
         console.log('拉起支付')
         const orderId = await this.placeOrder({
           itemId,
-          itemType
+          itemType,
         });
         if (!orderId) {
           return false;
@@ -423,7 +443,8 @@
         const url = API.orderSubmit;
         const res = await this.$http.post(url, {
           itemId,
-          itemType
+          itemType,
+          dcd: this.$route.query.dcd?this.$route.query.dcd: '',
         });
         if (!res.data.success) {
           location.href = '/reading.html#/index/home';
@@ -460,7 +481,7 @@
               "signType": payment.signType, //微信签名方式：     
               "paySign": payment.paySign //微信签名 
             },
-            function (res) {
+            async function (res) {
               if (res.err_msg == "get_brand_wcpay_request:ok") {
 
                 // 给url+时间戳
@@ -478,7 +499,12 @@
                     }
                   }
                 }
-                window.location.href = url_add_hash(window.location.href)
+                setInterval(async function () {
+                  let userState = await self.getUsetState();
+                  if (userState.data.readState > 0) {
+                    window.location.href = url_add_hash(window.location.href)
+                  }
+                }, 1000)
               } else {
                 self.payCancelToggle = true;
               }
@@ -735,9 +761,11 @@
 
   .home-main {
     background: #fff;
+    z-index:100;
     .home-type {
       background: #f1f1f1;
       box-sizing: border-box;
+      z-index:100;
     }
     .home-service {
       .size(100, 100);
@@ -896,10 +924,10 @@
         }
         .item-name {
           /* .pos(118, 36); */
-          font-weight: bold;
           .text(30,
           42);
           color: #333;
+          font-weight: bold;
         }
         .item-periods {
           /* .pos(118, 82); */
@@ -907,12 +935,15 @@
           33);
           color: #666;
           margin-top: 4/@rem;
-          margin-bottom: 14/@rem;
+          margin-bottom: 26/@rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap
         }
         .item-content {
           /* .pos(118, 130); */
           max-height: 9999px;
-          font-size: 28/@rem;
+          font-size: 32/@rem;
           line-height: 42/@rem;
           color: #333;
         }
@@ -934,7 +965,7 @@
           position: relative;
           background: #eee;
           border-radius: 4/@rem;
-          margin-top: 20/@rem;
+          margin-top: 36/@rem;
           .book-bg {}
           .book-img {
             .pos(22,
@@ -946,11 +977,11 @@
           .book-name {
             .pos(0,
             25);
-            .text(30,
+            .text(28,
             42);
             color: #555;
             width: 100%;
-            padding-left: 134/@rem;
+            padding-left: 121/@rem;
             padding-right: 10/@rem;
             box-sizing: border-box;
           }
@@ -968,17 +999,29 @@
           }
         }
         .item-bottom {
-          .text(22,
-          30);
+          width: 580/@rem;
+          .text(26,
+          37);
           margin-top: 25/@rem;
-          color: #666;
-          width: 100%;
-          padding-right: 6/@rem;
+          color: #949494;
           box-sizing: border-box;
+          vertical-align: middle;
           .iconfont {
-            line-height: 30/@rem;
-            font-size: 24/@rem;
-            padding: 0 10/@rem
+            display: block;
+            height: 37/@rem;
+            width: 37/@rem;
+            line-height: 37/@rem;
+            font-size: 28/@rem;
+            margin-right: 8/@rem;
+            text-align: center;
+          }
+          .icon-share {
+            margin-right: 54/@rem;
+            color: #949494;
+          }
+          span {
+            .text(26,
+            37);
           }
         }
       }
@@ -994,6 +1037,7 @@
         width: 580/@rem;
         box-sizing: border-box;
       }
+
     }
     .home-bottom {
       .text(40,
@@ -1010,13 +1054,16 @@
     .home-bottom.bottom {
       bottom: 100/@rem;
     }
+    .home-course.bottom {
+      padding-bottom: 200/@rem;
+    }
     .home-course {
       background: #f1f1f1;
       padding-top: 160/@rem;
-      padding-bottom: 120/@rem;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       height: 100%;
+      padding-bottom: 100/@rem;
       box-sizing: border-box;
       .item,
       .item-name,
@@ -1196,6 +1243,7 @@
       }
     }
     .home-wechat {
+      z-index:100;
       .text-a {
         .text(40,
         56);
@@ -1238,6 +1286,7 @@
       }
     }
     .home-nonevent {
+      z-index:100;
       position: relative;
       padding: 50/@rem 34/@rem 20/@rem 34/@rem;
       text-align: center;
@@ -1271,8 +1320,8 @@
         img {
           margin: 24/@rem auto 36/@rem auto;
           display: block;
-          height: 430/@rem;
-          width: 369/@rem;
+          height: 630/@rem;
+          width: 540/@rem;
         }
       }
       .text-d {
@@ -1324,6 +1373,7 @@
       position: relative;
       box-sizing: border-box;
       -webkit-overflow-scrolling: touch;
+      z-index: 100;
 
       .already-no {
         .text(32,
@@ -1359,9 +1409,9 @@
         position: relative;
         width: 678/@rem;
         .book-img {
-          .pos(40,
+          .pos(30,
           30);
-          .size(170,
+          .size(180,
           240);
           border: 5/@rem solid #fff;
           box-sizing: border-box;
@@ -1372,14 +1422,14 @@
           .text(30,
           42);
           color: #333;
-          padding-left: 245/@rem;
+          padding-left: 232/@rem;
           padding-right: 32/@rem;
           box-sizing: border-box;
           width: 100%;
-
+          font-weight: bold;
         }
         .book-msg {
-          .pos(256,
+          .pos(243,
           86);
           font-size: 26/@rem;
           line-height: 36/@rem;
@@ -1390,7 +1440,7 @@
           -webkit-box-orient: vertical;
         }
         .book-btn {
-          .pos(256,
+          .pos(243,
           218);
           .size(160,
           54);
@@ -1462,7 +1512,7 @@
         .alert-bg {
           position: fixed;
           left: 0;
-          bottom: 0;
+          bottom: 0/@rem;
           top: 0;
           right: 0;
           z-index: 999;
@@ -1511,7 +1561,7 @@
           position: absolute;
           z-index: 9999;
           left: 0;
-          bottom: 0;
+          bottom: 0/@rem;
           right: 0;
           text-align: center;
           color: #888;

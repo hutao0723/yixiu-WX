@@ -175,6 +175,7 @@ export default {
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  z-index:100;
 }
 .person-main {
   padding-bottom: 240/@rem;

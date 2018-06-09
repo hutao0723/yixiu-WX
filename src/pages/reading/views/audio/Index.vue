@@ -153,7 +153,7 @@ export default {
     padding: 0 30/@rem;
     .banner{
       width: 100%;
-      height: 58%;
+      height: 62%;
       position: relative;
       padding: 1/@rem;
       box-sizing: border-box;

@@ -97,6 +97,9 @@
           if(resp.success){
             console.log(resp.data)
             this.content = resp.data.content
+            if(this.content){
+              this.conLenght = this.content.length;
+            }
           }
         })
       },
@@ -216,7 +219,7 @@
         .book-title{
           font-size: 30/@rem;
           line-height: 42/@rem;
-          margin-bottom: 45/@rem;
+          margin-bottom: 36/@rem;
           font-weight: bold;
           white-space: nowrap;
         }
@@ -234,7 +237,7 @@
     .comment-box{
       margin:32/@rem 30/@rem 0 30/@rem;
       position:relative;
-      height: 20%;
+      height: 64%;
       textarea{
         width:100%;
         height: 100%;
