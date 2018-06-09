@@ -18,7 +18,7 @@
             </div>
             <div class="item-bottom">
               <p @click="setCommentPraise(item.id,item.userPraise)">
-                  <span class="fr">{{item.praiseCount}}</span>
+                  <span class="fr" v-show="item.praiseCount>0">{{item.praiseCount}}</span>
                 <i class="iconfont icon-dianzan fr" v-show="!item.userPraise"></i>
                 <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
               </p>

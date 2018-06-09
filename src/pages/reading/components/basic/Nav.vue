@@ -119,6 +119,9 @@
         .active {
           color: #222222 !important;
           position: relative;
+          p{
+            color: #333;
+          }
         }
         .tag {
           &:after {
