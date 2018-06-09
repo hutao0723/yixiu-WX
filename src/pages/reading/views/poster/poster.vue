@@ -33,7 +33,7 @@ export default {
 	mounted() {
 		const _this = this;
 		_this.popup = _this.$route.query.lastClock * 1;
-		_this.isSelf =  _this.$route.query.isClock * 1;
+		_this.isSelf = _this.$route.query.isClock * 1;
 		_this.getInfo();
 	},
   	methods: {
@@ -80,7 +80,7 @@ export default {
 			const myCanvas = document.getElementById("sharePoster");
 			const ctx = myCanvas.getContext("2d");
 			// 测试文字高度
-			ctx.font = _this.conversion(30) + "px 苹方字体";
+			ctx.font = _this.conversion(30) + "px PingFang SC";
 			function stringHeight(string, w) {
 				let chr = string.split("");
 				let temp = "";
@@ -97,13 +97,32 @@ export default {
 				row.push(temp);
 				return row;
 			}
-			//得到拆分的字符串
-			let stringLength = stringHeight(_this.info.content, 586);
+			
+			//---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			let line_number = 1;
+			function myPoint(){
+				ctx.font = _this.conversion(30) + "px pingFangSC-Light";
+				let string = _this.info.content.split('');
+				let string_w = ctx.measureText(string[0]).width*1+_this.conversion(-2)*1;
+				//换算成几行
+				let num = 0;
+				string.forEach((item,index)=>{
+					num++;
+					//550数值调试来的
+					if(num*string_w<_this.conversion(550)){
+
+					}else{
+						num=0;
+						line_number++;
+					}
+				})
+			}
+			myPoint();
 			//响应高度，对应海报不同内容
 			let responseHeight = 0;
 			//如果文字大于3行，额外加高度
-			if (stringLength.length > 3) {
-				responseHeight = (stringLength.length - 3) * _this.conversion(50);
+			if (line_number > 3) {
+				responseHeight = (line_number - 3) * _this.conversion(52);
 			}
 			//判断是否是自己的分享，不是不显示打卡天数
 			if (!_this.isSelf) {
@@ -155,9 +174,9 @@ export default {
 			//绘制虚线
 			function drawScreen() {
 				//虚线
-				ctx.setLineDash([15, 10]);
+				ctx.setLineDash([8, 6]);
 				ctx.lineWidth = 2;
-				ctx.strokeStyle = "#d6d6d6";
+				ctx.strokeStyle = "#ddd";
 				ctx.beginPath();
 				ctx.moveTo(_this.conversion(34),_this.conversion(883) * 1 + responseHeight * 1);
 				ctx.lineTo(_this.conversion(718),_this.conversion(883) * 1 + responseHeight * 1);
@@ -169,7 +188,7 @@ export default {
 				ctx.fill();
 				ctx.closePath();
 
-				ctx.font = _this.conversion(26) + "px 苹方字体";
+				ctx.font = _this.conversion(26) + "px PingFang SC";
 				ctx.fillStyle = "#777";
 				ctx.textBaseline = "top";
 				let string = "这是我坚持阅读的第";
@@ -183,13 +202,13 @@ export default {
 				})
 				
 				let frist_w = width*string.length;
-				ctx.font = _this.conversion(42) + "px 苹方字体";
+				ctx.font = _this.conversion(42) + "px PingFang SC";
 				ctx.fillStyle = "#222";
 				ctx.textBaseline = "middle";
 				//额外加10撑开
-				ctx.fillText( _this.info.clocks,_this.conversion(100)*1+frist_w*1+_this.conversion(10) * 1,_this.conversion(937) * 1 + responseHeight * 1);
+				ctx.fillText( _this.info.clocks,_this.conversion(100)*1+frist_w*1+_this.conversion(10) * 1,_this.conversion(936) * 1 + responseHeight * 1);
 				let day_w = ctx.measureText(_this.info.clocks).width;
-				ctx.font = _this.conversion(26) + "px 苹方字体";
+				ctx.font = _this.conversion(26) + "px PingFang SC";
 				ctx.fillStyle = "#777";
 				ctx.textBaseline = "top";
 				//额外加10撑开
@@ -198,12 +217,12 @@ export default {
 			//绘制二维码
 			function createdCode() {
 				return new Promise((resolve, reject) => {
-					ctx.font = _this.conversion(24) + "px 苹方字体";
+					ctx.font = _this.conversion(24) + "px PingFang SC";
 					ctx.textBaseline = "top";
 					ctx.fillStyle = "#444";
 					ctx.fillText("一修读书·" + _this.info.readName,_this.conversion(126),_this.conversion(1071) * 1 + responseHeight * 1);
 					ctx.fillStyle = "#999";
-					ctx.font = _this.conversion(22) + "px 苹方字体";
+					ctx.font = _this.conversion(22) + "px PingFang SC";
 					ctx.fillText("长按识别二维码",_this.conversion(126),_this.conversion(1108) * 1 + responseHeight * 1);
 					let drawImg = new Image();
 					drawImg.crossOrigin = "Anonymous";
@@ -229,12 +248,12 @@ export default {
 			//绘制头像
 			function createdIcon() {
 				return new Promise((resolve, reject) => {
-					ctx.font = _this.conversion(24) + "px 苹方字体";
+					ctx.font = _this.conversion(24) + "px PingFang SC";
 					ctx.fillStyle = "#444";
 					ctx.textBaseline = "top";
 					ctx.fillText( "今日读后感", _this.conversion(179), _this.conversion(405));
 					//绘制书名
-					ctx.font = _this.conversion(38) + "px 苹方字体";
+					ctx.font = _this.conversion(38) + "px PingFang SC";
 					let bookName = "《" + _this.info.courseTitle + "》";
 					let string_h = stringHeight(bookName, 320);
 					for (let b = 0; b < string_h.length; b++) {
@@ -259,26 +278,37 @@ export default {
 			function createdBook() {
 				return new Promise((resolve, reject) => {
 					//绘制观点文字
-					ctx.fillStyle = "#444";
-					for (let b = 0; b < stringLength.length; b++) {
-						ctx.font = _this.conversion(30) + "px 苹方字体 lighter";
-						ctx.textBaseline = "top";
-						ctx.fillText(stringLength[b],_this.conversion(78),_this.conversion(640) + b * _this.conversion(50));
-					}
+					ctx.fillStyle = "#222";
+					ctx.textBaseline = "top";
+					ctx.font = _this.conversion(30) + "px pingFangSC-Light";
+					let point = _this.info.content.split('');
+					let num = -1;
+					let sum = 0;
+					point.forEach((item,index)=>{
+						//550数值调试来的
+						let point_w = ctx.measureText(item).width*1+_this.conversion(-2)*1;
+						if(num*point_w<_this.conversion(550)){
+							num++;
+						}else{
+							num=0;
+							sum++;
+						}
+						ctx.fillText(item,_this.conversion(78)*1+point_w*num,_this.conversion(640)*1+sum*_this.conversion(52) );
+					})
 					//绘制作者信息
-					ctx.font = _this.conversion(24) + "px 苹方字体";
+					ctx.font = _this.conversion(24) + "px pingFangSC-Light";
 					ctx.textBaseline = "top";
 					let string_w = ctx.measureText(_this.info.userNickname).width;
-					ctx.fillText(_this.info.userNickname,_this.conversion(668) - string_w,_this.conversion(640) + stringLength.length * _this.conversion(50));
+					ctx.fillText(_this.info.userNickname,_this.conversion(668) - string_w,_this.conversion(640) + line_number * _this.conversion(50));
 					//转换时间格式
 					let createdTime = _this.info.releaseTime.replace(/-/g, "/");
 					createdTime = new Date(createdTime);
 					let year = createdTime.getFullYear();
 					let month = createdTime.getMonth() + 1;
 					let day = createdTime.getDate();
-					let time ="于" +year +"." +month +"." +day +" " +_this.info.releaseTimeLabel;
+					let time ="于" +year +"." +month +"." +day +"  " +_this.info.releaseTimeLabel;
 					string_w = ctx.measureText(time).width;
-					ctx.fillText(time,_this.conversion(668) - string_w,_this.conversion(672) + stringLength.length * _this.conversion(50));
+					ctx.fillText(time,_this.conversion(668) - string_w,_this.conversion(672) + line_number * _this.conversion(50));
 
 					ctx.fillStyle = "#FFF";
 					ctx.fillRect(_this.conversion(536),_this.conversion(320),_this.conversion(140),_this.conversion(190));
@@ -321,9 +351,14 @@ export default {
   	}
 };
 </script>
-
-<style lang="less" scoped>
+<style lang="less" scoped >
 	@import "../../less/variable";
+	@font-face{  
+		font-family: 'pingFangSC-Light';  
+		src: url('./../../assets/PingFang Light.ttf');  
+		font-weight: lighter;
+		 
+	}  
 	@-webkit-keyframes spin { /*兼容性写法。spin是关键帧的动画名称*/
 		from { /*动画起始状态*/
 		-webkit-transform: rotate(0deg);
