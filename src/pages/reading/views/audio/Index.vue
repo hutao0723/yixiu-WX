@@ -2,9 +2,7 @@
   <div class="audio-main">
     <div class="audio-page">
       <div class=" banner">
-        <img class="course-img" :src="readAudio.verticalCover" v-if="readAudio.verticalCover && ! readAudio.lateralCover"/>
-        <img class="course-img-lateral" :src="readAudio.lateralCover" v-if="readAudio.lateralCover"/>
-        <img class="course-img-lateral" src="https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png" v-if="!readAudio.lateralCover && !readAudio.verticalCover"/>
+        <img class="course-img" :src="readAudio.verticalCover ? readAudio.verticalCover : 'https://yun.duiba.com.cn/yoofans/images/201804/miniapp/player-column-cover.png'" />
         <span class="xl black line1 detail-word">{{readAudio.courseTitle}}</span>
       </div>
       <div class="controler column-between">
@@ -24,8 +22,9 @@
           <button type="primary" class="btn-switch" @click="audioPrev">
             <i class="iconfont icon-prev" :style="{color: `${readAudio.isPrev ? '#343434' : '#919191'}`}"></i>
           </button>
-          <button type="primary" class="btn-play" @click="togglePlay">
-            <i class="iconfont" :class="readPlaying ? 'icon-pause' : 'icon-play'" ></i>
+          <button type="primary" class="btn-play " :class="readLoadStart ? 'rotation' : ''" @click="togglePlay">
+            <i class="iconfont icon-musicload" v-if="readLoadStart"></i>
+            <i class="iconfont" :class="readPlaying ? 'icon-pause' : 'icon-play'" v-else></i>
           </button>
           <button type="primary" class="btn-switch" @click="audioNext">
             <i class="iconfont icon-next" :style="{color: `${readAudio.isNext ? '#343434' : '#919191'}`}"></i>
@@ -35,21 +34,21 @@
             <span class="xxs primary">播放列表</span>
           </button>
         </div>
-        <div class="bottom" @click="goComment">
-           {{text}}
-        </div>
+      </div>
+      <div class="bottom" @click="goComment" v-if="readAudio.curRead">
+         {{text}}
       </div>
     </div> 
-    <div class="modal" v-if="showCardModal">
+    <div class="card-modal" v-if="showCardModal" >
       <div class="pop-mask"></div>
-      <div class="container">
+      <div class="modalbar">
         <div class="btn-yes column-center">
             <i class="iconfont icon-yes"></i>
         </div>
         <div class="btn-close column-center" @click="hideModal">
             <i class="iconfont icon-close"></i>
         </div>
-        <p class="des">你已完成今日课程，趁热打铁 来打卡吧！</p>
+        <p class="des">你已完成今日课程，趁热打铁来打卡吧！</p>
         <p class="info">今日已打卡<span class="warm">{{clockCount}}</span>人</p>
         <div class="btn-card" @click="goComment">打卡</div>
       </div>
@@ -71,7 +70,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['readAudio','readPlaying','readCurrentTime','readDuration','showCardModal']),
+    ...mapState(['readAudio','readPlaying','readCurrentTime','readDuration','showCardModal','readLoadStart']),
     current() {
       return this.timerFomart(this.readCurrentTime)
     },
@@ -91,11 +90,11 @@ export default {
     }
   },
   async mounted () {
-    if (this.$route.params.type == 0 && !store.getters.getAudioElement.getAttribute('src')) {
-      let readAudio = this.readAudio;
-      readAudio.src = await play.getAudioUrl(store.getters.getAudioInfo.readId, store.getters.getAudioInfo.courseId);
-      store.commit({ type: 'setAudio', readAudio: readAudio });
-    }
+    let readAudio = this.readAudio;
+    let freshAudio = await play.getReadDetail(readAudio.readId, readAudio.courseId);
+    Object.assign(readAudio, freshAudio);
+    readAudio.src = await play.getAudioUrl(store.getters.getAudioInfo.readId, store.getters.getAudioInfo.courseId);
+    store.commit({ type: 'setAudio', readAudio: readAudio });
     if (!store.getters.getAudioElement.getAttribute('src')){
       store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
       store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
@@ -124,7 +123,11 @@ export default {
     },
     goComment () {
       store.commit('resetShowCardModal');
-      this.$router.push(`/comment/${this.readAudio.readId}/${this.readAudio.courseId}`);
+      if (this.text == '查看') {
+        this.$router.push({name:'poster',query:{commentId:this.readAudio.commentId,lastClock:0,isClock:1}})
+      } else {
+        this.$router.push(`/comment/${this.readAudio.readId}/${this.readAudio.courseId}`);
+      }
     },
     timerFomart (time) {
       if (isNaN(time)) return '00:00';
@@ -150,27 +153,27 @@ export default {
     padding: 0 30/@rem;
     .banner{
       width: 100%;
-      height: 62%;
+      height: 58%;
       position: relative;
       padding: 1/@rem;
       box-sizing: border-box;
       border:none;
       .course-img{
-        width: 240/@rem;
-        height: 336/@rem;
+        width: 246/@rem;
+        height: 330/@rem;
         display: block;
         margin: 142/@rem auto 0;
         box-shadow: -5/@rem 0/@rem 10/@rem 4/@rem rgba(225,225,225,0.5);
         border-radius: 10/@rem;
       }
-      .course-img-lateral{
-        width: 494/@rem;
-        height: 360/@rem;
-        margin: 136/@rem auto 0;
-        display: block;
-        border-radius: 10/@rem;
-        box-shadow: -5/@rem 0/@rem 10/@rem 4/@rem rgba(225,225,225,0.5);
-      }
+      // .course-img-lateral{
+      //   width: 494/@rem;
+      //   height: 360/@rem;
+      //   margin: 136/@rem auto 0;
+      //   display: block;
+      //   border-radius: 10/@rem;
+      //   box-shadow: -5/@rem 0/@rem 10/@rem 4/@rem rgba(225,225,225,0.5);
+      // }
       .detail-word{
         margin-top: 52/@rem;;
         text-align: center;
@@ -180,7 +183,7 @@ export default {
       }
     }
     .controler{
-      height: 38%;
+      height: 20%;
     }
     .slider-bar{
       width: 690/@rem;
@@ -221,10 +224,27 @@ export default {
           color: #fff;
         }
       }
+      @-webkit-keyframes rotation{
+        from {-webkit-transform: rotate(0deg);}
+        to {-webkit-transform: rotate(360deg);}
+        }
+      @keyframes rotation{
+        from {-webkit-transform: rotate(0deg);}
+        to {-webkit-transform: rotate(360deg);}
+        }
+
+      .rotation{
+      animation: rotation 1s linear infinite;
+      -moz-animation: rotation 1s linear infinite;
+      -webkit-animation: rotation 1s linear infinite;
+      -o-animation: rotation 1s linear infinite;
+      }
+
     }
     .bottom{
       width:300/@rem;
       height: 70/@rem;
+      margin: 18% auto;
       line-height: 70/@rem;
       text-align: center;
       margin-bottom: 70/@rem;
@@ -245,7 +265,7 @@ export default {
     top: 0;
     left: 0;
   }
-  .container{
+  .modalbar{
     width: 590/@rem;
     height: 448/@rem; 
     background:rgba(255,251,251,1);
@@ -286,7 +306,7 @@ export default {
     .des{
       width:390/@rem;
       height:84/@rem;
-      margin: 50/@rem auto 0;
+      margin: 145/@rem auto 0;
       text-align: center;
       font-size:30/@rem;
       font-family:PingFangSC-Medium;

@@ -5,36 +5,34 @@
         <div class="module" v-for="(item, $index) in journeyList" :style="item.content?'':'display:none'">
           <div class="date">{{item.releaseTime}}</div>
           <div class="text-box">
-            <div class="text-journal" v-if="item.diploma"><span>{{item.readName}}{{item.readStageNum}}期毕业</span>
+            <div class="text-journal" v-if="item.diploma"><span class="otw-title">{{item.readName}}{{item.readStageNum}}期毕业</span>
 
               <router-link :to="{ path: '/look/' + item.readId}"><span class="look">查看证书></span></router-link>
             </div>
             <div class="text-container clearfix">
               <div class="content-container">
                 <div  class="content" ref="cheight" :class="item.expand?'h132':''">{{item.content}}</div>
-                <div v-if="item.line"> 
+                <div v-if="item.line">
                   <div class="letter" v-if="(item.letter == 1 )&& (item.expand)" @click.stop="handleChange(item)">全部</div>
                   <div class="letter" v-if="(item.letter == 2 )&& (!item.expand)" @click.stop="handleChange(item)">收起</div>
                 </div>
               </div>
               <div class="clearfix book" :class="item.content?'btop':''">
-                <div class="fl book-img"><img :src="item.courseUrl"></div>
+                <div class="fl book-img"><img :src="item.courseVerticalCover || frontImgUrl"></div>
                 <div class="book-content">
-                  <div class="book-title">{{item.courseTitle}}</div>
-                  <div class="book-writer">{{item.courseAuthor}}</div>
+                  <div class="book-title">《{{item.courseTitle}}》</div>
+                  <div class="book-writer" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
                 </div>
               </div>
               <div class="row operate fr">
-                <router-link :to="{ path: '/poster/' + item.id+'/0/1'}">
-                  <div class="column-center operate-share">
-                    <i class="iconfont icon-share"></i>
-                  </div>
-                </router-link>
-                <div class="row">
-                  <span class="operate-num">{{item.praiseCount}}</span>
+                <div class="column-center operate-share" @click="goPoster(item.id)">
+                  <i class="iconfont icon-share"></i>
                 </div>
-                <div class="column-center" @click.stop="thumbsUp(item,$index)">
-                  <i class="iconfont icon-heart" :class="(item.userPraise==0) ? '':'zan' "></i>
+                <div class="column-center" @click.stop="thumbsUp(item,$index)" :class="point?'point':''">
+                  <i class="iconfont" :class="(item.userPraise==0) ? 'icon-dianzan':'icon-heart zan'"></i>
+                </div>
+                <div class="row">
+                  <span class="operate-num">{{item.praiseCount == 0 ?"": item.praiseCount}}</span>
                 </div>
               </div>
             </div>
@@ -72,7 +70,12 @@ export default {
       expandStatus: [],
 
       // 统计内容为空的数据条数
-      contentNum: 0
+      contentNum: 0,
+
+      flag: false,
+      point: false,
+
+      frontImgUrl: "http://yun.dui88.com/youfen/images/read_course_none.png"
     };
   },
   computed: {
@@ -89,20 +92,35 @@ export default {
       let objs = await user.getJourneyList();
       if (objs.success) {
         this.journeyList = objs.data
+
+      
         if(!this.journeyList.length) {
           this.noData = true
           return
         }
         this.journeyList.forEach((item,index)=>{
           // 获取时间
-          this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(5,7) + "." + item.releaseTime.substring(8,10)
+          if(parseInt(item.releaseTime.substring(5,7)) < 10){
+            if(parseInt(item.releaseTime.substring(8,10)) < 10){
+              this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(6,7) + "." + item.releaseTime.substring(9,10)
+            }else{
+              this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(6,7) + "." + item.releaseTime.substring(8,10)
+            }
+          }else{
+            if(parseInt(item.releaseTime.substring(8,10)) < 10){
+              this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(5,7) + "." + item.releaseTime.substring(9,10)
+            }else{
+              this.journeyList[index].releaseTime = item.releaseTime.substring(0,4) +"."+ item.releaseTime.substring(5,7) + "." + item.releaseTime.substring(8,10)
+            }
+          }
         })
       }else{
         console.log("获取数据失败")
       }
-      
+
     },
     async thumbsUp(row,index) {
+      this.point = true
       let praise = row.userPraise == 0 ? 1 : 0
       let objs = await user.getThumbUp(praise,row.id);
       if (objs.success) {
@@ -114,12 +132,13 @@ export default {
         // await this.getJourneyInfo();
         // this.init();
         this.journeyList[index].userPraise = praise
+        this.point = false
       }else{
         console.log("获取数据失败")
       }
-      
+
     },
-    init() {  
+    init() {
       if(!this.journeyList.length) {
         this.noData = true
         return
@@ -152,7 +171,7 @@ export default {
           // line属性是否展示全部收起这个属性
           this.$set(this.journeyList[index],'line', false)
         }
-        
+
       })
     },
     formatDateNew(date) {
@@ -176,6 +195,10 @@ export default {
         this.$set(row,'letter', 1)
       }
       this.$set(row,'expand', this.expandStatus[row.id])
+    },
+    goPoster(id){
+      console.log(id)
+      this.$router.push({name:'poster',query:{commentId:id,lastClock:0,isClock:1}})
     }
   }
 };
@@ -196,11 +219,15 @@ export default {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
+.point{
+  pointer-events: none;
+}
 .journey-main{
   padding: 41/@rem 33/@rem 0 50/@rem;
+  max-height: 9999px;
   .module{
     .date{
-      position: relative; 
+      position: relative;
       height: 42/@rem;
       padding: 0 0 0 24/@rem;
       .fontSize(30);
@@ -224,13 +251,20 @@ export default {
     }
     .text-journal{
       width: 630/@rem;
-      height: 83/@rem; 
+      height: 83/@rem;
       background: rgba(243,243,243,1);
-      border-radius: 8/@rem ; 
+      border-radius: 8/@rem ;
       line-height: 83/@rem;
       box-sizing: border-box;
       padding-left: 22/@rem;
       margin-bottom: 30/@rem;
+      .otw-title{
+        float: left;
+        width: 6rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
       .fontSize(30);
       .look{
         color: #FF4C4C;
@@ -275,7 +309,7 @@ export default {
         .book-img{
           img{
             box-sizing: border-box;
-            width: 64/@rem; 
+            width: 64/@rem;
             height: 88/@rem;
             border-radius: 5/@rem;
           }
@@ -283,9 +317,15 @@ export default {
         .book-content{
           color: #7F7F7F;
           .book-title{
+            color:#555;
             .fontSize(26);
+            width: 460/@rem;
             margin-left: 80/@rem;
             margin-top: 3/@rem;
+            box-sizing: border-box;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
           .book-writer{
             .fontSize(24);
@@ -296,17 +336,17 @@ export default {
       }
       .operate{
         color: #949494;
+        height: 27/@rem;
         a{
           color: #949494;
         }
         .operate-share{
-          margin-right: 2/@rem;
+          margin-right: 50/@rem;
         }
         .operate-num{
           .fontSize(26);
           width: 45/@rem;
-          text-align: right;
-          margin-right: 13/@rem;
+          margin-left: 8/@rem;
         }
         .iconfont{
           .fontSize(26);
@@ -344,9 +384,9 @@ export default {
 
 
 
-  
+
 }
 
-  
+
 </style>
 

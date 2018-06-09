@@ -23,5 +23,6 @@ export default {
 	showCardModal: false,
 	startTimestamp: 0,
 	// 曝光参数相关
-	referer: ''
+	referer: '',
+	videoToggle: true
 };
