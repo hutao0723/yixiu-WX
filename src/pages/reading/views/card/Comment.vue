@@ -83,8 +83,8 @@
         document.getElementById('textarea').focus();
       },
       contentSlice(str){
-        if(str&&str.length>12){
-          return str.slice(0,12) + '...'
+        if(str&&str.length>15){
+          return str.slice(0,15) + '...'
         }else{
           return str
         }
@@ -217,6 +217,7 @@
           font-size: 30/@rem;
           line-height: 42/@rem;
           margin-bottom: 45/@rem;
+          font-weight: bold;
         }
         .book-author{
           font-size: 26/@rem;
