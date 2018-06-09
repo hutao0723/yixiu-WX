@@ -70,6 +70,9 @@ export default {
         height: 116/@rem;
         margin: 0 29/@rem 0 31/@rem;
         border-bottom: 1/@rem solid @borderColor;
+        position: relative;
+        background-color: #FFF;
+        z-index: 1;
         .ct-item {
             align-content: center;
             height: 116/@rem;
@@ -96,14 +99,6 @@ export default {
                 background-color: @deepRed;
             }
         }
-    }
-
-    .correspondent-main {
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
     }
 
 </style>
