@@ -1,5 +1,5 @@
 <template>
-  <div class="card-main">
+  <div class="card-main" @touchmove.stop="bodyTouchMove()">
     <div class="cardNotice-box" @click="hideNotice()" v-show="noticeFlag" @touchmove.prevent>
       <div class="notice-box">
         <div class="notice-title">打卡须知</div>
@@ -34,7 +34,7 @@
         <span v-for="week in weeks" class="week">{{week}}</span>
       </div>
     </div>
-    <div class="calendar-box" >
+    <div class="calendar-box" @touchmove.stop='calTouchMove' >
       <calendar-template  :calendarDate='c_date' @getDate="getDate" ></calendar-template>
     </div>
     <div class="book-book" >
@@ -73,6 +73,8 @@
 </template>
 
 <script>
+
+
   import { mapState } from 'vuex';
   import bnav from '../../components/basic/Nav';
   import calendarTemplate from '../../components/layout/calendarTemplate';
@@ -112,6 +114,9 @@
     },
     mounted () {
       this.getReadStatus()
+      console.log('*****')
+      let aaa = document.querySelector('.calendar-box');
+      console.log(aaa.offsetTop,aaa.offsetHeight,aaa.offsetTop+aaa.offsetHeight)
     },
    watch:{
      readId(){
@@ -119,7 +124,17 @@
      }
    },
     methods: {
-
+      bodyTouchMove(ev){
+        ev = ev || event;
+        let bodyScroll = document.querySelector('.card-main');
+        bodyScroll.style.overflowY = 'auto'
+      },
+      calTouchMove:function(ev) {
+        ev = ev || event;
+        let bodyScroll = document.querySelector('.card-main');
+        bodyScroll.style.overflowY = 'hidden'
+        ev.preventDefault();
+      },
       hideNotice(){
         this.noticeFlag = false
       },
