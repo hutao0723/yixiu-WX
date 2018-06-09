@@ -203,6 +203,7 @@
     background: #F4F4F4;
     font-size: 24/@rem;
     color:#333;
+    z-index:100;
     .hideNoticeStyle{
       opacity: 0;
       z-index: -1;

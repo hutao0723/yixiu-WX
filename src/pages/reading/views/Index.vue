@@ -1,5 +1,6 @@
 <template>
   <div class="index-main">
+    <bnav></bnav>
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
@@ -7,8 +8,10 @@
 </template>
 
 <script>
+import bnav from '../components/basic/Nav';
 export default {
   components: {
+    bnav
   },
   data () {
     return {
@@ -24,7 +27,4 @@ export default {
 </script>
 
 <style lang="less">
-.index-main{
-  position: fixed;
-}
 </style>

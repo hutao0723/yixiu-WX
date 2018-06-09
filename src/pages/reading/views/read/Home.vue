@@ -1,7 +1,7 @@
 <template>
   <div class="home-main">
-    <bnav></bnav>
     <div class="home-type" v-show="pageStatus == 1 || pageStatus == 0">
+      <bnav></bnav>
       <a href="https://kefu.easemob.com/webim/im.html?configId=f56195f3-2ff6-412b-983e-0231f5586efb" class="home-service" :class="{bottom:bottomNavToggle}"></a>
       <div class="home-tab clearfix" id="hometab">
         <div class="item" @click="tabActiveToggle(true)">
@@ -90,6 +90,7 @@
 
     <!-- 报名未关注 -->
     <div class="home-wechat" v-if="pageStatus == 2">
+      <bnav></bnav>
       <p class="text-a">
         <i class="iconfont"></i>您已成功报名</p>
       <p class="text-b">长按识别二维码</p>
@@ -98,6 +99,7 @@
     </div>
     <!-- 报名未开课 -->
     <div class="home-nonevent" v-if="pageStatus == 3">
+      <bnav></bnav>
       <div class="nonevent-box">
         <p class="text-a">您已成功报名</p>
         <p class="text-b">「 {{courseDetail.title}} 」</p>
@@ -112,6 +114,7 @@
     </div>
     <!-- 已关注已开课 -->
     <div class="home-already" v-if="pageStatus == 4">
+      <bnav></bnav>
       <AudioBar/>
       <h2>今日学习
         <span> | 第{{todayBookDetail.days}}/{{todayBookDetail.totalDays}}天</span>
@@ -741,9 +744,11 @@
 
   .home-main {
     background: #fff;
+    z-index:100;
     .home-type {
       background: #f1f1f1;
       box-sizing: border-box;
+      z-index:100;
     }
     .home-service {
       .size(100, 100);
@@ -1205,6 +1210,7 @@
       }
     }
     .home-wechat {
+      z-index:100;
       .text-a {
         .text(40,
         56);
@@ -1247,6 +1253,7 @@
       }
     }
     .home-nonevent {
+      z-index:100;
       position: relative;
       padding: 50/@rem 34/@rem 20/@rem 34/@rem;
       text-align: center;
@@ -1333,6 +1340,7 @@
       position: relative;
       box-sizing: border-box;
       -webkit-overflow-scrolling: touch;
+      z-index: 100;
 
       .already-no {
         .text(32,
