@@ -24,4 +24,7 @@ export default {
 </script>
 
 <style lang="less">
+.index-main{
+  position: fixed;
+}
 </style>

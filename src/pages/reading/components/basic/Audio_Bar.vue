@@ -57,7 +57,8 @@ import { mapState } from 'vuex';
         }
       },
       hideNotice: function(){
-        this.notice = false
+        this.notice = false;
+        this.animation = false;
       }
     }
   };
