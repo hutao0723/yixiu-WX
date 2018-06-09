@@ -8,7 +8,7 @@
     </header>
     <div class="calendar_header">
       <div class="card-head">
-        <span class="head-left" @click="noticeFlag = true "> <i class="iconfont icon-gift"></i> 坚持打卡送大礼 ></span>
+        <span class="head-left" @click="noticeFlag = true "> <i class="iconfont icon-gift"></i>坚持打卡送大礼<i class="iconfont icon-right"></i> </span>
         <div class="head-right">
           <span><i></i> 已打卡</span>
           <span><i></i>未打卡</span>
@@ -47,9 +47,10 @@
         <div style="clear: both"></div>
       </div>
     </div>
-    <div class="card_bottom_text">听得见的知识 看得见的成长</div>
-    <bnav></bnav>
+    <div class="card_bottom_text">轻松阅读，日有所得</div>
     <AudioBar></AudioBar>
+    <bnav></bnav>
+
   </div>
 </template>
 
@@ -189,6 +190,7 @@
 
   .card-main {
     width: 750/@rem;
+    height: 100%;
     position: absolute;
     left: 0;
     top: 0;
@@ -258,6 +260,15 @@
         .icon-gift{
           font-size: 40/@rem;
           color:#FF9252;
+          margin-right: 10/@rem;
+
+        }
+        .icon-right{
+          font-size: 14/@rem;
+          color:#9B9B9B;
+          display: inline-block;
+          vertical-align: middle;
+          margin-left: 13/@rem;
         }
         .head-right{
           float: right;
@@ -368,7 +379,7 @@
           font-size: 30/@rem;
           line-height: 42/@rem;
           margin-bottom: 12/@rem;
-          font-weight: 600;
+          font-weight: bold;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
