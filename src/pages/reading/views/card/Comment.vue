@@ -6,7 +6,7 @@
         <img v-else src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="">
       </div>
       <div class="book-detail">
-        <div class="book-title">{{courseDetail.courseTitle}}</div>
+        <div class="book-title">《{{courseDetail.courseTitle}}》</div>
         <div class="book-author" v-show="courseDetail.author">
           <span>{{courseDetail.author}}<span class="audio-right">著</span></span>
         </div>

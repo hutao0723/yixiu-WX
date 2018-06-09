@@ -50,7 +50,7 @@
           </div>
         </div>
         <div class="book-detail">
-          <div class="book-title">{{courseDetail.courseTitle}}</div>
+          <div class="book-title">《{{courseDetail.courseTitle}}》</div>
           <div class="book-author">
             <div v-show="courseDetail.author">
               <span>{{courseDetail.author}}<span class="audio-right">著</span></span>
@@ -250,7 +250,7 @@
           position: relative;
           background: #fff;
           li:nth-of-type(1){
-            margin-bottom: 60/@rem;
+            margin-bottom: 64/@rem;
           }
           li{
             color:#555555;
@@ -287,7 +287,7 @@
         }
         .notice-btn{
           text-align: center;
-          border-top: 1px dotted #E5E5E5;
+          border-top: 1px dashed #C4C4C4;
           height:90/@rem;
           line-height: 90/@rem;
           font-size: 30/@rem;
@@ -345,6 +345,7 @@
         font-size: 26/@rem;
         padding:25/@rem 0 25/@rem 29/@rem;
         line-height: 37/@rem;
+        height: 37/@rem;
         background: #fff;
         .icon-gift{
           font-size: 40/@rem;
@@ -358,13 +359,16 @@
           display: inline-block;
           vertical-align: middle;
           margin-left: 13/@rem;
+          margin-top: -2/@rem;
         }
         .head-right{
           float: right;
           font-size: 24/@rem;
           color:#666;
-          line-height: 33/@rem;
+          line-height: 37/@rem;
+          padding-top: 5/@rem;
           span{
+            display: inline-block;
             margin-right: 35/@rem;
           }
           span:nth-of-type(2) i{
