@@ -233,6 +233,9 @@
 
 <style lang="less">
   @import "../../less/variable";
+  .box{
+    background: #fff;
+  }
   .calendarTemplate_box{
     height:auto;
     .isRange{
