@@ -6,7 +6,7 @@
         <img v-else src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="">
       </div>
       <div class="book-detail">
-        <div class="book-title">《{{courseDetail.courseTitle}}》</div>
+        <div class="book-title">《{{contentSlice(courseDetail.courseTitle)}}》</div>
         <div class="book-author" v-show="courseDetail.author">
           <span>{{courseDetail.author}}<span class="audio-right">著</span></span>
         </div>
@@ -72,6 +72,7 @@
     },
     mounted () {
 
+
     this.bodyHeight = document.documentElement.clientHeight || document.body.clientHeight;
     },
     methods: {
@@ -80,6 +81,13 @@
       },
       focusDom(){
         document.getElementById('textarea').focus();
+      },
+      contentSlice(str){
+        if(str&&str.length>12){
+          return str.slice(0,12) + '...'
+        }else{
+          return str
+        }
       },
       getContent(){
         let courseId = this.$route.params.courseId;
@@ -191,7 +199,7 @@
       .book-img{
         width:120/@rem;
         height:160/@rem;
-        margin-right: 39/@rem;
+        margin-right: 24/@rem;
         float: left;
         overflow:hidden;
         border-radius: 4/@rem;
@@ -213,6 +221,7 @@
         .book-author{
           font-size: 26/@rem;
           line-height: 37/@rem;
+          margin-left: 14/@rem;
           color:#666;
           .audio-right{
             margin-left: 16/@rem;
