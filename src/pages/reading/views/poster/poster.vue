@@ -17,6 +17,7 @@
 
 <script>
 import Popup from "./../../components/basic/Diploma";
+import icon from './Oval7.png'
 export default {
   	data() {
 		return {
@@ -33,52 +34,8 @@ export default {
 	mounted() {
 		const _this = this;
 		_this.popup = _this.$route.query.lastClock * 1;
-		//_this.isSelf = _this.$route.query.isClock * 1;
-		_this.isSelf = 1
-		//_this.getInfo();
-		_this.info = {
-			"id": 58,
-			"userId": 100052000,
-			"userNickname": "💥",
-			"userImgUrl": "//yun.dui88.com/youfen/images/hfx1vc25bl.jpg",
-			"courseId": 198,
-			"courseTitle": "课程-试听10s",
-			"courseSubTitle": "课程-试听10s-副标",
-			"courseUrl": "https://yun.dui88.com/youfen/images/lhk3dw0zk6.gif",
-			"courseVerticalCover": "https://yun.dui88.com/youfen/images/zbp2zkq154.jpg",
-			"courseLateralCover": "https://yun.dui88.com/youfen/images/2bmi5mohht.jpg",
-			"courseAuthor": "",
-			"readId": 9,
-			"readName": "阅读计划-测试1",
-			"readStageId": 9,
-			"readStageNum": 1,
-			"content": "测试我的历程页+、，。，/？！【】[]+-:\;；测试我的历程页面的感想，测试我的历程页面的感想，测试我的历程页面的感想，测试我的历程页面的感想",
-			"releaseTime": "2018-05-30 14:22:13",
-			"releaseTimeLabel": "深夜",
-			"praiseCount": 3,
-			"userPraise": false,
-			"myself": 0,
-			"listens": 0,
-			"clocks": 0,
-			"books": 0,
-			"loginDays": 2,
-			"readQrcodeImgUrl": "https://yun.dui88.com/youfen/images/z6qj8zsviw.jpg",
-			"bookBgimgUrl": ""
-		}
-		//头部背景图
-			if (!_this.info.bookBgimgUrl) {
-				_this.info.bookBgimgUrl = "http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg";
-			};
-			if(!_this.info.courseUrl){
-				_this.info.courseUrl = 'http://yun.dui88.com/youfen/images/read_course_none.png';
-			};
-			//二维码写死
-			_this.info.readQrcodeImgUrl = "http://yun.dui88.com/yoofans/images/201806/code.jpg";
-			//默认观点
-			if(!_this.info.content){
-				_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
-			};
-			_this.createdCanvas();
+		_this.isSelf = _this.$route.query.isClock * 1;
+		_this.getInfo();
 	},
   	methods: {
 		async getInfo() {
@@ -192,9 +149,9 @@ export default {
 				return new Promise((resolve, reject) => {
 					// 绘制阴影
 					ctx.shadowBlur = _this.conversion(10);
-					ctx.shadowColor = "rgba(0,0,0,0.12)";
+					ctx.shadowColor = "rgba(0,0,0,0.05)";
 					ctx.shadowOffsetX = 0;
-					ctx.shadowOffsetY = _this.conversion(8);
+					ctx.shadowOffsetY = _this.conversion(5);
 					// 绘制圆角矩形
 					function roundRect(x, y, w, h, r) {
 						var min_size = Math.min(w, h);
@@ -225,13 +182,14 @@ export default {
 				ctx.moveTo(_this.conversion(34),_this.conversion(883) * 1 + responseHeight * 1);
 				ctx.lineTo(_this.conversion(718),_this.conversion(883) * 1 + responseHeight * 1);
 				ctx.stroke();
-				// 两个黄色点
-				ctx.beginPath();
-				ctx.fillStyle = "#f9d61d";
-				ctx.arc(_this.conversion(80),_this.conversion(937) * 1 + responseHeight * 1,_this.conversion(7),0,Math.PI * 2,true);
-				ctx.fill();
-				ctx.closePath();
-
+				// 一个黄色点
+				// ctx.beginPath();
+				// ctx.fillStyle = "#f9d61d";
+				// console.log()
+				// ctx.arc(_this.conversion(80),_this.conversion(935) * 1 + responseHeight * 1,_this.conversion(6),0,Math.PI * 2,true);
+				// ctx.fill();
+				// ctx.closePath();
+				// console.log(_this.conversion(935) * 1 + responseHeight * 1)
 				ctx.font = _this.conversion(26) + "px PingFang SC";
 				ctx.fillStyle = "#777";
 				ctx.textBaseline = "top";
@@ -244,7 +202,7 @@ export default {
 					width = width*1+_this.conversion(2) * 1 
 					ctx.fillText( el,_this.conversion(100)*1+index*width,_this.conversion(922) * 1 + responseHeight * 1);
 				})
-				
+				console.log(_this.conversion(922) * 1 + responseHeight * 1)
 				let frist_w = width*string.length;
 				ctx.font = _this.conversion(42) + "px PingFang SC";
 				ctx.fillStyle = "#222";
@@ -377,8 +335,20 @@ export default {
 					};	
 				})
 			}
+			//绘制黄点
+			function createdYellowPoint() {
+				return new Promise((resolve, reject) => {
+					let drawImg = new Image();
+					drawImg.crossOrigin = "Anonymous";
+					drawImg.src =  "http://yun.dui88.com/yoofans/images/201806/Oval7.png";;
+					drawImg.onload = function() {
+						ctx.drawImage(drawImg,_this.conversion(80),_this.conversion(935) * 1 + responseHeight * 1,_this.conversion(12),_this.conversion(12));
+						resolve();
+					};	
+				})
+			}
 			// 绘制所有canvas
-			headerImg.then(createdBox).then(createdIcon).then(createdCode).then(createdComma).then(createdBook).then(createdLogo).then(() => {
+			headerImg.then(createdBox).then(createdIcon).then(createdCode).then(createdComma).then(createdBook).then(createdLogo).then(createdYellowPoint).then(() => {
 				if (_this.isSelf) {
 					drawScreen();
 				}
@@ -401,7 +371,6 @@ export default {
 		font-family: 'pingFangSC-Light';  
 		src: url('./../../assets/PingFang Light.ttf');  
 		font-weight: lighter;
-		 
 	}  
 	@-webkit-keyframes spin { /*兼容性写法。spin是关键帧的动画名称*/
 		from { /*动画起始状态*/
