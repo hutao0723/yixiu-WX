@@ -13,15 +13,15 @@
                 <img class="book-img" :src="item.courseVerticalCover" alt="" v-if="item.courseVerticalCover">
                 <img class="book-img" src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="" v-else>
               </div>
-              <div class="book-name otw">{{item.courseTitle}}</div>
+              <div class="book-name otw">《{{item.courseTitle}}》</div>
               <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
             </div>
             <div class="item-bottom">
-              <span @click="setCommentPraise(item.id,item.userPraise)" class="fr">
-                  <span>{{item.praiseCount}}</span>
-                <i class="iconfont icon-dianzan" v-show="!item.userPraise"></i>
-                <i class="iconfont icon-heart" :style="{color:'red'}" v-show="item.userPraise"></i>
-              </span>
+              <p @click="setCommentPraise(item.id,item.userPraise)">
+                  <span class="fr">{{item.praiseCount}}</span>
+                <i class="iconfont icon-dianzan fr" v-show="!item.userPraise"></i>
+                <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
+              </p>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr" v-if="userId == item.userId"></router-link>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr" v-if="userId != item.userId"></router-link>
               <span class="fl">{{item.releaseTime | timeTransition}}</span>
@@ -213,9 +213,10 @@
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    padding-top: 20/@rem; // z-index: 9;
+    padding-top: 20/@rem;
     background: #fff;
     font-size: 24/@rem;
+    z-index:100;
     .icon-nav {
       height: 480/@rem;
       border: 1px solid #ccc;
@@ -259,10 +260,10 @@
         }
         .item-name {
           /* .pos(118, 36); */
-          font-weight: bold;
           .text(30,
           42);
           color: #333;
+          font-weight:bold;
         }
         .item-periods {
           /* .pos(118, 82); */
@@ -270,12 +271,15 @@
           33);
           color: #666;
           margin-top: 4/@rem;
-          margin-bottom: 14/@rem;
+          margin-bottom: 26/@rem;
+          overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
         }
         .item-content {
           /* .pos(118, 130); */
           max-height: 9999px;
-          font-size: 28/@rem;
+          font-size: 32/@rem;
           line-height: 42/@rem;
           color: #333;
         }
@@ -297,7 +301,7 @@
           position: relative;
           background: #eee;
           border-radius: 4/@rem;
-          margin-top: 20/@rem;
+          margin-top: 36/@rem;
           .book-bg {}
           .book-img {
             .pos(22,
@@ -309,11 +313,11 @@
           .book-name {
             .pos(0,
             25);
-            .text(30,
+            .text(28,
             42);
             color: #555;
             width: 100%;
-            padding-left: 134/@rem;
+            padding-left: 121/@rem;
             padding-right: 10/@rem;
             box-sizing: border-box;
           }
@@ -331,17 +335,27 @@
           }
         }
         .item-bottom {
-          .text(22,
-          30);
+          width: 580/@rem;
+          .text(26,37);
           margin-top: 25/@rem;
-          color: #666;
-          width: 100%;
-          padding-right: 6/@rem;
+          color: #949494;
           box-sizing: border-box;
+          vertical-align: middle;
           .iconfont {
-            line-height: 30/@rem;
-            font-size: 24/@rem;
-            padding: 0 10/@rem
+            display: block;
+            height: 37/@rem;
+            width: 37/@rem;
+            line-height:37/@rem;
+            font-size: 28/@rem;
+            margin-right: 8/@rem;
+            text-align: center;
+          }
+          .icon-share{
+            margin-right: 54/@rem;
+            color: #949494;
+          }
+          span{
+            .text(26,37);
           }
         }
       }

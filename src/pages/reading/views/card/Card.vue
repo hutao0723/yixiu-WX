@@ -225,6 +225,19 @@
     background: #F4F4F4;
     font-size: 24/@rem;
     color:#333;
+    z-index:100;
+    .hideNoticeStyle{
+      opacity: 0;
+      z-index: -1;
+      transition:all .3s ease ;
+      -webkit-transition:all .3s ease ;
+    }
+    .showNoticeStyle{
+      opacity:1;
+      z-index:999;
+      transition:all .3s ease ;
+      -webkit-transition:all .3s ease ;
+    }
     .cardNotice-box{
       width:100%;
       height: 100%;
