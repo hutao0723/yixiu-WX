@@ -145,7 +145,6 @@
           if(msg.dayNum){
             _this.dayNum = msg.dayNum;
           }
-
           _this.courseId = msg.courseId;
         }
 
@@ -185,12 +184,12 @@
   };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import '../../less/variable';
 
   .card-main {
     width: 750/@rem;
-    position: absolute;
+    position: relative;
     left: 0;
     top: 0;
     bottom: 0;
@@ -370,6 +369,9 @@
           line-height: 42/@rem;
           margin-bottom: 12/@rem;
           font-weight: 600;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         .book-author{
           height:40/@rem;

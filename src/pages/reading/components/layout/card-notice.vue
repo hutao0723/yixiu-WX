@@ -35,7 +35,7 @@
   }
 </script>
 
-<style  lang="less">
+<style  lang="less" scoped>
   @import "../../less/variable";
   .cardNotice-box{
     width:100%;
