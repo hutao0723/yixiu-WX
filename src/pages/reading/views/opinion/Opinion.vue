@@ -18,9 +18,9 @@
             </div>
             <div class="item-bottom">
               <span @click="setCommentPraise(item.id,item.userPraise)" class="fr">
+                  <span>{{item.praiseCount}}</span>
                 <i class="iconfont icon-dianzan" v-show="!item.userPraise"></i>
                 <i class="iconfont icon-heart" :style="{color:'red'}" v-show="item.userPraise"></i>
-                <span>{{item.praiseCount}}</span>
               </span>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr" v-if="userId == item.userId"></router-link>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr" v-if="userId != item.userId"></router-link>
@@ -43,8 +43,7 @@
   const API = {
     commentPage: testUrl + '/comment/page',
     commentPraise: testUrl + '/comment/praise',
-   
-    
+    userState: testUrl + '/user/read/state',
   };
 
   export default {
@@ -54,7 +53,6 @@
         reviewList: [],
         pageNum: 1,
         pageSize: 20,
-
         busy: true,
         userId: '',
       };
@@ -111,7 +109,7 @@
         }
 
         if (key >= yest) {
-          text = (valueDate.getMonth() + 1 < 10 ? '0' + (valueDate.getMonth() + 1) : valueDate.getMonth() + 1) + '-' + (valueDate.getDate() < 10 ? '0' + valueDate.getDate() : valueDate.getDate())
+          text = (valueDate.getMonth() + 1) + '月' + (valueDate.getDate())+ '日'
         }
         
         return text
@@ -288,6 +286,7 @@
           font-size: 28/@rem;
           line-height: 42/@rem;
           color: #4A669D;
+          margin-top: 9/@rem;
         }
         .item-book {
           .size(580,
@@ -335,6 +334,7 @@
           margin-top: 25/@rem;
           color: #666;
           width: 100%;
+          padding-right: 6/@rem;
           box-sizing: border-box;
           .iconfont {
             line-height: 30/@rem;

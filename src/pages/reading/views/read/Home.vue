@@ -47,12 +47,14 @@
             </div>
             <div class="item-bottom">
               <span @click="setCommentPraise(item.id,item.userPraise)" class="fr">
+                  <span>{{item.praiseCount}}</span>
                 <i class="iconfont icon-dianzan" v-show="!item.userPraise"></i>
                 <i class="iconfont icon-heart" :style="{color:'red'}" v-show="item.userPraise"></i>
-                <span>{{item.praiseCount}}</span>
               </span>
-              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr" v-if="userId == item.userId&&pageStatus !=0"></router-link>
-              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr" v-if="userId != item.userId&&pageStatus !=0"></router-link>
+              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"
+                v-if="userId == item.userId&&pageStatus !=0"></router-link>
+              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr"
+                v-if="userId != item.userId&&pageStatus !=0"></router-link>
               <!-- <span>{{item.releaseTime| timeTransition}}</span> -->
             </div>
           </div>
@@ -189,7 +191,7 @@
     bookList: testUrl + '/readBook/bookList',
     courseList: testUrl + '/readBookCourse/courseList',
     userState: testUrl + '/user/read/state',
-    
+
   };
 
 
@@ -227,10 +229,9 @@
       };
     },
     computed: {
-      ...mapState(['bottomNavToggle', 'bottomNavType','videoToggle'])
+      ...mapState(['bottomNavToggle', 'bottomNavType', 'videoToggle'])
     },
-    filters: {
-    },
+    filters: {},
     created() {},
     async mounted() {
       let self = this;
@@ -296,7 +297,7 @@
             type: 'setVideoToggle',
             videoToggle: false
           })
-          
+
         }
 
         if (
@@ -381,7 +382,7 @@
           })
         }
       }
-      
+
       self.changeLoginDays();
       self.changeReadStatus();
 
@@ -543,7 +544,7 @@
       playAudio(id, lockStatus) {
         if (lockStatus) {
           this.noneValueAlert = true;
-          setTimeout(()=>{
+          setTimeout(() => {
             this.noneValueAlert = false;
           }, 2000)
           return false;
@@ -579,7 +580,7 @@
         const res = await this.$http.get(url, {
           params
         });
-        
+
         return res.data;
       },
       // 首页评论
@@ -640,9 +641,9 @@
         }).then((res) => {
           this.readList = res.data.data;
           if (res.data.data.length > 0) {
-            if(res.data.data[0].purchased){
+            if (res.data.data[0].purchased) {
               this.payBtnShow = false;
-            }else{
+            } else {
               this.selectCourseId = res.data.data[0].readId
               this.selectCourseObj = res.data.data[0];
             }
@@ -690,7 +691,7 @@
       getDetailList(item) {
         if (item.lockStatus) {
           this.noneValueAlert = true;
-          setTimeout(()=>{
+          setTimeout(() => {
             this.noneValueAlert = false;
           }, 2000)
           return false;
@@ -922,6 +923,7 @@
           font-size: 28/@rem;
           line-height: 42/@rem;
           color: #4A669D;
+          margin-top: 9/@rem;
         }
         .item-book {
           .size(580,
@@ -969,6 +971,7 @@
           margin-top: 25/@rem;
           color: #666;
           width: 100%;
+          padding-right: 6/@rem;
           box-sizing: border-box;
           .iconfont {
             line-height: 30/@rem;
@@ -989,7 +992,6 @@
         width: 580/@rem;
         box-sizing: border-box;
       }
-
     }
     .home-bottom {
       .text(40,
@@ -1083,6 +1085,10 @@
             color: #333;
             font-weight: blod;
             padding-left: 24/@rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 596/@rem;
           }
           .item-name:after {
             content: '';
@@ -1316,15 +1322,17 @@
       position: relative;
       box-sizing: border-box;
       -webkit-overflow-scrolling: touch;
-      
-      .already-no{
-        .text(32,90);
-        .size(420,90);
+
+      .already-no {
+        .text(32,
+        90);
+        .size(420,
+        90);
         position: fixed;
         top: 600/@rem;
         left: 165/@rem;
-        background:rgba(0,0,0,0.66);
-        border-radius:10/@rem;
+        background: rgba(0, 0, 0, 0.66);
+        border-radius: 10/@rem;
         color: #fff;
         text-align: center;
         z-index: 10000;
