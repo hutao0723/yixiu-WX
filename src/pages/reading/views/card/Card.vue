@@ -1,6 +1,5 @@
 <template>
   <div class="card-main">
-    <!--<cardNotice class="hideNoticeStyle" :class="{showNoticeStyle:noticeFlag}" :noticeFlag="noticeFlag" @changFlag="changeFlag"></cardNotice>-->
     <div class="cardNotice-box" @click="hideNotice()" v-show="noticeFlag" @touchmove.prevent>
       <div class="notice-box">
         <div class="notice-title">打卡须知</div>
@@ -77,13 +76,11 @@
   import { mapState } from 'vuex';
   import bnav from '../../components/basic/Nav';
   import calendarTemplate from '../../components/layout/calendarTemplate';
-  import cardNotice from '../../components/layout/card-notice';
   import AudioBar from '../../components/basic/Audio_Bar';
   import play from '../../api/play'
   export default {
     components: {
       bnav,
-      cardNotice,
       calendarTemplate,
       AudioBar
     },
@@ -123,9 +120,7 @@
      }
    },
     methods: {
-      changeFlag(msg){
-        this.noticeFlag = msg;
-      },
+
       hideNotice(){
         this.noticeFlag = false
       },
@@ -306,18 +301,6 @@
           background: #E5E5E5;
         }
       }
-    }
-    .hideNoticeStyle{
-      opacity: 0;
-      z-index: -1;
-      transition:all .3s ease ;
-      -webkit-transition:all .3s ease ;
-    }
-    .showNoticeStyle{
-      opacity:1;
-      z-index:999;
-      transition:all .3s ease ;
-      -webkit-transition:all .3s ease ;
     }
     header{
       height:158/@rem;
