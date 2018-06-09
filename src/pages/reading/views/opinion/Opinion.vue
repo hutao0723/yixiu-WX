@@ -259,7 +259,6 @@
         }
         .item-name {
           /* .pos(118, 36); */
-          font-weight: bold;
           .text(30,
           42);
           color: #333;
@@ -270,12 +269,15 @@
           33);
           color: #666;
           margin-top: 4/@rem;
-          margin-bottom: 14/@rem;
+          margin-bottom: 26/@rem;
+          overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
         }
         .item-content {
           /* .pos(118, 130); */
           max-height: 9999px;
-          font-size: 28/@rem;
+          font-size: 32/@rem;
           line-height: 42/@rem;
           color: #333;
         }
@@ -297,7 +299,7 @@
           position: relative;
           background: #eee;
           border-radius: 4/@rem;
-          margin-top: 20/@rem;
+          margin-top: 36/@rem;
           .book-bg {}
           .book-img {
             .pos(22,
@@ -309,7 +311,7 @@
           .book-name {
             .pos(0,
             25);
-            .text(30,
+            .text(28,
             42);
             color: #555;
             width: 100%;
