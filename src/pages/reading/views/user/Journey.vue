@@ -18,7 +18,7 @@
                 </div>
               </div>
               <div class="clearfix book" :class="item.content?'btop':''">
-                <div class="fl book-img"><img :src="item.courseLateralCover || item.courseVerticalCover || frontImgUrl"></div>
+                <div class="fl book-img"><img :src="item.courseVerticalCover || frontImgUrl"></div>
                 <div class="book-content">
                   <div class="book-title">《{{item.courseTitle}}》</div>
                   <div class="book-writer">{{item.courseAuthor}}</div>
