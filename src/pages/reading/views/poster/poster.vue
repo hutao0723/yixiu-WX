@@ -33,8 +33,23 @@ export default {
 	mounted() {
 		const _this = this;
 		_this.popup = _this.$route.query.lastClock * 1;
-		_this.isSelf = _this.$route.query.isClock * 1;
-		_this.getInfo();
+		_this.isSelf =  1;
+		//_this.getInfo();
+		this.info = {"id":58,"userId":100052000,"userNickname":"\uD83D\uDCA5","userImgUrl":"//yun.dui88.com/youfen/images/hfx1vc25bl.jpg","courseId":198,"courseTitle":"课程-试听10s","courseSubTitle":"课程-试听10s-副标","courseUrl":"https://yun.dui88.com/youfen/images/lhk3dw0zk6.gif","courseVerticalCover":"https://yun.dui88.com/youfen/images/zbp2zkq154.jpg","courseLateralCover":"https://yun.dui88.com/youfen/images/2bmi5mohht.jpg","courseAuthor":"","readId":9,"readName":"阅读计划-测试1","readStageId":9,"readStageNum":1,"content":"测试我的历程页面的感想，测试我的历程页面的感想，测试我的历程页面的感想，测试我的历程页面的感想，测试我的历程页面的感想，测试我的历程页面的感想","releaseTime":"2018-05-30 14:22:13","releaseTimeLabel":"深夜","praiseCount":3,"userPraise":false,"myself":0,"listens":0,"clocks":0,"books":0,"loginDays":2,"readQrcodeImgUrl":"https://yun.dui88.com/youfen/images/z6qj8zsviw.jpg","bookBgimgUrl":""}
+		//头部背景图
+				if (!_this.info.bookBgimgUrl) {
+					_this.info.bookBgimgUrl = "http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg";
+				};
+				if(!_this.info.courseUrl){
+					_this.info.courseUrl = 'http://yun.dui88.com/youfen/images/read_course_none.png';
+				};
+				//二维码写死
+				_this.info.readQrcodeImgUrl = "http://yun.dui88.com/youfen/images/read_ewm3.png";
+				//默认观点
+				if(!_this.info.content){
+					_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
+				};
+				_this.createdCanvas();
 	},
   	methods: {
 		async getInfo() {
@@ -80,7 +95,7 @@ export default {
 			const myCanvas = document.getElementById("sharePoster");
 			const ctx = myCanvas.getContext("2d");
 			// 测试文字高度
-			ctx.font = _this.conversion(30) + "px 宋体";
+			ctx.font = _this.conversion(30) + "px 苹方字体";
 			function stringHeight(string, w) {
 				let chr = string.split("");
 				let temp = "";
@@ -128,10 +143,10 @@ export default {
 			function createdBox() {
 				return new Promise((resolve, reject) => {
 					// 绘制阴影
-					ctx.shadowBlur = 50;
-					ctx.shadowColor = "#888";
+					ctx.shadowBlur = _this.conversion(10);
+					ctx.shadowColor = "rgba(0,0,0,0.12)";
 					ctx.shadowOffsetX = 0;
-					ctx.shadowOffsetY = 20;
+					ctx.shadowOffsetY = _this.conversion(8);
 					// 绘制圆角矩形
 					function roundRect(x, y, w, h, r) {
 						var min_size = Math.min(w, h);
@@ -169,17 +184,17 @@ export default {
 				ctx.fill();
 				ctx.closePath();
 
-				ctx.font = _this.conversion(26) + "px 宋体";
+				ctx.font = _this.conversion(26) + "px 苹方字体";
 				ctx.fillStyle = "#777";
 				ctx.textBaseline = "top";
 				ctx.fillText( "这是我坚持阅读的第",_this.conversion(105),_this.conversion(926) * 1 + responseHeight * 1);
 				let frist_w = ctx.measureText("这是我坚持阅读的第").width;
-				ctx.font = _this.conversion(42) + "px 宋体";
+				ctx.font = _this.conversion(42) + "px 苹方字体";
 				ctx.fillStyle = "#222";
 				ctx.textBaseline = "middle";
 				ctx.fillText( _this.info.clocks,_this.conversion(105)*1+frist_w*1,_this.conversion(939) * 1 + responseHeight * 1);
 				let day_w = ctx.measureText(_this.info.clocks).width;
-				ctx.font = _this.conversion(26) + "px 宋体";
+				ctx.font = _this.conversion(26) + "px 苹方字体";
 				ctx.fillStyle = "#777";
 				ctx.textBaseline = "top";
 				ctx.fillText( "天",_this.conversion(105)*1+frist_w*1+day_w*1,_this.conversion(926) * 1 + responseHeight * 1);
@@ -187,12 +202,12 @@ export default {
 			//绘制二维码
 			function createdCode() {
 				return new Promise((resolve, reject) => {
-					ctx.font = _this.conversion(24) + "px 宋体";
+					ctx.font = _this.conversion(24) + "px 苹方字体";
 					ctx.textBaseline = "top";
 					ctx.fillStyle = "#444";
 					ctx.fillText("一修读书·" + _this.info.readName,_this.conversion(126),_this.conversion(1071) * 1 + responseHeight * 1);
 					ctx.fillStyle = "#999";
-					ctx.font = _this.conversion(22) + "px 宋体";
+					ctx.font = _this.conversion(22) + "px 苹方字体";
 					ctx.fillText("长按识别二维码",_this.conversion(126),_this.conversion(1108) * 1 + responseHeight * 1);
 					let drawImg = new Image();
 					drawImg.crossOrigin = "Anonymous";
@@ -218,12 +233,12 @@ export default {
 			//绘制头像
 			function createdIcon() {
 				return new Promise((resolve, reject) => {
-					ctx.font = _this.conversion(24) + "px 宋体";
+					ctx.font = _this.conversion(24) + "px 苹方字体";
 					ctx.fillStyle = "#444";
 					ctx.textBaseline = "top";
 					ctx.fillText( "今日读后感", _this.conversion(179), _this.conversion(405));
 					//绘制书名
-					ctx.font = _this.conversion(38) + "px 宋体";
+					ctx.font = _this.conversion(38) + "px 苹方字体";
 					let bookName = "《" + _this.info.courseTitle + "》";
 					let string_h = stringHeight(bookName, 320);
 					for (let b = 0; b < string_h.length; b++) {
@@ -250,12 +265,12 @@ export default {
 					//绘制观点文字
 					ctx.fillStyle = "#222";
 					for (let b = 0; b < stringLength.length; b++) {
-						ctx.font = _this.conversion(30) + "px 宋体";
+						ctx.font = _this.conversion(30) + "px 苹方字体";
 						ctx.textBaseline = "top";
 						ctx.fillText(stringLength[b],_this.conversion(78),_this.conversion(640) + b * _this.conversion(50));
 					}
 					//绘制作者信息
-					ctx.font = _this.conversion(24) + "px 宋体";
+					ctx.font = _this.conversion(24) + "px 苹方字体";
 					ctx.textBaseline = "top";
 					let string_w = ctx.measureText(_this.info.userNickname).width;
 					ctx.fillText(_this.info.userNickname,_this.conversion(668) - string_w,_this.conversion(640) + stringLength.length * _this.conversion(50));
