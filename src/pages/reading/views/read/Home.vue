@@ -96,7 +96,7 @@
         <i class="iconfont"></i>您已成功报名</p>
       <p class="text-b">长按识别二维码</p>
       <p class="text-c">关注公众号，去等待开课</p>
-      <img src="http://yun.dui88.com/youfen/images/read_ewm3.png" alt="">
+      <img src="http://yun.dui88.com/youfen/images/read_ewm3.png" alt="" class="text-ewm">
     </div>
     <!-- 报名未开课 -->
     <div class="home-nonevent" v-if="pageStatus == 3">
@@ -880,6 +880,7 @@
       bottom: 100/@rem;
     }
     .home-content {
+      border-bottom: 20/@rem solid #f0f0f0;
       img {
         display: block;
         width: 100%;
@@ -1278,9 +1279,8 @@
         padding-top: 24/@rem;
         color: #666;
       }
-      img {
-        .size(688,
-        688);
+      .text-ewm {
+        .size(688,688);
         margin: 40/@rem auto;
         display: block;
       }
@@ -1494,7 +1494,7 @@
             line-height: 240/@rem;
           }
           .icon-lock {
-            font-size: 30/@rem;
+            font-size: 36/@rem;
             color: #fff;
           }
         }
