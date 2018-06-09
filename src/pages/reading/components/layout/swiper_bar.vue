@@ -8,7 +8,7 @@
               <div class="journal-title fl line1">{{item.title}}</div>
               <div class="journal-number fr">{{item.stageNum}}期</div>
             </div>
-            <div class="journal-content">{{item.briefer}}</div>
+            <div class="journal-content" v-html="item.briefer"></div>
           </div>
         </a>
         <!-- <div class="yellow" ref="yellow"></div> -->
@@ -87,7 +87,7 @@
     }
     .journal-number{
       width:100/@rem;
-      text-align: center;
+      padding-left: 16/@rem;
       height: 30/@rem;
       border-left: 3/@rem solid #333;
       margin-top: 25/@rem;

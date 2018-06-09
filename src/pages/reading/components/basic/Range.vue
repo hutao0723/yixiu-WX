@@ -243,7 +243,7 @@ export default {
 			flex:1;
 			height:4/@rem;
 			border-radius:4/@rem;
-			background:@color-black;
+			background:@color-bg-body;
 			margin:0 auto;
 			font-size:0;
 			cursor:pointer;
@@ -259,13 +259,12 @@ export default {
 			.ball{
 				display:inline-block;
 				position:absolute;
-				width:6/@rem;
+				width:10/@rem;
 				height:22/@rem;
 				left:-7/@rem;
 				margin-top:-9/@rem;
 				background:@color-black;
-				// transform:translate(-50%,0);
-				border-radius:3/@rem;
+				border-radius: 20%;
 				cursor:pointer;
 			}
 			}

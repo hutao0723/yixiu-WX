@@ -1,7 +1,7 @@
 <template>
   <div class="bottom-nav" v-if="bottomNavToggle">
     <ul>
-      <li v-for="(item, index) in navlist" :style="bottomNavType ? 'width: 50%;' : 'width: 50%;'">
+      <li v-for="(item, index) in navlist" :style="bottomNavType ? 'width: 25%;' : 'width: 33.33%;'">
         <router-link :to="item.path" :class="item.path === $route.path ? 'active' : ''">
           <p>
             <!-- <i class="iconfont" :class="item.path === $route.path ? item.active : item.icon"></i> -->
@@ -34,18 +34,22 @@
               imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav03.png',
               imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav01.png'
             },
-            // {
-            //   title: '打卡',
-            //   icon: 'icon-date',
-            //   active: 'icon-date active tag',
-            //   path: '/index/card/1'
-            // },
-            // {
-            //   title: '观点',
-            //   icon: 'icon-opinion',
-            //   active: 'icon-opinion active tag',
-            //   path: '/index/opinion'
-            // },
+            {
+              title: '打卡',
+              icon: 'icon-date',
+              active: 'icon-date active tag',
+              path: '/index/card',
+              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav07.png',
+              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav08.png'
+            },
+            {
+              title: '观点',
+              icon: 'icon-opinion',
+              active: 'icon-opinion active tag',
+              path: '/index/opinion',
+              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav06.png',
+              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav09.png'
+            },
             {
               title: '我的',
               icon: 'icon-user',
@@ -64,12 +68,14 @@
               imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav03.png',
               imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav01.png'
             },
-            // {
-            //   title: '观点',
-            //   icon: 'icon-opinion',
-            //   active: 'icon-opinion active tag',
-            //   path: '/index/opinion'
-            // },
+            {
+              title: '观点',
+              icon: 'icon-opinion',
+              active: 'icon-opinion active tag',
+              path: '/index/opinion',
+              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav06.png',
+              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav09.png'
+            },
             {
               title: '我的',
               icon: 'icon-user',
@@ -77,7 +83,7 @@
               path: '/index/user',
               imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav04.png',
               imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav05.png'
-              
+
             }
           ]
         }
@@ -90,7 +96,7 @@
   @import url('../../less/variable.less');
   .bottom-nav {
     position: fixed;
-    z-index: 100;
+    z-index: 10;
     bottom: -1px;
     right: 0;
     left: 0;
@@ -113,6 +119,9 @@
         .active {
           color: #222222 !important;
           position: relative;
+          p{
+            color: #333;
+          }
         }
         .tag {
           &:after {

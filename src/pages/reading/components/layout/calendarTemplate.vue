@@ -9,7 +9,7 @@
         <div class="dateBgView">
           <div class="dateEmptyView" v-for="item2 in empytGrids[index1]">{{item2.index}}
           </div>
-          <div class="dateView" :class="[{isToday_def:item3.isToday},{isFirstLackCard:item3.lackCard}]" v-for="(item3,index) in days[index1]"  :key="index" @click="clickDay(index1,index,item3)">
+          <div class="dateView" v-for="(item3,index) in days[index1]"  :class="[{isToday_def:item3.isToday},{isFirstLackCard:item3.lackCard}]" :key="index" @click="clickDay(index1,index,item3)">
             <a href="javascript:;" >
               <div class="datesView"  :class="[
               {'isClock':item3.isClock},
@@ -17,7 +17,7 @@
               {'isToday':item3.isToday&&item3.isClick},
               {'isRange':item3.isRange},
               {'isNotClock':item3.isRange&&!item3.isClock&&item3.afterToday},
-              {'borderClick':item3.isClick&&item3.isClock&&item3.afterToday||item3.isClick&&!item3.isClock&&item3.afterToday}]">
+              {'borderClick':item3.isClick&&item3.isClock&&item3.isToday||item3.isClick&&item3.isClock&&item3.afterToday||item3.isClick&&!item3.isClock&&item3.afterToday}]">
                 <span v-if="item3.isToday">今</span>
                 <span v-else>{{item3.index+1}}</span>
               </div>
@@ -56,7 +56,11 @@
       }
     },
     mounted: function () {
-      this.isTodayClock = this.$route.params.isTodayClock;
+      if(this.$route.query.isClock){
+        this.isTodayClock = this.$route.query.isClock
+      }else{
+        this.isTodayClock = 1
+      }
     },
     watch: {
       calendarDate (){
@@ -68,7 +72,7 @@
         let child;
         let father = document.querySelector('.calendar-box');
         if(this.isFrist){
-          if(this.isTodayClock){
+          if(this.isTodayClock==1){
             //定位当天
             console.log('当天定位')
             child = document.querySelector('.isToday_def');
@@ -128,6 +132,7 @@
         this._month = _month;
         this.today = today;
         for(let i = 0;i<_this.caledarArr.length;i++){
+          console.log(_this.caledarArr)
           this.calculateEmptyGrids(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
           /**调用计算空格子*/
           this.calculateDays(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
@@ -182,7 +187,7 @@
           _this.empytGrids.push(empytGrids);
         } else {
           _this.hasEmptyGrid = false;
-          _this.empytGrids = []
+          _this.empytGrids.push([]);
         }
       },
       calculateDays(year, month) {
@@ -228,6 +233,9 @@
 
 <style lang="less">
   @import "../../less/variable";
+  .box{
+    background: #fff;
+  }
   .calendarTemplate_box{
     height:auto;
     .isRange{
