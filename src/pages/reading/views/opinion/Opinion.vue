@@ -39,6 +39,14 @@
   } from 'vuex';
   import AudioBar from '../../components/basic/Audio_Bar';
 
+  const testUrl = window.location.hostname == 'localhost' ? '/api' : '';
+  const API = {
+    commentPage: testUrl + '/comment/page',
+    commentPraise: testUrl + '/comment/praise',
+   
+    
+  };
+
   export default {
     components: {},
     data() {
@@ -67,7 +75,7 @@
         let valueDate = new Date(value)
         let valueDateNum = valueDate.getTime()
         // 获取当时的时间戳
-        let key = Number(nowDateNum) - Number(valueDateNum)
+        let key = parseInt(nowDateNum) - parseInt(valueDateNum)
 
         let today = new Date();
         today.setHours(0);
@@ -77,7 +85,7 @@
 
         let yesterday = new Date(today);
         let yesterdayNum = yesterday.getTime()
-        let yest = Number(valueDateNum) - Number(yesterdayNum);
+        let yest = parseInt(valueDateNum) - parseInt(yesterdayNum);
         
         let text = '';
         
@@ -141,7 +149,7 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/comment/page`;
+        const url = API.commentPage;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -174,7 +182,7 @@
           status: status ? 0 : 1,
           commentId: id
         }
-        const url = `/comment/praise`;
+        const url = API.commentPraise;
         this.$http.get(url, {
           params
         }).then((res) => {
