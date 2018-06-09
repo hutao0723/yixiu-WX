@@ -224,6 +224,7 @@ export default {
 }
 .journey-main{
   padding: 41/@rem 33/@rem 0 50/@rem;
+  max-height: 9999px;
   .module{
     .date{
       position: relative;
