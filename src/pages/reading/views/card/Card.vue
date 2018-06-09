@@ -32,9 +32,11 @@
           </div>
         </div>
         <div class="book-detail">
-          <div class="book-title">{{courseDetail.courseTitle}}</div>
-          <div class="book-author" v-show="courseDetail.author">
-            <span>{{courseDetail.author}}<span class="audio-right">著</span></span>
+          <div class="book-title">{{courseDetail.courseTitle}}罗密欧与朱丽叶</div>
+          <div class="book-author">
+            <div v-show="courseDetail.author">
+              <span>{{courseDetail.author}}<span class="audio-right">著</span></span>
+            </div>
           </div>
           <div class="book-btn">
               <span  v-show="courseDetail.clockState&&courseDetail.commentState" @click.stop="goPoster()">查看</span>
@@ -370,6 +372,7 @@
           font-weight: 600;
         }
         .book-author{
+          height:40/@rem;
           font-size: 26/@rem;
           line-height: 37/@rem;
           color:#666;
