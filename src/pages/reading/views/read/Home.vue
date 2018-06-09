@@ -1124,7 +1124,7 @@
             position: absolute;
             right: 0;
             top: 0;
-            background: url('http://yun.dui88.com/youfen/images/read_yz.png') no-repeat center;
+            background: url('http://yun.dui88.com/read_yz.png') no-repeat center;
             background-size: 100% 100%;
           }
           .item-name {
