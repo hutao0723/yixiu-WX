@@ -198,22 +198,21 @@ export default {
 				string.forEach((el,index)=>{
 					width = ctx.measureText(el).width;
 					//字间距是2
-					width = width*1+_this.conversion(2) * 1 
+					width = width*1+_this.conversion(2) * 1;
 					ctx.fillText( el,_this.conversion(100)*1+index*width,_this.conversion(922) * 1 + responseHeight * 1);
 				})
-				console.log(_this.conversion(922) * 1 + responseHeight * 1)
 				let frist_w = width*string.length;
-				ctx.font = _this.conversion(42) + "px PingFang SC";
+				ctx.font = _this.conversion(29) + "px PingFang SC";
 				ctx.fillStyle = "#222";
-				ctx.textBaseline = "middle";
+				ctx.textBaseline = "top";
 				//额外加10撑开
-				ctx.fillText( _this.info.clocks,_this.conversion(100)*1+frist_w*1+_this.conversion(10) * 1,_this.conversion(936) * 1 + responseHeight * 1);
+				ctx.fillText( _this.info.clocks,_this.conversion(100)*1+frist_w*1+_this.conversion(5) * 1,_this.conversion(919) * 1 + responseHeight * 1);
 				let day_w = ctx.measureText(_this.info.clocks).width;
 				ctx.font = _this.conversion(26) + "px PingFang SC";
 				ctx.fillStyle = "#777";
 				ctx.textBaseline = "top";
 				//额外加10撑开
-				ctx.fillText( "天",_this.conversion(100)*1+frist_w*1+day_w*1+_this.conversion(20) * 1,_this.conversion(922) * 1 + responseHeight * 1);
+				ctx.fillText( "天",_this.conversion(100)*1+frist_w*1+day_w*1+_this.conversion(10) * 1,_this.conversion(922) * 1 + responseHeight * 1);
 			}
 			//绘制二维码
 			function createdCode() {
@@ -300,16 +299,16 @@ export default {
 					ctx.font = _this.conversion(24) + "px pingFangSC-Light";
 					ctx.textBaseline = "top";
 					let string_w = ctx.measureText(_this.info.userNickname).width;
-					ctx.fillText(_this.info.userNickname,_this.conversion(668) - string_w,_this.conversion(648) + line_number * _this.conversion(50));
+					ctx.fillText(_this.info.userNickname,_this.conversion(668) - string_w,_this.conversion(648) + line_number * _this.conversion(52));
 					//转换时间格式
 					let createdTime = _this.info.releaseTime.replace(/-/g, "/");
 					createdTime = new Date(createdTime);
 					let year = createdTime.getFullYear();
 					let month = createdTime.getMonth() + 1;
 					let day = createdTime.getDate();
-					let time ="于" +year +"." +month +"." +day +"  " +_this.info.releaseTimeLabel;
+					let time ="于 " +year +"." +month +"." +day +" " +_this.info.releaseTimeLabel;
 					string_w = ctx.measureText(time).width;
-					ctx.fillText(time,_this.conversion(668) - string_w,_this.conversion(680) + line_number * _this.conversion(50));
+					ctx.fillText(time,_this.conversion(668) - string_w,_this.conversion(680) + line_number * _this.conversion(52));
 
 					ctx.fillStyle = "#FFF";
 					ctx.fillRect(_this.conversion(536),_this.conversion(320),_this.conversion(140),_this.conversion(190));
@@ -342,7 +341,7 @@ export default {
 						drawImg.crossOrigin = "Anonymous";
 						drawImg.src =  "http://yun.dui88.com/yoofans/images/201806/Oval7.png";;
 						drawImg.onload = function() {
-							ctx.drawImage(drawImg,_this.conversion(80),_this.conversion(935) * 1 + responseHeight * 1,_this.conversion(12),_this.conversion(12));
+							ctx.drawImage(drawImg,_this.conversion(80),_this.conversion(929) * 1 + responseHeight * 1,_this.conversion(12),_this.conversion(12));
 							resolve();
 						};
 					}else{
