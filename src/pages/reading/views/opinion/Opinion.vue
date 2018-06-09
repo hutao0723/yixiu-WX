@@ -13,7 +13,7 @@
                 <img class="book-img" :src="item.courseVerticalCover" alt="" v-if="item.courseVerticalCover">
                 <img class="book-img" src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="" v-else>
               </div>
-              <div class="book-name otw">{{item.courseTitle}}</div>
+              <div class="book-name otw">《{{item.courseTitle}}》</div>
               <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
             </div>
             <div class="item-bottom">
@@ -262,6 +262,7 @@
           .text(30,
           42);
           color: #333;
+          font-weight:bold;
         }
         .item-periods {
           /* .pos(118, 82); */

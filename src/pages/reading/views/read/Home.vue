@@ -41,22 +41,23 @@
             <div v-show="item.show == 2" @click="unfoldToggle(1,index)" class="item-toggle">收起</div>
             <div class="item-book">
               <div class="book-bg">
-                <img class="book-img" :src="item.courseUrl" alt="">
+                <img class="book-img" :src="item.courseVerticalCover" alt="" v-if="item.courseVerticalCover">
+                <img class="book-img" src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="" v-else>
               </div>
-              <div class="book-name otw">{{item.courseTitle}}</div>
+              <div class="book-name otw">《{{item.courseTitle}}》</div>
               <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
             </div>
             <div class="item-bottom">
-              <span @click="setCommentPraise(item.id,item.userPraise)" class="fr">
-                <i class="iconfont icon-dianzan" v-show="!item.userPraise"></i>
-                <i class="iconfont icon-heart" :style="{color:'red'}" v-show="item.userPraise"></i>
-                <span>{{item.praiseCount}}</span>
-              </span>
+              <p @click="setCommentPraise(item.id,item.userPraise)">
+                <span class="fr">{{item.praiseCount}}</span>
+                <i class="iconfont icon-dianzan fr" v-show="!item.userPraise"></i>
+                <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
+              </p>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"
-                v-if="userId == item.userId&&pageStatus !=0"></router-link>
+                v-if="userId == item.userId"></router-link>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr"
-                v-if="userId != item.userId&&pageStatus !=0"></router-link>
-              <!-- <span>{{item.releaseTime| timeTransition}}</span> -->
+                v-if="userId != item.userId"></router-link>
+              <span class="fl">{{item.releaseTime | timeTransition}}</span>
             </div>
           </div>
         </div>
@@ -200,7 +201,8 @@
 
   export default {
     components: {
-      AudioBar, bnav
+      AudioBar,
+      bnav
     },
     data() {
       return {
@@ -479,12 +481,12 @@
                     }
                   }
                 }
-                setInterval(async function (){
+                setInterval(async function () {
                   let userState = await self.getUsetState();
-                  if(userState.data.readState > 0){
+                  if (userState.data.readState > 0) {
                     window.location.href = url_add_hash(window.location.href)
                   }
-                },1000)
+                }, 1000)
               } else {
                 self.payCancelToggle = true;
               }
@@ -905,6 +907,7 @@
           .text(30,
           42);
           color: #333;
+          font-weight: bold;
         }
         .item-periods {
           /* .pos(118, 82); */
@@ -913,9 +916,9 @@
           color: #666;
           margin-top: 4/@rem;
           margin-bottom: 26/@rem;
-          overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap
         }
         .item-content {
           /* .pos(118, 130); */
@@ -976,17 +979,29 @@
           }
         }
         .item-bottom {
-          .text(22,
-          30);
+          width: 580/@rem;
+          .text(26,
+          37);
           margin-top: 25/@rem;
-          color: #666;
-          width: 100%;
-          padding-right: 6/@rem;
+          color: #949494;
           box-sizing: border-box;
+          vertical-align: middle;
           .iconfont {
-            line-height: 30/@rem;
-            font-size: 24/@rem;
-            padding: 0 10/@rem
+            display: block;
+            height: 37/@rem;
+            width: 37/@rem;
+            line-height: 37/@rem;
+            font-size: 28/@rem;
+            margin-right: 8/@rem;
+            text-align: center;
+          }
+          .icon-share {
+            margin-right: 54/@rem;
+            color: #949494;
+          }
+          span {
+            .text(26,
+            37);
           }
         }
       }
@@ -1002,6 +1017,7 @@
         width: 580/@rem;
         box-sizing: border-box;
       }
+
     }
     .home-bottom {
       .text(40,
@@ -1018,7 +1034,7 @@
     .home-bottom.bottom {
       bottom: 100/@rem;
     }
-    .home-course.bottom{
+    .home-course.bottom {
       padding-bottom: 200/@rem;
     }
     .home-course {
@@ -1388,7 +1404,6 @@
           box-sizing: border-box;
           width: 100%;
           text-weight: bold;
-
         }
         .book-msg {
           .pos(256,
@@ -1474,7 +1489,7 @@
         .alert-bg {
           position: fixed;
           left: 0;
-          bottom: 100/@rem;
+          bottom: 0/@rem;
           top: 0;
           right: 0;
           z-index: 999;
@@ -1485,7 +1500,7 @@
           background: #f5f5f8;
           position: absolute;
           left: 0;
-          bottom: 188/@rem;
+          bottom: 88/@rem;
           z-index: 9999;
           right: 0;
           h3 {
