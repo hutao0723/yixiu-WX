@@ -57,7 +57,6 @@
                 v-if="userId == item.userId"></router-link>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr"
                 v-if="userId != item.userId"></router-link>
-              <span class="fl">{{item.releaseTime | timeTransition}}</span>
             </div>
           </div>
         </div>
@@ -871,6 +870,7 @@
         color: #fff;
         text-align: center;
         box-shadow: 0px -1px 20px 0px rgba(0, 0, 0, 0.1);
+        z-index: 666;
       }
     }
     .home-bottom.bottom {
