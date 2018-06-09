@@ -63,7 +63,7 @@ export default {
       .icon-on {
         width: 54/@rem;
         height: 54/@rem;
-        border: 1px solid #ababab;
+        border: 2px solid #ababab;
         border-radius: 50%;
         .iconfont {
           color: @color-soft;
