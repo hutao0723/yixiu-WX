@@ -5,7 +5,7 @@
       <ul class="notice-content">
         <div class="notice-order">
           <span>1</span>
-          <i v-for="item in [1,2,3,4,5,6,7,8,9]"></i>
+          <i v-for="item in [1,2,3,4,5,6,7,8,9,10,11,12,13]"></i>
           <span>2</span>
         </div>
         <li>点击xx页面，完成当日学习目标后，将自动弹出弹窗提醒打卡。或者在收听页面，点击“打卡“按钮进行打卡</li>
@@ -42,7 +42,7 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.6);
     z-index: 99;
-    position: absolute;
+    position: fixed;
     top:0;
     left:0;
     color:#333;
@@ -62,17 +62,21 @@
         height: 94/@rem;
         line-height: 94/@rem;
         background: #FFE555;
-        font-weight: 600;
+        font-weight: bold;
       }
       .notice-content{
-        padding:32/@rem 27/@rem 0 100/@rem;
+        padding:32/@rem 30/@rem 0 100/@rem;
         position: relative;
         background: #fff;
+        li:nth-of-type(1){
+          margin-bottom: 60/@rem;
+        }
         li{
-          margin-bottom: 70/@rem;
           color:#555555;
           font-size: 28/@rem;
           line-height: 37/@rem;
+          height:163/@rem;
+          letter-spacing: 1px;
         }
         .notice-order{
           position: absolute;
@@ -87,7 +91,7 @@
             text-align: center;
             line-height: 50/@rem;
             margin-bottom: 9/@rem;
-            font-weight: 600;
+            font-weight: bold;
           }
           i{
             width:4/@rem;
@@ -107,7 +111,7 @@
         line-height: 90/@rem;
         font-size: 30/@rem;
         background: #fff;
-        font-weight: 600;
+        font-weight: bold;
         position: absolute;
         width:100%;
         bottom:0;

@@ -8,7 +8,7 @@
     </header>
     <div class="calendar_header">
       <div class="card-head">
-        <span class="head-left" @click="noticeFlag = true "> <i class="iconfont icon-gift"></i> 坚持打卡送大礼 ></span>
+        <span class="head-left" @click="noticeFlag = true "> <i class="iconfont icon-gift"></i>坚持打卡送大礼<i class="iconfont icon-right"></i> </span>
         <div class="head-right">
           <span><i></i> 已打卡</span>
           <span><i></i>未打卡</span>
@@ -26,13 +26,15 @@
         <div class="book-img" @click.stop="playAudio(readId,courseId)" >
           <img v-if="courseDetail.courseUrl" :src="courseDetail.courseUrl" alt="">
           <img v-else src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="">
-          <div class="book-audio" v-if="afterToday||isToday"></div>
+          <div class="book-audio" v-if="afterToday||isToday">
+            <i class="iconfont icon-play"></i>
+          </div>
           <div class="book-mark" v-else>
             <i class="iconfont icon-lock"></i>
           </div>
         </div>
         <div class="book-detail">
-          <div class="book-title">{{courseDetail.courseTitle}}罗密欧与朱丽叶</div>
+          <div class="book-title">{{courseDetail.courseTitle}}</div>
           <div class="book-author">
             <div v-show="courseDetail.author">
               <span>{{courseDetail.author}}<span class="audio-right">著</span></span>
@@ -47,9 +49,10 @@
         <div style="clear: both"></div>
       </div>
     </div>
-    <div class="card_bottom_text">听得见的知识 看得见的成长</div>
-    <bnav></bnav>
+    <div class="card_bottom_text">轻松阅读，日有所得</div>
     <AudioBar></AudioBar>
+    <bnav></bnav>
+
   </div>
 </template>
 
@@ -189,6 +192,7 @@
 
   .card-main {
     width: 750/@rem;
+    height: 100%;
     position: absolute;
     left: 0;
     top: 0;
@@ -258,6 +262,15 @@
         .icon-gift{
           font-size: 40/@rem;
           color:#FF9252;
+          margin-right: 10/@rem;
+
+        }
+        .icon-right{
+          font-size: 14/@rem;
+          color:#9B9B9B;
+          display: inline-block;
+          vertical-align: middle;
+          margin-left: 13/@rem;
         }
         .head-right{
           float: right;
@@ -326,18 +339,14 @@
           left:50%;
           margin-top:-32/@rem;
           margin-left:-32/@rem;
-        }
-        .book-audio:after{
-          content:'';
-          width:0;
-          height:0;
-          border-top: 14/@rem solid transparent;
-          border-left:23/@rem solid #fff;
-          border-bottom:14/@rem solid transparent;
-          position:absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-35%,-50%);
+          .icon-play{
+            font-size: 28/@rem;
+            color:#fff;
+            position: absolute;
+            top:50%;
+            left:50%;
+            transform: translate(-40%,-50%);
+          }
         }
         .book-mark{
           width:100%;
@@ -368,7 +377,7 @@
           font-size: 30/@rem;
           line-height: 42/@rem;
           margin-bottom: 12/@rem;
-          font-weight: 600;
+          font-weight: bold;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
