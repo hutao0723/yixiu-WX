@@ -33,8 +33,52 @@ export default {
 	mounted() {
 		const _this = this;
 		_this.popup = _this.$route.query.lastClock * 1;
-		_this.isSelf = _this.$route.query.isClock * 1;
-		_this.getInfo();
+		//_this.isSelf = _this.$route.query.isClock * 1;
+		_this.isSelf = 1
+		//_this.getInfo();
+		_this.info = {
+			"id": 58,
+			"userId": 100052000,
+			"userNickname": "💥",
+			"userImgUrl": "//yun.dui88.com/youfen/images/hfx1vc25bl.jpg",
+			"courseId": 198,
+			"courseTitle": "课程-试听10s",
+			"courseSubTitle": "课程-试听10s-副标",
+			"courseUrl": "https://yun.dui88.com/youfen/images/lhk3dw0zk6.gif",
+			"courseVerticalCover": "https://yun.dui88.com/youfen/images/zbp2zkq154.jpg",
+			"courseLateralCover": "https://yun.dui88.com/youfen/images/2bmi5mohht.jpg",
+			"courseAuthor": "",
+			"readId": 9,
+			"readName": "阅读计划-测试1",
+			"readStageId": 9,
+			"readStageNum": 1,
+			"content": "测试我的历程页+、，。，/？！【】[]+-:\;；测试我的历程页面的感想，测试我的历程页面的感想，测试我的历程页面的感想，测试我的历程页面的感想",
+			"releaseTime": "2018-05-30 14:22:13",
+			"releaseTimeLabel": "深夜",
+			"praiseCount": 3,
+			"userPraise": false,
+			"myself": 0,
+			"listens": 0,
+			"clocks": 0,
+			"books": 0,
+			"loginDays": 2,
+			"readQrcodeImgUrl": "https://yun.dui88.com/youfen/images/z6qj8zsviw.jpg",
+			"bookBgimgUrl": ""
+		}
+		//头部背景图
+			if (!_this.info.bookBgimgUrl) {
+				_this.info.bookBgimgUrl = "http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg";
+			};
+			if(!_this.info.courseUrl){
+				_this.info.courseUrl = 'http://yun.dui88.com/youfen/images/read_course_none.png';
+			};
+			//二维码写死
+			_this.info.readQrcodeImgUrl = "http://yun.dui88.com/yoofans/images/201806/code.jpg";
+			//默认观点
+			if(!_this.info.content){
+				_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
+			};
+			_this.createdCanvas();
 	},
   	methods: {
 		async getInfo() {
@@ -284,9 +328,9 @@ export default {
 					let point = _this.info.content.split('');
 					let num = -1;
 					let sum = 0;
+					let point_w = ctx.measureText('我').width*1+_this.conversion(-2)*1;
 					point.forEach((item,index)=>{
 						//550数值调试来的
-						let point_w = ctx.measureText(item).width*1+_this.conversion(-2)*1;
 						if(num*point_w<_this.conversion(550)){
 							num++;
 						}else{
@@ -299,7 +343,7 @@ export default {
 					ctx.font = _this.conversion(24) + "px pingFangSC-Light";
 					ctx.textBaseline = "top";
 					let string_w = ctx.measureText(_this.info.userNickname).width;
-					ctx.fillText(_this.info.userNickname,_this.conversion(668) - string_w,_this.conversion(640) + line_number * _this.conversion(50));
+					ctx.fillText(_this.info.userNickname,_this.conversion(668) - string_w,_this.conversion(658) + line_number * _this.conversion(50));
 					//转换时间格式
 					let createdTime = _this.info.releaseTime.replace(/-/g, "/");
 					createdTime = new Date(createdTime);
@@ -308,7 +352,7 @@ export default {
 					let day = createdTime.getDate();
 					let time ="于" +year +"." +month +"." +day +"  " +_this.info.releaseTimeLabel;
 					string_w = ctx.measureText(time).width;
-					ctx.fillText(time,_this.conversion(668) - string_w,_this.conversion(672) + line_number * _this.conversion(50));
+					ctx.fillText(time,_this.conversion(668) - string_w,_this.conversion(690) + line_number * _this.conversion(50));
 
 					ctx.fillStyle = "#FFF";
 					ctx.fillRect(_this.conversion(536),_this.conversion(320),_this.conversion(140),_this.conversion(190));
