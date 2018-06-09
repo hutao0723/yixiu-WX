@@ -48,9 +48,9 @@
             </div>
             <div class="item-bottom">
               <span @click="setCommentPraise(item.id,item.userPraise)" class="fr">
-                  <span>{{item.praiseCount}}</span>
                 <i class="iconfont icon-dianzan" v-show="!item.userPraise"></i>
                 <i class="iconfont icon-heart" :style="{color:'red'}" v-show="item.userPraise"></i>
+                <span>{{item.praiseCount}}</span>
               </span>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"
                 v-if="userId == item.userId&&pageStatus !=0"></router-link>
@@ -907,7 +907,6 @@
         }
         .item-name {
           /* .pos(118, 36); */
-          font-weight: bold;
           .text(30,
           42);
           color: #333;
@@ -918,12 +917,15 @@
           33);
           color: #666;
           margin-top: 4/@rem;
-          margin-bottom: 14/@rem;
+          margin-bottom: 26/@rem;
+          overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
         }
         .item-content {
           /* .pos(118, 130); */
           max-height: 9999px;
-          font-size: 28/@rem;
+          font-size: 32/@rem;
           line-height: 42/@rem;
           color: #333;
         }
@@ -945,7 +947,7 @@
           position: relative;
           background: #eee;
           border-radius: 4/@rem;
-          margin-top: 20/@rem;
+          margin-top: 36/@rem;
           .book-bg {}
           .book-img {
             .pos(22,
@@ -957,7 +959,7 @@
           .book-name {
             .pos(0,
             25);
-            .text(30,
+            .text(28,
             42);
             color: #555;
             width: 100%;
@@ -1287,8 +1289,8 @@
         img {
           margin: 24/@rem auto 36/@rem auto;
           display: block;
-          height: 430/@rem;
-          width: 369/@rem;
+          height: 630/@rem;
+          width: 540/@rem;
         }
       }
       .text-d {
@@ -1393,6 +1395,7 @@
           padding-right: 32/@rem;
           box-sizing: border-box;
           width: 100%;
+          text-weight: bold;
 
         }
         .book-msg {
@@ -1479,7 +1482,7 @@
         .alert-bg {
           position: fixed;
           left: 0;
-          bottom: 0;
+          bottom: 100/@rem;
           top: 0;
           right: 0;
           z-index: 999;
@@ -1490,7 +1493,7 @@
           background: #f5f5f8;
           position: absolute;
           left: 0;
-          bottom: 88/@rem;
+          bottom: 188/@rem;
           z-index: 9999;
           right: 0;
           h3 {
@@ -1528,7 +1531,7 @@
           position: absolute;
           z-index: 9999;
           left: 0;
-          bottom: 0;
+          bottom: 100/@rem;
           right: 0;
           text-align: center;
           color: #888;

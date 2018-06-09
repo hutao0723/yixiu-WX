@@ -28,11 +28,11 @@
                 <div class="column-center operate-share" @click="goPoster(item.id)">
                   <i class="iconfont icon-share"></i>
                 </div>
-                <div class="row">
-                  <span class="operate-num">{{item.praiseCount}}</span>
-                </div>
                 <div class="column-center" @click.stop="thumbsUp(item,$index)" :class="point?'point':''">
                   <i class="iconfont" :class="(item.userPraise==0) ? 'icon-dianzan':'icon-heart zan'"></i>
+                </div>
+                <div class="row">
+                  <span class="operate-num">{{item.praiseCount == 0 ?"": item.praiseCount}}</span>
                 </div>
               </div>
             </div>
@@ -224,6 +224,7 @@ export default {
 }
 .journey-main{
   padding: 41/@rem 33/@rem 0 50/@rem;
+  max-height: 9999px;
   .module{
     .date{
       position: relative;
@@ -316,6 +317,7 @@ export default {
         .book-content{
           color: #7F7F7F;
           .book-title{
+            color:#555;
             .fontSize(26);
             width: 460/@rem;
             margin-left: 80/@rem;
@@ -334,17 +336,17 @@ export default {
       }
       .operate{
         color: #949494;
+        height: 27/@rem;
         a{
           color: #949494;
         }
         .operate-share{
-          margin-right: 2/@rem;
+          margin-right: 50/@rem;
         }
         .operate-num{
           .fontSize(26);
           width: 45/@rem;
-          text-align: right;
-          margin-right: 13/@rem;
+          margin-left: 8/@rem;
         }
         .iconfont{
           .fontSize(26);
