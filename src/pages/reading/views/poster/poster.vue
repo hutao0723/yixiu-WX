@@ -44,7 +44,7 @@ export default {
 					_this.info.courseUrl = 'http://yun.dui88.com/youfen/images/read_course_none.png';
 				};
 				//二维码写死
-				_this.info.readQrcodeImgUrl = "http://yun.dui88.com/youfen/images/read_ewm3.png";
+				_this.info.readQrcodeImgUrl = "http://yun.dui88.com/yoofans/images/201806/code.jpg";
 				//默认观点
 				if(!_this.info.content){
 					_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
@@ -71,7 +71,7 @@ export default {
 					_this.info.courseUrl = 'http://yun.dui88.com/youfen/images/read_course_none.png';
 				};
 				//二维码写死
-				_this.info.readQrcodeImgUrl = "http://yun.dui88.com/youfen/images/read_ewm3.png";
+				_this.info.readQrcodeImgUrl = "http://yun.dui88.com/yoofans/images/201806/code.jpg";
 				//默认观点
 				if(!_this.info.content){
 					_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
@@ -180,24 +180,36 @@ export default {
 				// 两个黄色点
 				ctx.beginPath();
 				ctx.fillStyle = "#f9d61d";
-				ctx.arc(_this.conversion(80),_this.conversion(939) * 1 + responseHeight * 1,_this.conversion(7),0,Math.PI * 2,true);
+				ctx.arc(_this.conversion(80),_this.conversion(937) * 1 + responseHeight * 1,_this.conversion(7),0,Math.PI * 2,true);
 				ctx.fill();
 				ctx.closePath();
 
 				ctx.font = _this.conversion(26) + "px 苹方字体";
 				ctx.fillStyle = "#777";
 				ctx.textBaseline = "top";
-				ctx.fillText( "这是我坚持阅读的第",_this.conversion(105),_this.conversion(926) * 1 + responseHeight * 1);
-				let frist_w = ctx.measureText("这是我坚持阅读的第").width;
+				let string = "这是我坚持阅读的第";
+				string = string.split('')
+				console.log(string)
+				let width = 0;
+				string.forEach((el,index)=>{
+					width = ctx.measureText(el).width;
+					//字间距是2
+					width = width*1+_this.conversion(2) * 1 
+					ctx.fillText( el,_this.conversion(100)*1+index*width,_this.conversion(922) * 1 + responseHeight * 1);
+				})
+				
+				let frist_w = width*string.length;
 				ctx.font = _this.conversion(42) + "px 苹方字体";
 				ctx.fillStyle = "#222";
 				ctx.textBaseline = "middle";
-				ctx.fillText( _this.info.clocks,_this.conversion(105)*1+frist_w*1,_this.conversion(939) * 1 + responseHeight * 1);
+				//额外加5撑开
+				ctx.fillText( _this.info.clocks,_this.conversion(100)*1+frist_w*1+_this.conversion(10) * 1,_this.conversion(937) * 1 + responseHeight * 1);
 				let day_w = ctx.measureText(_this.info.clocks).width;
 				ctx.font = _this.conversion(26) + "px 苹方字体";
 				ctx.fillStyle = "#777";
 				ctx.textBaseline = "top";
-				ctx.fillText( "天",_this.conversion(105)*1+frist_w*1+day_w*1,_this.conversion(926) * 1 + responseHeight * 1);
+				//额外加5撑开
+				ctx.fillText( "天",_this.conversion(100)*1+frist_w*1+day_w*1+_this.conversion(20) * 1,_this.conversion(922) * 1 + responseHeight * 1);
 			}
 			//绘制二维码
 			function createdCode() {
@@ -265,7 +277,7 @@ export default {
 					//绘制观点文字
 					ctx.fillStyle = "#222";
 					for (let b = 0; b < stringLength.length; b++) {
-						ctx.font = _this.conversion(30) + "px 苹方字体";
+						ctx.font = _this.conversion(30) + "px 苹方字体 lighter";
 						ctx.textBaseline = "top";
 						ctx.fillText(stringLength[b],_this.conversion(78),_this.conversion(640) + b * _this.conversion(50));
 					}
