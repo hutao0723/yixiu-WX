@@ -966,7 +966,7 @@
             42);
             color: #555;
             width: 100%;
-            padding-left: 134/@rem;
+            padding-left: 121/@rem;
             padding-right: 10/@rem;
             box-sizing: border-box;
           }
@@ -1407,14 +1407,14 @@
           .text(30,
           42);
           color: #333;
-          padding-left: 245/@rem;
+          padding-left: 232/@rem;
           padding-right: 32/@rem;
           box-sizing: border-box;
           width: 100%;
-          text-weight: bold;
+          font-weight: bold;
         }
         .book-msg {
-          .pos(256,
+          .pos(243,
           86);
           font-size: 26/@rem;
           line-height: 36/@rem;
@@ -1425,7 +1425,7 @@
           -webkit-box-orient: vertical;
         }
         .book-btn {
-          .pos(256,
+          .pos(243,
           218);
           .size(160,
           54);
@@ -1546,7 +1546,7 @@
           position: absolute;
           z-index: 9999;
           left: 0;
-          bottom: 100/@rem;
+          bottom: 0/@rem;
           right: 0;
           text-align: center;
           color: #888;
