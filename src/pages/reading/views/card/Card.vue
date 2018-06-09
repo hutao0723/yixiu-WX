@@ -6,7 +6,7 @@
         <ul class="notice-content">
           <div class="notice-order">
             <span>1</span>
-            <i v-for="item in [1,2,3,4,5,6,7,8,9,10,11,12,13]"></i>
+            <i v-for="item in [1,2,3,4,5,6,7,8,9,10,11,12]"></i>
             <span>2</span>
           </div>
           <li>点击xx页面，完成当日学习目标后，将自动弹出弹窗提醒打卡。或者在收听页面，点击“打卡“按钮进行打卡</li>
@@ -125,8 +125,8 @@
         this.noticeFlag = false
       },
       contentSlice(str){
-        if(str&&str.length>12){
-          return str.slice(0,12) + '...'
+        if(str&&str.length>15){
+          return str.slice(0,15) + '...'
         }else{
           return str
         }
@@ -241,7 +241,7 @@
     .cardNotice-box{
       width:100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.7);
       z-index: 999;
       position: fixed;
       top:0;
@@ -270,7 +270,7 @@
           position: relative;
           background: #fff;
           li:nth-of-type(1){
-            margin-bottom: 64/@rem;
+            margin-bottom: 56/@rem;
           }
           li{
             color:#555555;

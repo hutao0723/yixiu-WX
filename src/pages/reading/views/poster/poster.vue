@@ -1,10 +1,12 @@
 <template>
     <div class="share" >
 		<img src="http://yun.dui88.com/youfen/images/201806/loading.svg" alt="" class="waiting" v-if="!imgUrl">
-		<div class="canvas" v-if="!imgUrl">
-			<canvas id="sharePoster"></canvas>
+		<div class="content">
+			<div class="canvas" v-if="!imgUrl">
+				<canvas id="sharePoster"></canvas>
+			</div>
+			<img :src="imgUrl" v-if="imgUrl"  class="pic"/>
 		</div>
-		<img :src="imgUrl" v-if="imgUrl"  class="pic"/>
 		<div class="btn" v-if="btn" >
 			长按保存分享
 			<img :src="imgUrl" />    
@@ -71,7 +73,7 @@ export default {
 			this.popup = false;
 		},
 		conversion(data) {
-			return data*0.8;
+			return data;
 		},
 		createdCanvas() {
 			const _this = this;
@@ -99,12 +101,13 @@ export default {
 			let stringLength = stringHeight(_this.info.content, 586);
 			//响应高度，对应海报不同内容
 			let responseHeight = 0;
+			//如果文字大于3行，额外加高度
 			if (stringLength.length > 3) {
 				responseHeight = (stringLength.length - 3) * _this.conversion(50);
 			}
 			//判断是否是自己的分享，不是不显示打卡天数
 			if (!_this.isSelf) {
-				responseHeight = responseHeight - _this.conversion(135);
+				responseHeight = responseHeight - _this.conversion(105);
 			}
 			myCanvas.width = _this.conversion(750);
 			myCanvas.height = _this.conversion(1200) * 1 + responseHeight;
@@ -143,7 +146,7 @@ export default {
 						ctx.fillStyle = "#fff";
 						ctx.fill();
 					}
-					roundRect(_this.conversion(34),_this.conversion(355),_this.conversion(680),_this.conversion(660) * 1 + responseHeight * 1,_this.conversion(10));
+					roundRect(_this.conversion(34),_this.conversion(355),_this.conversion(680),_this.conversion(630) * 1 + responseHeight * 1,_this.conversion(10));
 					//清除阴影效果
 					ctx.shadowColor = "rgba(0,0,0,0)";
 					resolve("");
@@ -151,6 +154,7 @@ export default {
 			}
 			//绘制虚线
 			function drawScreen() {
+				//虚线
 				ctx.setLineDash([15, 10]);
 				ctx.lineWidth = 2;
 				ctx.strokeStyle = "#d6d6d6";
@@ -161,16 +165,24 @@ export default {
 				// 两个黄色点
 				ctx.beginPath();
 				ctx.fillStyle = "#f9d61d";
-				ctx.arc(_this.conversion(93),_this.conversion(926) * 1 + responseHeight * 1,_this.conversion(7),0,Math.PI * 2,true);
-				ctx.arc(_this.conversion(93),_this.conversion(976) * 1 + responseHeight * 1,_this.conversion(7),0,Math.PI * 2,true);
+				ctx.arc(_this.conversion(80),_this.conversion(939) * 1 + responseHeight * 1,_this.conversion(7),0,Math.PI * 2,true);
 				ctx.fill();
 				ctx.closePath();
 
-				ctx.font = _this.conversion(30) + "px 宋体";
-				ctx.fillStyle = "#222";
+				ctx.font = _this.conversion(26) + "px 宋体";
+				ctx.fillStyle = "#777";
 				ctx.textBaseline = "top";
-				ctx.fillText( "这是我坚持阅读的第" + _this.info.clocks + "天",_this.conversion(110),_this.conversion(913) * 1 + responseHeight * 1);
-				ctx.fillText("已坚持阅读" + _this.info.books + "本书，累计" + _this.info.listens + "分钟", _this.conversion(110), _this.conversion(963) * 1 + responseHeight * 1 );
+				ctx.fillText( "这是我坚持阅读的第",_this.conversion(105),_this.conversion(926) * 1 + responseHeight * 1);
+				let frist_w = ctx.measureText("这是我坚持阅读的第").width;
+				ctx.font = _this.conversion(42) + "px 宋体";
+				ctx.fillStyle = "#222";
+				ctx.textBaseline = "middle";
+				ctx.fillText( _this.info.clocks,_this.conversion(105)*1+frist_w*1,_this.conversion(939) * 1 + responseHeight * 1);
+				let day_w = ctx.measureText(_this.info.clocks).width;
+				ctx.font = _this.conversion(26) + "px 宋体";
+				ctx.fillStyle = "#777";
+				ctx.textBaseline = "top";
+				ctx.fillText( "天",_this.conversion(105)*1+frist_w*1+day_w*1,_this.conversion(926) * 1 + responseHeight * 1);
 			}
 			//绘制二维码
 			function createdCode() {
@@ -178,13 +190,14 @@ export default {
 					ctx.font = _this.conversion(24) + "px 宋体";
 					ctx.textBaseline = "top";
 					ctx.fillStyle = "#444";
-					ctx.fillText("长按识别二维码",_this.conversion(227),_this.conversion(1101) * 1 + responseHeight * 1);
-					ctx.fillText("一修读书·" + _this.info.readName,_this.conversion(227),_this.conversion(1137) * 1 + responseHeight * 1);
+					ctx.fillText("一修读书·" + _this.info.readName,_this.conversion(150),_this.conversion(1071) * 1 + responseHeight * 1);
+					ctx.fillStyle = "#999";
+					ctx.fillText("长按识别二维码",_this.conversion(150),_this.conversion(1108) * 1 + responseHeight * 1);
 					let drawImg = new Image();
 					drawImg.crossOrigin = "Anonymous";
 					drawImg.src = _this.info.readQrcodeImgUrl;
 					drawImg.onload = function() {
-						ctx.drawImage(drawImg,_this.conversion(80),_this.conversion(1057) * 1 + responseHeight * 1,_this.conversion(117),_this.conversion(117));
+						ctx.drawImage(drawImg,_this.conversion(582),_this.conversion(1051) * 1 + responseHeight * 1,_this.conversion(100),_this.conversion(100));
 						resolve();
 					};
 				});
@@ -234,6 +247,7 @@ export default {
 			function createdBook() {
 				return new Promise((resolve, reject) => {
 					//绘制观点文字
+					ctx.fillStyle = "#222";
 					for (let b = 0; b < stringLength.length; b++) {
 						ctx.font = _this.conversion(30) + "px 宋体";
 						ctx.textBaseline = "top";
@@ -265,8 +279,20 @@ export default {
 					};
 				});
 			}
+			//绘制logo
+			function createdLogo() {
+				return new Promise((resolve, reject) => {
+					let drawImg = new Image();
+					drawImg.crossOrigin = "Anonymous";
+					drawImg.src = "http://yun.dui88.com/yoofans/images/201806/yixiuLogo.png";
+					drawImg.onload = function() {
+						ctx.drawImage(drawImg,_this.conversion(68),_this.conversion(1056) * 1 + responseHeight * 1,_this.conversion(66),_this.conversion(88));
+						resolve();
+					};	
+				})
+			}
 			// 绘制所有canvas
-			headerImg.then(createdBox).then(createdIcon).then(createdCode).then(createdComma).then(createdBook).then(() => {
+			headerImg.then(createdBox).then(createdIcon).then(createdCode).then(createdComma).then(createdBook).then(createdLogo).then(() => {
 				if (_this.isSelf) {
 					drawScreen();
 				}
@@ -303,15 +329,11 @@ export default {
 		}
 	}
 	.share {
-		width: 750 / @rem;
-		height: 100%;
-		position: relative;
+		right: 0;
+		position: fixed;
 		left: 0;
 		top: 0;
 		bottom: 0;
-		overflow-x: hidden;
-		overflow-y: auto;
-		-webkit-overflow-scrolling: touch;
 		box-sizing: border-box;
 		// z-index: 9;
 		background: #f4f4f4;
@@ -324,21 +346,26 @@ export default {
 			height: 60/@rem;
 			-webkit-animation: spin 600ms linear infinite;/*infinite表示动画无限循环*/
 			animation: spin 600ms linear infinite;
-			&.endWait{
-				display: none;
-			}
 		}
-		.canvas {
-			opacity: 0;
-		}
-		.pic {
+		.content{
+			position: relative;
+			height: 100%;
 			width: 100%;
-			display: block;
+			overflow-x: hidden;
+			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 			padding: 42/@rem 55/@rem 142/@rem;
 			box-sizing: border-box;
+			.canvas {
+				opacity: 0;
+			}
+			.pic {
+				width: 100%;
+				display: block;
+			}
 		}
 		.btn {
-			position: fixed;
+			position: absolute;
 			bottom: 0;
 			left: 0;
 			right: 0;

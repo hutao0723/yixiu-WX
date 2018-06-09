@@ -243,17 +243,31 @@
     created() {},
     async mounted() {
       let self = this;
-      // 设置标题
-      this.setTitle('一修读书')
-      // 如果微信分享链接=>去掉from
-      if (window.location.href.indexOf('from') != -1) {
-        location.replace('http://k.youfen666.com/reading.html#/index/home?' + window.location.href.split('?')[2])
+      // 如果是支付流程直接支付
+      if(window.location.href.indexOf('from') != -1){
+        location.replace('/reading.html#/index/home?' + window.location.href.split('?')[2])
       }
-      // 发送dcd绑定分销
+
+      // 防止cookie丢失
+      let refreshCookie = true;
+      if (window.location.href.indexOf('afterLogin') == -1) {
+        let res = await this.$http.get('/baseLogin', {
+          params: {
+            dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
+          }
+        })
+        if (res.data.success && res.data.data) {
+          refreshCookie = false;
+          location.replace(res.data.data);
+        }
+      }
+ 
+    if (refreshCookie) {
+      this.setTitle('一修读书')
+
       if (self.$route.query.dcd) {
         self.getDcd(self.$route.query.dcd)
       }
-      // 如果是支付流程直接支付
       if (self.$route.query.courseId) {
         self.tabActive = false;
         self.buy(self.$route.query.courseId, 4)
@@ -409,7 +423,7 @@
         console.log('拉起支付')
         const orderId = await this.placeOrder({
           itemId,
-          itemType
+          itemType,
         });
         if (!orderId) {
           return false;
@@ -429,7 +443,8 @@
         const url = API.orderSubmit;
         const res = await this.$http.post(url, {
           itemId,
-          itemType
+          itemType,
+          dcd: this.$route.query.dcd?this.$route.query.dcd: '',
         });
         if (!res.data.success) {
           location.href = '/reading.html#/index/home';
