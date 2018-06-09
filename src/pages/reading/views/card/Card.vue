@@ -47,9 +47,10 @@
         <div style="clear: both"></div>
       </div>
     </div>
-    <div class="card_bottom_text">听得见的知识 看得见的成长</div>
-    <bnav></bnav>
+    <div class="card_bottom_text">轻松阅读，日有所得</div>
     <AudioBar></AudioBar>
+    <bnav></bnav>
+
   </div>
 </template>
 
@@ -189,6 +190,7 @@
 
   .card-main {
     width: 750/@rem;
+    height: 100%;
     position: absolute;
     left: 0;
     top: 0;
@@ -368,7 +370,7 @@
           font-size: 30/@rem;
           line-height: 42/@rem;
           margin-bottom: 12/@rem;
-          font-weight: 600;
+          font-weight: bold;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
