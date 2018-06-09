@@ -38,7 +38,7 @@
       <calendar-template  :calendarDate='c_date' @getDate="getDate" ></calendar-template>
     </div>
     <div class="book-book" >
-      <div class="book-detail-box" v-show="afterToday||isToday">
+      <div class="book-detail-box" v-show="afterToday||isToday" >
         <div class="book-img" @click.stop="playAudio(readId,courseId)" >
           <img v-if="courseDetail.courseUrl" :src="courseDetail.courseUrl" alt="">
           <img v-else src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="">
@@ -366,7 +366,7 @@
           display: inline-block;
           vertical-align: middle;
           margin-left: 13/@rem;
-          margin-top: -2/@rem;
+          margin-top: -3/@rem;
         }
         .head-right{
           float: right;
@@ -501,6 +501,7 @@
           line-height: 54/@rem;
           border-radius: 25/@rem;
           color:#333;
+          margin-left: 12/@rem;
         }
       }
     }
