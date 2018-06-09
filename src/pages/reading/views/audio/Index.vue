@@ -35,7 +35,7 @@
           </button>
         </div>
       </div>
-      <div class="bottom" @click="goComment" >
+      <div class="bottom" @click="goComment" v-if="readAudio.curRead">
          {{text}}
       </div>
     </div> 
