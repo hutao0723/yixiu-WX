@@ -33,7 +33,7 @@ export default {
 	mounted() {
 		const _this = this;
 		_this.popup = _this.$route.query.lastClock * 1;
-		_this.isSelf =  1;
+		_this.isSelf =  _this.$route.query.isClock * 1;
 		_this.getInfo();
 	},
   	methods: {
@@ -259,7 +259,7 @@ export default {
 			function createdBook() {
 				return new Promise((resolve, reject) => {
 					//绘制观点文字
-					ctx.fillStyle = "#222";
+					ctx.fillStyle = "#444";
 					for (let b = 0; b < stringLength.length; b++) {
 						ctx.font = _this.conversion(30) + "px 苹方字体 lighter";
 						ctx.textBaseline = "top";

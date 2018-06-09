@@ -768,12 +768,12 @@
     }
     .home-service {
       .size(100, 100);
-      position: absolute;
+      position: fixed;
       right: 30/@rem;
       bottom: 140/@rem;
       background: url('http://yun.dui88.com/youfen/images/read_btn1.png') no-repeat center;
       background-size: 100% 100%;
-      z-index: 888;
+      z-index: 1000;
     }
     .home-service.bottom {
       bottom: 240/@rem;
