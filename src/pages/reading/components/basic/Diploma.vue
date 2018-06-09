@@ -39,7 +39,7 @@
   width: 750/@rem;
   height: 100%;
   position: fixed;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.8);
   z-index: 1000;
   top: 0;
   left: 0;
