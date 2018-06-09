@@ -3,7 +3,7 @@
     <div class="audio-controler row"  @click="goAudioPage"> 
       <div class="right-bar row-around" style="background-repeat:no-repeat;background-size:100% 100%;" 
       :style="{backgroundImage:`url(${readAudio.verticalCover || baseImg}`}" >
-        <div class="icon-state column-center" :class="!readPlaying ? 'line' : 'mask'">
+        <div class="icon-state column-center mask">
           <i class="iconfont icon-play" v-if="!readPlaying"></i>
           <img class="" src="../../images/audio.svg" v-else/>
         </div>
@@ -31,7 +31,7 @@ import { mapState } from 'vuex';
     },
     data () {
       return {
-        baseImg: 'https://yun.dui88.com/yoofans/images/201804/miniapp/player.png',
+        baseImg: '//yun.dui88.com/yoofans/images/201806/yixiulogo.png',
         audioData: {
           current: 0,
           duration: 0,
@@ -83,15 +83,12 @@ import { mapState } from 'vuex';
     border-radius: 50%;
     box-shadow: 0px 8/@rem 10/@rem 0/@rem rgba(204,204,204,0.5);
     .icon-state{
-      width: 87/@rem;
-      height: 87/@rem;
+      width: 86/@rem;
+      height: 86/@rem;
       border-radius: 50%;
+      border: 4/@rem solid @color-white;
       &.mask{
-        border: 3/@rem solid @color-white;
-        background:rgba(0,0,0,0.4753);
-      }
-      &.line{
-        border: 3/@rem solid #CBCBCB;
+        background:rgba(0,0,0,0.5);
       }
       .iconfont{
         color: @color-white;
