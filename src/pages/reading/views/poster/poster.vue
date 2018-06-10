@@ -193,7 +193,7 @@ export default {
 				ctx.font = _this.conversion(26) + "px PingFang SC";
 				ctx.fillStyle = "#777";
 				ctx.textBaseline = "top";
-				let string = "这是我坚持阅读的第";
+				let string = "这是我坚持读书的第";
 				string = string.split('')
 				let width = 0;
 				string.forEach((el,index)=>{
