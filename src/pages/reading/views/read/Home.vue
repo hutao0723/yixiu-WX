@@ -22,13 +22,12 @@
 
 
       <div id="maincontent" class="home-detail" ref="homemain" v-show="tabActive">
-        <div class="home-content">
+        <div class="home-content" :monitor-log="getMonitor(820,2,0)">
           <img src="http://yun.dui88.com/youfen/images/read_img01.jpg" alt="">
           <img src="http://yun.dui88.com/youfen/images/read_img02.jpg" alt="">
           <img src="http://yun.dui88.com/youfen/images/read_img03.jpg" alt="">
           <img src="http://yun.dui88.com/youfen/images/read_img07.jpg" alt="">
           <img src="http://yun.dui88.com/youfen/images/read_img08.jpg" alt="">
-          <!-- <img src="http://yun.dui88.com/youfen/images/read_img06.jpg" alt=""> -->
         </div>
         <div class="home-review" v-show="reviewList.length> 0">
           <h2>学员观点</h2>
@@ -48,7 +47,7 @@
               <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
             </div>
             <div class="item-bottom">
-              <p @click="setCommentPraise(item.id,item.userPraise)">
+              <p @click="clickFun($event,setCommentPraise,item)"  :monitor-log="getMonitor(820,1,2)">
                 <span class="fr" v-show="item.praiseCount>0">{{item.praiseCount}}</span>
                 <i class="iconfont icon-dianzan fr" v-show="!item.userPraise"></i>
                 <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
@@ -654,15 +653,15 @@
         });
       },
       // 点赞
-      setCommentPraise(id, status) {
+      setCommentPraise(item) {
         if (this.pageStatus == 0) {
           return false;
         }
         let self = this;
         let params = {};
         params = {
-          status: status ? 0 : 1,
-          commentId: id
+          status: item.userPraise ? 0 : 1,
+          commentId: item.id
         }
         const url = API.commentPraise;
         this.$http.get(url, {
