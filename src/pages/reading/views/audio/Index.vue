@@ -84,7 +84,7 @@ export default {
         if (!this.readAudio.commentState) {
           return '写想法'
         } else {
-          return '查看'
+          return '我的感想'
         }
       }
     }

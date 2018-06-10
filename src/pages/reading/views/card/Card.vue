@@ -10,7 +10,7 @@
             <span>2</span>
           </div>
           <li>在播放器页面，听完当日读书内容以后，将自动弹出打卡提醒；如果你已经阅读过本书，则可点击“去打卡”进行打卡。</li>
-          <li>分享打卡图片至微信朋友圈，坚持打卡49天，可退还所有学费，坚持打卡60天，可获得一个惊喜大礼。</li>
+          <li>分享打卡图片至微信朋友圈，坚持打卡49天，可退还所有学费。</li>
         </ul>
         <div class="notice-btn" @click="hideNotice()">我知道了</div>
       </div>
@@ -57,7 +57,7 @@
             </div>
           </div>
           <div class="book-btn">
-              <span  v-show="courseDetail.clockState&&courseDetail.commentState" @click.stop="goComment()">查看</span>
+              <span  v-show="courseDetail.clockState&&courseDetail.commentState" @click.stop="goComment()">我的感想</span>
               <span  v-show="courseDetail.clockState&&!courseDetail.commentState" @click.stop="goComment()">写想法</span>
               <span  v-show="!courseDetail.clockState" @click.stop="goComment()">去打卡</span>
           </div>
@@ -530,7 +530,7 @@
           display: inline-block;
           font-size: 26/@rem;
           background: #FFE555;
-          width:130/@rem;
+          width:160/@rem;
           text-align: center;
           height:54/@rem;
           line-height: 54/@rem;
