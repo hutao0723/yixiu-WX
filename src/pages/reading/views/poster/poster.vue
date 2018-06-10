@@ -57,10 +57,10 @@ export default {
 					_this.info.courseUrl = 'http://yun.dui88.com/youfen/images/read_course_none.png';
 				};
 				//二维码写死
-				_this.info.readQrcodeImgUrl = "http://yun.dui88.com/yoofans/images/201806/code.jpg";
+				_this.info.readQrcodeImgUrl = "http://yun.dui88.com/youfen/images/code_ewm.png";
 				//默认感想
 				if(!_this.info.content){
-					_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
+					_this.info.content = "不读书的人，思想都会停止。没有比读书更好的娱乐、更持久的满足了。你多久没读书了？"
 				};
 				_this.createdCanvas();
 			} else {

@@ -1482,6 +1482,8 @@
             margin-top: 20/@rem;
             margin-bottom: 34/@rem;
             font-weight: bold;
+            height: 64/@rem;
+            overflow: hidden;
           }
           .item-lock {
             background: rgba(0, 0, 0, 0.7);
