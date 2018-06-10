@@ -7,7 +7,7 @@
         <div class="item" @click="tabActiveToggle(true)" :monitor-log="getMonitor(820,1,1)">
           <span :class="{ active: tabActive}">简介</span>
         </div>
-        <div class="item" @click="(event)=>{clickFun(event,tabActiveToggle,false)}"  :monitor-log="getMonitor(820,1,2)">
+        <div class="item" @click="clickFun($event,tabActiveToggle,false)"  :monitor-log="getMonitor(820,1,2)">
           <span :class="{ active: !tabActive}">课程</span>
         </div>
       </div>
