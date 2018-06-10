@@ -57,7 +57,7 @@
             </div>
           </div>
           <div class="book-btn">
-              <span  v-show="courseDetail.clockState&&courseDetail.commentState" @click.stop="goPoster()">查看</span>
+              <span  v-show="courseDetail.clockState&&courseDetail.commentState" @click.stop="goComment()">查看</span>
               <span  v-show="courseDetail.clockState&&!courseDetail.commentState" @click.stop="goComment()">写想法</span>
               <span  v-show="!courseDetail.clockState" @click.stop="goComment()">去打卡</span>
           </div>
