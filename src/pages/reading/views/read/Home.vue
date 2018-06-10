@@ -4,10 +4,10 @@
       <bnav></bnav>
       <a href="https://kefu.easemob.com/webim/im.html?configId=f56195f3-2ff6-412b-983e-0231f5586efb" class="home-service" :class="{bottom:bottomNavToggle}"></a>
       <div class="home-tab clearfix" id="hometab">
-        <div class="item" @click="tabActiveToggle(true)">
+        <div class="item" @click="tabActiveToggle(true)" :monitor-log="getMonitor(820,1,1)">
           <span :class="{ active: tabActive}">简介</span>
         </div>
-        <div class="item" @click="tabActiveToggle(false)">
+        <div class="item" @click="(event)=>{clickFun(event,tabActiveToggle,false)}"  :monitor-log="getMonitor(820,1,2)">
           <span :class="{ active: !tabActive}">课程</span>
         </div>
       </div>
@@ -249,17 +249,17 @@
 
       // 防止cookie丢失
       let refreshCookie = true;
-      if (window.location.href.indexOf('afterLogin') == -1) {
-        let res = await this.$http.get('/baseLogin', {
-          params: {
-            dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
-          }
-        })
-        if (res.data.success && res.data.data) {
-          refreshCookie = false;
-          location.replace(res.data.data);
-        }
-      }
+      // if (window.location.href.indexOf('afterLogin') == -1) {
+      //   let res = await this.$http.get('/baseLogin', {
+      //     params: {
+      //       dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
+      //     }
+      //   })
+      //   if (res.data.success && res.data.data) {
+      //     refreshCookie = false;
+      //     location.replace(res.data.data);
+      //   }
+      // }
 
       if (refreshCookie) {
         this.setTitle('一修读书')
@@ -409,7 +409,21 @@
       }
     },
     methods: {
-
+      clickFun(event,cb,obj){
+        console.log(event.currentTarget.getAttribute('monitor-log'))
+        console.log(cb);
+        console.log(obj);
+        cb(obj);
+      },
+      // 获取monitor
+      getMonitor(b,c,d) {
+        // item tabindex dpmc
+        return JSON.stringify({
+          'dcm': '8001.0.0.0',
+          'dpm': 'appid.' + b + '.' + c + '.' + d,
+          
+        });
+      },
       // 展开收起
       unfoldToggle(n, index) {
         let self = this;
@@ -1280,7 +1294,8 @@
         color: #666;
       }
       .text-ewm {
-        .size(688,688);
+        .size(688,
+        688);
         margin: 40/@rem auto;
         display: block;
       }
