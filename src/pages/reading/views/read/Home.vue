@@ -31,7 +31,7 @@
           <!-- <img src="http://yun.dui88.com/youfen/images/read_img06.jpg" alt=""> -->
         </div>
         <div class="home-review" v-show="reviewList.length> 0">
-          <h2>学员观点</h2>
+          <h2>学员感想</h2>
           <div class="item" v-for="(item,index) in reviewList" :key="index">
             <img :src="item.userImgUrl" alt="" class="item-header">
             <div class="item-name">{{item.userNickname}}</div>
@@ -249,17 +249,17 @@
 
       // 防止cookie丢失
       let refreshCookie = true;
-      // if (window.location.href.indexOf('afterLogin') == -1) {
-      //   let res = await this.$http.get('/baseLogin', {
-      //     params: {
-      //       dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
-      //     }
-      //   })
-      //   if (res.data.success && res.data.data) {
-      //     refreshCookie = false;
-      //     location.replace(res.data.data);
-      //   }
-      // }
+      if (window.location.href.indexOf('afterLogin') == -1) {
+        let res = await this.$http.get('/baseLogin', {
+          params: {
+            dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
+          }
+        })
+        if (res.data.success && res.data.data) {
+          refreshCookie = false;
+          location.replace(res.data.data);
+        }
+      }
 
       if (refreshCookie) {
         this.setTitle('一修读书')

@@ -58,7 +58,7 @@ export default {
 				};
 				//二维码写死
 				_this.info.readQrcodeImgUrl = "http://yun.dui88.com/yoofans/images/201806/code.jpg";
-				//默认观点
+				//默认感想
 				if(!_this.info.content){
 					_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
 				};
@@ -278,7 +278,7 @@ export default {
 			//绘制书籍
 			function createdBook() {
 				return new Promise((resolve, reject) => {
-					//绘制观点文字
+					//绘制感想文字
 					ctx.fillStyle = "#222";
 					ctx.textBaseline = "top";
 					ctx.font = _this.conversion(30) + "px pingFangSC-Light";

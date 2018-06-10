@@ -43,7 +43,7 @@
               imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav08.png'
             },
             {
-              title: '观点',
+              title: '感想',
               icon: 'icon-opinion',
               active: 'icon-opinion active tag',
               path: '/index/opinion',
@@ -69,7 +69,7 @@
               imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav01.png'
             },
             {
-              title: '观点',
+              title: '感想',
               icon: 'icon-opinion',
               active: 'icon-opinion active tag',
               path: '/index/opinion',

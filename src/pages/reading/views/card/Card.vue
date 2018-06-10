@@ -90,7 +90,7 @@
       return {
         readId:'', //阅读Id
         courseId:'', //课程Id
-        commentId:'',//观点id
+        commentId:'',//感想id
         readInfo:'',//阅读状态
         readDetail:'',
         dayNum:'',
