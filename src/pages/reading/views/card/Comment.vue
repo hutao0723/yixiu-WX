@@ -92,7 +92,7 @@
       getContent(){
         let courseId = this.$route.params.courseId;
         let readId = this.$route.params.readId;
-        this.$http.get('/comment/getByReadAndCourse?readId='+readId +'&courseId='+courseId).then(res=>{
+        this.$http.get('/api/comment/getByReadAndCourse?readId='+readId +'&courseId='+courseId).then(res=>{
           let resp = res.data;
           if(resp.success){
             console.log(resp.data)
@@ -137,7 +137,7 @@
       getCourseId(){
         this.courseId = this.$route.params.courseId;
         this.readId = this.$route.params.readId;
-        this.$http.get('/readBookCourse/courseDetail?readId='+this.readId +'&courseId='+this.courseId).then(res=>{
+        this.$http.get('/api/readBookCourse/courseDetail?readId='+this.readId +'&courseId='+this.courseId).then(res=>{
           let resp = res.data;
           if(resp.success){
             this.courseDetail = resp.data;
