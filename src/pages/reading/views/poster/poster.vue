@@ -3,6 +3,7 @@
 		<img src="http://yun.dui88.com/youfen/images/201806/loading.svg" alt="" class="waiting" v-if="!imgUrl">
 		<div class="content">
 			<div class="canvas" v-if="!imgUrl">
+				<canvas id="code"></canvas>
 				<canvas id="sharePoster"></canvas>
 			</div>
 			<img :src="imgUrl" v-if="imgUrl"  class="pic"/>
@@ -17,6 +18,7 @@
 
 <script>
 import Popup from "./../../components/basic/Diploma";
+import QRCode from 'qrcode'
 export default {
   	data() {
 		return {
@@ -35,6 +37,50 @@ export default {
 		_this.popup = _this.$route.query.lastClock * 1;
 		_this.isSelf = _this.$route.query.isClock * 1;
 		_this.getInfo();
+		
+		// _this.info = {
+		// 	"id": 58,
+		// 	"userId": 100052000,
+		// 	"userNickname": "💥",
+		// 	"userImgUrl": "http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg",
+		// 	"courseId": 198,
+		// 	"courseTitle": "课程-试听10s",
+		// 	"courseSubTitle": "课程-试听10s-副标",
+		// 	"courseUrl": "https://yun.dui88.com/youfen/images/lhk3dw0zk6.gif",
+		// 	"courseVerticalCover": "https://yun.dui88.com/youfen/images/zbp2zkq154.jpg",
+		// 	"courseLateralCover": "https://yun.dui88.com/youfen/images/2bmi5mohht.jpg",
+		// 	"courseAuthor": "",
+		// 	"readId": 9,
+		// 	"readName": "阅读计划-测试1",
+		// 	"readStageId": 9,
+		// 	"readStageNum": 1,
+		// 	"content": "我们曾来文艺青年们，现在都已文艺青年们，现在都已来文艺青年们，现在都已文艺青年们，现在都已经不玩儿憔悴了我有小肚。所以她有圆圆脸，我有小肚腩。",
+		// 	"releaseTime": "2018-05-30 14:22:13",
+		// 	"releaseTimeLabel": "深夜",
+		// 	"praiseCount": 3,
+		// 	"userPraise": false,
+		// 	"myself": 0,
+		// 	"listens": 0,
+		// 	"clocks": 201,
+		// 	"books": 0,
+		// 	"loginDays": 2,
+		// 	"readQrcodeImgUrl": "https://yun.dui88.com/youfen/images/z6qj8zsviw.jpg",
+		// 	"bookBgimgUrl": ""
+		// }
+		// //头部背景图
+		// 	if (!_this.info.bookBgimgUrl) {
+		// 		_this.info.bookBgimgUrl = "http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg";
+		// 	};
+		// 	if(!_this.info.courseUrl){
+		// 		_this.info.courseUrl = 'http://yun.dui88.com/youfen/images/read_course_none.png';
+		// 	};
+		// 	//二维码写死
+		// 	_this.info.readQrcodeImgUrl = "http://yun.dui88.com/yoofans/images/201806/code.jpg";
+		// 	//默认观点
+		// 	if(!_this.info.content){
+		// 		_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
+		// 	};
+		// 	_this.createdCanvas();
 
 	},
   	methods: {
@@ -43,24 +89,25 @@ export default {
 			let params = {
 				commentId: _this.$route.query.commentId
 			};
-			const url = `/comment/share`;
+			const url = `/api/comment/share`;
 			const res = await _this.$http.get(url, {
 				params
 			});
 			if (res.data.success) {
 				_this.info = res.data.data;
+
+				_this.info.readQrcodeImgUrl = "http://yun.dui88.com/yoofans/images/201806/code.jpg";
 				//头部背景图
 				if (!_this.info.bookBgimgUrl) {
 					_this.info.bookBgimgUrl = "http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg";
 				};
+				//默认书籍
 				if(!_this.info.courseUrl){
 					_this.info.courseUrl = 'http://yun.dui88.com/youfen/images/read_course_none.png';
 				};
-				//二维码写死
-				_this.info.readQrcodeImgUrl = "http://yun.dui88.com/youfen/images/code_ewm.png";
-				//默认感想
+				//默认观点
 				if(!_this.info.content){
-					_this.info.content = "不读书的人，思想都会停止。没有比读书更好的娱乐、更持久的满足了。你多久没读书了？"
+					_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
 				};
 				_this.createdCanvas();
 			} else {
@@ -100,22 +147,34 @@ export default {
 			}
 			
 			//---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-			let line_number = 1;
+			let line_number = 0;
+			//计算行数
 			function myPoint(){
-				ctx.font = _this.conversion(30) + "px pingFangSC-Light";
-				let string = _this.info.content.split('');
-				let string_w = ctx.measureText(string[0]).width*1+_this.conversion(-2)*1;
-				//换算成几行
-				let num = 0;
-				string.forEach((item,index)=>{
-					num++;
-					//550数值调试来的
-					if(num*string_w<_this.conversion(550)){
-
-					}else{
-						num=0;
-						line_number++;
-					}
+				ctx.textBaseline = "top";
+				ctx.textAlign = 'left'
+				ctx.font = '29px pingFangSC-Light';
+				let point = _this.info.content.split('<br/>');
+				//处理换行文字
+				point.forEach((item,index)=>{
+					let string = item.split('');
+					let num = 0;
+					let x = _this.conversion(81)
+					let y = _this.conversion(620)
+					line_number++;
+					string.forEach((item,index)=>{
+						//550数值调试来的
+						let string_w = ctx.measureText(item).width-1;
+						ctx.fillText(item, x, y*1+line_number*_this.conversion(52));
+						// 确定下一个字符的横坐标
+						if(num<_this.conversion(560)){
+							num = num + string_w ;
+							x = x + string_w ;
+						}else{
+							x = _this.conversion(78);
+							num = 0;
+							line_number++;
+						}
+					})
 				})
 			}
 			myPoint();
@@ -179,41 +238,35 @@ export default {
 				ctx.lineWidth = 2;
 				ctx.strokeStyle = "#ddd";
 				ctx.beginPath();
-				ctx.moveTo(_this.conversion(34),_this.conversion(883) * 1 + responseHeight * 1);
-				ctx.lineTo(_this.conversion(718),_this.conversion(883) * 1 + responseHeight * 1);
+				ctx.moveTo(_this.conversion(34),_this.conversion(896) * 1 + responseHeight * 1);
+				ctx.lineTo(_this.conversion(718),_this.conversion(896) * 1 + responseHeight * 1);
 				ctx.stroke();
-				// 一个黄色点
-				// ctx.beginPath();
-				// ctx.fillStyle = "#f9d61d";
-				// console.log()
-				// ctx.arc(_this.conversion(80),_this.conversion(935) * 1 + responseHeight * 1,_this.conversion(6),0,Math.PI * 2,true);
-				// ctx.fill();
-				// ctx.closePath();
-				// console.log(_this.conversion(935) * 1 + responseHeight * 1)
+				//文字
+				ctx.beginPath();
 				ctx.font = _this.conversion(26) + "px PingFang SC";
 				ctx.fillStyle = "#777";
-				ctx.textBaseline = "top";
-				let string = "这是我坚持读书的第";
+				ctx.textBaseline = "middle";
+				let string = "这是我坚持阅读的第";
 				string = string.split('')
 				let width = 0;
 				string.forEach((el,index)=>{
 					width = ctx.measureText(el).width;
 					//字间距是2
 					width = width*1+_this.conversion(2) * 1;
-					ctx.fillText( el,_this.conversion(100)*1+index*width,_this.conversion(922) * 1 + responseHeight * 1);
+					ctx.fillText( el,_this.conversion(100)*1+index*width,_this.conversion(942) * 1 + responseHeight * 1);
 				})
 				let frist_w = width*string.length;
 				ctx.font = _this.conversion(29) + "px PingFang SC";
 				ctx.fillStyle = "#222";
-				ctx.textBaseline = "top";
+				ctx.textBaseline = "middle";
 				//额外加10撑开
-				ctx.fillText( _this.info.clocks,_this.conversion(100)*1+frist_w*1+_this.conversion(5) * 1,_this.conversion(919) * 1 + responseHeight * 1);
+				ctx.fillText( _this.info.clocks,_this.conversion(100)*1+frist_w*1+_this.conversion(5) * 1,_this.conversion(942) * 1 + responseHeight * 1);
 				let day_w = ctx.measureText(_this.info.clocks).width;
 				ctx.font = _this.conversion(26) + "px PingFang SC";
 				ctx.fillStyle = "#777";
-				ctx.textBaseline = "top";
+				ctx.textBaseline = "middle";
 				//额外加10撑开
-				ctx.fillText( "天",_this.conversion(100)*1+frist_w*1+day_w*1+_this.conversion(10) * 1,_this.conversion(922) * 1 + responseHeight * 1);
+				ctx.fillText( "天",_this.conversion(100)*1+frist_w*1+day_w*1+_this.conversion(10) * 1,_this.conversion(942) * 1 + responseHeight * 1);
 			}
 			//绘制二维码
 			function createdCode() {
@@ -241,7 +294,7 @@ export default {
 					drawImg.crossOrigin = "Anonymous";
 					drawImg.src = "http://yun.dui88.com/yoofans/images/201805/read/poster_comma.png";
 					drawImg.onload = function() {
-						ctx.drawImage(drawImg,_this.conversion(64),_this.conversion(545),_this.conversion(80),_this.conversion(50));
+						ctx.drawImage(drawImg,_this.conversion(64),_this.conversion(567),_this.conversion(80),_this.conversion(50));
 						resolve();
 					};
 				});
@@ -267,9 +320,10 @@ export default {
 					drawImg.onload = function() {
 						ctx.beginPath();
 						ctx.save(); // 保存当前ctx的状态
+						ctx.lineWidth = 1;
 						ctx.arc(_this.conversion(113),_this.conversion(443),_this.conversion(45),0,Math.PI * 2,true);
 						ctx.clip(); //裁剪上面的圆形
-						ctx.drawImage(drawImg,_this.conversion(68),_this.conversion(400),_this.conversion(90),_this.conversion(90)); // 在刚刚裁剪的园上画图
+						ctx.drawImage(drawImg,_this.conversion(66),_this.conversion(398),_this.conversion(92),_this.conversion(92)); // 在刚刚裁剪的园上画图
 						ctx.restore(); // 还原状态
 						resolve();
 					};
@@ -278,29 +332,42 @@ export default {
 			//绘制书籍
 			function createdBook() {
 				return new Promise((resolve, reject) => {
-					//绘制感想文字
+					//绘制观点文字
 					ctx.fillStyle = "#222";
 					ctx.textBaseline = "top";
-					ctx.font = _this.conversion(30) + "px pingFangSC-Light";
-					let point = _this.info.content.split('');
-					let num = -1;
-					let sum = 0;
-					let point_w = ctx.measureText('我').width*1+_this.conversion(-2)*1;
+					ctx.textAlign = 'left'
+					ctx.font = '29px pingFangSC-Light';
+					let point = _this.info.content.split('<br/>');
+					//处理换行文字
+					let sum = -1;
 					point.forEach((item,index)=>{
-						//550数值调试来的
-						if(num*point_w<_this.conversion(550)){
-							num++;
-						}else{
-							num=0;
-							sum++;
-						}
-						ctx.fillText(item,_this.conversion(78)*1+point_w*num,_this.conversion(620)*1+sum*_this.conversion(52) );
+						let string = item.split('');
+						let num = 0;
+						let x = _this.conversion(81)
+						let y = _this.conversion(640)
+						sum++;
+						string.forEach((item,index)=>{
+							//550数值调试来的
+							let string_w = ctx.measureText(item).width-1;
+							ctx.fillText(item, x, y*1+sum*_this.conversion(52));
+							// 确定下一个字符的横坐标
+							if(num<_this.conversion(560)){
+								num = num + string_w ;
+								x = x + string_w ;
+							}else{
+								x = _this.conversion(78);
+								num = 0;
+								sum++;
+							}
+						})
+
 					})
+					
 					//绘制作者信息
 					ctx.font = _this.conversion(24) + "px pingFangSC-Light";
 					ctx.textBaseline = "top";
 					let string_w = ctx.measureText(_this.info.userNickname).width;
-					ctx.fillText(_this.info.userNickname,_this.conversion(668) - string_w,_this.conversion(638) + line_number * _this.conversion(52));
+					ctx.fillText(_this.info.userNickname,_this.conversion(668) - string_w,_this.conversion(660) + line_number * _this.conversion(52));
 					//转换时间格式
 					let createdTime = _this.info.releaseTime.replace(/-/g, "/");
 					createdTime = new Date(createdTime);
@@ -309,7 +376,7 @@ export default {
 					let day = createdTime.getDate();
 					let time ="于 " +year +"." +month +"." +day +" " +_this.info.releaseTimeLabel;
 					string_w = ctx.measureText(time).width;
-					ctx.fillText(time,_this.conversion(668) - string_w,_this.conversion(670) + line_number * _this.conversion(52));
+					ctx.fillText(time,_this.conversion(668) - string_w,_this.conversion(692) + line_number * _this.conversion(52));
 
 					ctx.fillStyle = "#FFF";
 					ctx.fillRect(_this.conversion(536),_this.conversion(320),_this.conversion(140),_this.conversion(190));
@@ -332,23 +399,26 @@ export default {
 						ctx.drawImage(drawImg,_this.conversion(40),_this.conversion(1056) * 1 + responseHeight * 1,_this.conversion(66),_this.conversion(88));
 						resolve();
 					};	
+					
 				})
 			}
 			//绘制黄点
 			function createdYellowPoint() {
 				return new Promise((resolve, reject) => {
+					ctx.beginPath();
 					if (_this.isSelf) {
 						let drawImg = new Image();
 						drawImg.crossOrigin = "Anonymous";
 						drawImg.src =  "http://yun.dui88.com/yoofans/images/201806/Oval7.png";;
 						drawImg.onload = function() {
-							ctx.drawImage(drawImg,_this.conversion(80),_this.conversion(929) * 1 + responseHeight * 1,_this.conversion(12),_this.conversion(12));
+							ctx.drawImage(drawImg,_this.conversion(80),_this.conversion(936) * 1 + responseHeight * 1,_this.conversion(12),_this.conversion(12));
 							resolve();
 						};
 					}else{
 						resolve();	
 					}
 				})
+				
 			}
 			// 绘制所有canvas
 			headerImg.then(createdBox).then(createdIcon).then(createdCode).then(createdComma).then(createdBook).then(createdLogo).then(createdYellowPoint).then(() => {
@@ -377,18 +447,18 @@ export default {
 	}  
 	@-webkit-keyframes spin { /*兼容性写法。spin是关键帧的动画名称*/
 		from { /*动画起始状态*/
-		-webkit-transform: rotate(0deg);
+			-webkit-transform: rotate(0deg);
 		}
 		to { /*动画结束状态*/
-		-webkit-transform: rotate(360deg);
+			-webkit-transform: rotate(360deg);
 		}
 	}
 	@keyframes spin {
 		from {
-		transform: rotate(0deg);
+			transform: rotate(0deg);
 		}
 		to {
-		transform: rotate(360deg);
+			transform: rotate(360deg);
 		}
 	}
 	.share {
@@ -452,4 +522,3 @@ export default {
 		}
 	}
 </style>
-
