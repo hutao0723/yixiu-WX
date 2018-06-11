@@ -136,7 +136,7 @@
       <div class="already-list clearfix">
         <div class="item" v-for="(item,index) in historyBookList" :key="index" @click="playAudio(item.courseId,item.lockStatus)">
           <div class="item-box">
-            <img :src="item.verticalCover" alt="" class="item-img" v-if="item.imgUrl">
+            <img :src="item.verticalCover" alt="" class="item-img" v-if="item.verticalCover">
             <img src="http://yun.dui88.com/youfen/images/read_course_none.png
             " alt="" class="item-img" v-else>
             <div class="item-lock" v-if="item.lockStatus">
