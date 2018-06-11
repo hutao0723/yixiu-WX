@@ -31,6 +31,22 @@ if (!window.localStorage.getItem('deviceId')) {
     window.localStorage.setItem('deviceId', deviceId) // a hash, representing your device fingerprint
   })},100)
 }
+(function GetRequest() {   
+  var url = window.location.href; //获取url中"?"符后的字串   
+  console.log(1)
+  var theRequest = new Object();   
+  if (url.indexOf("?") != -1) {
+    var index= url.indexOf('?')
+     var str = url.substr(index+1); 
+     console.log(str)  
+     var strs = str.split("&");   
+     for(var i = 0; i < strs.length; i ++) {   
+        Vue.http.headers.common['ext_'+ strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+        
+     }   
+  }   
+})()
+
 
 Vue.http.headers.common['deviceId'] = window.localStorage.getItem('deviceId');
 Vue.http.headers.common['from'] = 'read';
