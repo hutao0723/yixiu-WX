@@ -57,7 +57,9 @@ export default {
         {this.$refs.audio.currentTime = store.getters.getAudioInfo.playbackProgress;}
     },
     // 音乐处于播放状态
-    musicOnPlaying () {},
+    musicOnPlaying () {
+      state.readPlaying = true;
+    },
     // 音乐处于watting状态
     musicOnWaiting () {},
     // 音乐处于暂停状态
