@@ -64,7 +64,6 @@ export default {
 	// 设置音乐是否正在加载
 	setReadLoadStart (state, obj) {
 		state.readLoadStart = obj.isloadstart;
-		state.readPlaying = true;
 	},
 	// 设置音乐停止播放状态
 	setPlaying (state) {
