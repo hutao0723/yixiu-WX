@@ -182,8 +182,8 @@
     mapState
   } from 'vuex';
 
-  // const testUrl = window.location.hostname == 'localhost' ? '/api' : '';
-  const testUrl = '/api';
+  const testUrl = window.location.hostname == 'localhost' ? '/api' : '';
+  // const testUrl = '/api';
 
   const API = {
     orderSubmit: testUrl + '/order/submit',
