@@ -134,8 +134,7 @@
         </span>
       </h2>
       <div class="already-list clearfix">
-        <div class="item" v-for="(item,index) in historyBookList" :key="index" @click="getDetailList
-        (item)">
+        <div class="item" v-for="(item,index) in historyBookList" :key="index" @click="playAudio(item.courseId,item.lockStatus)">
           <div class="item-box">
             <img :src="item.imgUrl" alt="" class="item-img" v-if="item.imgUrl">
             <img src="http://yun.dui88.com/youfen/images/read_course_none.png
@@ -695,7 +694,7 @@
         this.$http.get(url, {
           params
         }).then((res) => {
-          this.historyBookList = res.data.data.content;
+          this.historyBookList = res.data.data;
         });
       },
       // 获取详情list
