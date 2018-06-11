@@ -7,14 +7,16 @@
       "id": 191,
       "imgUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
       "lockStatus": false,
-      "readId": 128,
+      "readId": 111,
+      "courseId": 11,
       "title": "今天的网红"
     },
     {
       "id": 192,
       "imgUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
       "lockStatus": false,
-      "readId": 28,
+      "readId": 222,
+      "courseId": 22,
       "title": "今天的网红"
     },
     
@@ -22,7 +24,8 @@
       "id": 193,
       "imgUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
       "lockStatus": false,
-      "readId": 28,
+      "readId": 333,
+      "courseId": 33,
       "title": "今天的网红"
     }
     
