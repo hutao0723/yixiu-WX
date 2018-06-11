@@ -145,9 +145,7 @@
       },
       playAudio(readId,courseId){
         if(this.afterToday||this.isToday){
-          play.audioInit(readId,courseId,true)
-          // 跳转到播放页
-          this.$router.push("/audio/index/1");
+          play.audioInit(readId,courseId,true,this)
         }
 
       },

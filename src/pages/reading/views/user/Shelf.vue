@@ -83,13 +83,12 @@ export default {
   created() {
     },
   async mounted () {
+    this.setTitle('一修读书')
     await this.getSwipeInfo()
   },
   methods: {
     playAudio(readId,courseId){
-      play.audioInit(readId,courseId,true)
-      // 跳转到播放页
-      this.$router.push("/audio/index/1");
+      play.audioInit(readId,courseId,true,this)
     },
     async getSwipeInfo() {
       let objs = await user.getSwipeList();
