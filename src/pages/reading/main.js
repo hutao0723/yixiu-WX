@@ -71,6 +71,15 @@ Vue.prototype.clickFun = function (event, cb, obj) {
   console.log(event.currentTarget.getAttribute('monitor-log'))
   if(cb)cb(obj);
 }
+ // 获取monitor
+Vue.prototype.getMonitor =function(b, c, d) {
+  // item tabindex dpmc
+  return JSON.stringify({
+    'dcm': '8001.0.0.0',
+    'dpm': 'appid.' + b + '.' + c + '.' + d,
+
+  });
+},
 Vue.prototype.setTitle = function (t) {
   document.title = t;
 }

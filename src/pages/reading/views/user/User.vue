@@ -77,7 +77,7 @@
       </div>
     </div>
     <Contact v-show="contactToggle" v-on:success="success"/>
-    <bnav></bnav>
+    <bnav :dpm-b="825"></bnav>
     <AudioBar @click="clickFun($event)"  :monitor-log="getMonitor(825,8,0)"/>
   </div>
 

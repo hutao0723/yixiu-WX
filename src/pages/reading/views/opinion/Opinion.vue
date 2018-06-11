@@ -29,7 +29,7 @@
           </div>
     </div>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0"></div>
-    <bnav></bnav>
+    <bnav :dpm-b="823"></bnav>
     <AudioBar  @click="clickFun($event)"  :monitor-log="getMonitor(823,1,0)"/>
   </div>
 </template>
