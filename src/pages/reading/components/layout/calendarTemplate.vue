@@ -143,13 +143,14 @@
           /**调用计算空格子*/
           this.calculateDays(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
           //选中当天或者缺卡第一天
-
-          if(histroyUrl.indexOf('/comment')!=-1||histroyUrl.indexOf('/poster')!=-1 ){
-            //编辑页，海报页 返回
-            _this.isHistroy = true
-           // _this.clickDay(clickData.month_index,clickData.day_index,clickData.itemData)
-          }else {
-            _this.isHistroy = false
+          if(histroyUrl){
+            if(histroyUrl.indexOf('/comment')!=-1||histroyUrl.indexOf('/poster')!=-1 ){
+              //编辑页，海报页 返回
+              _this.isHistroy = true
+              // _this.clickDay(clickData.month_index,clickData.day_index,clickData.itemData)
+            }else {
+              _this.isHistroy = false
+            }
           }
           if(this.isTodayClock&&!this.isHistroy){
             //当天
