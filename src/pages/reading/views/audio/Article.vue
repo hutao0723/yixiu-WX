@@ -30,7 +30,6 @@ export default {
 @import '../../less/variable';
 .article-main {
   width: 750/@rem;
-  height: 100%;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   padding-top: 20/@rem;
