@@ -422,6 +422,7 @@ export default {
                         z-index: 3;
                         vertical-align: top;
                         -ms-interpolation-mode: bicubic;
+                        pointer-events: none;
                     }
                 }
             }
