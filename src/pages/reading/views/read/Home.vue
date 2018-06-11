@@ -559,9 +559,7 @@
           }, 2000)
           return false;
         }
-        play.audioInit(this.readId, id, true)
-        // 跳转到播放页
-        this.$router.push('/audio/index/1')
+        play.audioInit(this.readId, id, true, this)
       },
       // 选择课程
       selectCourse(item) {
