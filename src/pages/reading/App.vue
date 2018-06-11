@@ -17,7 +17,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['readPlaying'])
+    ...mapState(['readPlaying','readCurrentTime','readAudio'])
   },
   watch: {
     readPlaying(val) {
@@ -28,6 +28,14 @@ export default {
         }, 60000)
       } else {
         clearInterval(this.syncReadTime)
+      };
+      if (val) {
+        clearInterval(this.syncProgress)
+        this.syncProgress = setInterval(() => {
+          play.syncProgress(this.readAudio.readId, this.readAudio.courseId, this.readCurrentTime);
+        }, 5000)
+      } else {
+        clearInterval(this.syncProgress)
       }
     }
   },
@@ -58,7 +66,10 @@ export default {
     },
     // 音乐处于播放状态
     musicOnPlaying () {
-      state.readPlaying = true;
+      store.commit({
+        type: 'setPlaying',
+        readPlaying: true
+    })
     },
     // 音乐处于watting状态
     musicOnWaiting () {},
@@ -77,9 +88,13 @@ export default {
   mounted() {
     store.commit({ type: 'setReferer', referer: '' });  // 设置来源路径为空
     store.dispatch('set_AudioElement', this.$refs.audio);
-    store.commit('setPlaying')
+    store.commit({
+      type: 'setPlaying',
+      readPlaying: false
+    })
   },
   beforeDestroy () {
+    // play.syncProgress(this.readAudio.readId, this.readAudio.courseId, this.readCurrentTime);
   }
 };
 </script>

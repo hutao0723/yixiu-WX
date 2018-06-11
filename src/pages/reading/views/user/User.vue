@@ -107,7 +107,7 @@ export default {
       book: 0,
       time: "分钟",
       // 分享
-      recommendUrl: 'https://yun.duiba.com.cn/yoofans/images/201805/read/share2.png'
+      recommendUrl: 'https://yun.duiba.com.cn/yoofans/images/201805/read/recommend2.png'
     };
   },
   computed: {

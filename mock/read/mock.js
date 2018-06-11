@@ -17,9 +17,9 @@ var setOnline = [
     url: '/readBookCourse/courseDetail'
   },
   { 
-    name: 'baseLogin',
+    name: 'getAccessUrl',
     type: 'get',
-    url: '/baseLogin'
+    url: '/course/getAccessUrl'
   }
 ];
 

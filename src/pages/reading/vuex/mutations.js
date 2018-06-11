@@ -66,8 +66,8 @@ export default {
 		state.readLoadStart = obj.isloadstart;
 	},
 	// 设置音乐停止播放状态
-	setPlaying (state) {
-		state.readPlaying = false;
+	setPlaying (state, obj) {
+		state.readPlaying = obj.readPlaying;
 	},
 	// 重置打卡弹窗
 	resetShowCardModal (state) {
