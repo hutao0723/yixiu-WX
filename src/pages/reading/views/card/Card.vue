@@ -56,7 +56,7 @@
               <span>{{courseDetail.author}}<span class="audio-right">著</span></span>
             </div>
           </div>
-          <div class="book-btn">
+          <div class="book-btn" v-show="afterToday||isToday">
               <span  v-show="courseDetail.clockState&&courseDetail.commentState" @click.stop="goComment()">我的感想</span>
               <span  v-show="courseDetail.clockState&&!courseDetail.commentState" @click.stop="goComment()">写想法</span>
               <span  v-show="!courseDetail.clockState" @click.stop="goComment()">去打卡</span>

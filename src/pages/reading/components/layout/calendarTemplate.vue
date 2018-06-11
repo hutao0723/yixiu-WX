@@ -76,14 +76,16 @@
         let child;
         let father = document.querySelector('.calendar-box');
         if(this.isFrist){
-          if(this.isTodayClock==1){
+          if(this.isTodayClock==1&&!this.isHistroy){
             //定位当天
             console.log('当天定位')
             child = document.querySelector('.isToday_def');
-          }else{
+          }else if(this.isTodayClock==0&&!this.isHistroy){
             //定位第一次缺卡位置
             console.log('缺卡第一天定位')
             child = document.querySelector('.isFirstLackCard');
+          }else{
+            child = document.querySelector('.isClick').parentNode.parentNode
           }
           //console.log('child---'+child.offsetTop)
           //console.log('father---'+father.offsetTop)
@@ -147,7 +149,6 @@
             if(histroyUrl.indexOf('/comment')!=-1||histroyUrl.indexOf('/poster')!=-1 ){
               //编辑页，海报页 返回
               _this.isHistroy = true
-              // _this.clickDay(clickData.month_index,clickData.day_index,clickData.itemData)
             }else {
               _this.isHistroy = false
             }
