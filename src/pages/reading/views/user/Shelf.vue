@@ -36,7 +36,7 @@
         <div class="alert-bg" @click="alertToggle = false;"></div>
       </div> -->
     </div>
-     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0" ></div>
+     
      <AudioBar/>
   </div>
 
@@ -105,42 +105,27 @@ export default {
         console.log("获取数据失败")
       }
     },
-    loadMore () {
-      this.busy = true;
-      this.pageNum ++;
-      this.getBookList(this.readId)
-    },
     // 获取书籍列表
     getBookList (readId){
       if(this.readId != readId){
-        this.pageNum = 1
         this.bookList = []
       }
       this.readId = readId
       const url = `/readBook/bookList`;
       let params = {}
         params = {
-          readId: this.readId,
-          pageNum: this.pageNum,
-          pageSize: 12
+          readId: this.readId
         }
         this.$http.get(url, {
           params
         }).then((res) => {
-          console.log(res.data.success)
           let objs = res.data
           let obj = objs.data
+          console.log(obj)
           if (objs.success) {
-            if (obj.content && obj.content.length > 0) {
-              this.busy = false;
-              if (!this.bookList) {
-                this.bookList = obj.content;
-              } else {
-                this.bookList = this.bookList.concat(obj.content);
-              };
-            } else {
-              this.busy = true
-            };
+            if (obj && obj.length > 0) {
+                this.bookList = obj;
+            } 
           } else {
             this.busy = true
             console.log("获取数据失败")

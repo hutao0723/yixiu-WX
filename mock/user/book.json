@@ -1,8 +1,7 @@
 
 {
   "code": "string",
-  "data": {
-    "content":[
+  "data": [
     {
       "courseId": 111,
       "courseType": 1,
@@ -43,8 +42,7 @@
       "verticalCover": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg"
     }
     
-  ]
-  },
+  ],
   "desc": "string",
   "success": true
 }
