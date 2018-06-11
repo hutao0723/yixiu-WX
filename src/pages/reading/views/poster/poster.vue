@@ -54,7 +54,7 @@ export default {
 		// 	"readName": "阅读计划-测试1",
 		// 	"readStageId": 9,
 		// 	"readStageNum": 1,
-		// 	"content": "我们曾来文艺青年们，现在都已文艺青年们，现在都已来文艺青年们，现在都已文艺青年们，现在都已经不玩儿憔悴了我有小肚。所以她有圆圆脸，我有小肚腩。",
+		// 	"content": "海报换行测试  我们都是好孩子，我们都是好孩子。我们都是好孩子！我们都是好孩子？我们都是好孩子...往往畏畏缩缩点点滴滴。世界顶级觉得觉得你发怒发怒奶粉！仿佛个大家都觉得觉得你呢电话信号进行减肥额都觉得亟待解决Reading makes me happy and proud to have you in the same place again I love ? I am so a good person to and be happy to you I will always be happy to see",
 		// 	"releaseTime": "2018-05-30 14:22:13",
 		// 	"releaseTimeLabel": "深夜",
 		// 	"praiseCount": 3,
@@ -68,19 +68,19 @@ export default {
 		// 	"bookBgimgUrl": ""
 		// }
 		// //头部背景图
-		// 	if (!_this.info.bookBgimgUrl) {
-		// 		_this.info.bookBgimgUrl = "http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg";
-		// 	};
-		// 	if(!_this.info.courseUrl){
-		// 		_this.info.courseUrl = 'http://yun.dui88.com/youfen/images/read_course_none.png';
-		// 	};
-		// 	//二维码写死
-		// 	_this.info.readQrcodeImgUrl = "http://yun.dui88.com/yoofans/images/201806/code.jpg";
-		// 	//默认观点
-		// 	if(!_this.info.content){
-		// 		_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
-		// 	};
-		// 	_this.createdCanvas();
+		// if (!_this.info.bookBgimgUrl) {
+		// 	_this.info.bookBgimgUrl = "http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg";
+		// };
+		// if(!_this.info.courseUrl){
+		// 	_this.info.courseUrl = 'http://yun.dui88.com/youfen/images/read_course_none.png';
+		// };
+		// //二维码写死
+		// _this.info.readQrcodeImgUrl = "http://yun.dui88.com/yoofans/images/201806/code.jpg";
+		// //默认观点
+		// if(!_this.info.content){
+		// 	_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
+		// };
+		// _this.createdCanvas();
 
 	},
   	methods: {
@@ -187,7 +187,8 @@ export default {
 			}
 			//判断是否是自己的分享，不是不显示打卡天数
 			if (!_this.isSelf) {
-				responseHeight = responseHeight - _this.conversion(105);
+				//无虚线的时候添加20
+				responseHeight = responseHeight - _this.conversion(105)+_this.conversion(20)*1;
 			}
 			myCanvas.width = _this.conversion(750);
 			myCanvas.height = _this.conversion(1200) * 1 + responseHeight;
@@ -361,7 +362,6 @@ export default {
 								sum++;
 							}
 						})
-
 					})
 					
 					//绘制作者信息
