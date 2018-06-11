@@ -77,6 +77,14 @@ export default {
 
     },
     methods: {
+        // 获取monitor
+      getMonitor(b, c, d) {
+        // item tabindex dpmc
+        return JSON.stringify({
+          'dcm': '8002.0.0.0',
+          'dpm': 'appid.' + b + '.' + c + '.' + d,
+        });
+      },
 
         async getUserInfo(){ // 拉取微信用户的昵称和头像
             let obj = await sales.getUserInfo()

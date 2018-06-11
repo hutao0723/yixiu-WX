@@ -29,7 +29,7 @@
           </div>
     </div>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0"></div>
-    <bnav :dpm-b="823"></bnav>
+    <bnav :dpm-b="823" :dcm-a="8002"></bnav>
     <AudioBar  @click="clickFun($event)"  :monitor-log="getMonitor(823,1,0)"/>
   </div>
 </template>
@@ -125,6 +125,14 @@
       
     },
     methods: {
+      // 获取monitor
+      getMonitor(b, c, d) {
+        // item tabindex dpmc
+        return JSON.stringify({
+          'dcm': '8002.0.0.0',
+          'dpm': 'appid.' + b + '.' + c + '.' + d,
+        });
+      },
       // 获取用户信息
       async getUsetState() {
         let self = this;

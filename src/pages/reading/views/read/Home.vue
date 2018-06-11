@@ -2,8 +2,9 @@
   <div class="home-main">
     <!-- 未报名已关注 -->
     <div class="home-type" v-show="pageStatus == 1 || pageStatus == 0">
-      <bnav :dpm-b="820"></bnav>
-      <a href="https://kefu.easemob.com/webim/im.html?configId=f56195f3-2ff6-412b-983e-0231f5586efb" class="home-service" :class="{bottom:bottomNavToggle}" @click="clickFun($event)" :monitor-log="getMonitor(820,8,0)"></a>
+      <bnav :dpm-b="820"  :dcm-a="8001"></bnav>
+      <a href="https://kefu.easemob.com/webim/im.html?configId=f56195f3-2ff6-412b-983e-0231f5586efb" class="home-service" :class="{bottom:bottomNavToggle}"
+        @click="clickFun($event)" :monitor-log="getMonitor(820,8,0)"></a>
       <div class="home-tab clearfix" id="hometab">
         <div class="item" @click="clickFun($event,tabActiveToggle,true)" :monitor-log="getMonitor(820,1,1)">
           <span :class="{ active: tabActive}">简介</span>
@@ -12,7 +13,8 @@
           <span :class="{ active: !tabActive}">课程</span>
         </div>
       </div>
-      <div class="home-bottom" @click="clickFun($event,tabActiveToggle,false)" :class="{bottom:bottomNavToggle}" v-show="tabActive" :monitor-log="getMonitor(820,4,0)">去选课程</div>
+      <div class="home-bottom" @click="clickFun($event,tabActiveToggle,false)" :class="{bottom:bottomNavToggle}" v-show="tabActive"
+        :monitor-log="getMonitor(820,4,0)">去选课程</div>
       <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="!tabActive&&readList.length>0&&payBtnShow">
         <p>
           <span class="text-del">{{selectCourseObj.costPrice}}</span>
@@ -85,16 +87,16 @@
     </div>
     <!-- 报名未关注 -->
     <div class="home-wechat" v-if="pageStatus == 2">
-      <bnav :dpm-b="822"></bnav>
+      <bnav :dpm-b="822" :dcm-a="8001"></bnav>
       <p class="text-a">
         <i class="iconfont"></i>您已成功报名</p>
       <p class="text-b">长按识别二维码</p>
       <p class="text-c">关注公众号，去等待开课</p>
-      <img src="http://yun.dui88.com/youfen/images/read_ewm3.png" alt="" class="text-ewm" @click="clickFun($event)"  :monitor-log="getMonitor(822,1,0)">
+      <img src="http://yun.dui88.com/youfen/images/read_ewm3.png" alt="" class="text-ewm" @click="clickFun($event)" :monitor-log="getMonitor(822,1,0)">
     </div>
     <!-- 报名未开课 -->
     <div class="home-nonevent" v-if="pageStatus == 3">
-      <bnav :dpm-b="821"></bnav>
+      <bnav :dpm-b="821" :dcm-a="8001"></bnav>
       <div class="nonevent-box">
         <p class="text-a">您已成功报名</p>
         <p class="text-b">「 {{courseDetail.title}} 」</p>
@@ -103,14 +105,14 @@
       <p class="text-d">长按识别二维码添加老师微信</p>
       <p class="text-e">因添加学员较多，老师会在3个工作日内通过，请耐心等待~</p>
       <div class="ewm-bg">
-        <img :src="courseDetail.teacherWxQrcodeUrl" alt="" @click="clickFun($event)"  :monitor-log="getMonitor(821,1,0)">
+        <img :src="courseDetail.teacherWxQrcodeUrl" alt="" @click="clickFun($event)" :monitor-log="getMonitor(821,1,0)">
       </div>
       <p class="text-g">微信添加老师后，你的专属老师会在课程</br>开始前邀请你进入对应班级群</p>
     </div>
     <!-- 已关注已开课 -->
     <div class="home-already" v-if="pageStatus == 4">
-      <bnav :dpm-b="830"></bnav>
-      <AudioBar @click="clickFun($event)"  :monitor-log="getMonitor(822,1,0)"/>
+      <bnav :dpm-b="830" :dcm-a="8001"></bnav>
+      <AudioBar @click="clickFun($event)" :monitor-log="getMonitor(822,1,0)" />
       <h2>今日学习
         <span> | 第{{todayBookDetail.days}}/{{todayBookDetail.totalDays}}天</span>
       </h2>
@@ -384,8 +386,15 @@
       }
     },
     methods: {
-      
-     
+
+      // 获取monitor
+      getMonitor(b, c, d) {
+        // item tabindex dpmc
+        return JSON.stringify({
+          'dcm': '8001.0.0.0',
+          'dpm': 'appid.' + b + '.' + c + '.' + d,
+        });
+      },
       // 展开收起
       unfoldToggle(n, index) {
         let self = this;

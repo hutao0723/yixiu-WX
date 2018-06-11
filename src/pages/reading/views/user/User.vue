@@ -77,7 +77,7 @@
       </div>
     </div>
     <Contact v-show="contactToggle" v-on:success="success"/>
-    <bnav :dpm-b="825"></bnav>
+    <bnav :dpm-b="825" :dcm-a="8001"></bnav>
     <AudioBar @click="clickFun($event)"  :monitor-log="getMonitor(825,8,0)"/>
   </div>
 
@@ -123,6 +123,14 @@ export default {
       self.wxShare(userState.data.userId);
   },
   methods: {
+    // 获取monitor
+      getMonitor(b, c, d) {
+        // item tabindex dpmc
+        return JSON.stringify({
+          'dcm': '8001.0.0.0',
+          'dpm': 'appid.' + b + '.' + c + '.' + d,
+        });
+      },
     // 联系客服
     success(){
       this.contactToggle = false;

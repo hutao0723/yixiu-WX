@@ -25,6 +25,9 @@
     props : {
       dpmB: {
         default: false
+      },
+      dcmA: {
+        default: false
       }
     },
     computed: {
@@ -100,7 +103,16 @@
           ]
         }
       }
-    }
+    },
+    methods: {
+      // 获取monitor
+      getMonitor(b, c, d) {
+        // item tabindex dpmc
+        return JSON.stringify({
+          'dcm': this.dcmA + '.0.0.0',
+          'dpm': 'appid.' + b + '.' + c + '.' + d,
+        });
+      },
   };
 
 </script>
