@@ -46,6 +46,7 @@ export function monitorHandler () {
 
             try {
               monitorList.push(JSON.parse(monitorLog));
+              // monitorList.push(monitorLog);
             } catch (e) {
             }
           }
@@ -72,19 +73,25 @@ export function monitorHandler () {
       } catch (e) {
         // 数据异常;
       }
-
+      
+      // 获取公共字段
+      var app_id = 'app_id';
+      var referer = 'referer';
+      var url = window.location.href.split('?')[0];
+      var adzoneId = pointer.$route.query.dcd ? pointer.$route.query.dcd : ''; 
+      var itemType = 4;
       // 单独发送埋点还是批量发送埋点
       if (data.length > 1) {
-        var {referer, url, adzoneId, pageId} = data[0];
-        var params = {referer, url, adzoneId, pageId};
+        var params = {app_id, referer, url, adzoneId, itemType};
         var body = [];
         for (var i = 0; i < data.length; i++) {
-          var {dpm, dcm, moduleId, itemType, itemId} = data[i];
-          body.push({dpm, dcm, moduleId, itemType, itemId});
+          var {dpm, dcm} = data[i];
+          body.push({dpm, dcm});
         }
         params.body = JSON.stringify(body); 
       } else {
-        params = data[0];
+        var {dpm, dcm} = data[0];
+        params = {app_id, referer, url, adzoneId, itemType, dcm, dpm};
       }
       
       pointer.$http.post(exposeUrl, params).then((res) => {
