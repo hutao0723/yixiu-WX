@@ -183,6 +183,7 @@
   } from 'vuex';
 
   const testUrl = window.location.hostname == 'localhost' ? '/api' : '';
+
   const API = {
     orderSubmit: testUrl + '/order/submit',
     paySubmit: testUrl + '/pay/submit',
@@ -246,20 +247,20 @@
       if (window.location.href.indexOf('from') != -1) {
         location.replace('/reading.html#/index/home?' + window.location.href.split('?')[2])
       }
+      let refreshCookie = true;
 
       // 防止cookie丢失
-      let refreshCookie = true;
-      if (window.location.href.indexOf('afterLogin') == -1) {
-        let res = await this.$http.get('/baseLogin', {
-          params: {
-            dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
+        if (window.location.href.indexOf('afterLogin') == -1) {
+          let res = await this.$http.get('/baseLogin', {
+            params: {
+              dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
+            }
+          })
+          if (res.data.success && res.data.data) {
+            refreshCookie = false;
+            location.replace(res.data.data);
           }
-        })
-        if (res.data.success && res.data.data) {
-          refreshCookie = false;
-          location.replace(res.data.data);
         }
-      }
 
       if (refreshCookie) {
         this.setTitle('一修读书')
@@ -293,10 +294,7 @@
               type: 'setBottomNavType',
               bottomNavType: false
             })
-            store.commit({
-              type: 'setVideoToggle',
-              videoToggle: false
-            })
+            
 
           }
           if (
@@ -314,10 +312,7 @@
               type: 'setBottomNavType',
               bottomNavType: false
             })
-            store.commit({
-              type: 'setVideoToggle',
-              videoToggle: false
-            })
+            
 
           }
 
@@ -335,10 +330,7 @@
               type: 'setBottomNavType',
               bottomNavType: false
             })
-            store.commit({
-              type: 'setVideoToggle',
-              videoToggle: false
-            })
+            
           }
 
           if (
@@ -355,10 +347,7 @@
               type: 'setBottomNavType',
               bottomNavType: false
             })
-            store.commit({
-              type: 'setVideoToggle',
-              videoToggle: false
-            })
+            
           }
 
           if (
@@ -376,10 +365,7 @@
               type: 'setBottomNavType',
               bottomNavType: true
             })
-            store.commit({
-              type: 'setVideoToggle',
-              videoToggle: true
-            })
+            
           }
 
           if (
@@ -397,10 +383,7 @@
               type: 'setBottomNavType',
               bottomNavType: false
             })
-            store.commit({
-              type: 'setVideoToggle',
-              videoToggle: false
-            })
+            
           }
         }
 
@@ -1280,7 +1263,8 @@
         color: #666;
       }
       .text-ewm {
-        .size(688,688);
+        .size(688,
+        688);
         margin: 40/@rem auto;
         display: block;
       }

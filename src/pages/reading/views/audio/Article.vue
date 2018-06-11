@@ -31,12 +31,7 @@ export default {
 .article-main {
   width: 750/@rem;
   height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   padding-top: 20/@rem;
   background: #fff;
