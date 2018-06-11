@@ -38,7 +38,7 @@
       <calendar-template  :calendarDate='c_date' @getDate="getDate" ></calendar-template>
     </div>
     <div class="book-book" >
-      <div class="book-detail-box" v-show="afterToday||isToday" >
+      <div class="book-detail-box" v-show="courseDetail" >
         <div class="book-img" @click.stop="playAudio(readId,courseId)" >
           <img v-if="courseDetail.courseUrl" :src="courseDetail.courseUrl" alt="">
           <img v-else src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="">
@@ -176,9 +176,10 @@
         if(msg.isRange){
           _this.afterToday = msg.afterToday;
           _this.isToday = msg.isToday;
-          if(msg.afterToday||msg.isToday){
-            _this.getCourseDetail(msg.date)
-          }
+          _this.getCourseDetail(msg.date)
+          // if(msg.afterToday||msg.isToday){
+          //
+          // }
           if(msg.dayNum){
             _this.dayNum = msg.dayNum;
           }
