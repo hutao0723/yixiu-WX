@@ -111,7 +111,7 @@
         text-align: center;
         p {
           line-height: 34/@rem;
-          color: #B3B3B3;
+          color: #444444;
         }
         i {
           font-size: 32/@rem;
