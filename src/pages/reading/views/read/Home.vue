@@ -243,6 +243,10 @@
     created() {},
     async mounted() {
       let self = this;
+      // dcd存入cookie
+      if (self.$route.query.dcd) {
+          this.setCookie('dcd',self.$route.query.dcd,2)
+        }
       // 如果是支付流程直接支付
       if (window.location.href.indexOf('from') != -1) {
         location.replace('/reading.html#/index/home?' + window.location.href.split('?')[2])
@@ -266,7 +270,7 @@
         this.setTitle('一修读书')
 
         if (self.$route.query.dcd) {
-          self.getDcd(self.$route.query.dcd)
+          self.getDcd(self.$route.query.dcd || self.getCookie('dcd'))
         }
         if (self.$route.query.courseId) {
           self.tabActive = false;
@@ -392,6 +396,22 @@
       }
     },
     methods: {
+      setCookie(cname,cvalue,exhours){   
+        var d = new Date();
+        d.setTime(d.getTime()+(exhours*60*60*1000));
+        var expires = "expires="+d.toGMTString();
+        document.cookie = cname + "=" + cvalue + "; " + expires;
+      },
+      getCookie(cname){
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) 
+        {
+          var c = ca[i].trim();
+          if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+        }
+        return "";
+      },
 
       // 展开收起
       unfoldToggle(n, index) {
@@ -426,7 +446,7 @@
         const res = await this.$http.post(url, {
           itemId,
           itemType,
-          dcd: this.$route.query.dcd ? this.$route.query.dcd : '',
+          dcd: this.$route.query.dcd || this.getCookie('dcd') || '',
         });
         if (!res.data.success) {
           location.href = '/reading.html#/index/home';

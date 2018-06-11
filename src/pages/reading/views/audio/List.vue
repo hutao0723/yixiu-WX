@@ -41,6 +41,7 @@ export default {
   },
   methods: {
     async playAudio(item) {
+      store.commit('play');
       // 获取课程详情
       let readAudio = await play.getReadDetail(item.readId, item.id);
       readAudio.index = store.getters.getReadIds.indexOf(item.id);
