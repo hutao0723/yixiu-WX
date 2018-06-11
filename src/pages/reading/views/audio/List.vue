@@ -40,9 +40,9 @@ export default {
     play.getReadList(this.readAudio.readId)
   },
   methods: {
-    playAudio(item) {
+    async playAudio(item) {
       // 播放某一课程
-      play.audioInit(item.readId, item.id, false);
+      await play.audioInit(item.readId, item.id, false);
       this.$router.go(-1);
     }
   },

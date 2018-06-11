@@ -91,7 +91,7 @@ export default {
   },
   async mounted () {
     let readAudio = this.readAudio;
-    let freshAudio = await play.getReadDetail(readAudio.readId, readAudio.courseId);
+    let freshAudio = await play.getReadDetail(store.getters.getAudioInfo.readId, store.getters.getAudioInfo.courseId);
     Object.assign(readAudio, freshAudio);
     readAudio.src = await play.getAudioUrl(store.getters.getAudioInfo.readId, store.getters.getAudioInfo.courseId);
     store.commit({ type: 'setAudio', readAudio: readAudio });
