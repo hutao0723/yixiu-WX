@@ -7,7 +7,7 @@
         </div>
         <div class="clearfix">
           <div class="book-table" v-for="(item, index) in bookList" >
-            <div @click="playAudio(item.readId,item.courseId)">
+            <div @click="getdayNumInfo(item.id,item.readId,item.title)">
               <div class="book-cover">
                 <img :src="item.imgUrl || frontImgUrl">
               </div>
@@ -25,7 +25,7 @@
         </div>
       </div>
 
-     <!--  <div class="already-alert" v-show="alertToggle">
+      <div class="already-alert" v-show="alertToggle">
         <div class="alert-top">
           <h3>《{{bookName}}》</h3>
           <div class="clearfix book-box" >
@@ -34,7 +34,7 @@
         </div>
         <div class="alert-btn" @click="alertToggle = false;">取消</div>
         <div class="alert-bg" @click="alertToggle = false;"></div>
-      </div> -->
+      </div>
     </div>
      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0" ></div>
      <AudioBar/>
@@ -147,18 +147,18 @@ export default {
           }
 
         });
-    }
+    },
     // 获取弹框列表
-    // async getdayNumInfo (bookId,readId,title) {
-    //   let objs = await user.getdayNum(bookId,readId);
-    //   if (objs.success) {
-    //     this.bookName = title
-    //     this.dayNumList = objs.data
-    //     this.alertToggle = true
-    //   } else {
-    //     console.log("获取数据失败")
-    //   }
-    // }
+    async getdayNumInfo (bookId,readId,title) {
+      let objs = await user.getdayNum(bookId,readId);
+      if (objs.success) {
+        this.bookName = title
+        this.dayNumList = objs.data
+        this.alertToggle = true
+      } else {
+        console.log("获取数据失败")
+      }
+    }
 
   }
 }
