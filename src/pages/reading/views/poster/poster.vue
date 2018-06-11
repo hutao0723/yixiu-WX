@@ -96,7 +96,7 @@ export default {
 			if (res.data.success) {
 				_this.info = res.data.data;
 
-				_this.info.readQrcodeImgUrl = "http://yun.dui88.com/yoofans/images/201806/code.jpg";
+				_this.info.readQrcodeImgUrl = "http://yun.dui88.com/youfen/images/code_ewm.png";
 				//头部背景图
 				if (!_this.info.bookBgimgUrl) {
 					_this.info.bookBgimgUrl = "http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg";
@@ -114,6 +114,7 @@ export default {
 				console.log("获取数据失败");
 			}
 		},
+		
 		toCertificate(data) {
 			this.$router.push("/graduation");
 		},
