@@ -22,8 +22,8 @@ setDPR();
 remChange();
 
 // // monitor 埋点
-// import { monitorHandler } from './components/utils/monitorHandler';
-// monitorHandler();
+import { monitorHandler } from './components/utils/monitorHandler';
+monitorHandler();
 // 设备id
 if (!window.localStorage.getItem('deviceId')) {
   setTimeout(function(){
@@ -34,7 +34,7 @@ if (!window.localStorage.getItem('deviceId')) {
 
 Vue.http.headers.common['deviceId'] = window.localStorage.getItem('deviceId');
 Vue.http.headers.common['from'] = 'read';
-// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjmG9y4bubBAPMkMp8Xbk2RJzkL6Q9KcAkUJesSUedyZwJmTZZCMkBRbPTXDibsQovFcRK6xNDxB2aqLCVLmcfuBtPJistXu4vGfgpiWpDDQUWPjDyBb6Mok7FWRgtwq9YZaVN';
+Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjmG9y4cSt6Nt2bmZ9kUVnysi3rxCZddYqfJUpZrmp9Q7TZrq5AM93mQqSTLfnjDLfnAHhLJAb5i97tQqYfEEPpA6vZpSmyi53u2Eqyn9ftHBk1DPxfxxtq8YRpCD2SZmBKDvz';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;

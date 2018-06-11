@@ -167,6 +167,11 @@
           }
           this.days[index1][index].isClick=true;
         }
+        // 切换曝光
+        let self = this;
+        setTimeout(() => {
+          window.monitor && window.monitor.showLog(self);
+        }, 100)
       },
       getThisMonthDays(year, month) { //月 天数
         return new Date(year, month, 0).getDate();
