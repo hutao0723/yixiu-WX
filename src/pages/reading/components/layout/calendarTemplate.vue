@@ -78,17 +78,13 @@
         if(this.isFrist){
           if(this.isTodayClock==1&&!this.isHistroy){
             //定位当天
-            console.log('当天定位')
             child = document.querySelector('.isToday_def');
           }else if(this.isTodayClock==0&&!this.isHistroy){
             //定位第一次缺卡位置
-            console.log('缺卡第一天定位')
             child = document.querySelector('.isFirstLackCard');
           }else{
             child = document.querySelector('.isClick').parentNode.parentNode
           }
-          //console.log('child---'+child.offsetTop)
-          //console.log('father---'+father.offsetTop)
           father.scrollTop = child.offsetTop - father.offsetTop-10;
           this.isFrist = false
         }
@@ -138,9 +134,7 @@
         this.today = today;
         let clickData = JSON.parse(sessionStorage.getItem('clickData'));
         let histroyUrl = sessionStorage.getItem('histroyUrl')
-        console.log(clickData,histroyUrl)
         for(let i = 0;i<_this.caledarArr.length;i++){
-          console.log(_this.caledarArr)
           this.calculateEmptyGrids(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
           /**调用计算空格子*/
           this.calculateDays(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
