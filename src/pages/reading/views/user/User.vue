@@ -21,13 +21,13 @@
               <div class="text">累计阅读</div>
             </li>
         </ul>
-      <router-link :to="{ path: '/personal/share/poster' }">
+      <router-link :to="{ path: '/personal/share/poster' }" @click="clickFun($event)"  :monitor-log="getMonitor(825,1,0)">
         <div class="mt20 recommend bgfff">
             <img :src="recommendUrl">
             
         </div>
       </router-link>
-      <router-link :to="{ path: '/journey' }">
+      <router-link :to="{ path: '/journey' }" @click="clickFun($event)"  :monitor-log="getMonitor(825,2,0)">
         <div class="bgfff">
           <div class="person-h90 row mt20 border" >
             <div class="icon-box column-center">
@@ -37,7 +37,7 @@
           </div>
         </div>
       </router-link>
-      <router-link :to="{ path: '/shelf' }">
+      <router-link :to="{ path: '/shelf' }" @click="clickFun($event)"  :monitor-log="getMonitor(825,3,0)">
         <div class="bgfff">
           <div class="person-h90 row border">
             <div class="icon-box column-center">
@@ -47,7 +47,7 @@
           </div>
         </div>
       </router-link>
-      <router-link :to="{ path: '/lecturer' }">
+      <router-link :to="{ path: '/lecturer' }" @click="clickFun($event)"  :monitor-log="getMonitor(825,4,0)">
         <div class="bgfff">
           <div class="person-h90 row border" >
             <div class="icon-box column-center">
@@ -67,7 +67,7 @@
           </div>
         </div>
       </router-link>
-      <div class="bgfff" @click="contactToggle = true">
+      <div class="bgfff"  @click="clickFun($event);contactToggle = true"  :monitor-log="getMonitor(825,5,0)">
         <div class="person-h90 row mt20" >
           <div class="icon-box column-center">
             <i class="iconfont icon-ear person-icon"></i>
@@ -78,7 +78,7 @@
     </div>
     <Contact v-show="contactToggle" v-on:success="success"/>
     <bnav></bnav>
-    <AudioBar/>
+    <AudioBar @click="clickFun($event)"  :monitor-log="getMonitor(825,8,0)"/>
   </div>
 
 </template>

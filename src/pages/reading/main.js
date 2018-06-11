@@ -66,6 +66,11 @@ Vue.http.interceptors.push((request, next) => {
     }
   });
 });
+
+Vue.prototype.clickFun = function (event, cb, obj) {
+  console.log(event.currentTarget.getAttribute('monitor-log'))
+  if(cb)cb(obj);
+}
 Vue.prototype.setTitle = function (t) {
   document.title = t;
 }

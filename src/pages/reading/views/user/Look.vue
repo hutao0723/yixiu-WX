@@ -1,6 +1,7 @@
 <template>
     <div class="diploma-container">
-        <div class="class=""><img :src="diplomaUrl"></div>
+        <div class=""><img :src="diplomaUrl">
+        </div>
         <div class="save">
             <div class="btn">长按保存分享</div>
             <img :src="diplomaUrl" class="btn-img">

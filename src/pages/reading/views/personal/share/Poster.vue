@@ -22,7 +22,7 @@
         </div>
         <div class="poster-swiper">
             <PosterSwiper :readPlanPostersArr=readPlanPostersArr @getSwiperIndex=getSwiperIndex />
-            <div class="ps-fx">
+            <div class="ps-fx"  @click="clickFun($event)"  :monitor-log="getMonitor(824,1,0)">
                 <img src="" alt="" id="fx_img">
                 <i class="iconfont icon-finger"></i>
                 <span>长按分享</span>

@@ -5,7 +5,7 @@
       <bnav></bnav>
       <a href="https://kefu.easemob.com/webim/im.html?configId=f56195f3-2ff6-412b-983e-0231f5586efb" class="home-service" :class="{bottom:bottomNavToggle}" @click="clickFun($event)" :monitor-log="getMonitor(820,8,0)"></a>
       <div class="home-tab clearfix" id="hometab">
-        <div class="item" @click="tabActiveToggle(true)" :monitor-log="getMonitor(820,1,1)">
+        <div class="item" @click="clickFun($event,tabActiveToggle,true)" :monitor-log="getMonitor(820,1,1)">
           <span :class="{ active: tabActive}">简介</span>
         </div>
         <div class="item" @click="clickFun($event,tabActiveToggle,false)" :monitor-log="getMonitor(820,1,2)">
@@ -384,10 +384,7 @@
       }
     },
     methods: {
-      clickFun(event, cb, obj) {
-        console.log(event.currentTarget.getAttribute('monitor-log'))
-        if(cb)cb(obj);
-      },
+      
       // 获取monitor
       getMonitor(b, c, d) {
         // item tabindex dpmc

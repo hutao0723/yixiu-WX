@@ -17,20 +17,20 @@
               <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
             </div>
             <div class="item-bottom">
-              <p @click="setCommentPraise(item.id,item.userPraise)">
+              <p @click="clickFun($event,setCommentPraise,item)"  :monitor-log="getMonitor(823,3,'2' + index)">
                   <span class="fr" v-show="item.praiseCount>0">{{item.praiseCount}}</span>
                 <i class="iconfont icon-dianzan fr" v-show="!item.userPraise"></i>
                 <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
               </p>
-              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr" v-if="userId == item.userId"></router-link>
-              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr" v-if="userId != item.userId"></router-link>
+              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr" v-if="userId == item.userId" @click="clickFun($event)"  :monitor-log="getMonitor(823,3,'1' + index)"></router-link>
+              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr" v-if="userId != item.userId" @click="clickFun($event)"  :monitor-log="getMonitor(823,3,'1' + index)"></router-link>
               <span class="fl">{{item.releaseTime | timeTransition}}</span>
             </div>
           </div>
     </div>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0"></div>
     <bnav></bnav>
-    <AudioBar/>
+    <AudioBar  @click="clickFun($event)"  :monitor-log="getMonitor(823,1,0)"/>
   </div>
 </template>
 
@@ -177,15 +177,15 @@
           })
         });
       },
-      setCommentPraise(id, status) {
+      setCommentPraise(item) {
         if (this.pageStatus == 0) {
           return false;
         }
         let self = this;
         let params = {};
         params = {
-          status: status ? 0 : 1,
-          commentId: id
+          status: item.userPraise ? 0 : 1,
+          commentId: item.id
         }
         const url = API.commentPraise;
         this.$http.get(url, {
