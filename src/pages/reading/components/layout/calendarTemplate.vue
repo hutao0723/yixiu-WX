@@ -146,7 +146,7 @@
           this.calculateDays(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
           //选中当天或者缺卡第一天
           if(histroyUrl){
-            if(histroyUrl.indexOf('/comment')!=-1||histroyUrl.indexOf('/poster')!=-1 ){
+            if(histroyUrl.indexOf('/comment')!=-1||histroyUrl.indexOf('/poster')!=-1||histroyUrl.indexOf('/audio')!=-1 ){
               //编辑页，海报页 返回
               _this.isHistroy = true
             }else {
