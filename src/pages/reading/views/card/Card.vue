@@ -73,8 +73,6 @@
 </template>
 
 <script>
-
-
   import { mapState } from 'vuex';
   import bnav from '../../components/basic/Nav';
   import calendarTemplate from '../../components/layout/calendarTemplate';
@@ -114,9 +112,6 @@
     },
     mounted () {
       this.getReadStatus()
-      console.log('*****')
-      let aaa = document.querySelector('.calendar-box');
-      console.log(aaa.offsetTop,aaa.offsetHeight,aaa.offsetTop+aaa.offsetHeight)
     },
    watch:{
      readId(){
@@ -158,7 +153,7 @@
       },
       //获取阅读状态
       getReadStatus(){
-        this.$http.get('/user/read/state').then(res =>{
+        this.$http.get('/api/user/read/state').then(res =>{
           let resp = res.data;
           if(resp.success){
             this.readInfo = resp.data;
@@ -168,7 +163,7 @@
       },
       //获取最新课程详情
       getReadDetail(){
-        this.$http.get('/user/read/detail').then(res=>{
+        this.$http.get('/api/user/read/detail').then(res=>{
           let resp = res.data;
           if(resp.success){
             this.readDetail = resp.data;
@@ -194,7 +189,7 @@
       //打卡日历
       getClockCalendar(){
         let _this = this;
-        _this.$http.get('/user/read/clockCalendar?readId='+this.readId).then(res=>{
+        _this.$http.get('/api/user/read/clockCalendar?readId='+this.readId).then(res=>{
           let resp = res.data;
           if(resp.success){
             _this.c_date = resp.data;
@@ -206,7 +201,7 @@
       //打卡课程详情
       getCourseDetail(date){
         let _this = this;
-        _this.$http.get('/readBookCourse/courseDetailByDate?readId='+_this.readId+'&date='+date).then(res=>{
+        _this.$http.get('/api/readBookCourse/courseDetailByDate?readId='+_this.readId+'&date='+date).then(res=>{
           let resp = res.data;
           if(resp.success){
             _this.courseDetail = resp.data;

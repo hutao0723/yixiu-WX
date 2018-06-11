@@ -27,7 +27,7 @@ remChange();
 // 设备id
 if (!window.localStorage.getItem('deviceId')) {
   setTimeout(function(){
-    new fingerprint().get(function(deviceId) { 
+    new fingerprint().get(function(deviceId) {
     window.localStorage.setItem('deviceId', deviceId) // a hash, representing your device fingerprint
   })},100)
 }
@@ -142,4 +142,10 @@ new Vue({
     App
   }
 });
+
+router.beforeEach((to, from, next) => {
+  let histroyUrl = from.path;
+  sessionStorage.setItem('histroyUrl',histroyUrl);
+  next()
+})
 
