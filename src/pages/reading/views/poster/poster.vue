@@ -370,7 +370,8 @@ export default {
 					ctx.fillText("长按识别二维码",_this.conversion(126),_this.conversion(1108) * 1 + responseHeight * 1);
 					let drawImg = new Image();
 					drawImg.crossOrigin = "Anonymous";
-					drawImg.src = _this.code64;
+					//drawImg.src = _this.code64;
+					drawImg.src = 'http://yun.dui88.com/youfen/images/code_ewm.png';
 					drawImg.onload = function() {
 						ctx.drawImage(drawImg,_this.conversion(600),_this.conversion(1051) * 1 + responseHeight * 1,_this.conversion(100),_this.conversion(100));
 						resolve();
