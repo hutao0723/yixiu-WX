@@ -102,7 +102,7 @@ export default {
 		async getInfo() {
 			let _this = this;
 			let params = {
-				commentId: 56
+				commentId: _this.$route.query.commentId
 			};
 			const url = `/comment/share`;
 			const res = await _this.$http.get(url, {
