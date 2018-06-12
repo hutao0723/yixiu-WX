@@ -74,7 +74,7 @@ export function monitorHandler () {
       }
       
       // 获取公共字段
-      var app_id = 'appid';
+      var app_id = '157';
       var referer = store.getters.getReferer;
       var url = window.location.href.split('?')[0];
       var adzoneId = pointer.$route.query.dcd ? pointer.$route.query.dcd : ''; 

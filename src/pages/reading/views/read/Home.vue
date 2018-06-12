@@ -242,17 +242,17 @@
       let refreshCookie = true;
 
       // 防止cookie丢失
-      if (window.location.href.indexOf('afterLogin') == -1) {
-        let res = await this.$http.get('/baseLogin', {
-          params: {
-            dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
-          }
-        })
-        if (res.data.success && res.data.data) {
-          refreshCookie = false;
-          location.replace(res.data.data);
-        }
-      }
+      // if (window.location.href.indexOf('afterLogin') == -1) {
+      //   let res = await this.$http.get('/baseLogin', {
+      //     params: {
+      //       dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
+      //     }
+      //   })
+      //   if (res.data.success && res.data.data) {
+      //     refreshCookie = false;
+      //     location.replace(res.data.data);
+      //   }
+      // }
 
       if (refreshCookie) {
         this.setTitle('一修读书')
@@ -381,7 +381,7 @@
       self.$nextTick(function () {
         setTimeout(() => {
           // 滚动
-          self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, false);
+          if (self.$refs.homemain) self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, false);
           // 埋点
           window.monitor && window.monitor.showLog(self);
         }, 100)
@@ -413,7 +413,7 @@
         // item tabindex dpmc
         return JSON.stringify({
           'dcm': dcm,
-          'dpm': 'appid.' + dpm,
+          'dpm': '157.' + dpm,
         });
       },
       // 展开收起
