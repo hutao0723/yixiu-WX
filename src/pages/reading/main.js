@@ -87,7 +87,7 @@ Vue.http.interceptors.push((request, next) => {
 // 点击曝光辅助函数
 Vue.prototype.clickFun = function (event, cb, obj) {
   // 获取公共字段
-  let app_id = 'appid';
+  let app_id = '157';
   let referer = store.getters.getReferer;
   let url = window.location.href.split('?')[0];
   let adzoneId = this.$route.query.dcd ? this.$route.query.dcd : ''; 
@@ -95,12 +95,11 @@ Vue.prototype.clickFun = function (event, cb, obj) {
   // 发送埋点
   var {dpm, dcm} = JSON.parse(event.currentTarget.getAttribute('monitor-log'));
   let params = {app_id, referer, url, adzoneId, itemType, dcm, dpm};
-  Vue.http.post('/embed/click', params).then((res) => {
+  Vue.http.post('http://embedlog.youfen666test.com/embed/click', params).then((res) => {
     // 埋点成功
   }, (res) => {
     // 埋点失败
   });
-  console.log(event.currentTarget.getAttribute('monitor-log'))
   if(cb)cb(obj);
 }
 
@@ -192,10 +191,10 @@ router.beforeEach((to, from, next) => {
         stayTime = outTime - store.getters.getEnterTime,
         action = referer == '' ? 'entry' : 0,
         url = window.location.href.split('#')[0] + '#' + from.path,
-        app_id = 'app_id';
+        app_id = '157';
     store.commit({ type: 'setReferer', referer: url });  // 设置来源路径
     store.commit({ type: 'setEnterTime', enterTime: outTime });  // 设置来源路径为空
-    Vue.http.post('/embed/access',{stayTime, action, url, referer}).then((res) => {
+    Vue.http.post('http://embedlog.youfen666test.com/embed/access',{app_id, stayTime, action, url, referer}).then((res) => {
       // 埋点成功
     }, (res) => {
       // 埋点失败

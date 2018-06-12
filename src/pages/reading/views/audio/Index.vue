@@ -79,9 +79,12 @@ export default {
   },
   async mounted () {
     let self = this;
-    setTimeout(() => {
-      window.monitor && window.monitor.showLog(self);
-    }, 100)
+    self.$nextTick(function () {
+      setTimeout(() => {
+        // 埋点
+        window.monitor && window.monitor.showLog(self);
+      }, 100)
+    })
     let readAudio = this.readAudio;
     let freshAudio = await play.getReadDetail(readAudio.readId, readAudio.courseId);
     Object.assign(readAudio, freshAudio);
@@ -130,7 +133,7 @@ export default {
     getMonitor (c,d) {
       return JSON.stringify({
         dcm: '8001.' + this.readAudio.courseId + '.0.0',
-        dpm: 'appid.828.' + c + '.' + d
+        dpm: '157.828.' + c + '.' + d
       })
     }
   },

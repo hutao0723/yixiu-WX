@@ -10,7 +10,7 @@
 		</div>
 		<div class="btn" v-if="btn" >
 			长按保存分享
-			<img :src="imgUrl" />    
+			<img :src="imgUrl" />
 		</div>
 		<Popup v-if="popup" v-on:success = "toCertificate" v-on:close = "closePopup"/>
 	</div>
@@ -38,9 +38,9 @@ export default {
 		const _this = this;
 		_this.popup = _this.$route.query.lastClock * 1;
 		_this.isSelf = _this.$route.query.isClock * 1;
-		
+
 		//_this.getInfo();
-		
+
 		// _this.info = {
 		// 	"id": 58,
 		// 	"userId": 100052000,
@@ -82,7 +82,7 @@ export default {
 		// 	_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
 		// };
 		// this.createdCode()
-		this.getCodeUrl() 
+		this.getCodeUrl()
 	},
   	methods: {
 		createdCode() {
@@ -93,7 +93,7 @@ export default {
 				text:_this.codeUrl,
 				colorDark:'#7f7f7f',
 				foreground:"#fff"
-			});	
+			});
 			let el = document.getElementById('code');
 			let codeCanvas = el.getElementsByTagName('canvas')[0];
 			_this.code64 = codeCanvas.toDataURL('image/jpeg');
@@ -139,7 +139,7 @@ export default {
 			});
 			if (res.data.success) {
 				_this.codeUrl = res.data.data
-				_this.createdCode() 	
+				_this.createdCode()
 			} else {
 				console.log("获取二维码地址失败");
 			}
@@ -175,7 +175,7 @@ export default {
 				row.push(temp);
 				return row;
 			}
-			
+
 			//---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 			let line_number = 0;
 			//计算行数
@@ -192,9 +192,9 @@ export default {
 					let num = 0;
 					let x = _this.conversion(81)
 					let y = _this.conversion(640)
-					
-					let test = /[0-9a-z]/i; 
-					// num是累计的宽度 
+
+					let test = /[0-9a-z]/i;
+					// num是累计的宽度
 					let A_Z = '';
 					for(let i=0;i<string.length;i++){
 						let string_w = 0;
@@ -202,7 +202,7 @@ export default {
 							if(string[i+1]){
 								//后面跟着的是否字符串
 								if(test.test(string[i+1])){
-									A_Z = A_Z+string[i];	
+									A_Z = A_Z+string[i];
 								}else{
 									A_Z = A_Z+string[i];
 									string_w = ctx.measureText(A_Z).width-1;
@@ -219,18 +219,18 @@ export default {
 												x = _this.conversion(78);
 												num = 0;
 												line_number++;
-											}	
+											}
 										})
 									}else{
 										if(num+string_w>_this.conversion(560)){
 											x = _this.conversion(78);
 											num = string_w;
-											line_number++;	
+											line_number++;
 										}else{
 											num = num + string_w ;
 										}
 										ctx.fillText(A_Z, x, y*1+line_number*_this.conversion(52));
-										x = x + string_w ;	
+										x = x + string_w ;
 										A_Z = '';
 									}
 								}
@@ -240,12 +240,12 @@ export default {
 								if(num+string_w>_this.conversion(560)){
 									x = _this.conversion(78);
 									num = string_w;
-									line_number++;	
+									line_number++;
 								}else{
 									num = num + string_w ;
 								}
 								ctx.fillText(A_Z, x, y*1+line_number*_this.conversion(52));
-								x = x + string_w ;	
+								x = x + string_w ;
 								A_Z = '';
 							}
 						}else{
@@ -282,7 +282,7 @@ export default {
 			myCanvas.height = _this.conversion(1200) * 1 + responseHeight;
 			ctx.fillStyle = "#fff";
 			ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
-			
+
 			// 绘制头部背景图
 			let headerImg = new Promise((resolve, reject) => {
 				let drawImg = new Image();
@@ -430,7 +430,7 @@ export default {
 					let point = _this.info.content.split('<br/>');
 					//处理换行文字
 					myPoint()
-					
+
 					//绘制作者信息
 					ctx.font = _this.conversion(24) + "px pingFangSC-Light";
 					ctx.textBaseline = "top";
@@ -466,8 +466,8 @@ export default {
 					drawImg.onload = function() {
 						ctx.drawImage(drawImg,_this.conversion(40),_this.conversion(1056) * 1 + responseHeight * 1,_this.conversion(66),_this.conversion(88));
 						resolve();
-					};	
-					
+					};
+
 				})
 			}
 			//绘制黄点
@@ -483,10 +483,10 @@ export default {
 							resolve();
 						};
 					}else{
-						resolve();	
+						resolve();
 					}
 				})
-				
+
 			}
 			// 绘制所有canvas
 			headerImg.then(createdBox).then(createdIcon).then(createdCode).then(createdComma).then(createdBook).then(createdLogo).then(createdYellowPoint).then(() => {
@@ -508,11 +508,11 @@ export default {
 </script>
 <style lang="less" scoped >
 	@import "../../less/variable";
-	@font-face{  
-		font-family: 'pingFangSC-Light';  
-		src: url('./../../assets/PingFang Light.ttf');  
+	@font-face{
+		font-family: 'pingFangSC-Light';
+		src: url('./../../assets/PingFang Light.ttf');
 		font-weight: lighter;
-	}  
+	}
 	@-webkit-keyframes spin { /*兼容性写法。spin是关键帧的动画名称*/
 		from { /*动画起始状态*/
 			-webkit-transform: rotate(0deg);

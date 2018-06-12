@@ -1,11 +1,11 @@
 <template>
   <div class="lecturer-main">
     <div class="title">老师微信信息</div>
-    <img class="code" :src="codeUrl">
+    <img class="code" :src="codeUrl" @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '829.1.0')">
     <div class="point">
       温馨提示：由于微信对添加好友的限制，老师可能收不到你的好友请求，如果在三个工作日内老师还未通过你的好友申请，你可以再发一次哦！
     </div>
-     <AudioBar/>
+     <AudioBar  @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '829.2.0')"/>
   </div>
 </template>
 
@@ -34,6 +34,13 @@ export default {
     this.getLecturerInfo();
   },
   methods: {
+     getMonitor(dcm,dpm) {
+        // item tabindex dpmc
+        return JSON.stringify({
+          'dcm': dcm,
+          'dpm': '157.' + dpm,
+        });
+      },
     async getLecturerInfo (){
       let objs = await user.getInfo();
         if (objs.success) {
