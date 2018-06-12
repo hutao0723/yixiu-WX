@@ -62,7 +62,7 @@ export function monitorHandler () {
         return;
       }
       var list = [];
-      var exposeUrl = 'http://embedlog.youfen666.com/embed/exposure';
+      var exposeUrl = 'https://embedlog.youfen666.com/embed/exposure';
       // iframe数据过滤，防刷
       try {
         list = JSON.stringify(data);
