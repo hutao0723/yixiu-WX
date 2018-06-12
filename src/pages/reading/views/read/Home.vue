@@ -389,15 +389,14 @@
       }
       
       // 曝光
-      // self.$nextTick(function () {
-      //   window.monitor && window.monitor.showLog(self);
-      // })
-      setTimeout(() => {
-        // 滚动
-        self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, false);
-        // 埋点
-        window.monitor && window.monitor.showLog(self);
-      }, 100);
+      self.$nextTick(function () {
+        setTimeout(() => {
+          // 滚动
+          self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, false);
+          // 埋点
+          window.monitor && window.monitor.showLog(self);
+        }, 100)
+      })
     },
     methods: {
       setCookie(cname,cvalue,exhours){   

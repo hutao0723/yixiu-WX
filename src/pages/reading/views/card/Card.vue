@@ -116,9 +116,14 @@
       let aaa = document.querySelector('.calendar-box');
       console.log(aaa.offsetTop,aaa.offsetHeight,aaa.offsetTop+aaa.offsetHeight)
       let self = this;
-      setTimeout(() => {
-        window.monitor && window.monitor.showLog(self);
-      }, 100)
+      self.$nextTick(function () {
+        setTimeout(() => {
+          // 滚动
+          self.$refs.optionMain.addEventListener('scroll', self.dispatchScroll, false);
+          // 埋点
+          window.monitor && window.monitor.showLog(self);
+        }, 100)
+      })
     },
    watch:{
      readId(){

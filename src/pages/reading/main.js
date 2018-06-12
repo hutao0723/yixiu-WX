@@ -51,7 +51,7 @@ if (!window.localStorage.getItem('deviceId')) {
 
 Vue.http.headers.common['ext-deviceId'] = window.localStorage.getItem('deviceId');
 Vue.http.headers.common['from'] = 'read';
-// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjrgAVYrS2jWTFx5xqHDj2QQBH1uXBFMw3gMPxWGMYXWq992G8UBUUjtDPenDWhHayUB6cTjNCScruS3vsPcREhmMXmK2rxgixHsa31XHprvefiBtesVeVWfFpmzSsK8oSwS8P';
+Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjrgAVYrS2jWTFx5xqHDj2QQBH1uXBFMw3gMPxWGMYXWq992G8UBUUjtDPenDWhHayUB6cTjNCScruS3vsPcREhmMXmK2rxgixHsa31XHprvefiBtesVeVWfFpmzSsK8oSwS8P';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
@@ -100,7 +100,6 @@ Vue.prototype.clickFun = function (event, cb, obj) {
   }, (res) => {
     // 埋点失败
   });
-  console.log(event.currentTarget.getAttribute('monitor-log'))
   if(cb)cb(obj);
 }
 

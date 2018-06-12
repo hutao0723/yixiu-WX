@@ -116,21 +116,16 @@ export default {
   created() {
     },
   async mounted () {
-    // setTimeout(() => {
-    //   console.log(8888)
-    //   window.monitor && window.monitor.showLog(self);
-    // }, 100)
     let self = this;
+    // this.getNumberInfo()
+    // this.setTitle('一修读书')
+    // let userState = await self.getThumbUp();
+    // self.wxShare(userState.data.userId);
     self.$nextTick(function () {
       setTimeout(() => {
-      // console.log(8888)
-      window.monitor && window.monitor.showLog(self);
-    }, 2000)
+        window.monitor && window.monitor.showLog(self);
+      }, 100)
     })
-    this.getNumberInfo()
-    this.setTitle('一修读书')
-    let userState = await self.getThumbUp();
-    self.wxShare(userState.data.userId);
   },
   methods: {
     // 获取monitor
