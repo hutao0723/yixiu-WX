@@ -46,11 +46,12 @@ export default {
             this.tabIndex = obj.index
             this.swiper.slideTo(obj.index-1, 1000, false)
             this.$emit('getSwiperIndex', obj.poster,obj.index)
+            window.monitor && window.monitor.showLog(this);
         },
         getMonitor(dcm, dpm){
             return JSON.stringify({
                 'dcm': dcm,
-                'dpm': 'appid.' + dpm,
+                'dpm': '157.' + dpm,
             });
         }
     },
