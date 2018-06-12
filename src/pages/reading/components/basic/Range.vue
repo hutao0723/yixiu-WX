@@ -11,7 +11,7 @@
 </template>
 
 <script>
-// let canDrag = false
+let canDrag = false
 let persentWidth = 0
 export default {
 	data () {
@@ -36,10 +36,6 @@ export default {
 		ballWidth: {
 			type: String,
 			default: '40'
-		},
-		canDrag: {
-			type: Number,
-			default: 1
 		}
 	},
 	computed: {
@@ -101,10 +97,10 @@ export default {
 	},
 	methods: {
 		mouseDown () {
-			// canDrag = true
+			canDrag = true
 		},
 		mouseMove (event) {
-			if (this.canDrag) {
+			if (canDrag) {
 				let e = event || window.event
 				let mouseX = e.pageX
 				let offsetLeft = this.$refs.duration.offsetLeft
@@ -126,8 +122,8 @@ export default {
 			}
 		},
 		mouseUp () {
-			if (this.canDrag) {
-				// canDrag = false
+			if (canDrag !== false) {
+				canDrag = false
 				if (this.type === 'progress') {
 					if (isNaN(this.$store.getters.getAudioElement.duration)) return
 					this.$store.getters.getAudioElement.currentTime = this.$store.getters.getAudioElement.duration * persentWidth / 100
@@ -138,7 +134,7 @@ export default {
 			}
 		},
 		touchMove (event) {
-			if (this.canDrag) {
+			if (canDrag) {
 				if (this.type === 'progress') {
 					let mouseX = event.touches[0].pageX
 					let offsetLeft = this.$refs.duration.offsetLeft
@@ -163,8 +159,8 @@ export default {
 			}
 		},
 		touchEnd (event) {
-			if (this.canDrag) {
-				// canDrag = false
+			if (canDrag !== false) {
+				canDrag = false
 				if (this.type === 'progress') {
 					if (isNaN(this.$store.getters.getAudioElement.duration)) return
 					this.$store.getters.getAudioElement.currentTime = this.$store.getters.getAudioElement.duration * persentWidth / 100
@@ -175,7 +171,7 @@ export default {
 			}
 		},
 		setCurrentProgress (event) {
-			if (this.canDrag) {
+			// if (this.canDrag) {
 				let e = event || window.event
 				let mouseX = e.pageX
 				let offsetLeft = this.$refs.duration.offsetLeft
@@ -186,7 +182,7 @@ export default {
 				this.$store.getters.getAudioElement.currentTime = Math.floor(this.$store.getters.getAudioElement.duration * persentWidth) / 100
 				this.$refs.currentProgress.style.width = `${persentWidth}%`
 				this.$refs.ball.style.left = `calc(${persentWidth}% - 7px)`
-			}
+			// }
 			// if (this.type === 'volume') {
 			// 	let e = event || window.event
 			// 	let mouseX = e.pageX
@@ -243,7 +239,7 @@ export default {
 			flex:1;
 			height:4/@rem;
 			border-radius:4/@rem;
-			background:@color-black;
+			background:@color-bg-body;
 			margin:0 auto;
 			font-size:0;
 			cursor:pointer;
@@ -259,13 +255,14 @@ export default {
 			.ball{
 				display:inline-block;
 				position:absolute;
-				width:6/@rem;
-				height:22/@rem;
-				left:-7/@rem;
-				margin-top:-9/@rem;
-				background:@color-black;
-				// transform:translate(-50%,0);
-				border-radius:3/@rem;
+				width:36/@rem;
+				height:36/@rem;
+				margin-left:-14/@rem;
+				margin-top:-16/@rem;
+				// background:@color-black;
+				background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoBAMAAAB+0KVeAAAAElBMVEUAAAA0NDQ0NDQ3Nzc1NTU0NDTWLQl3AAAABXRSTlMA5qYc7dRG+h8AAAA7SURBVCjPYxgUgFkxNFAZXdAkNDQ0xABNUDUUCBTQBEVBggJogqEgEDAqOJgFoRFHOIoRiQEz2QwKAACA9TLhtF4zDQAAAABJRU5ErkJggg==)no-repeat;
+				background-size: 100%;
+				border-radius: 20%;
 				cursor:pointer;
 			}
 			}
