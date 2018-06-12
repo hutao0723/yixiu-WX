@@ -56,7 +56,7 @@
       return {
         reviewList: [],
         pageNum: 1,
-        pageSize: 4,
+        pageSize: 20,
         busy: true,
         userId: '',
         lastData: '',
