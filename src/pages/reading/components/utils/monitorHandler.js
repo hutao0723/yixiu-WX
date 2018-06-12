@@ -62,7 +62,7 @@ export function monitorHandler () {
         return;
       }
       var list = [];
-      var exposeUrl = 'http://embedlog.youfen666test.com/embed/exposure';
+      var exposeUrl = 'http://embedlog.youfen666.com/embed/exposure';
       // iframe数据过滤，防刷
       try {
         list = JSON.stringify(data);
@@ -109,7 +109,7 @@ export function monitorHandler () {
       //   // 埋点失败
       // });
     } catch (e) {
-      
+
     }
     },
     // 横向滚动曝光
