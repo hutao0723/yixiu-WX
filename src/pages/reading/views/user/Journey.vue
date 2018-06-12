@@ -28,7 +28,7 @@
                 <div class="column-center operate-share" @click="clickFun($event,goPoster,item.id)" :monitor-log="getMonitor('8002.'+item.courseId+'.0.0', '826.0.1-'+ $index)">
                   <i class="iconfont icon-share"></i>
                 </div>
-                <div class="column-center" :class="point?'point':''"   @click.stop="clickFun($event,thumbsUp,{item:item,index:$index})" :monitor-log="getMonitor('0.0.0.0', '826.0.2-' + $index)">
+                <div class="column-center" :class="point?'point':''"   @click.stop="clickFun($event,thumbsUp,{item:item,index:$index})" :monitor-log="getMonitor('8002.'+ item.courseId +'.0.0', '826.0.2-' + $index)">
                   <i class="iconfont" :class="(item.userPraise==0) ? 'icon-dianzan':'icon-heart zan'"></i>
                 </div>
                 <div class="row">

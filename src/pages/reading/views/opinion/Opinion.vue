@@ -23,9 +23,9 @@
             <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
           </p>
           <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"
-            v-if="userId == item.userId" @click.native="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '823.3.1-'+index)"></router-link>
+            v-if="userId == item.userId" @click.native="clickFun($event)" :monitor-log="getMonitor('8002.'+ item.courseId +'.0.0', '823.3.1-'+index)"></router-link>
           <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr"
-            v-if="userId != item.userId" @click.native="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '823.3.1-'+index)"></router-link>
+            v-if="userId != item.userId" @click.native="clickFun($event)" :monitor-log="getMonitor('8002.'+ item.courseId +'.0.0', '823.3.1-'+index)"></router-link>
           <span class="fl">{{item.releaseTime | timeTransition}}</span>
         </div>
       </div>
