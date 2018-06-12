@@ -12,16 +12,16 @@
             </div>
             <div class="sm-deposit" @click="withdrawDeposit">
                 <span class="smd-cashnum">可提现(元)：<em>{{shareData.balance}}</em></span>
-                <span class="smd-cash">提现<i class="iconfont icon-right"></i></span>
+                <span class="smd-cash" @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '835.2.0')">提现<i class="iconfont icon-right"></i></span>
             </div>
         </div>
         <div class="share-list">
-            <router-link v-for="(item,i) in data" :key="item.name" :to="item.router">
+            <router-link v-for="(item,i) in data" :key="item.name" :to="item.router" @click.native="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', `${i == 0 ? '835.3.0':'835.4.0'}`)">
                 <!-- showStatus:1显示，0隐藏，functionsType:用户红点功能类型集合：1:我的客户;2:收益记录 -->
                 <span :class="it.showStatus && it.functionsType && it.functionsType == i+1  && 'sl-new'" v-for="(it,index) in redPointArr" :key="index" v-if="i == index">{{item.name}}</span>
                 <i class="iconfont icon-right"></i>
             </router-link>
-            <router-link to="/personal/share/poster">
+            <router-link to="/personal/share/poster" @click.native="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '835.5.0')">
                 <span>分享赚钱</span>
                 <i class="iconfont icon-right"></i>
             </router-link>
@@ -97,33 +97,34 @@
             this.getDate()
             this.shouldCongratulationDialogShow()
             let self = this;
-    let userState = await self.getThumbUp();
-      self.wxShare(userState.data.userId);
+            let userState = await self.getThumbUp();
+            self.wxShare(userState.data.userId);
         },
         methods: {
             async getThumbUp() {
-        let self = this;
-        let params = {};
-        params = {
+                let self = this;
+                let params = {};
+                params = {
 
-        }
-        const url = `/user/read/state`;
-        const res = await this.$http.get(url, {
-          params
-        });
-        return res.data;
-      },
+                }
+                const url = `/user/read/state`;
+                const res = await this.$http.get(url, {
+                params
+                });
+                return res.data;
+            },
             withdrawDeposit() { // 判断是否达到提现的条件
                 if (Number(this.shareData.balance) < 20) {
                     this.$refs.dialog.confirm({
                         text: '可提现金额需满<em>20</em>元 才可提现',
                         showConfirmButton: false,
                         cancelButtonText: '我知道了',
+                        monitorType:'835.6'
                     }).then((response) => {
                         console.log(response)
                         this.$refs.dialog.show = false
                     }).catch((type) => {
-                        console.log(type)
+                        // console.log(type)
                     })
                 } else {
                     this.$router.push({
@@ -143,6 +144,7 @@
                     text: `你有一笔收益到账<strong class="earn">${sh}</strong>元`,
                     cancelButtonText: '好的',
                     confirmButtonText: '查看',
+                    monitorType:'835.1'
                 }).then((response) => {
                     this.$router.push('/personal/share/earnings-history')
                     this.$refs.dialog.show = false
@@ -191,7 +193,18 @@
             getStore(name){
                 if (!name) return;
                 return window.localStorage.getItem(name);
-            }
+            },
+            // 获取monitor
+            getMonitor(dcm,dpm) {
+                console.log(dpm)
+                // item tabindex dpmc
+                return JSON.stringify({
+                    'dcm': dcm,
+                    'dpm': 'appid.' + dpm,
+                });
+            },
+
+
         },
         components: {
             ConfirmDialog

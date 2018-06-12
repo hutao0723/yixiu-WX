@@ -21,8 +21,8 @@
               <div class="text">累计阅读</div>
             </li>
         </ul>
-      <router-link :to="{ path: '/personal/share/poster' }" >
-        <div class="mt20 recommend bgfff" @click="clickFun($event)"  :monitor-log="getMonitor(825,1,0)">
+      <router-link :to="{ path: '/personal/share/poster' }" @click="clickFun($event)"  :monitor-log="getMonitor(825,6,0)">
+        <div class="mt20 recommend bgfff">
             <img :src="recommendUrl">
             
         </div>
@@ -57,7 +57,7 @@
           </div>
         </div>
       </router-link>
-      <router-link :to="{ path: '/personal/share' }">
+      <router-link :to="{ path: '/personal/share' }" @click.native="clickFun($event)" :monitor-log="getNewMonitor('0.0.0.0', '825.7.0')">
         <div class="bgfff">
           <div class="person-h90 row " >
             <div class="icon-box column-center">
@@ -134,6 +134,14 @@ export default {
         return JSON.stringify({
           'dcm': '0.0.0.0',
           'dpm': '157.' + b + '.' + c + '.' + d,
+        });
+      },
+
+      getNewMonitor(b, c, d) {
+        // item tabindex dpmc
+        return JSON.stringify({
+            'dcm': dcm,
+            'dpm': 'appid.' + dpm,
         });
       },
     // 联系客服
