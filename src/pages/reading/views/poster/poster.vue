@@ -3,6 +3,7 @@
 		<img src="http://yun.dui88.com/youfen/images/201806/loading.svg" alt="" class="waiting" v-if="!imgUrl">
 		<div class="content">
 			<div class="canvas" v-if="!imgUrl">
+				<canvas id="code"></canvas>
 				<canvas id="sharePoster"></canvas>
 			</div>
 			<img :src="imgUrl" v-if="imgUrl"  class="pic"/>
@@ -17,6 +18,7 @@
 
 <script>
 import Popup from "./../../components/basic/Diploma";
+import QRCode from 'qrcode'
 export default {
   	data() {
 		return {
@@ -33,8 +35,53 @@ export default {
 	mounted() {
 		const _this = this;
 		_this.popup = _this.$route.query.lastClock * 1;
-		_this.isSelf =  _this.$route.query.isClock * 1;
+		_this.isSelf = _this.$route.query.isClock * 1;
 		_this.getInfo();
+		
+		// _this.info = {
+		// 	"id": 58,
+		// 	"userId": 100052000,
+		// 	"userNickname": "💥",
+		// 	"userImgUrl": "http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg",
+		// 	"courseId": 198,
+		// 	"courseTitle": "课程-试听10s",
+		// 	"courseSubTitle": "课程-试听10s-副标",
+		// 	"courseUrl": "https://yun.dui88.com/youfen/images/lhk3dw0zk6.gif",
+		// 	"courseVerticalCover": "https://yun.dui88.com/youfen/images/zbp2zkq154.jpg",
+		// 	"courseLateralCover": "https://yun.dui88.com/youfen/images/2bmi5mohht.jpg",
+		// 	"courseAuthor": "",
+		// 	"readId": 9,
+		// 	"readName": "阅读计划-测试1",
+		// 	"readStageId": 9,
+		// 	"readStageNum": 1,
+		// 	"content": "海报换行测试  我们都是好孩子，我们都是好孩子。我们都是好孩子！我们都是好孩子？我们都是好孩子...往往畏畏缩缩点点滴滴。世界顶级觉得觉得你发怒发怒奶粉！仿佛个大家都觉得觉得你呢电话信号进行减肥额都觉得亟待解决Reading makes me happy and proud to have you in the same place again I love ? I am so a good person to and be happy to you I will always be happy to see",
+		// 	"releaseTime": "2018-05-30 14:22:13",
+		// 	"releaseTimeLabel": "深夜",
+		// 	"praiseCount": 3,
+		// 	"userPraise": false,
+		// 	"myself": 0,
+		// 	"listens": 0,
+		// 	"clocks": 201,
+		// 	"books": 0,
+		// 	"loginDays": 2,
+		// 	"readQrcodeImgUrl": "https://yun.dui88.com/youfen/images/z6qj8zsviw.jpg",
+		// 	"bookBgimgUrl": ""
+		// }
+		// //头部背景图
+		// if (!_this.info.bookBgimgUrl) {
+		// 	_this.info.bookBgimgUrl = "http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg";
+		// };
+		// if(!_this.info.courseUrl){
+		// 	_this.info.courseUrl = 'http://yun.dui88.com/youfen/images/read_course_none.png';
+		// };
+		// //二维码写死
+		// _this.info.readQrcodeImgUrl = "http://yun.dui88.com/yoofans/images/201806/code.jpg";
+		// //默认观点
+		// if(!_this.info.content){
+		// 	_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
+		// };
+		// _this.createdCanvas();
+
 	},
   	methods: {
 		async getInfo() {
@@ -48,15 +95,16 @@ export default {
 			});
 			if (res.data.success) {
 				_this.info = res.data.data;
+
+				_this.info.readQrcodeImgUrl = "http://yun.dui88.com/youfen/images/code_ewm.png";
 				//头部背景图
 				if (!_this.info.bookBgimgUrl) {
 					_this.info.bookBgimgUrl = "http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg";
 				};
+				//默认书籍
 				if(!_this.info.courseUrl){
 					_this.info.courseUrl = 'http://yun.dui88.com/youfen/images/read_course_none.png';
 				};
-				//二维码写死
-				_this.info.readQrcodeImgUrl = "http://yun.dui88.com/yoofans/images/201806/code.jpg";
 				//默认观点
 				if(!_this.info.content){
 					_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
@@ -66,6 +114,7 @@ export default {
 				console.log("获取数据失败");
 			}
 		},
+		
 		toCertificate(data) {
 			this.$router.push("/graduation");
 		},
@@ -80,7 +129,7 @@ export default {
 			const myCanvas = document.getElementById("sharePoster");
 			const ctx = myCanvas.getContext("2d");
 			// 测试文字高度
-			ctx.font = _this.conversion(30) + "px 苹方字体";
+			ctx.font = _this.conversion(30) + "px PingFang SC";
 			function stringHeight(string, w) {
 				let chr = string.split("");
 				let temp = "";
@@ -97,17 +146,49 @@ export default {
 				row.push(temp);
 				return row;
 			}
-			//得到拆分的字符串
-			let stringLength = stringHeight(_this.info.content, 586);
+			
+			//---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			let line_number = 0;
+			//计算行数
+			function myPoint(){
+				ctx.textBaseline = "top";
+				ctx.textAlign = 'left'
+				ctx.font = '29px pingFangSC-Light';
+				let point = _this.info.content.split('<br/>');
+				//处理换行文字
+				point.forEach((item,index)=>{
+					let string = item.split('');
+					let num = 0;
+					let x = _this.conversion(81)
+					let y = _this.conversion(620)
+					line_number++;
+					string.forEach((item,index)=>{
+						//550数值调试来的
+						let string_w = ctx.measureText(item).width-1;
+						ctx.fillText(item, x, y*1+line_number*_this.conversion(52));
+						// 确定下一个字符的横坐标
+						if(num<_this.conversion(560)){
+							num = num + string_w ;
+							x = x + string_w ;
+						}else{
+							x = _this.conversion(78);
+							num = 0;
+							line_number++;
+						}
+					})
+				})
+			}
+			myPoint();
 			//响应高度，对应海报不同内容
 			let responseHeight = 0;
 			//如果文字大于3行，额外加高度
-			if (stringLength.length > 3) {
-				responseHeight = (stringLength.length - 3) * _this.conversion(50);
+			if (line_number > 3) {
+				responseHeight = (line_number - 3) * _this.conversion(52);
 			}
 			//判断是否是自己的分享，不是不显示打卡天数
 			if (!_this.isSelf) {
-				responseHeight = responseHeight - _this.conversion(105);
+				//无虚线的时候添加20
+				responseHeight = responseHeight - _this.conversion(105)+_this.conversion(20)*1;
 			}
 			myCanvas.width = _this.conversion(750);
 			myCanvas.height = _this.conversion(1200) * 1 + responseHeight;
@@ -129,9 +210,9 @@ export default {
 				return new Promise((resolve, reject) => {
 					// 绘制阴影
 					ctx.shadowBlur = _this.conversion(10);
-					ctx.shadowColor = "rgba(0,0,0,0.12)";
+					ctx.shadowColor = "rgba(0,0,0,0.05)";
 					ctx.shadowOffsetX = 0;
-					ctx.shadowOffsetY = _this.conversion(8);
+					ctx.shadowOffsetY = _this.conversion(5);
 					// 绘制圆角矩形
 					function roundRect(x, y, w, h, r) {
 						var min_size = Math.min(w, h);
@@ -155,55 +236,49 @@ export default {
 			//绘制虚线
 			function drawScreen() {
 				//虚线
-				ctx.setLineDash([15, 10]);
+				ctx.setLineDash([8, 6]);
 				ctx.lineWidth = 2;
-				ctx.strokeStyle = "#d6d6d6";
+				ctx.strokeStyle = "#ddd";
 				ctx.beginPath();
-				ctx.moveTo(_this.conversion(34),_this.conversion(883) * 1 + responseHeight * 1);
-				ctx.lineTo(_this.conversion(718),_this.conversion(883) * 1 + responseHeight * 1);
+				ctx.moveTo(_this.conversion(34),_this.conversion(896) * 1 + responseHeight * 1);
+				ctx.lineTo(_this.conversion(718),_this.conversion(896) * 1 + responseHeight * 1);
 				ctx.stroke();
-				// 两个黄色点
+				//文字
 				ctx.beginPath();
-				ctx.fillStyle = "#f9d61d";
-				ctx.arc(_this.conversion(80),_this.conversion(937) * 1 + responseHeight * 1,_this.conversion(7),0,Math.PI * 2,true);
-				ctx.fill();
-				ctx.closePath();
-
-				ctx.font = _this.conversion(26) + "px 苹方字体";
+				ctx.font = _this.conversion(26) + "px PingFang SC";
 				ctx.fillStyle = "#777";
-				ctx.textBaseline = "top";
-				let string = "这是我坚持阅读的第";
+				ctx.textBaseline = "middle";
+				let string = "这是我坚持读书的第";
 				string = string.split('')
 				let width = 0;
 				string.forEach((el,index)=>{
 					width = ctx.measureText(el).width;
 					//字间距是2
-					width = width*1+_this.conversion(2) * 1 
-					ctx.fillText( el,_this.conversion(100)*1+index*width,_this.conversion(922) * 1 + responseHeight * 1);
+					width = width*1+_this.conversion(2) * 1;
+					ctx.fillText( el,_this.conversion(100)*1+index*width,_this.conversion(942) * 1 + responseHeight * 1);
 				})
-				
 				let frist_w = width*string.length;
-				ctx.font = _this.conversion(42) + "px 苹方字体";
+				ctx.font = _this.conversion(29) + "px PingFang SC";
 				ctx.fillStyle = "#222";
 				ctx.textBaseline = "middle";
 				//额外加10撑开
-				ctx.fillText( _this.info.clocks,_this.conversion(100)*1+frist_w*1+_this.conversion(10) * 1,_this.conversion(937) * 1 + responseHeight * 1);
+				ctx.fillText( _this.info.clocks,_this.conversion(100)*1+frist_w*1+_this.conversion(5) * 1,_this.conversion(942) * 1 + responseHeight * 1);
 				let day_w = ctx.measureText(_this.info.clocks).width;
-				ctx.font = _this.conversion(26) + "px 苹方字体";
+				ctx.font = _this.conversion(26) + "px PingFang SC";
 				ctx.fillStyle = "#777";
-				ctx.textBaseline = "top";
+				ctx.textBaseline = "middle";
 				//额外加10撑开
-				ctx.fillText( "天",_this.conversion(100)*1+frist_w*1+day_w*1+_this.conversion(20) * 1,_this.conversion(922) * 1 + responseHeight * 1);
+				ctx.fillText( "天",_this.conversion(100)*1+frist_w*1+day_w*1+_this.conversion(10) * 1,_this.conversion(942) * 1 + responseHeight * 1);
 			}
 			//绘制二维码
 			function createdCode() {
 				return new Promise((resolve, reject) => {
-					ctx.font = _this.conversion(24) + "px 苹方字体";
+					ctx.font = _this.conversion(24) + "px PingFang SC";
 					ctx.textBaseline = "top";
 					ctx.fillStyle = "#444";
 					ctx.fillText("一修读书·" + _this.info.readName,_this.conversion(126),_this.conversion(1071) * 1 + responseHeight * 1);
 					ctx.fillStyle = "#999";
-					ctx.font = _this.conversion(22) + "px 苹方字体";
+					ctx.font = _this.conversion(22) + "px PingFang SC";
 					ctx.fillText("长按识别二维码",_this.conversion(126),_this.conversion(1108) * 1 + responseHeight * 1);
 					let drawImg = new Image();
 					drawImg.crossOrigin = "Anonymous";
@@ -221,7 +296,7 @@ export default {
 					drawImg.crossOrigin = "Anonymous";
 					drawImg.src = "http://yun.dui88.com/yoofans/images/201805/read/poster_comma.png";
 					drawImg.onload = function() {
-						ctx.drawImage(drawImg,_this.conversion(64),_this.conversion(565),_this.conversion(80),_this.conversion(50));
+						ctx.drawImage(drawImg,_this.conversion(64),_this.conversion(567),_this.conversion(80),_this.conversion(50));
 						resolve();
 					};
 				});
@@ -229,12 +304,12 @@ export default {
 			//绘制头像
 			function createdIcon() {
 				return new Promise((resolve, reject) => {
-					ctx.font = _this.conversion(24) + "px 苹方字体";
+					ctx.font = _this.conversion(24) + "px PingFang SC";
 					ctx.fillStyle = "#444";
 					ctx.textBaseline = "top";
 					ctx.fillText( "今日读后感", _this.conversion(179), _this.conversion(405));
 					//绘制书名
-					ctx.font = _this.conversion(38) + "px 苹方字体";
+					ctx.font = _this.conversion(38) + "px PingFang SC";
 					let bookName = "《" + _this.info.courseTitle + "》";
 					let string_h = stringHeight(bookName, 320);
 					for (let b = 0; b < string_h.length; b++) {
@@ -247,9 +322,10 @@ export default {
 					drawImg.onload = function() {
 						ctx.beginPath();
 						ctx.save(); // 保存当前ctx的状态
+						ctx.lineWidth = 1;
 						ctx.arc(_this.conversion(113),_this.conversion(443),_this.conversion(45),0,Math.PI * 2,true);
 						ctx.clip(); //裁剪上面的圆形
-						ctx.drawImage(drawImg,_this.conversion(68),_this.conversion(400),_this.conversion(90),_this.conversion(90)); // 在刚刚裁剪的园上画图
+						ctx.drawImage(drawImg,_this.conversion(66),_this.conversion(398),_this.conversion(92),_this.conversion(92)); // 在刚刚裁剪的园上画图
 						ctx.restore(); // 还原状态
 						resolve();
 					};
@@ -259,26 +335,49 @@ export default {
 			function createdBook() {
 				return new Promise((resolve, reject) => {
 					//绘制观点文字
-					ctx.fillStyle = "#444";
-					for (let b = 0; b < stringLength.length; b++) {
-						ctx.font = _this.conversion(30) + "px 苹方字体 lighter";
-						ctx.textBaseline = "top";
-						ctx.fillText(stringLength[b],_this.conversion(78),_this.conversion(640) + b * _this.conversion(50));
-					}
+					ctx.fillStyle = "#222";
+					ctx.textBaseline = "top";
+					ctx.textAlign = 'left'
+					ctx.font = '29px pingFangSC-Light';
+					let point = _this.info.content.split('<br/>');
+					//处理换行文字
+					let sum = -1;
+					point.forEach((item,index)=>{
+						let string = item.split('');
+						let num = 0;
+						let x = _this.conversion(81)
+						let y = _this.conversion(640)
+						sum++;
+						string.forEach((item,index)=>{
+							//550数值调试来的
+							let string_w = ctx.measureText(item).width-1;
+							ctx.fillText(item, x, y*1+sum*_this.conversion(52));
+							// 确定下一个字符的横坐标
+							if(num<_this.conversion(560)){
+								num = num + string_w ;
+								x = x + string_w ;
+							}else{
+								x = _this.conversion(78);
+								num = 0;
+								sum++;
+							}
+						})
+					})
+					
 					//绘制作者信息
-					ctx.font = _this.conversion(24) + "px 苹方字体";
+					ctx.font = _this.conversion(24) + "px pingFangSC-Light";
 					ctx.textBaseline = "top";
 					let string_w = ctx.measureText(_this.info.userNickname).width;
-					ctx.fillText(_this.info.userNickname,_this.conversion(668) - string_w,_this.conversion(640) + stringLength.length * _this.conversion(50));
+					ctx.fillText(_this.info.userNickname,_this.conversion(668) - string_w,_this.conversion(660) + line_number * _this.conversion(52));
 					//转换时间格式
 					let createdTime = _this.info.releaseTime.replace(/-/g, "/");
 					createdTime = new Date(createdTime);
 					let year = createdTime.getFullYear();
 					let month = createdTime.getMonth() + 1;
 					let day = createdTime.getDate();
-					let time ="于" +year +"." +month +"." +day +" " +_this.info.releaseTimeLabel;
+					let time ="于 " +year +"." +month +"." +day +" " +_this.info.releaseTimeLabel;
 					string_w = ctx.measureText(time).width;
-					ctx.fillText(time,_this.conversion(668) - string_w,_this.conversion(672) + stringLength.length * _this.conversion(50));
+					ctx.fillText(time,_this.conversion(668) - string_w,_this.conversion(692) + line_number * _this.conversion(52));
 
 					ctx.fillStyle = "#FFF";
 					ctx.fillRect(_this.conversion(536),_this.conversion(320),_this.conversion(140),_this.conversion(190));
@@ -301,10 +400,29 @@ export default {
 						ctx.drawImage(drawImg,_this.conversion(40),_this.conversion(1056) * 1 + responseHeight * 1,_this.conversion(66),_this.conversion(88));
 						resolve();
 					};	
+					
 				})
 			}
+			//绘制黄点
+			function createdYellowPoint() {
+				return new Promise((resolve, reject) => {
+					ctx.beginPath();
+					if (_this.isSelf) {
+						let drawImg = new Image();
+						drawImg.crossOrigin = "Anonymous";
+						drawImg.src =  "http://yun.dui88.com/yoofans/images/201806/Oval7.png";;
+						drawImg.onload = function() {
+							ctx.drawImage(drawImg,_this.conversion(80),_this.conversion(936) * 1 + responseHeight * 1,_this.conversion(12),_this.conversion(12));
+							resolve();
+						};
+					}else{
+						resolve();	
+					}
+				})
+				
+			}
 			// 绘制所有canvas
-			headerImg.then(createdBox).then(createdIcon).then(createdCode).then(createdComma).then(createdBook).then(createdLogo).then(() => {
+			headerImg.then(createdBox).then(createdIcon).then(createdCode).then(createdComma).then(createdBook).then(createdLogo).then(createdYellowPoint).then(() => {
 				if (_this.isSelf) {
 					drawScreen();
 				}
@@ -321,23 +439,27 @@ export default {
   	}
 };
 </script>
-
-<style lang="less" scoped>
+<style lang="less" scoped >
 	@import "../../less/variable";
+	@font-face{  
+		font-family: 'pingFangSC-Light';  
+		src: url('./../../assets/PingFang Light.ttf');  
+		font-weight: lighter;
+	}  
 	@-webkit-keyframes spin { /*兼容性写法。spin是关键帧的动画名称*/
 		from { /*动画起始状态*/
-		-webkit-transform: rotate(0deg);
+			-webkit-transform: rotate(0deg);
 		}
 		to { /*动画结束状态*/
-		-webkit-transform: rotate(360deg);
+			-webkit-transform: rotate(360deg);
 		}
 	}
 	@keyframes spin {
 		from {
-		transform: rotate(0deg);
+			transform: rotate(0deg);
 		}
 		to {
-		transform: rotate(360deg);
+			transform: rotate(360deg);
 		}
 	}
 	.share {
@@ -401,4 +523,3 @@ export default {
 		}
 	}
 </style>
-

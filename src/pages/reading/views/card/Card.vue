@@ -9,8 +9,8 @@
             <i v-for="item in [1,2,3,4,5,6,7,8,9,10,11,12]"></i>
             <span>2</span>
           </div>
-          <li>在播放器页面，完成当日学习目标后，将自动弹出弹窗提醒打卡；或者点击“去打卡“按钮进行打卡</li>
-          <li>分享打卡图片至微信朋友圈，并把分享截图发送至班级群，坚持49天即可获得一修阅读定制音响</li>
+          <li>在播放器页面，听完当日读书内容以后，将自动弹出打卡提醒；如果你已经阅读过本书，则可点击“去打卡”进行打卡。</li>
+          <li>分享打卡图片至微信朋友圈，坚持打卡49天，可退还所有学费。</li>
         </ul>
         <div class="notice-btn" @click="hideNotice()">我知道了</div>
       </div>
@@ -38,7 +38,7 @@
       <calendar-template  :calendarDate='c_date' @getDate="getDate" ></calendar-template>
     </div>
     <div class="book-book" >
-      <div class="book-detail-box" v-show="afterToday||isToday" >
+      <div class="book-detail-box" v-cloak v-show="courseDetail.courseTitle" >
         <div class="book-img" @click.stop="playAudio(readId,courseId)" >
           <img v-if="courseDetail.courseUrl" :src="courseDetail.courseUrl" alt="">
           <img v-else src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="">
@@ -56,8 +56,8 @@
               <span>{{courseDetail.author}}<span class="audio-right">著</span></span>
             </div>
           </div>
-          <div class="book-btn">
-              <span  v-show="courseDetail.clockState&&courseDetail.commentState" @click.stop="goPoster()">查看</span>
+          <div class="book-btn" v-show="afterToday||isToday">
+              <span  v-show="courseDetail.clockState&&courseDetail.commentState" @click.stop="goComment()">我的感想</span>
               <span  v-show="courseDetail.clockState&&!courseDetail.commentState" @click.stop="goComment()">写想法</span>
               <span  v-show="!courseDetail.clockState" @click.stop="goComment()">去打卡</span>
           </div>
@@ -73,8 +73,6 @@
 </template>
 
 <script>
-
-
   import { mapState } from 'vuex';
   import bnav from '../../components/basic/Nav';
   import calendarTemplate from '../../components/layout/calendarTemplate';
@@ -90,7 +88,7 @@
       return {
         readId:'', //阅读Id
         courseId:'', //课程Id
-        commentId:'',//观点id
+        commentId:'',//感想id
         readInfo:'',//阅读状态
         readDetail:'',
         dayNum:'',
@@ -114,9 +112,6 @@
     },
     mounted () {
       this.getReadStatus()
-      console.log('*****')
-      let aaa = document.querySelector('.calendar-box');
-      console.log(aaa.offsetTop,aaa.offsetHeight,aaa.offsetTop+aaa.offsetHeight)
     },
    watch:{
      readId(){
@@ -150,9 +145,7 @@
       },
       playAudio(readId,courseId){
         if(this.afterToday||this.isToday){
-          play.audioInit(readId,courseId,true)
-          // 跳转到播放页
-          this.$router.push("/audio/index/1");
+          play.audioInit(readId,courseId,true,this)
         }
 
       },
@@ -181,9 +174,10 @@
         if(msg.isRange){
           _this.afterToday = msg.afterToday;
           _this.isToday = msg.isToday;
-          if(msg.afterToday||msg.isToday){
-            _this.getCourseDetail(msg.date)
-          }
+          _this.getCourseDetail(msg.date)
+          // if(msg.afterToday||msg.isToday){
+          //
+          // }
           if(msg.dayNum){
             _this.dayNum = msg.dayNum;
           }
@@ -228,6 +222,7 @@
 
 <style lang="less" scoped>
   @import '../../less/variable';
+  [v-cloak] { display: none }
   .bodyHidden{
     overflow-y: hidden!important;
     -webkit-overflow-scrolling: auto!important;
@@ -530,7 +525,7 @@
           display: inline-block;
           font-size: 26/@rem;
           background: #FFE555;
-          width:130/@rem;
+          width:160/@rem;
           text-align: center;
           height:54/@rem;
           line-height: 54/@rem;

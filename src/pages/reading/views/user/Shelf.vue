@@ -7,9 +7,9 @@
         </div>
         <div class="clearfix">
           <div class="book-table" v-for="(item, index) in bookList" >
-            <div @click="getdayNumInfo(item.id,item.readId,item.title)">
+            <div @click="playAudio(item.readId,item.courseId)">
               <div class="book-cover">
-                <img :src="item.imgUrl || frontImgUrl">
+                <img :src="item.verticalCover || frontImgUrl">
               </div>
               <div class="book-name line2">《{{item.title}}》</div>
             </div>
@@ -25,7 +25,7 @@
         </div>
       </div>
 
-      <div class="already-alert" v-show="alertToggle">
+      <!-- <div class="already-alert" v-show="alertToggle">
         <div class="alert-top">
           <h3>《{{bookName}}》</h3>
           <div class="clearfix book-box" >
@@ -34,9 +34,9 @@
         </div>
         <div class="alert-btn" @click="alertToggle = false;">取消</div>
         <div class="alert-bg" @click="alertToggle = false;"></div>
-      </div>
+      </div> -->
     </div>
-     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0" ></div>
+     
      <AudioBar/>
   </div>
 
@@ -83,13 +83,12 @@ export default {
   created() {
     },
   async mounted () {
+    this.setTitle('一修读书')
     await this.getSwipeInfo()
   },
   methods: {
     playAudio(readId,courseId){
-      play.audioInit(readId,courseId,true)
-      // 跳转到播放页
-      this.$router.push("/audio/index/1");
+      play.audioInit(readId,courseId,true,this)
     },
     async getSwipeInfo() {
       let objs = await user.getSwipeList();
@@ -105,60 +104,45 @@ export default {
         console.log("获取数据失败")
       }
     },
-    loadMore () {
-      this.busy = true;
-      this.pageNum ++;
-      this.getBookList(this.readId)
-    },
     // 获取书籍列表
     getBookList (readId){
       if(this.readId != readId){
-        this.pageNum = 1
         this.bookList = []
       }
       this.readId = readId
       const url = `/readBook/bookList`;
       let params = {}
         params = {
-          readId: this.readId,
-          pageNum: this.pageNum,
-          pageSize: 12
+          readId: this.readId
         }
         this.$http.get(url, {
           params
         }).then((res) => {
-          console.log(res.data.success)
           let objs = res.data
           let obj = objs.data
+          console.log(obj)
           if (objs.success) {
-            if (obj.content && obj.content.length > 0) {
-              this.busy = false;
-              if (!this.bookList) {
-                this.bookList = obj.content;
-              } else {
-                this.bookList = this.bookList.concat(obj.content);
-              };
-            } else {
-              this.busy = true
-            };
+            if (obj && obj.length > 0) {
+                this.bookList = obj;
+            } 
           } else {
             this.busy = true
             console.log("获取数据失败")
           }
 
         });
-    },
-    // 获取弹框列表
-    async getdayNumInfo (bookId,readId,title) {
-      let objs = await user.getdayNum(bookId,readId);
-      if (objs.success) {
-        this.bookName = title
-        this.dayNumList = objs.data
-        this.alertToggle = true
-      } else {
-        console.log("获取数据失败")
-      }
     }
+    // // 获取弹框列表
+    // async getdayNumInfo (bookId,readId,title) {
+    //   let objs = await user.getdayNum(bookId,readId);
+    //   if (objs.success) {
+    //     this.bookName = title
+    //     this.dayNumList = objs.data
+    //     this.alertToggle = true
+    //   } else {
+    //     console.log("获取数据失败")
+    //   }
+    // }
 
   }
 }

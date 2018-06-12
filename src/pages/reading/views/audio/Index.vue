@@ -84,7 +84,7 @@ export default {
         if (!this.readAudio.commentState) {
           return '写想法'
         } else {
-          return '查看'
+          return '我的感想'
         }
       }
     }
@@ -123,11 +123,11 @@ export default {
     },
     goComment () {
       store.commit('resetShowCardModal');
-      if (this.text == '查看') {
-        this.$router.push({name:'poster',query:{commentId:this.readAudio.commentId,lastClock:0,isClock:1}})
-      } else {
+      // if (this.text == '查看') {
+      //   this.$router.push({name:'poster',query:{commentId:this.readAudio.commentId,lastClock:0,isClock:1}})
+      // } else {
         this.$router.push(`/comment/${this.readAudio.readId}/${this.readAudio.courseId}`);
-      }
+      // }
     },
     timerFomart (time) {
       if (isNaN(time)) return '00:00';

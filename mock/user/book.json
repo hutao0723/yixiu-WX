@@ -1,33 +1,48 @@
 
 {
   "code": "string",
-  "data": {
-    "content":[
+  "data": [
     {
-      "id": 191,
-      "imgUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
+      "courseId": 111,
+      "courseType": 1,
+      "dayNum": 0,
+      "id": 0,
+      "imgUrl": "string",
+      "lateralCover": "string",
       "lockStatus": false,
-      "readId": 128,
-      "title": "今天的网红"
+      "readId": 1,
+      "subTitle": "",
+      "title": "今天的网红",
+      "verticalCover": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg"
     },
     {
-      "id": 192,
-      "imgUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
+      "courseId": 222,
+      "courseType": 1,
+      "dayNum": 0,
+      "id": 0,
+      "imgUrl": "string",
+      "lateralCover": "string",
       "lockStatus": false,
-      "readId": 28,
-      "title": "今天的网红"
+      "readId": 2,
+      "subTitle": "",
+      "title": "今天的网红",
+      "verticalCover": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg"
     },
-    
     {
-      "id": 193,
-      "imgUrl": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg",
+      "courseId": 333,
+      "courseType": 1,
+      "dayNum": 0,
+      "id": 0,
+      "imgUrl": "string",
+      "lateralCover": "string",
       "lockStatus": false,
-      "readId": 28,
-      "title": "今天的网红"
+      "readId": 3,
+      "subTitle": "",
+      "title": "今天的网红",
+      "verticalCover": "//yun.dui88.com/youfen/images/cwjq38jknx.jpg"
     }
     
-  ]
-  },
+  ],
   "desc": "string",
   "success": true
 }

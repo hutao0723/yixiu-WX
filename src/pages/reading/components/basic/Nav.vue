@@ -31,32 +31,32 @@
               icon: 'icon-book',
               active: 'icon-book active tag',
               path: '/index/home',
-              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav03.png',
-              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav01.png'
+              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_new02.png',
+              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_new01.png'
             },
             {
               title: '打卡',
               icon: 'icon-date',
               active: 'icon-date active tag',
               path: '/index/card',
-              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav07.png',
-              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav08.png'
+              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_new08.png',
+              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_new07.png'
             },
             {
-              title: '观点',
+              title: '感想',
               icon: 'icon-opinion',
               active: 'icon-opinion active tag',
               path: '/index/opinion',
-              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav06.png',
-              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav09.png'
+              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_new06.png',
+              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_new05.png'
             },
             {
               title: '我的',
               icon: 'icon-user',
               active: 'icon-user active tag',
               path: '/index/user',
-              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav04.png',
-              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav05.png'
+              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_new04.png',
+              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_new03.png'
             }
           ]
         } else {
@@ -65,24 +65,24 @@
               icon: 'icon-book',
               active: 'icon-book active tag',
               path: '/index/home',
-              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav03.png',
-              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav01.png'
+              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_new02.png',
+              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_new01.png'
             },
             {
-              title: '观点',
+              title: '感想',
               icon: 'icon-opinion',
               active: 'icon-opinion active tag',
               path: '/index/opinion',
-              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav06.png',
-              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav09.png'
+              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_new06.png',
+              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_new05.png'
             },
             {
               title: '我的',
               icon: 'icon-user',
               active: 'icon-user active tag',
               path: '/index/user',
-              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav04.png',
-              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_nav05.png'
+              imgUrl: 'http://yun.dui88.com/youfen/images/read_icon_new04.png',
+              imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_new03.png'
 
             }
           ]
@@ -111,7 +111,7 @@
         text-align: center;
         p {
           line-height: 34/@rem;
-          color: #B3B3B3;
+          color: #444444;
         }
         i {
           font-size: 32/@rem;
