@@ -112,7 +112,7 @@
     <!-- 已关注已开课 -->
     <div class="home-already" v-if="pageStatus == 4">
       <bnav :dpm-b="830" :dcm-a="8001"></bnav>
-      <AudioBar @click="clickFun($event)" :monitor-log="getMonitor(822,1,0)" />
+      <AudioBar @click="clickFun($event)" :monitor-log="getMonitor(830,2,0)" />
       <h2>今日学习
         <span> | 第{{todayBookDetail.days}}/{{todayBookDetail.totalDays}}天</span>
       </h2>
@@ -121,7 +121,7 @@
         <img src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="" class="book-img" v-else>
         <div class="book-name otw">《{{todayBookDetail.courseTitle}}》</div>
         <div class="book-msg">{{todayBookDetail.courseSubTitle}}</div>
-        <div class="book-btn" @click="playAudio(todayBookDetail.courseId)">播放
+        <div class="book-btn" @click="clickFun($event,playAudio,todayBookDetail.courseId)" :monitor-log="getMonitor(830,3,0)" >播放
           <i class="iconfont icon-bofang"></i>
         </div>
       </div>
@@ -131,7 +131,7 @@
         </span>
       </h2>
       <div class="already-list clearfix">
-        <div class="item" v-for="(item,index) in historyBookList" :key="index" @click="playAudio(item.courseId,item.lockStatus)">
+        <div class="item" v-for="(item,index) in historyBookList" :key="index"  @click="clickFun($event,playAudio,item)" :monitor-log="getMonitor(830,1,index)">
           <div class="item-box">
             <img :src="item.verticalCover" alt="" class="item-img" v-if="item.verticalCover">
             <img src="http://yun.dui88.com/youfen/images/read_course_none.png
@@ -142,16 +142,6 @@
           </div>
           <div class="item-name">《{{item.title}}》</div>
         </div>
-      </div>
-      <div class="already-alert" v-show="alertToggle">
-        <div class="alert-top">
-          <h3>《{{bookName}}》</h3>
-          <div class="clearfix">
-            <div class="item" v-for="(item,index) in courseList" :key="index" :class="{none: item.lockStatus}" @click="playAudio(item.courseId,item.lockStatus)">{{index+1}}</div>
-          </div>
-        </div>
-        <div class="alert-btn" @click="alertToggle = false;">取消</div>
-        <div class="alert-bg" @click="alertToggle = false;"></div>
       </div>
       <div v-show="noneValueAlert" class="already-no">内容还没有解锁喔！</div>
     </div>
@@ -591,15 +581,15 @@
         this.buy(this.selectCourseId, 4)
       },
       // 开始播放
-      playAudio(id, lockStatus) {
-        if (lockStatus) {
+      playAudio(item) {
+        if (item.lockStatus) {
           this.noneValueAlert = true;
           setTimeout(() => {
             this.noneValueAlert = false;
           }, 2000)
           return false;
         }
-        play.audioInit(this.readId, id, true, this)
+        play.audioInit(this.readId, item.courseId, true, this)
       },
       // 选择课程
       selectCourse(item) {
