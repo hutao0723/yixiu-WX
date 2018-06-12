@@ -57,13 +57,11 @@
       }
     },
     activated:function(){
-      console.log('activated执行')
       let child;
       let father = document.querySelector('.calendar-box');
       this.$nextTick(function(){
         if(document.querySelector('.isClick')){
           child = document.querySelector('.isClick').parentNode.parentNode
-          console.log(child)
           father.scrollTop = child.offsetTop - father.offsetTop-10;
         }
       })
@@ -197,6 +195,11 @@
           }
           this.days[index1][index].isClick=true;
         }
+        // 切换曝光
+        let self = this;
+        setTimeout(() => {
+          window.monitor && window.monitor.showLog(self);
+        }, 100)
       },
       getThisMonthDays(year, month) { //月 天数
         return new Date(year, month, 0).getDate();
