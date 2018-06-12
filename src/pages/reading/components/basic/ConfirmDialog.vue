@@ -101,7 +101,7 @@ export default {
             // item tabindex dpmc
             return JSON.stringify({
             'dcm': dcm,
-            'dpm': 'appid.' + b + '.' + c + '.' + d,
+            'dpm': '157.' + b + '.' + c + '.' + d,
             });
         },
     }
