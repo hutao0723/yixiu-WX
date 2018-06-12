@@ -83,24 +83,24 @@
     },
 
     updated:function(){
-      // this.$nextTick(function () {
-      //   let child;
-      //   let father = document.querySelector('.calendar-box');
-      //   if(this.isFrist){
-      //     if(this.isTodayClock==1&&!this.isHistroy){
-      //       //定位当天
-      //       child = document.querySelector('.isToday_def');
-      //     }else if(this.isTodayClock==0&&!this.isHistroy){
-      //       //定位第一次缺卡位置
-      //       child = document.querySelector('.isFirstLackCard');
-      //     }else{
-      //       child = document.querySelector('.isClick').parentNode.parentNode
-      //     }
-      //     father.scrollTop = child.offsetTop - father.offsetTop-10;
-      //     this.isFrist = false
-      //   }
-      //
-      // })
+      this.$nextTick(function () {
+        let child;
+        let father = document.querySelector('.calendar-box');
+        if(this.isFrist){
+          if(this.isTodayClock==1&&!this.isHistroy){
+            //定位当天
+            child = document.querySelector('.isToday_def');
+          }else if(this.isTodayClock==0&&!this.isHistroy){
+            //定位第一次缺卡位置
+            child = document.querySelector('.isFirstLackCard');
+          }else{
+            child = document.querySelector('.isClick').parentNode.parentNode
+          }
+          father.scrollTop = child.offsetTop - father.offsetTop-10;
+          this.isFrist = false
+        }
+
+      })
     },
     created: function () {
 
@@ -144,26 +144,26 @@
         this._month = _month;
         this.today = today;
         let clickData = JSON.parse(sessionStorage.getItem('clickData'));
-        //let histroyUrl = sessionStorage.getItem('histroyUrl')
+        let histroyUrl = sessionStorage.getItem('histroyUrl')
         for(let i = 0;i<_this.caledarArr.length;i++){
           this.calculateEmptyGrids(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
           /**调用计算空格子*/
           this.calculateDays(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
           //选中当天或者缺卡第一天
-          // if(histroyUrl){
-          //   if(histroyUrl.indexOf('/comment')!=-1||histroyUrl.indexOf('/poster')!=-1||histroyUrl.indexOf('/audio')!=-1 ){
-          //     //编辑页，海报页 返回
-          //     _this.isHistroy = true
-          //   }else {
-          //     _this.isHistroy = false
-          //   }
-          // }
-          if(this.isTodayClock){  //&&!this.isHistroy
+          if(histroyUrl){
+            if(histroyUrl.indexOf('/comment')!=-1||histroyUrl.indexOf('/poster')!=-1||histroyUrl.indexOf('/audio')!=-1 ){
+              //编辑页，海报页 返回
+              _this.isHistroy = true
+            }else {
+              _this.isHistroy = false
+            }
+          }
+          if(this.isTodayClock&&!this.isHistroy){
             //当天
             if(_this.caledarArr[i].cur_month==_this._month){ //默认选中当天
               _this.clickDay(i,_this.today-1,_this.days[i][_this.today-1])
             }
-          }else if(!this.isTodayClock){  //&&!this.isHistroy
+          }else if(!this.isTodayClock&&!this.isHistroy){
             //缺卡第一天
             for(let i=0;i<this.days.length;i++){
               for(let j=0;j<this.days[i].length;j++){
