@@ -29,9 +29,8 @@
           <span class="fl">{{item.releaseTime | timeTransition}}</span>
         </div>
       </div>
-      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0"></div>
-
     </div>
+    <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0"></div>
     <bnav></bnav>
     <AudioBar/>
   </div>
@@ -57,9 +56,10 @@
       return {
         reviewList: [],
         pageNum: 1,
-        pageSize: 20,
+        pageSize: 4,
         busy: true,
         userId: '',
+        lastData: '',
       };
     },
     components: {
@@ -150,6 +150,7 @@
       },
 
       loadMore() {
+        console.log(11)
         this.busy = true;
         this.pageNum++;
         this.getCommentTop()
@@ -159,6 +160,7 @@
         let self = this;
         let params = {};
         params = {
+          last: this.lastData,
           pageNum: this.pageNum,
           pageSize: this.pageSize,
         }
@@ -167,6 +169,7 @@
           params
         }).then((res) => {
           this.reviewList = res.data.data.content;
+          this.lastData = res.data.data.last;
 
           function countLines(ele) {
             var styles = window.getComputedStyle(ele, null);
