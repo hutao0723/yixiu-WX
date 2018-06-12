@@ -200,6 +200,7 @@ export default {
 }
 .person-main {
   padding-bottom: 240/@rem;
+  z-index:100;
   .person-box{
     width: 750/@rem;
     background: rgba(255,255,255,1);

@@ -1,5 +1,6 @@
 <template>
   <div class="opinion-main" ref="optionMain">
+    <bnav :dpm-b="823" :dcm-a="8002"></bnav>
     <div class="home-review">
       <div class="item" v-for="(item,index) in reviewList" :key="index">
         <img :src="item.userImgUrl" alt="" class="item-header">
@@ -31,7 +32,6 @@
       </div>
     </div>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100"></div>
-    <bnav :dpm-b="823" :dcm-a="8002"></bnav>
     <AudioBar @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '823.1.0')" />
   </div>
 </template>
