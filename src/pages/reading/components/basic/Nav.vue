@@ -1,7 +1,7 @@
 <template>
   <div class="bottom-nav" v-if="bottomNavToggle">
     <ul>
-      <li v-for="(item, index) in navlist" :style="bottomNavType ? 'width: 25%;' : 'width: 33.33%;'" @click="clickFun($event)" :monitor-log="getMonitor(dpmB,10,item.dpm)">
+      <li v-for="(item, index) in navlist" :style="bottomNavType ? 'width: 25%;' : 'width: 33.33%;'" @click="clickFun($event)" :monitor-log="getMonitor(dpmB,10,item.dpm)" :monitor-log-get="isLog">
         <router-link :to="item.path" :class="item.path === $route.path ? 'active' : ''">
           <p>
             <!-- <i class="iconfont" :class="item.path === $route.path ? item.active : item.icon"></i> -->
@@ -27,6 +27,9 @@
         default: false
       },
       dcmA: {
+        default: false
+      },
+      isLog: {
         default: false
       }
     },

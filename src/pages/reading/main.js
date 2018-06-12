@@ -95,12 +95,11 @@ Vue.prototype.clickFun = function (event, cb, obj) {
   // 发送埋点
   var {dpm, dcm} = JSON.parse(event.currentTarget.getAttribute('monitor-log'));
   let params = {app_id, referer, url, adzoneId, itemType, dcm, dpm};
-  Vue.http.post('/embed/click', params).then((res) => {
+  Vue.http.post('http://embedlog.youfen666dev.com/embed/click', params).then((res) => {
     // 埋点成功
   }, (res) => {
     // 埋点失败
   });
-  console.log(event.currentTarget.getAttribute('monitor-log'))
   if(cb)cb(obj);
 }
 
@@ -195,7 +194,7 @@ router.beforeEach((to, from, next) => {
         app_id = 'app_id';
     store.commit({ type: 'setReferer', referer: url });  // 设置来源路径
     store.commit({ type: 'setEnterTime', enterTime: outTime });  // 设置来源路径为空
-    Vue.http.post('/embed/access',{stayTime, action, url, referer}).then((res) => {
+    Vue.http.post('http://embedlog.youfen666dev.com/embed/access',{stayTime, action, url, referer}).then((res) => {
       // 埋点成功
     }, (res) => {
       // 埋点失败

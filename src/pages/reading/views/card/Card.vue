@@ -113,9 +113,14 @@
     mounted () {
       this.getReadStatus()
       let self = this;
-      setTimeout(() => {
-        window.monitor && window.monitor.showLog(self);
-      }, 100)
+      self.$nextTick(function () {
+        setTimeout(() => {
+          // 滚动
+          self.$refs.optionMain.addEventListener('scroll', self.dispatchScroll, false);
+          // 埋点
+          window.monitor && window.monitor.showLog(self);
+        }, 100)
+      })
     },
    watch:{
      readId(){

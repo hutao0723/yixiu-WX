@@ -125,18 +125,17 @@
     created() {},
     async mounted() {
       let self = this;
-      // self.$nextTick(function () {
-      //   window.monitor && window.monitor.showLog(self);
-      // })
       this.getCommentTop();
       let userState = await this.getUsetState();
       this.userId = userState.data.userId;
-      setTimeout(() => {
-        // 滚动
-        self.$refs.optionMain.addEventListener('scroll', self.dispatchScroll, false);
-        // 埋点
-        window.monitor && window.monitor.showLog(self);
-      }, 100);
+      self.$nextTick(function () {
+        setTimeout(() => {
+          // 滚动
+          self.$refs.optionMain.addEventListener('scroll', self.dispatchScroll, false);
+          // 埋点
+          window.monitor && window.monitor.showLog(self);
+        }, 100)
+      })
     },
     methods: {
       // 获取monitor
