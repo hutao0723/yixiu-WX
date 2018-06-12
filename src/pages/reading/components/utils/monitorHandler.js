@@ -5,7 +5,7 @@
  * @date   2018-05-17
  * @des    showLog(pointer)    this指针 必传
  */
-
+import store from '../../vuex/store';
 export function monitorHandler () {
   let monitorList = []; // 数据
   let monitorTimeout;
@@ -75,8 +75,8 @@ export function monitorHandler () {
       }
       
       // 获取公共字段
-      var app_id = 'app_id';
-      var referer = 'referer';
+      var app_id = 'appid';
+      var referer = store.getters.getReferer;
       var url = window.location.href.split('?')[0];
       var adzoneId = pointer.$route.query.dcd ? pointer.$route.query.dcd : ''; 
       var itemType = 4;

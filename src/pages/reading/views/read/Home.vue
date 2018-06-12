@@ -174,7 +174,6 @@
   import bnav from '../../components/basic/Nav';
   import play from '../../api/play';
   import store from '../../vuex/store';
-  import access from '../../mixins/accessHandler';
   import {
     mapState
   } from 'vuex';
@@ -205,7 +204,7 @@
       AudioBar,
       bnav
     },
-    mixins: [access],
+    // mixins: [access],
     data() {
       return {
         reviewList: [],
@@ -390,9 +389,9 @@
       }
       
       // 曝光
-      self.$nextTick(function () {
-        window.monitor && window.monitor.showLog(self);
-      })
+      // self.$nextTick(function () {
+      //   window.monitor && window.monitor.showLog(self);
+      // })
       setTimeout(() => {
         // 滚动
         self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, false);

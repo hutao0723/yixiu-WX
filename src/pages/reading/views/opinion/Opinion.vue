@@ -120,9 +120,9 @@
     created() {},
     async mounted() {
       let self = this;
-      self.$nextTick(function () {
-        window.monitor && window.monitor.showLog(self);
-      })
+      // self.$nextTick(function () {
+      //   window.monitor && window.monitor.showLog(self);
+      // })
       this.getCommentTop();
       let userState = await this.getUsetState();
       this.userId = userState.data.userId;

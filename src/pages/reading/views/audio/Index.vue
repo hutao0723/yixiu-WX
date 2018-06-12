@@ -61,7 +61,6 @@ import store from '../../vuex/store';
 import play from '../../api/play';
 import { mapState } from 'vuex'
 import range from '../../components/basic/Range'
-import access from '../../mixins/accessHandler';
 
 export default {
   data () {
@@ -131,12 +130,11 @@ export default {
     getMonitor (c,d) {
       return JSON.stringify({
         dcm: '8001.' + this.readAudio.courseId + '.0.0',
-        dpm: '110.828.' + c + '.' + d
+        dpm: 'appid.828.' + c + '.' + d
       })
     }
   },
-  components:{ range },
-  mixins: [access]
+  components:{ range }
 };
 </script>
 <style lang="less">
