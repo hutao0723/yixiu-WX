@@ -151,7 +151,7 @@
         <img src="http://yun.dui88.com/youfen/images/read_headimg01.png" alt="">
         <div class="text-name">小雪老师</div>
         <div class="text-msg">智慧与美貌并存的读书达人</div>
-        <a class="btn" href="https://kefu.easemob.com/webim/im.html?configId=1738cfa5-7e3c-4fe2-9302-0997c4e3bd9f" @click.native="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '820.9.0')">跟她聊聊</a>
+        <a class="btn" href="javascript:void(0)" @click="clickFun($event,hrefFun)" :monitor-log="getMonitor('0.0.0.0', '820.9.0')">跟她聊聊</a>
       </div>
       <div class="pop-bg"></div>
       <i class="pop-close iconfont icon-close" @click="payCancelToggle = false;"></i>
@@ -389,6 +389,9 @@
       })
     },
     methods: {
+      hrefFun(){
+        window.location.href = 'https://kefu.easemob.com/webim/im.html?configId=1738cfa5-7e3c-4fe2-9302-0997c4e3bd9f'
+      },
       setCookie(cname,cvalue,exhours){   
         var d = new Date();
         d.setTime(d.getTime()+(exhours*60*60*1000));
