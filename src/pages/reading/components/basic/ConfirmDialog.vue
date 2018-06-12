@@ -1,13 +1,13 @@
 <template>
     <div>
-        <div class="modal" v-show="show" transition="fade">
+        <div class="modal" v-if="show" transition="fade">
             <div class="modal-dialog">
                 <div class="modal-body">
                     <p class="notice" v-html="modalOptions.text"></p>
                 </div>
                 <div class="modal-footer">
-                    <a v-if="modalOptions.showCancelButton" href="javascript:void(0)" :class="['button',modalOptions.cancelButtonClass]" @click="close(1)">{{modalOptions.cancelButtonText}}</a>
-                    <a v-if="modalOptions.showConfirmButton" href="javascript:void(0)" :class="['button',modalOptions.confirmButtonClass]" @click="submit">{{modalOptions.confirmButtonText}}</a>
+                    <a v-if="modalOptions.showCancelButton" href="javascript:void(0)" :class="['button',modalOptions.cancelButtonClass]" @click="clickFun($event,close,1)" :monitor-log="getMonitor(2)">{{modalOptions.cancelButtonText}}</a>
+                    <a v-if="modalOptions.showConfirmButton" href="javascript:void(0)" :class="['button',modalOptions.confirmButtonClass]" @click="clickFun($event,submit,false)" :monitor-log="getMonitor(1)">{{modalOptions.confirmButtonText}}</a>
                 </div>
             </div>
         </div>
@@ -33,7 +33,9 @@ export default {
                 showConfirmButton: true,
                 confirmButtonClass: 'btn-active',
                 confirmButtonText: '确定'
-            }
+            },
+            monitorType:'',
+            dpm:'',
         }
     },
     methods: {
@@ -72,12 +74,36 @@ export default {
                 confirmButtonText: obj.confirmButtonText ? obj.confirmButtonText : '确定',
             }
             this.show = true;
+            this.monitorType = obj.monitorType
             this.promise = new Promise((resolve, reject) => {
                 this.resolve = resolve;
                 this.reject = reject;
             });
             return this.promise;   //返回promise对象,给父级组件调用
-        }
+        },
+        // 获取monitor
+        getMonitor(m) {
+            let dcm = '0.0.0.0'
+            let b = this.monitorType.split('.')[0]
+            let c = this.monitorType.split('.')[1]
+            let d = '0'
+            
+            if(m == 2){
+                if(c == 1){
+                    d = 2
+                }
+            }else if(m == 1){
+                if(c == 1){
+                    d = 1
+                }
+            }
+
+            // item tabindex dpmc
+            return JSON.stringify({
+            'dcm': dcm,
+            'dpm': 'appid.' + b + '.' + c + '.' + d,
+            });
+        },
     }
 }
 </script>

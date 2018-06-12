@@ -2,7 +2,7 @@
 <template>
     <swiper :options="swiperOption" ref="mySwiper" class="mySwiper">
         <!-- slides -->
-        <swiper-slide class="swiper-slide" :class="{'active': index == tabIndex}" v-for="(item,index) in readPlanPostersArr" :style="{'background-image':`url(${item.smallPoster})`}" :key="index+1" @click.native="selectSwiper(index,item.poster)">
+        <swiper-slide class="swiper-slide" :class="{'active': index == tabIndex}" v-for="(item,index) in readPlanPostersArr" :style="{'background-image':`url(${item.smallPoster})`}" :key="index+1" @click="clickFun($event,selectSwiper, {index,poster:item.poster})" :monitor-log="getMonitor('8002.0.0.0', `836.1.${index}`)">
             <i class="iconfont icon-duihao"></i>
         </swiper-slide>
     </swiper>
@@ -41,11 +41,18 @@ export default {
     },
     methods:{
         // 点击到某张图片时，符合条件则进行滚动，并将 index和itemImg传回父组件
-        selectSwiper (index,itemImg) {
-            this.tabIndex = index
-            this.swiper.slideTo(index-1, 1000, false)
-            this.$emit('getSwiperIndex', itemImg,index)
+        selectSwiper (obj) {
+            // console.log(obj.index)
+            this.tabIndex = obj.index
+            this.swiper.slideTo(obj.index-1, 1000, false)
+            this.$emit('getSwiperIndex', obj.poster,obj.index)
         },
+        getMonitor(dcm, dpm){
+            return JSON.stringify({
+                'dcm': dcm,
+                'dpm': 'appid.' + dpm,
+            });
+        }
     },
     components:{
         swiper, 

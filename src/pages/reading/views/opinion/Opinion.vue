@@ -1,5 +1,6 @@
 <template>
   <div class="opinion-main" ref="optionMain">
+    <bnav :dpm-b="823" :dcm-a="8002"></bnav>
     <div class="home-review">
       <div class="item" v-for="(item,index) in reviewList" :key="index">
         <img :src="item.userImgUrl" alt="" class="item-header">
@@ -23,16 +24,15 @@
             <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
           </p>
           <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"
-            v-if="userId == item.userId" @click.native="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '823.3.1-'+index)"></router-link>
+            v-if="userId == item.userId" @click.native="clickFun($event)" :monitor-log="getMonitor('8002.'+ item.courseId +'.0.0', '823.3.1-'+index)"></router-link>
           <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr"
-            v-if="userId != item.userId" @click.native="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '823.3.1-'+index)"></router-link>
+            v-if="userId != item.userId" @click.native="clickFun($event)" :monitor-log="getMonitor('8002.'+ item.courseId +'.0.0', '823.3.1-'+index)"></router-link>
           <span class="fl">{{item.releaseTime | timeTransition}}</span>
         </div>
       </div>
     </div>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100"></div>
-    <bnav :dpm-b="823" :dcm-a="8002"></bnav>
-    <AudioBar @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '823.1.0')" />
+    <AudioBar :monitorlog="getMonitor('0.0.0.0', '823.1.0')" />
   </div>
 </template>
 

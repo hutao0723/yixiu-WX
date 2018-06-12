@@ -73,6 +73,7 @@ export function monitorHandler () {
         // 数据异常;
       }
       
+      try {
       // 获取公共字段
       var app_id = '157';
       var referer = store.getters.getReferer;
@@ -80,24 +81,36 @@ export function monitorHandler () {
       var adzoneId = pointer.$route.query.dcd ? pointer.$route.query.dcd : ''; 
       var itemType = 4;
       // 单独发送埋点还是批量发送埋点
-      if (data.length > 1) {
-        var params = {app_id, referer, url, adzoneId, itemType};
-        var body = [];
+      // if (data.length > 1) {
+      //   var params = {app_id, referer, url, adzoneId, itemType};
+      //   var body = [];
+      //   for (var i = 0; i < data.length; i++) {
+      //     var {dpm, dcm} = data[i];
+      //     body.push({dpm, dcm});
+      //   }
+      //   params.body = JSON.stringify(body); 
+      // } else {
         for (var i = 0; i < data.length; i++) {
           var {dpm, dcm} = data[i];
-          body.push({dpm, dcm});
+          var params = {app_id, referer, url, adzoneId, itemType, dcm, dpm};
+          pointer.$http.post(exposeUrl, params).then((res) => {
+            // 埋点成功
+          }, (res) => {
+            // 埋点失败
+          });
         }
-        params.body = JSON.stringify(body); 
-      } else {
-        var {dpm, dcm} = data[0];
-        params = {app_id, referer, url, adzoneId, itemType, dcm, dpm};
-      }
+        // var {dpm, dcm} = data[0];
+        // params = {app_id, referer, url, adzoneId, itemType, dcm, dpm};
+      // }
       
-      pointer.$http.post(exposeUrl, params).then((res) => {
-        // 埋点成功
-      }, (res) => {
-        // 埋点失败
-      });
+      // pointer.$http.post(exposeUrl, params).then((res) => {
+      //   // 埋点成功
+      // }, (res) => {
+      //   // 埋点失败
+      // });
+    } catch (e) {
+      
+    }
     },
     // 横向滚动曝光
     scrollLeftShowLog: function (pointer, el) {

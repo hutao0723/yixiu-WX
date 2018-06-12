@@ -22,7 +22,7 @@
         </div>
         <div class="poster-swiper">
             <PosterSwiper :readPlanPostersArr=readPlanPostersArr @getSwiperIndex=getSwiperIndex />
-            <div class="ps-fx"  @click="clickFun($event)"  :monitor-log="getMonitor(824,1,0)">
+            <div class="ps-fx"  @click="clickFun($event)"  :monitor-log="getMonitor('0.0.0.0', '836.2.0')">
                 <img src="" alt="" id="fx_img">
                 <i class="iconfont icon-finger"></i>
                 <span>长按分享</span>
@@ -74,17 +74,21 @@ export default {
 
     },
     mounted () {
-
+      let self = this;
+      self.$nextTick(function () {
+      setTimeout(() => {
+        window.monitor && window.monitor.showLog(self);
+      }, 100)
+    })
     },
     methods: {
         // 获取monitor
-      getMonitor(b, c, d) {
-        // item tabindex dpmc
-        return JSON.stringify({
-          'dcm': '8002.0.0.0',
-          'dpm': 'appid.' + b + '.' + c + '.' + d,
-        });
-      },
+        getMonitor(dcm, dpm){
+            return JSON.stringify({
+                'dcm': dcm,
+                'dpm': '157.' + dpm,
+            });
+        },
 
         async getUserInfo(){ // 拉取微信用户的昵称和头像
             let obj = await sales.getUserInfo()

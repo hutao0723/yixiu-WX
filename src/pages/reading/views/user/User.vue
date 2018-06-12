@@ -21,8 +21,8 @@
               <div class="text">累计阅读</div>
             </li>
         </ul>
-      <router-link :to="{ path: '/personal/share/poster' }" >
-        <div class="mt20 recommend bgfff" @click="clickFun($event)"  :monitor-log="getMonitor(825,1,0)">
+      <router-link :to="{ path: '/personal/share/poster' }">
+        <div class="mt20 recommend bgfff" @click="clickFun($event)"  :monitor-log="getMonitor(825,6,0)">
             <img :src="recommendUrl">
             
         </div>
@@ -58,7 +58,7 @@
         </div>
       </router-link>
       <router-link :to="{ path: '/personal/share' }">
-        <div class="bgfff">
+        <div class="bgfff" @click="clickFun($event)" :monitor-log="getMonitor(825,7,0)">
           <div class="person-h90 row " >
             <div class="icon-box column-center">
               <i class="iconfont icon-income person-icon"></i>
@@ -78,7 +78,7 @@
     </div>
     <Contact v-show="contactToggle" v-on:success="success"/>
     <bnav :dpm-b="825" :dcm-a="8001"></bnav>
-    <AudioBar @click="clickFun($event)"  :monitor-log="getMonitor(825,8,0)"/>
+    <AudioBar :monitorlog="getMonitor(825,8,0)"/>
   </div>
 
 </template>
@@ -131,10 +131,10 @@ export default {
     // 获取monitor
       getMonitor(b, c, d) {
         // item tabindex dpmc
-        return JSON.stringify({
-          'dcm': '0.0.0.0',
-          'dpm': '157.' + b + '.' + c + '.' + d,
-        });
+          return JSON.stringify({
+            'dcm': '0.0.0.0',
+            'dpm': '157.' + b + '.' + c + '.' + d,
+          });
       },
     // 联系客服
     success(){
@@ -192,6 +192,7 @@ export default {
 }
 .person-main {
   padding-bottom: 240/@rem;
+  z-index:100;
   .person-box{
     width: 750/@rem;
     background: rgba(255,255,255,1);
