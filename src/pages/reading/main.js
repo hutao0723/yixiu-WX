@@ -51,7 +51,7 @@ if (!window.localStorage.getItem('deviceId')) {
 
 Vue.http.headers.common['ext-deviceId'] = window.localStorage.getItem('deviceId');
 Vue.http.headers.common['from'] = 'read';
-Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjrgAVYrS2jWTFx5xqHDj2QQBH1uXBFMw3gMPxWGMYXWq992G8UBUUjtDPenDWhHayUB6cTjNCScruS3vsPcREhmMXmK2rxgixHsa31XHprvefiBtesVeVWfFpmzSsK8oSwS8P';
+// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjrgAVYrS2jWTFx5xqHDj2QQBH1uXBFMw3gMPxWGMYXWq992G8UBUUjtDPenDWhHayUB6cTjNCScruS3vsPcREhmMXmK2rxgixHsa31XHprvefiBtesVeVWfFpmzSsK8oSwS8P';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
@@ -95,7 +95,7 @@ Vue.prototype.clickFun = function (event, cb, obj) {
   // 发送埋点
   var {dpm, dcm} = JSON.parse(event.currentTarget.getAttribute('monitor-log'));
   let params = {app_id, referer, url, adzoneId, itemType, dcm, dpm};
-  Vue.http.post('http://embedlog.youfen666test.com/embed/click', params).then((res) => {
+  Vue.http.post('http://embedlog.youfen666dev.com/embed/click', params).then((res) => {
     // 埋点成功
   }, (res) => {
     // 埋点失败
@@ -194,7 +194,7 @@ router.beforeEach((to, from, next) => {
         app_id = 'app_id';
     store.commit({ type: 'setReferer', referer: url });  // 设置来源路径
     store.commit({ type: 'setEnterTime', enterTime: outTime });  // 设置来源路径为空
-    Vue.http.post('http://embedlog.youfen666test.com/embed/access',{stayTime, action, url, referer}).then((res) => {
+    Vue.http.post('http://embedlog.youfen666dev.com/embed/access',{stayTime, action, url, referer}).then((res) => {
       // 埋点成功
     }, (res) => {
       // 埋点失败
