@@ -131,7 +131,7 @@
         </span>
       </h2>
       <div class="already-list clearfix">
-        <div class="item" v-for="(item,index) in historyBookList" :key="index"  @click="clickFun($event,playAudio,item)"  :monitor-log="getMonitor('8001.'+item.readId+ '.0.'+item.courseId, '830.1.0')">
+        <div class="item" v-for="(item,index) in historyBookList" :key="index"  @click="clickFun($event,playAudio,item)"  :monitor-log="getMonitor('8001.'+item.readId+ '.0.'+item.courseId, '830.1.'+index)">
           <div class="item-box">
             <img :src="item.verticalCover" alt="" class="item-img" v-if="item.verticalCover">
             <img src="http://yun.dui88.com/youfen/images/read_course_none.png
