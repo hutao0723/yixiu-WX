@@ -8,7 +8,7 @@
 			</div>
 			<img :src="imgUrl" v-if="imgUrl"  class="pic"/>
 		</div>
-		<div class="btn" v-if="btn" >
+		<div class="btn" v-if="btn" :monitor-log="getMonitor(1,0)">
 			长按保存分享
 			<img :src="imgUrl" />    
 		</div>
@@ -33,11 +33,13 @@ export default {
     	Popup
   	},
 	mounted() {
-		const _this = this;
+		let _this = this;
 		_this.popup = _this.$route.query.lastClock * 1;
 		_this.isSelf = _this.$route.query.isClock * 1;
 		_this.getInfo();
-		
+        setTimeout(() => {
+	      window.monitor && window.monitor.showLog(_this);
+	    }, 100)
 		// _this.info = {
 		// 	"id": 58,
 		// 	"userId": 100052000,
@@ -89,7 +91,7 @@ export default {
 			let params = {
 				commentId: _this.$route.query.commentId
 			};
-			const url = `/comment/share`;
+			const url = `/api/comment/share`;
 			const res = await _this.$http.get(url, {
 				params
 			});
@@ -435,7 +437,13 @@ export default {
 					},0)
 				})
 			});
-		}
+		},
+		getMonitor (c,d) {
+	      return JSON.stringify({
+	        dcm: '8002.' + 'courseid' + '0.0',
+	        dpm: '110.824.' + c + '.' + d
+	      })
+	    }
   	}
 };
 </script>

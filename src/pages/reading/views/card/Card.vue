@@ -24,7 +24,7 @@
     </header>
     <div class="calendar_header">
       <div class="card-head">
-        <span class="head-left" @click="noticeFlag = true "> <i class="iconfont icon-gift"></i>坚持打卡送大礼<i class="iconfont icon-right"></i> </span>
+        <span class="head-left" @click="clickFun($event);noticeFlag = true "  :monitor-log="getMonitor(831,1,0)"> <i class="iconfont icon-gift"></i>坚持打卡送大礼<i class="iconfont icon-right"></i> </span>
         <div class="head-right">
           <span><i></i> 已打卡</span>
           <span><i></i>未打卡</span>
@@ -57,17 +57,17 @@
             </div>
           </div>
           <div class="book-btn" v-show="afterToday||isToday">
-              <span  v-show="courseDetail.clockState&&courseDetail.commentState" @click.stop="goComment()">我的感想</span>
-              <span  v-show="courseDetail.clockState&&!courseDetail.commentState" @click.stop="goComment()">写想法</span>
-              <span  v-show="!courseDetail.clockState" @click.stop="goComment()">去打卡</span>
+              <span  v-show="courseDetail.clockState&&courseDetail.commentState" @click.stop="clickFun($event,goComment);"  :monitor-log="getMonitor(831,3,1)">查看</span>
+              <span  v-show="courseDetail.clockState&&!courseDetail.commentState" @click.stop="clickFun($event,goComment);"  :monitor-log="getMonitor(831,3,2)">写想法</span>
+              <span  v-show="!courseDetail.clockState"  @click.stop="clickFun($event,goComment);"  :monitor-log="getMonitor(831,3,3)">去打卡</span>
           </div>
         </div>
         <div style="clear: both"></div>
       </div>
     </div>
     <div class="card_bottom_text">轻松阅读，日有所得</div>
-    <AudioBar></AudioBar>
-    <bnav></bnav>
+    <AudioBar  @click="clickFun($event);"  :monitor-log="getMonitor(831,2,0)"/>
+    <bnav  :dpm-b="831"  :dcm-a="8002"></bnav>
 
   </div>
 </template>
@@ -112,6 +112,13 @@
     },
     mounted () {
       this.getReadStatus()
+      console.log('*****')
+      let aaa = document.querySelector('.calendar-box');
+      console.log(aaa.offsetTop,aaa.offsetHeight,aaa.offsetTop+aaa.offsetHeight)
+      let self = this;
+      setTimeout(() => {
+        window.monitor && window.monitor.showLog(self);
+      }, 100)
     },
    watch:{
      readId(){
@@ -119,6 +126,14 @@
      }
    },
     methods: {
+      // 获取monitor
+      getMonitor(b, c, d) {
+        // item tabindex dpmc
+        return JSON.stringify({
+          'dcm': '8001.0.0.0',
+          'dpm': 'appid.' + b + '.' + c + '.' + d,
+        });
+      },
       //bodyHidden bodyScroll
       bodyTouchMove(ev){
         ev = ev || event;
@@ -151,7 +166,7 @@
       },
       //获取阅读状态
       getReadStatus(){
-        this.$http.get('/user/read/state').then(res =>{
+        this.$http.get('/api/user/read/state').then(res =>{
           let resp = res.data;
           if(resp.success){
             this.readInfo = resp.data;
@@ -161,7 +176,7 @@
       },
       //获取最新课程详情
       getReadDetail(){
-        this.$http.get('/user/read/detail').then(res=>{
+        this.$http.get('/api/user/read/detail').then(res=>{
           let resp = res.data;
           if(resp.success){
             this.readDetail = resp.data;
@@ -188,7 +203,7 @@
       //打卡日历
       getClockCalendar(){
         let _this = this;
-        _this.$http.get('/user/read/clockCalendar?readId='+this.readId).then(res=>{
+        _this.$http.get('/api/user/read/clockCalendar?readId='+this.readId).then(res=>{
           let resp = res.data;
           if(resp.success){
             _this.c_date = resp.data;
@@ -200,7 +215,7 @@
       //打卡课程详情
       getCourseDetail(date){
         let _this = this;
-        _this.$http.get('/readBookCourse/courseDetailByDate?readId='+_this.readId+'&date='+date).then(res=>{
+        _this.$http.get('/api/readBookCourse/courseDetailByDate?readId='+_this.readId+'&date='+date).then(res=>{
           let resp = res.data;
           if(resp.success){
             _this.courseDetail = resp.data;
@@ -215,6 +230,12 @@
       },
       goPoster(){
         this.$router.push({name:'poster',query:{commentId:this.commentId,lastClock:0,isClock:1}})
+      },
+      getMonitor (c,d) {
+        return JSON.stringify({
+          dcm: '8001.' + 'courseid.' + '0.0',
+          dpm: '110.831.' + c + '.' + d
+        })
       }
     }
   };

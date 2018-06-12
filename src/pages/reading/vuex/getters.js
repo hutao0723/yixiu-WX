@@ -15,5 +15,6 @@ export default {
 	// 获取音乐的播放时长
 	getMusicDuration: state => state.readDuration,
 	// 获取来源页面referer
-	getReferer: state => state.referer
+	getReferer: state => state.referer,
+	getEnterTime: state => state.enterTime
 };
