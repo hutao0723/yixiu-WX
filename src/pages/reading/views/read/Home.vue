@@ -1,7 +1,7 @@
 <template>
   <div class="home-main">
     <!-- 未报名已关注 -->
-    <div class="home-type" v-show="pageStatus == 1 || pageStatus == 0">
+    <div class="home-type" v-if="pageStatus == 1 || pageStatus == 0">
       <bnav :dpm-b="820"  :dcm-a="8001"></bnav>
       <a href="https://kefu.easemob.com/webim/im.html?configId=f56195f3-2ff6-412b-983e-0231f5586efb" class="home-service" :class="{bottom:bottomNavToggle}"
         @click="clickFun($event)" :monitor-log="getMonitor(820,8,0)"></a>
