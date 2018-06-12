@@ -516,6 +516,7 @@
                 }, 1000)
               } else {
                 self.payCancelToggle = true;
+                window.monitor && window.monitor.showLog(this);
               }
             }
           );
