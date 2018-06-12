@@ -139,7 +139,7 @@
     },
     methods: {
       // 获取monitor
-      getMonitor(dcm,dpm) {
+      getMonitor(dcm, dpm) {
         // item tabindex dpmc
         return JSON.stringify({
           'dcm': dcm,
@@ -175,7 +175,7 @@
         this.getCommentTop()
       },
       // 获取详情
-      getCommentTop() {
+      getCommentTop(cb) {
         let params = {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
@@ -186,16 +186,18 @@
         }).then((res) => {
           let obj = res.data.data.content;
           this.lastData = res.data.data.last;
+
           if (obj && obj.length) {
-            this.busy = false;
-            if (!this.reviewList.length) {
+            if (cb) {
               this.reviewList = obj;
             } else {
-              this.reviewList = this.reviewList.concat(obj);
-              console.log(this.reviewList)
-            };
-
-
+              this.busy = false;
+              if (!this.reviewList.length) {
+                this.reviewList = obj;
+              } else {
+                this.reviewList = this.reviewList.concat(obj);
+              };
+            }
             function countLines(ele) {
               var styles = window.getComputedStyle(ele, null);
               var lh = parseInt(styles.lineHeight, 10);
@@ -217,9 +219,6 @@
         })
       },
       setCommentPraise(item) {
-        if (this.pageStatus == 0) {
-          return false;
-        }
         let self = this;
         let params = {};
         params = {
@@ -230,7 +229,7 @@
         this.$http.get(url, {
           params
         }).then((res) => {
-          this.getCommentTop();
+          this.getCommentTop(true);
         });
       },
     }

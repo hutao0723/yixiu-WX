@@ -2,7 +2,7 @@
 <template>
     <swiper :options="swiperOption" ref="mySwiper" class="mySwiper">
         <!-- slides -->
-        <swiper-slide class="swiper-slide" :class="{'active': index == tabIndex}" v-for="(item,index) in readPlanPostersArr" :style="{'background-image':`url(${item.smallPoster})`}" :key="index+1" @click="clickFun($event,selectSwiper, {index,poster:item.poster})" :monitor-log="getMonitor('8002.0.0.0', `836.1.${index}`)">
+        <swiper-slide class="swiper-slide" :class="{'active': index == tabIndex}" v-for="(item,index) in readPlanPostersArr" :style="{'background-image':`url(${item.smallPoster})`}" :key="index+1" @click.native="clickFun($event,selectSwiper, {index:index,poster:item.poster})" :monitor-log="getMonitor('8002.0.0.0', `836.1.${index}`)">
             <i class="iconfont icon-duihao"></i>
         </swiper-slide>
     </swiper>
