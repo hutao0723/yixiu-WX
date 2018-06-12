@@ -21,14 +21,14 @@
               <div class="text">累计阅读</div>
             </li>
         </ul>
-      <router-link :to="{ path: '/personal/share/poster' }">
-        <div class="mt20 recommend bgfff">
+      <router-link :to="{ path: '/personal/share/poster' }" >
+        <div class="mt20 recommend bgfff" @click="clickFun($event)"  :monitor-log="getMonitor(825,1,0)">
             <img :src="recommendUrl">
             
         </div>
       </router-link>
-      <router-link :to="{ path: '/journey' }">
-        <div class="bgfff">
+      <router-link :to="{ path: '/journey' }" >
+        <div class="bgfff" @click="clickFun($event)"  :monitor-log="getMonitor(825,2,0)">
           <div class="person-h90 row mt20 border" >
             <div class="icon-box column-center">
               <i class="iconfont icon-wodelicheng person-icon"></i>
@@ -37,8 +37,8 @@
           </div>
         </div>
       </router-link>
-      <router-link :to="{ path: '/shelf' }">
-        <div class="bgfff">
+      <router-link :to="{ path: '/shelf' }" >
+        <div class="bgfff" @click="clickFun($event)"  :monitor-log="getMonitor(825,3,0)">
           <div class="person-h90 row border">
             <div class="icon-box column-center">
               <i class="iconfont icon-booklist person-icon"></i>
@@ -47,8 +47,8 @@
           </div>
         </div>
       </router-link>
-      <router-link :to="{ path: '/lecturer' }">
-        <div class="bgfff">
+      <router-link :to="{ path: '/lecturer' }" >
+        <div class="bgfff" @click="clickFun($event)"  :monitor-log="getMonitor(825,4,0)">
           <div class="person-h90 row border" >
             <div class="icon-box column-center">
               <i class="iconfont icon-teacher person-icon"></i>
@@ -67,8 +67,8 @@
           </div>
         </div>
       </router-link>
-      <div class="bgfff" @click="contactToggle = true">
-        <div class="person-h90 row mt20" >
+      <div class="bgfff">
+        <div class="person-h90 row mt20" @click="clickFun($event);contactToggle = true"  :monitor-log="getMonitor(825,5,0)">
           <div class="icon-box column-center">
             <i class="iconfont icon-ear person-icon"></i>
           </div>
@@ -77,8 +77,8 @@
       </div>
     </div>
     <Contact v-show="contactToggle" v-on:success="success"/>
-    <bnav></bnav>
-    <AudioBar/>
+    <bnav :dpm-b="825" :dcm-a="8001"></bnav>
+    <AudioBar @click="clickFun($event)"  :monitor-log="getMonitor(825,8,0)"/>
   </div>
 
 </template>
@@ -116,13 +116,31 @@ export default {
   created() {
     },
   async mounted () {
+    // setTimeout(() => {
+    //   console.log(8888)
+    //   window.monitor && window.monitor.showLog(self);
+    // }, 100)
+    let self = this;
+    self.$nextTick(function () {
+      setTimeout(() => {
+      // console.log(8888)
+      window.monitor && window.monitor.showLog(self);
+    }, 2000)
+    })
     this.getNumberInfo()
     this.setTitle('一修读书')
-    let self = this;
     let userState = await self.getThumbUp();
-      self.wxShare(userState.data.userId);
+    self.wxShare(userState.data.userId);
   },
   methods: {
+    // 获取monitor
+      getMonitor(b, c, d) {
+        // item tabindex dpmc
+        return JSON.stringify({
+          'dcm': '8001.0.0.0',
+          'dpm': 'appid.' + b + '.' + c + '.' + d,
+        });
+      },
     // 联系客服
     success(){
       this.contactToggle = false;

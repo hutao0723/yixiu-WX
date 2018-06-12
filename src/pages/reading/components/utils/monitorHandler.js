@@ -5,7 +5,7 @@
  * @date   2018-05-17
  * @des    showLog(pointer)    this指针 必传
  */
-
+import store from '../../vuex/store';
 export function monitorHandler () {
   let monitorList = []; // 数据
   let monitorTimeout;
@@ -46,6 +46,7 @@ export function monitorHandler () {
 
             try {
               monitorList.push(JSON.parse(monitorLog));
+              // monitorList.push(monitorLog);
             } catch (e) {
             }
           }
@@ -72,19 +73,26 @@ export function monitorHandler () {
       } catch (e) {
         // 数据异常;
       }
-
+      
+      // 获取公共字段
+      var app_id = 'appid';
+      var referer = store.getters.getReferer;
+      var url = window.location.href.split('?')[0];
+      var adzoneId = pointer.$route.query.dcd ? pointer.$route.query.dcd : ''; 
+      var itemType = 4;
       // 单独发送埋点还是批量发送埋点
       if (data.length > 1) {
-        var {referer, url, adzoneId, pageId} = data[0];
-        var params = {referer, url, adzoneId, pageId};
+        var params = {app_id, referer, url, adzoneId, itemType};
         var body = [];
         for (var i = 0; i < data.length; i++) {
-          var {dpm, dcm, moduleId, itemType, itemId} = data[i];
-          body.push({dpm, dcm, moduleId, itemType, itemId});
+          var {dpm, dcm} = data[i];
+          body.push({dpm, dcm});
         }
         params.body = JSON.stringify(body); 
+        console.log(params.body)
       } else {
-        params = data[0];
+        var {dpm, dcm} = data[0];
+        params = {app_id, referer, url, adzoneId, itemType, dcm, dpm};
       }
       
       pointer.$http.post(exposeUrl, params).then((res) => {

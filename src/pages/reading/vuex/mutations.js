@@ -78,6 +78,9 @@ export default {
     setReferer (state, obj) {
     	state.referer = obj.referer;
     },
+    setEnterTime (state, obj) {
+    	state.enterTime = obj.enterTime;
+    },
     setBottomNavType(state, obj) {
       state.bottomNavType = obj.bottomNavType;
     },
