@@ -3,12 +3,12 @@
 		<img src="http://yun.dui88.com/youfen/images/201806/loading.svg" alt="" class="waiting" v-if="!imgUrl">
 		<div class="content">
 			<div class="canvas" v-if="!imgUrl">
-				<canvas id="code"></canvas>
+				<div id="code"></div>
 				<canvas id="sharePoster"></canvas>
 			</div>
 			<img :src="imgUrl" v-if="imgUrl"  class="pic"/>
 		</div>
-		<div class="btn" v-if="btn" :monitor-log="getMonitor(1,0)">
+		<div class="btn" v-if="btn" >
 			长按保存分享
 			<img :src="imgUrl" />    
 		</div>
@@ -18,7 +18,7 @@
 
 <script>
 import Popup from "./../../components/basic/Diploma";
-import QRCode from 'qrcode'
+import QRcode from 'qrcodejs2'
 export default {
   	data() {
 		return {
@@ -26,20 +26,21 @@ export default {
 			popup: false,
 			info: {},
 			isSelf: true,
-			btn:false
+			btn:false,
+			codeUrl:'',
+			code64:'',
 		};
   	},
   	components: {
     	Popup
   	},
 	mounted() {
-		let _this = this;
+		const _this = this;
 		_this.popup = _this.$route.query.lastClock * 1;
 		_this.isSelf = _this.$route.query.isClock * 1;
-		_this.getInfo();
-        setTimeout(() => {
-	      window.monitor && window.monitor.showLog(_this);
-	    }, 100)
+		
+		//_this.getInfo();
+		
 		// _this.info = {
 		// 	"id": 58,
 		// 	"userId": 100052000,
@@ -56,7 +57,7 @@ export default {
 		// 	"readName": "阅读计划-测试1",
 		// 	"readStageId": 9,
 		// 	"readStageNum": 1,
-		// 	"content": "海报换行测试  我们都是好孩子，我们都是好孩子。我们都是好孩子！我们都是好孩子？我们都是好孩子...往往畏畏缩缩点点滴滴。世界顶级觉得觉得你发怒发怒奶粉！仿佛个大家都觉得觉得你呢电话信号进行减肥额都觉得亟待解决Reading makes me happy and proud to have you in the same place again I love ? I am so a good person to and be happy to you I will always be happy to see",
+		// 	"content": "觉得你You are running Vue in development mode发怒oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo发怒<br/>奶粉！仿佛个Make sure to turn on production mode when deploying for production.See more tips at大家都觉得觉Leaders",
 		// 	"releaseTime": "2018-05-30 14:22:13",
 		// 	"releaseTimeLabel": "深夜",
 		// 	"praiseCount": 3,
@@ -76,20 +77,32 @@ export default {
 		// if(!_this.info.courseUrl){
 		// 	_this.info.courseUrl = 'http://yun.dui88.com/youfen/images/read_course_none.png';
 		// };
-		// //二维码写死
-		// _this.info.readQrcodeImgUrl = "http://yun.dui88.com/yoofans/images/201806/code.jpg";
 		// //默认观点
 		// if(!_this.info.content){
 		// 	_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
 		// };
-		// _this.createdCanvas();
-
+		// this.createdCode()
+		this.getCodeUrl() 
 	},
   	methods: {
+		createdCode() {
+			let _this = this;
+			let qrcode = new QRcode('code',{
+				width:200,
+				height:200,
+				text:_this.codeUrl,
+				colorDark:'#7f7f7f',
+				foreground:"#fff"
+			});	
+			let el = document.getElementById('code');
+			let codeCanvas = el.getElementsByTagName('canvas')[0];
+			_this.code64 = codeCanvas.toDataURL('image/jpeg');
+			_this.getInfo() ;
+		},
 		async getInfo() {
 			let _this = this;
 			let params = {
-				commentId: _this.$route.query.commentId
+				commentId: 56
 			};
 			const url = `/comment/share`;
 			const res = await _this.$http.get(url, {
@@ -97,8 +110,6 @@ export default {
 			});
 			if (res.data.success) {
 				_this.info = res.data.data;
-
-				_this.info.readQrcodeImgUrl = "http://yun.dui88.com/youfen/images/code_ewm.png";
 				//头部背景图
 				if (!_this.info.bookBgimgUrl) {
 					_this.info.bookBgimgUrl = "http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg";
@@ -111,12 +122,28 @@ export default {
 				if(!_this.info.content){
 					_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
 				};
+				console.log()
 				_this.createdCanvas();
 			} else {
 				console.log("获取数据失败");
 			}
 		},
-		
+		async getCodeUrl() {
+			let _this = this;
+			let params = {
+				extParam:'&poster=1'
+			};
+			const url = `/poster/QRCodeUrl`;
+			const res = await _this.$http.get(url, {
+				params
+			});
+			if (res.data.success) {
+				_this.codeUrl = res.data.data
+				_this.createdCode() 	
+			} else {
+				console.log("获取二维码地址失败");
+			}
+		},
 		toCertificate(data) {
 			this.$router.push("/graduation");
 		},
@@ -153,6 +180,8 @@ export default {
 			let line_number = 0;
 			//计算行数
 			function myPoint(){
+				//考虑下面的
+				line_number = 0;
 				ctx.textBaseline = "top";
 				ctx.textAlign = 'left'
 				ctx.font = '29px pingFangSC-Light';
@@ -162,22 +191,79 @@ export default {
 					let string = item.split('');
 					let num = 0;
 					let x = _this.conversion(81)
-					let y = _this.conversion(620)
-					line_number++;
-					string.forEach((item,index)=>{
-						//550数值调试来的
-						let string_w = ctx.measureText(item).width-1;
-						ctx.fillText(item, x, y*1+line_number*_this.conversion(52));
-						// 确定下一个字符的横坐标
-						if(num<_this.conversion(560)){
-							num = num + string_w ;
-							x = x + string_w ;
+					let y = _this.conversion(640)
+					
+					let test = /[0-9a-z]/i; 
+					// num是累计的宽度 
+					let A_Z = '';
+					for(let i=0;i<string.length;i++){
+						let string_w = 0;
+						if(test.test(string[i])){
+							if(string[i+1]){
+								//后面跟着的是否字符串
+								if(test.test(string[i+1])){
+									A_Z = A_Z+string[i];	
+								}else{
+									A_Z = A_Z+string[i];
+									string_w = ctx.measureText(A_Z).width-1;
+									if(string_w>_this.conversion(560)){
+										let long_string = A_Z.split('');
+										long_string.forEach((item)=>{
+											string_w = ctx.measureText(item).width-1;
+											ctx.fillText(item, x, y*1+line_number*_this.conversion(52));
+											// 确定下一个字符的横坐标
+											if(num<_this.conversion(560)){
+												num = num + string_w ;
+												x = x + string_w ;
+											}else{
+												x = _this.conversion(78);
+												num = 0;
+												line_number++;
+											}	
+										})
+									}else{
+										if(num+string_w>_this.conversion(560)){
+											x = _this.conversion(78);
+											num = string_w;
+											line_number++;	
+										}else{
+											num = num + string_w ;
+										}
+										ctx.fillText(A_Z, x, y*1+line_number*_this.conversion(52));
+										x = x + string_w ;	
+										A_Z = '';
+									}
+								}
+							}else{
+								A_Z = A_Z+string[i];
+								string_w = ctx.measureText(A_Z).width-1;
+								if(num+string_w>_this.conversion(560)){
+									x = _this.conversion(78);
+									num = string_w;
+									line_number++;	
+								}else{
+									num = num + string_w ;
+								}
+								ctx.fillText(A_Z, x, y*1+line_number*_this.conversion(52));
+								x = x + string_w ;	
+								A_Z = '';
+							}
 						}else{
-							x = _this.conversion(78);
-							num = 0;
-							line_number++;
+							string_w = ctx.measureText(string[i]).width-1;
+							ctx.fillText(string[i], x, y*1+line_number*_this.conversion(52));
+							// 确定下一个字符的横坐标
+							if(num<_this.conversion(560)){
+								num = num + string_w ;
+								x = x + string_w ;
+							}else{
+								x = _this.conversion(78);
+								num = 0;
+								line_number++;
+							}
 						}
-					})
+					}
+					//开始的时候y轴坐标已经是从第一行开始计算的
+					line_number++;
 				})
 			}
 			myPoint();
@@ -196,7 +282,7 @@ export default {
 			myCanvas.height = _this.conversion(1200) * 1 + responseHeight;
 			ctx.fillStyle = "#fff";
 			ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
-
+			
 			// 绘制头部背景图
 			let headerImg = new Promise((resolve, reject) => {
 				let drawImg = new Image();
@@ -284,7 +370,7 @@ export default {
 					ctx.fillText("长按识别二维码",_this.conversion(126),_this.conversion(1108) * 1 + responseHeight * 1);
 					let drawImg = new Image();
 					drawImg.crossOrigin = "Anonymous";
-					drawImg.src = _this.info.readQrcodeImgUrl;
+					drawImg.src = _this.code64;
 					drawImg.onload = function() {
 						ctx.drawImage(drawImg,_this.conversion(600),_this.conversion(1051) * 1 + responseHeight * 1,_this.conversion(100),_this.conversion(100));
 						resolve();
@@ -343,28 +429,7 @@ export default {
 					ctx.font = '29px pingFangSC-Light';
 					let point = _this.info.content.split('<br/>');
 					//处理换行文字
-					let sum = -1;
-					point.forEach((item,index)=>{
-						let string = item.split('');
-						let num = 0;
-						let x = _this.conversion(81)
-						let y = _this.conversion(640)
-						sum++;
-						string.forEach((item,index)=>{
-							//550数值调试来的
-							let string_w = ctx.measureText(item).width-1;
-							ctx.fillText(item, x, y*1+sum*_this.conversion(52));
-							// 确定下一个字符的横坐标
-							if(num<_this.conversion(560)){
-								num = num + string_w ;
-								x = x + string_w ;
-							}else{
-								x = _this.conversion(78);
-								num = 0;
-								sum++;
-							}
-						})
-					})
+					myPoint()
 					
 					//绘制作者信息
 					ctx.font = _this.conversion(24) + "px pingFangSC-Light";
@@ -437,13 +502,7 @@ export default {
 					},0)
 				})
 			});
-		},
-		getMonitor (c,d) {
-	      return JSON.stringify({
-	        dcm: '8002.' + 'courseid' + '0.0',
-	        dpm: '110.824.' + c + '.' + d
-	      })
-	    }
+		}
   	}
 };
 </script>
@@ -469,6 +528,10 @@ export default {
 		to {
 			transform: rotate(360deg);
 		}
+	}
+	canvas{
+		width: 500px !important;
+		height: 500px !important;
 	}
 	.share {
 		right: 0;
