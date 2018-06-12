@@ -2,7 +2,7 @@ import play from '../api/play'
 export default {
     // play设置
 	play (state) {
-		state.readPlaying = true;
+		// state.readPlaying = true;
 		state.audioelement.play()
 	},
 	// 暂停设置
@@ -43,12 +43,14 @@ export default {
 				play.audioNext()
 			} else {
 				play.syncProgress(state.readAudio.readId, state.readAudio.courseId, state.readCurrentTime)
+				state.readAudio.playbackProgress = 0
 				state.audioelement.load()
 				state.audioelement.pause()
 			}
 		} else {
-			state.showCardModal = true;
+			if (state.readAudio.curRead) state.showCardModal = true;
 			play.syncProgress(state.readAudio.readId, state.readAudio.courseId, state.readCurrentTime)
+			state.readAudio.playbackProgress = 0
 			state.audioelement.load()
 			state.audioelement.pause()
 		}	
@@ -64,8 +66,8 @@ export default {
 		state.readLoadStart = obj.isloadstart;
 	},
 	// 设置音乐停止播放状态
-	setPlaying (state) {
-		state.readPlaying = false;
+	setPlaying (state, obj) {
+		state.readPlaying = obj.readPlaying;
 	},
 	// 重置打卡弹窗
 	resetShowCardModal (state) {

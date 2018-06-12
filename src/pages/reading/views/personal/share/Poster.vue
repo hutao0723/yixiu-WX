@@ -18,7 +18,7 @@
                     <img src="" id="img">
                 </div>
             </div>
-            <p class="pm-notice">分享此海报给好友，好友通过该海报购买后，您将获得”<em>收益</em>“</p>
+            <p class="pm-notice">分享此海报给好友，好友通过该海报购买后，您将获得“<em>收益</em>”</p>
         </div>
         <div class="poster-swiper">
             <PosterSwiper :readPlanPostersArr=readPlanPostersArr @getSwiperIndex=getSwiperIndex />
@@ -422,6 +422,7 @@ export default {
                         z-index: 3;
                         vertical-align: top;
                         -ms-interpolation-mode: bicubic;
+                        pointer-events: none;
                     }
                 }
             }

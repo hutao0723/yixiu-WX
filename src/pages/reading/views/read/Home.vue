@@ -1,6 +1,7 @@
 <template>
   <div class="home-main">
     <div class="home-type" v-show="pageStatus == 1 || pageStatus == 0">
+      <bnav></bnav>
       <a href="https://kefu.easemob.com/webim/im.html?configId=f56195f3-2ff6-412b-983e-0231f5586efb" class="home-service" :class="{bottom:bottomNavToggle}"></a>
       <div class="home-tab clearfix" id="hometab">
         <div class="item" @click="tabActiveToggle(true)">
@@ -11,7 +12,7 @@
         </div>
       </div>
       <div class="home-bottom" @click="tabActiveToggle(false)" :class="{bottom:bottomNavToggle}" v-show="tabActive">去选课程</div>
-      <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="!tabActive">
+      <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="!tabActive&&readList.length>0&&payBtnShow">
         <p>
           <span class="text-del">{{selectCourseObj.costPrice}}</span>
           <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>
@@ -29,35 +30,40 @@
           <img src="http://yun.dui88.com/youfen/images/read_img08.jpg" alt="">
           <!-- <img src="http://yun.dui88.com/youfen/images/read_img06.jpg" alt=""> -->
         </div>
-        <div class="home-review" v-if="reviewList.length> 0">
-          <h2>学员观点</h2>
+        <div class="home-review" v-show="reviewList.length> 0">
+          <h2>学员感想</h2>
           <div class="item" v-for="(item,index) in reviewList" :key="index">
             <img :src="item.userImgUrl" alt="" class="item-header">
             <div class="item-name">{{item.userNickname}}</div>
             <div class="item-periods">{{item.readName}}第{{item.readStageNum}}期学员</div>
-            <div class="item-content">{{item.content}}</div>
+            <div class="item-content" ref="cheight" :id="'content' + index" :class="{show:item.show == 1}">{{item.content}}</div>
+            <div v-show="item.show == 1" @click="unfoldToggle(2,index)" class="item-toggle">展开</div>
+            <div v-show="item.show == 2" @click="unfoldToggle(1,index)" class="item-toggle">收起</div>
             <div class="item-book">
               <div class="book-bg">
-                <img class="book-img" :src="item.courseUrl" alt="">
+                <img class="book-img" :src="item.courseVerticalCover" alt="" v-if="item.courseVerticalCover">
+                <img class="book-img" src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="" v-else>
               </div>
-
-              <div class="book-name otw">{{item.courseTitle}}</div>
+              <div class="book-name otw">《{{item.courseTitle}}》</div>
               <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
             </div>
             <div class="item-bottom">
-              <!-- <span @click="getCommentPraise(item.id,item.userPraise)" v-if="pageStatus != 0">
-                <i class="iconfont icon-heart fr" :style="{color:item.userPraise?'red':'#000'}"></i>
-                <span class="fr">{{item.praiseCount}}</span>
-              </span>
-              <router-link :to="{ path: '/poster/' + item.id+'/0/1'}" tag="a" class="iconfont icon-share fr"></router-link>
-              <span>{{item.releaseTime| timeTransition}}</span> -->
+              <p @click="setCommentPraise(item.id,item.userPraise)">
+                <span class="fr" v-show="item.praiseCount>0">{{item.praiseCount}}</span>
+                <i class="iconfont icon-dianzan fr" v-show="!item.userPraise"></i>
+                <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
+              </p>
+              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"
+                v-if="userId == item.userId"></router-link>
+              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr"
+                v-if="userId != item.userId"></router-link>
             </div>
           </div>
         </div>
       </div>
-      <div class="home-course" v-show="!tabActive">
+      <div class="home-course" v-show="!tabActive" :class="{bottom:bottomNavToggle}">
         <div class="item" v-for="(item,index) in readList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
-          @click="selectCourse(item)">
+          @click="selectCourse(item)" v-show="readList.length > 0">
           <div class="item-box">
             <div class="item-top">
               <div class="item-none" v-if="item.purchased"></div>
@@ -73,6 +79,10 @@
             </div>
           </div>
         </div>
+        <div v-show="!readList.length" class="course-none">
+          <img src="https://yun.duiba.com.cn/yoofans/images/201805/read/index.png" alt="">
+          <p>暂无可购买的</p>
+        </div>
       </div>
     </div>
 
@@ -80,14 +90,16 @@
 
     <!-- 报名未关注 -->
     <div class="home-wechat" v-if="pageStatus == 2">
+      <bnav></bnav>
       <p class="text-a">
         <i class="iconfont"></i>您已成功报名</p>
       <p class="text-b">长按识别二维码</p>
       <p class="text-c">关注公众号，去等待开课</p>
-      <img src="http://yun.dui88.com/youfen/images/read_ewm3.png" alt="">
+      <img src="http://yun.dui88.com/youfen/images/read_ewm3.png" alt="" class="text-ewm">
     </div>
     <!-- 报名未开课 -->
     <div class="home-nonevent" v-if="pageStatus == 3">
+      <bnav></bnav>
       <div class="nonevent-box">
         <p class="text-a">您已成功报名</p>
         <p class="text-b">「 {{courseDetail.title}} 」</p>
@@ -102,12 +114,14 @@
     </div>
     <!-- 已关注已开课 -->
     <div class="home-already" v-if="pageStatus == 4">
+      <bnav></bnav>
       <AudioBar/>
       <h2>今日学习
         <span> | 第{{todayBookDetail.days}}/{{todayBookDetail.totalDays}}天</span>
       </h2>
       <div class="already-book">
-        <img :src="todayBookDetail.courseUrl" alt="" class="book-img">
+        <img :src="todayBookDetail.courseUrl" alt="" class="book-img" v-if="todayBookDetail.courseUrl">
+        <img src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="" class="book-img" v-else>
         <div class="book-name otw">《{{todayBookDetail.courseTitle}}》</div>
         <div class="book-msg">{{todayBookDetail.courseSubTitle}}</div>
         <div class="book-btn" @click="playAudio(todayBookDetail.courseId)">播放
@@ -115,12 +129,16 @@
         </div>
       </div>
       <h2>我的书架
-        <span> | 缺卡{{todayBookDetail.lackClockDays}}天</span>
+        <span> |
+          <router-link :to="{ path: '/index/card?isclock=0', }" tag="a"> 缺卡{{todayBookDetail.lackClockDays}}天 ></router-link>
+        </span>
       </h2>
       <div class="already-list clearfix">
-        <div class="item" v-for="(item,index) in historyBookList" :key="index" @click="getCourseList(item)">
+        <div class="item" v-for="(item,index) in historyBookList" :key="index" @click="playAudio(item.courseId,item.lockStatus)">
           <div class="item-box">
-            <img :src="item.imgUrl" alt="" class="item-img">
+            <img :src="item.verticalCover" alt="" class="item-img" v-if="item.verticalCover">
+            <img src="http://yun.dui88.com/youfen/images/read_course_none.png
+            " alt="" class="item-img" v-else>
             <div class="item-lock" v-if="item.lockStatus">
               <i class="iconfont icon-lock"></i>
             </div>
@@ -130,14 +148,15 @@
       </div>
       <div class="already-alert" v-show="alertToggle">
         <div class="alert-top">
-          <h3>{{bookName}}</h3>
+          <h3>《{{bookName}}》</h3>
           <div class="clearfix">
-            <div class="item" v-for="(item,index) in courseList" :key="index" :class="{none: item.lockStatus}" @click="playAudio(item.courseId)">{{index+1}}</div>
+            <div class="item" v-for="(item,index) in courseList" :key="index" :class="{none: item.lockStatus}" @click="playAudio(item.courseId,item.lockStatus)">{{index+1}}</div>
           </div>
         </div>
         <div class="alert-btn" @click="alertToggle = false;">取消</div>
         <div class="alert-bg" @click="alertToggle = false;"></div>
       </div>
+      <div v-show="noneValueAlert" class="already-no">内容还没有解锁喔！</div>
     </div>
     <div class="home-pop" v-show="payCancelToggle">
       <div class="pop-content">
@@ -155,19 +174,38 @@
 
 <script>
   import AudioBar from '../../components/basic/Audio_Bar';
+  import bnav from '../../components/basic/Nav';
   import play from '../../api/play';
   import store from '../../vuex/store';
-
-
   import {
     mapState
   } from 'vuex';
 
+  const testUrl = window.location.hostname == 'localhost' ? '/api' : '';
+  // const testUrl = '/api';
+
+  const API = {
+    orderSubmit: testUrl + '/order/submit',
+    paySubmit: testUrl + '/pay/submit',
+    distributionBinding: testUrl + '/distribution/binding',
+    changeLoginDays: testUrl + '/user/stat/changeLoginDays',
+    changeReadStatus: testUrl + '/user/stat/changeReadStatus',
+    readDetail: testUrl + '/user/read/detail',
+    commentTop: testUrl + '/comment/top',
+    commentPraise: testUrl + '/comment/praise',
+    readList: testUrl + '/read/readList',
+    courseDetailByDate: testUrl + '/readBookCourse/courseDetailByDate',
+    bookList: testUrl + '/readBook/bookList',
+    courseList: testUrl + '/readBookCourse/courseList',
+    userState: testUrl + '/user/read/state',
+
+  };
 
 
   export default {
     components: {
-      AudioBar
+      AudioBar,
+      bnav
     },
     data() {
       return {
@@ -177,6 +215,7 @@
         bookName: '',
         alertToggle: false,
         readId: '',
+        userId: '',
 
         pageStatus: 10, // 页面状态
 
@@ -191,216 +230,202 @@
         maincontent: 0,
         bodycontent: 0,
         payCancelToggle: false,
+        payBtnShow: true,
+        noneValueAlert: false,
 
 
       };
     },
     computed: {
-      ...mapState(['bottomNavToggle', 'bottomNavType'])
+      ...mapState(['bottomNavToggle', 'bottomNavType', 'videoToggle'])
     },
-    filters: {
-      // 时长
-      timeTransition: function (value) {
-        let nowDate = new Date()
-        let nowDateNum = nowDate.getTime()
-        let valueDate = new Date(value)
-        let valueDateNum = valueDate.getTime()
-        let key = nowDateNum - valueDateNum
-
-        let today = new Date();
-        today.setHours(0);
-        today.setMinutes(0);
-        today.setSeconds(0);
-        today.setMilliseconds(0);
-
-        let yesterday = new Date(today);
-        let yesterdayNum = yesterday.getTime()
-        let yes = valueDateNum - yesterdayNum;
-
-        let Y, M, D, h, m, s;
-        Y = valueDate.getFullYear() + '-';
-        M = (valueDate.getMonth() + 1 < 10 ? '0' + (valueDate.getMonth() + 1) : valueDate.getMonth() + 1) + '-';
-        D = (valueDate.getDate() < 10 ? '0' + valueDate.getDate() : valueDate.getDate()) + ' ';
-        h = (valueDate.getHours() < 10 ? '0' + valueDate.getHours() : valueDate.getHours()) + ':';
-        m = (valueDate.getMinutes() < 10 ? '0' + valueDate.getMinutes() : valueDate.getMinutes());
-        let text = '';
-
-        if (key > 0 && key < 60 * 1000) {
-          text = '刚刚'
-        }
-
-        if (key >= 60 * 1000 && key < 60 * 60 * 1000) {
-          text = Math.floor(key / (60 * 1000)) + '分钟前'
-        }
-
-        if (key >= 60 * 60 * 1000 && key < 2 * 60 * 60 * 1000) {
-          text = '1小时前'
-        }
-
-        if (key >= 2 * 60 * 60 * 1000 && key < yes) {
-          text = h + m
-        }
-
-        if (key >= yes) {
-          text = M + D
-        }
-        return text
-      },
-    },
+    filters: {},
     created() {},
     async mounted() {
       let self = this;
+      // dcd存入cookie
+      if (self.$route.query.dcd) {
+          this.setCookie('dcd',self.$route.query.dcd,2)
+        }
       // 如果是支付流程直接支付
-
-      // console.log(this.$route)
-
-      if(window.location.href.indexOf('from') != -1){
-        location.replace('http://k.youfen666.com/reading.html#/index/home?' + window.location.href.split('?')[2])
+      if (window.location.href.indexOf('from') != -1) {
+        location.replace('/reading.html#/index/home?' + window.location.href.split('?')[2])
       }
-      this.setTitle('一修读书')
+      let refreshCookie = true;
 
-      if (self.$route.query.dcd && !self.$route.query.isPay) {
-        self.getDcd(self.$route.query.dcd)
+      // 防止cookie丢失
+        if (window.location.href.indexOf('afterLogin') == -1) {
+          let res = await this.$http.get('/baseLogin', {
+            params: {
+              dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
+            }
+          })
+          if (res.data.success && res.data.data) {
+            refreshCookie = false;
+            location.replace(res.data.data);
+          }
+        }
+
+      if (refreshCookie) {
+        this.setTitle('一修读书')
+
+        if (self.$route.query.dcd) {
+          self.getDcd(self.$route.query.dcd || self.getCookie('dcd'))
+        }
+        if (self.$route.query.courseId) {
+          self.tabActive = false;
+          self.buy(self.$route.query.courseId, 4)
+        }
+
+        // 获取用户信息
+        let userState = await self.getUsetState();
+        self.wxShare(userState.data.userId);
+        self.userId = userState.data.userId;
+        self.readId = userState.data.readId;
+        if (userState.data) {
+          if (
+            userState.data.readState == -1
+          ) {
+            console.log('用户未购买未授权')
+            self.pageStatus = 0;
+            self.getCommentTop();
+            self.getReadList();
+            store.commit({
+              type: 'setBottomNavToggle',
+              bottomNavToggle: false
+            })
+            store.commit({
+              type: 'setBottomNavType',
+              bottomNavType: false
+            })
+            
+
+          }
+          if (
+            userState.data.readState == 0
+          ) {
+            console.log('用户未购买已授权')
+            self.pageStatus = 1;
+            self.getCommentTop();
+            self.getReadList();
+            store.commit({
+              type: 'setBottomNavToggle',
+              bottomNavToggle: false
+            })
+            store.commit({
+              type: 'setBottomNavType',
+              bottomNavType: false
+            })
+            
+
+          }
+
+          if (
+            userState.data.readState > 0 && !userState.data.followOfficialAccount
+          ) {
+            console.log('用户购买未关注')
+            self.pageStatus = 2;
+            self.tabActive = userState.data.readState != 4
+            store.commit({
+              type: 'setBottomNavToggle',
+              bottomNavToggle: true
+            })
+            store.commit({
+              type: 'setBottomNavType',
+              bottomNavType: false
+            })
+            
+          }
+
+          if (
+            userState.data.readState == 1 && userState.data.followOfficialAccount
+          ) {
+            console.log('用户购买已关注未开课')
+            self.pageStatus = 3;
+            self.getReadDetail();
+            store.commit({
+              type: 'setBottomNavToggle',
+              bottomNavToggle: true
+            })
+            store.commit({
+              type: 'setBottomNavType',
+              bottomNavType: false
+            })
+            
+          }
+
+          if (
+            userState.data.readState == 2 && userState.data.followOfficialAccount
+          ) {
+            console.log('用户购买已关注已开课')
+            self.pageStatus = 4;
+            self.getDetail();
+            self.getBookList();
+            store.commit({
+              type: 'setBottomNavToggle',
+              bottomNavToggle: true
+            })
+            store.commit({
+              type: 'setBottomNavType',
+              bottomNavType: true
+            })
+            
+          }
+
+          if (
+            userState.data.readState == 3
+          ) {
+            console.log('用户购买已关注已读完')
+            self.pageStatus = 1;
+            self.getCommentTop();
+            self.getReadList();
+            store.commit({
+              type: 'setBottomNavToggle',
+              bottomNavToggle: true
+            })
+            store.commit({
+              type: 'setBottomNavType',
+              bottomNavType: false
+            })
+            
+          }
+        }
+
+        self.changeLoginDays();
+        self.changeReadStatus();
       }
-      if (self.$route.query.courseId && !self.$route.query.isPay) {
-        self.tabActive = false;
-        self.buy(self.$route.query.courseId, 4)
-      }
-
-
-      let userState = await self.getThumbUp();
-      self.wxShare(userState.data.userId);
-      self.readId = userState.data.readId;
-      // 状态判断逻辑
-      if (userState.data) {
-        if (
-          userState.data.readState == -1
-        ) {
-          console.log('用户未购买未授权')
-          self.pageStatus = 0;
-          self.getCommentTop();
-          self.getReadList();
-          store.commit({
-            type: 'setBottomNavToggle',
-            bottomNavToggle: false
-          })
-          store.commit({
-            type: 'setBottomNavType',
-            bottomNavType: false
-          })
-
-        }
-        if (
-          userState.data.readState == 0
-        ) {
-          console.log('用户未购买已授权')
-          self.pageStatus = 1;
-          self.getCommentTop();
-          self.getReadList();
-          store.commit({
-            type: 'setBottomNavToggle',
-            bottomNavToggle: false
-          })
-          store.commit({
-            type: 'setBottomNavType',
-            bottomNavType: false
-          })
-        }
-
-        if (
-          userState.data.readState > 0 && !userState.data.followOfficialAccount
-        ) {
-          console.log('用户购买未关注')
-          self.pageStatus = 2;
-          self.tabActive = userState.data.readState != 4
-          store.commit({
-            type: 'setBottomNavToggle',
-            bottomNavToggle: true
-          })
-          store.commit({
-            type: 'setBottomNavType',
-            bottomNavType: false
-          })
-        }
-
-        if (
-          userState.data.readState == 1 && userState.data.followOfficialAccount
-        ) {
-          console.log('用户购买已关注未开课')
-          self.pageStatus = 3;
-          self.readDetail();
-          store.commit({
-            type: 'setBottomNavToggle',
-            bottomNavToggle: true
-          })
-          store.commit({
-            type: 'setBottomNavType',
-            bottomNavType: false
-          })
-        }
-
-        if (
-          userState.data.readState == 2 && userState.data.followOfficialAccount
-        ) {
-          console.log('用户购买已关注已开课')
-          self.pageStatus = 4;
-          self.getDetail();
-          self.getBookList();
-          store.commit({
-            type: 'setBottomNavToggle',
-            bottomNavToggle: true
-          })
-          store.commit({
-            type: 'setBottomNavType',
-            bottomNavType: true
-          })
-        }
-
-        if (
-          userState.data.readState == 3
-        ) {
-          console.log('用户购买已关注已读完')
-          self.pageStatus = 1;
-          self.getCommentTop();
-          self.getReadList();
-          store.commit({
-            type: 'setBottomNavToggle',
-            bottomNavToggle: true
-          })
-          store.commit({
-            type: 'setBottomNavType',
-            bottomNavType: false
-          })
-        }
-      }
-      self.changeLoginDays();
-      self.changeReadStatus();
-      // setTimeout(() => {
-      //   var maincontento = document.getElementById("maincontent");
-      //   var maincontenth = maincontento.offsetHeight; //高度
-      //   this.maincontent = maincontenth;
-
-      //   this.bodycontent = document.body.clientHeight;
-      //   console.log('maincontent高度:' + this.maincontent)
-      // }, 500)
-      // // window.addEventListener('scroll', this.handleScroll,true);
-      // self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, true);
-
     },
     methods: {
+      setCookie(cname,cvalue,exhours){   
+        var d = new Date();
+        d.setTime(d.getTime()+(exhours*60*60*1000));
+        var expires = "expires="+d.toGMTString();
+        document.cookie = cname + "=" + cvalue + "; " + expires;
+      },
+      getCookie(cname){
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) 
+        {
+          var c = ca[i].trim();
+          if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+        }
+        return "";
+      },
 
+      // 展开收起
+      unfoldToggle(n, index) {
+        let self = this;
+        this.reviewList[index].show = n
+        this.$set(self.reviewList, index, self.reviewList[index])
+      },
 
       // 支付
-
-
-      /**
-       * 拉起支付
-       */
       async buy(itemId, itemType) {
         console.log('拉起支付')
         const orderId = await this.placeOrder({
           itemId,
-          itemType
+          itemType,
         });
         if (!orderId) {
           return false;
@@ -411,22 +436,18 @@
         this.wxPay(payment);
       },
 
-
-      /**
-       * 下单
-       */
+      // 下单
       async placeOrder({
         itemId,
         itemType
       }) {
         console.log('下单')
-        const url = `/order/submit`;
+        const url = API.orderSubmit;
         const res = await this.$http.post(url, {
           itemId,
           itemType,
-          dcd: this.$route.query.dcd?this.$route.query.dcd:'',
+          dcd: this.$route.query.dcd || this.getCookie('dcd') || '',
         });
-
         if (!res.data.success) {
           location.href = '/reading.html#/index/home';
           return false;
@@ -434,15 +455,13 @@
         return res.data.data;
       },
 
-      /**
-       * 预支付
-       */
+      // 预支付
       async wxPrePay({
         orderId
       }) {
         console.log('预支付')
         const payType = 'WECHATREADH5APAY';
-        const url = `/pay/submit`;
+        const url = API.paySubmit;
         const res = await this.$http.post(url, {
           orderId,
           payType
@@ -450,9 +469,7 @@
         return res.data.data;
       },
 
-      /**
-       * 支付
-       */
+      // 支付
       wxPay(payment) {
         let self = this;
 
@@ -466,11 +483,10 @@
               "signType": payment.signType, //微信签名方式：     
               "paySign": payment.paySign //微信签名 
             },
-            function (res) {
+            async function (res) {
               if (res.err_msg == "get_brand_wcpay_request:ok") {
 
-                // } 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
-
+                // 给url+时间戳
                 function url_add_hash(url, key) {
                   var key = (key || 't') + '='; //默认是"t"  
                   var reg = new RegExp(key + '\\d+'); //正则：t=1472286066028  
@@ -485,8 +501,12 @@
                     }
                   }
                 }
-
-                window.location.href = url_add_hash(window.location.href)
+                setInterval(async function () {
+                  let userState = await self.getUsetState();
+                  if (userState.data.readState > 0) {
+                    window.location.href = url_add_hash(window.location.href)
+                  }
+                }, 1000)
               } else {
                 self.payCancelToggle = true;
               }
@@ -506,75 +526,19 @@
       },
 
 
-
+      // 课程详情切换
       tabActiveToggle(e) {
         this.$refs.homemain.scrollTop = 0
         this.tabActive = e;
       },
-      dispatchScroll(e) {
-        console.log(this.$refs.homemain.scrollTop + document.body.clientHeight)
-        let self = this;
-        var startX = 0,
-          startY = 0,
-          isTrue = 0;
-
-        function touchStart(evt) {
-          try {
-            var touch = evt.touches[0], //获取第一个触点
-              x = Number(touch.pageX), //页面触点X坐标
-              y = Number(touch.pageY); //页面触点Y坐标
-            //记录触点初始位置
-            startX = x;
-            startY = y;
-          } catch (e) {
-            console.log(e.message)
-          }
-        }
-
-        function touchMove(evt) {
-          try {
-            var touch = evt.touches[0], //获取第一个触点
-              x = Number(touch.pageX), //页面触点X坐标
-              y = Number(touch.pageY); //页面触点Y坐标
-
-
-            // //判断滑动方向
-            // if (startY - y > 200) {
-            //   console.log('到底部并且上滑了')
-            //   isTrue = 1;
-            // } else if (y - startY > 200) {
-            //   console.log('下滑了')
-            //   isTrue = 2;
-            // } else {
-            //   isTrue = 0;
-            // }
-
-
-          } catch (e) {}
-        }
-
-        function touchEnd() {
-          if (isTrue == 1) {
-            self.$refs.homemain.scrollTop = 0
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
-            window.scrollTo(0, 0);
-            self.tabActive = false;
-          }
-        }
-
-        //绑定事件
-        document.addEventListener('touchstart', touchStart, false);
-        document.addEventListener('touchmove', touchMove, false);
-        document.addEventListener('touchend', touchEnd, false);
-      },
+      // ded
       getDcd(dcd) {
         let self = this;
         let params = {};
         params = {
           dcd: dcd,
         }
-        const url = `/distribution/binding`;
+        const url = API.distributionBinding;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -584,8 +548,7 @@
       changeLoginDays() {
         let self = this;
         let params = {};
-        params = {}
-        const url = `/user/stat/changeLoginDays`;
+        const url = API.changeLoginDays;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -596,94 +559,126 @@
         let self = this;
         let params = {};
         params = {}
-        const url = `/user/stat/changeReadStatus`;
+        const url = API.changeReadStatus;
         this.$http.get(url, {
           params
         }).then((res) => {
 
         });
       },
+      // 开始支付
       orderPay() {
         this.buy(this.selectCourseId, 4)
       },
-      playAudio(id) {
-        play.audioInit(this.readId, id, true)
-        // 跳转到播放页
-        this.$router.push('/audio/index/1')
+      // 开始播放
+      playAudio(id, lockStatus) {
+        if (lockStatus) {
+          this.noneValueAlert = true;
+          setTimeout(() => {
+            this.noneValueAlert = false;
+          }, 2000)
+          return false;
+        }
+        play.audioInit(this.readId, id, true, this)
       },
+      // 选择课程
       selectCourse(item) {
         if (this.selectCourseId != item.readId && !item.purchased) {
           this.selectCourseId = item.readId;
           this.selectCourseObj = item;
         }
       },
-      readDetail() {
+      // 阅读详情
+      getReadDetail() {
         let self = this;
         let params = {};
-        params = {}
-        const url = `/user/read/detail`;
+        const url = API.readDetail;
         this.$http.get(url, {
           params
         }).then((res) => {
           self.courseDetail = res.data.data
         });
       },
-      async getThumbUp() {
+      // 获取用户信息
+      async getUsetState() {
         let self = this;
         let params = {};
-        params = {
-
-        }
-        const url = `/user/read/state`;
+        // const url = API.userState;
+        const url = API.userState;
         const res = await this.$http.get(url, {
           params
         });
+
         return res.data;
       },
-
+      // 首页评论
       getCommentTop() {
         let self = this;
         let params = {};
-        params = {}
-        const url = `/comment/top`;
+        const url = API.commentTop;
         this.$http.get(url, {
           params
         }).then((res) => {
           this.reviewList = res.data.data.content;
 
+          function countLines(ele) {
+            var styles = window.getComputedStyle(ele, null);
+            var lh = parseInt(styles.lineHeight, 10);
+            var h = parseInt(styles.height, 10);
+            var lc = Math.round(h / lh);
+            console.log('line count:', lc, 'line-height:', lh, 'height:', h);
+            return lc;
+          }
+          if (this.reviewList.length > 0) {
+            this.$mount()
+            this.reviewList.forEach((item, index) => {
+              let dom = document.getElementById('content' + index)
+              if (countLines(dom) > 3) {
+                item['show'] = 1
+              }
+            })
+          }
         });
       },
-      getCommentPraise(id, status) {
+      // 点赞
+      setCommentPraise(id, status) {
+        if (this.pageStatus == 0) {
+          return false;
+        }
         let self = this;
         let params = {};
         params = {
           status: status ? 0 : 1,
           commentId: id
         }
-        const url = `/comment/praise`;
+        const url = API.commentPraise;
         this.$http.get(url, {
           params
         }).then((res) => {
           this.getCommentTop();
         });
       },
+      // 获取阅读计划
       getReadList() {
         let self = this;
         let params = {};
         params = {}
-        const url = `/read/readList`;
+        const url = API.readList;
         this.$http.get(url, {
           params
         }).then((res) => {
           this.readList = res.data.data;
           if (res.data.data.length > 0) {
-            this.selectCourseId = res.data.data[0].readId
-            this.selectCourseObj = res.data.data[0];
-
+            if (res.data.data[0].purchased) {
+              this.payBtnShow = false;
+            } else {
+              this.selectCourseId = res.data.data[0].readId
+              this.selectCourseObj = res.data.data[0];
+            }
           }
         });
       },
-
+      // 获取阅读详情
       getDetail() {
         let self = this;
         let params = {};
@@ -699,28 +694,34 @@
           readId: this.readId,
           date: date,
         }
-        const url = `/readBookCourse/courseDetailByDate`;
+        const url = API.courseDetailByDate;
         this.$http.get(url, {
           params
         }).then((res) => {
           this.todayBookDetail = res.data.data;
         });
       },
+      // 获取书list
       getBookList() {
         let self = this
         let params = {};
         params = {
           readId: this.readId,
         }
-        const url = `/readBook/bookList`;
+        const url = API.bookList;
         this.$http.get(url, {
           params
         }).then((res) => {
-          this.historyBookList = res.data.data.content;
+          this.historyBookList = res.data.data;
         });
       },
-      getCourseList(item) {
+      // 获取详情list
+      getDetailList(item) {
         if (item.lockStatus) {
+          this.noneValueAlert = true;
+          setTimeout(() => {
+            this.noneValueAlert = false;
+          }, 2000)
           return false;
         }
         let self = this;
@@ -729,7 +730,7 @@
           readId: this.readId,
           bookId: item.id,
         }
-        const url = `/readBookCourse/courseList`;
+        const url = API.courseList;
         this.$http.get(url, {
           params
         }).then((res) => {
@@ -739,16 +740,12 @@
         });
       }
 
-
-
     }
   };
 
 </script>
 
 <style lang="less">
-  /* @import '../../less/letiable'; */
-
   @import '../../less/util';
   html,
   body,
@@ -763,25 +760,28 @@
   }
 
   .home-main {
+    background: #fff;
+    z-index: 100;
     .home-type {
-      padding-top: 100/@rem;
       background: #f1f1f1;
-      padding-bottom: 100/@rem;
       box-sizing: border-box;
+      z-index: 100;
     }
     .home-service {
       .size(100, 100);
-      position: absolute;
+      position: fixed;
       right: 30/@rem;
       bottom: 140/@rem;
       background: url('http://yun.dui88.com/youfen/images/read_btn1.png') no-repeat center;
       background-size: 100% 100%;
-      z-index: 888;
+      z-index: 1000;
     }
     .home-service.bottom {
       bottom: 240/@rem;
     }
     .home-detail {
+      padding-top: 100/@rem;
+      /* padding-bottom: 100/@rem; */
       -webkit-overflow-scrolling: touch;
       position: absolute;
       transition: all 1s cubic-bezier(0.86, 0, 0.03, 1);
@@ -871,6 +871,7 @@
         color: #fff;
         text-align: center;
         box-shadow: 0px -1px 20px 0px rgba(0, 0, 0, 0.1);
+        z-index: 666;
       }
     }
     .home-bottom.bottom {
@@ -880,6 +881,7 @@
       bottom: 100/@rem;
     }
     .home-content {
+      border-bottom: 20/@rem solid #f0f0f0;
       img {
         display: block;
         width: 100%;
@@ -924,10 +926,10 @@
         }
         .item-name {
           /* .pos(118, 36); */
-          font-weight: bold;
           .text(30,
           42);
           color: #333;
+          font-weight: bold;
         }
         .item-periods {
           /* .pos(118, 82); */
@@ -935,14 +937,28 @@
           33);
           color: #666;
           margin-top: 4/@rem;
-          margin-bottom: 14/@rem;
+          margin-bottom: 26/@rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap
         }
         .item-content {
           /* .pos(118, 130); */
           max-height: 9999px;
-          font-size: 28/@rem;
+          font-size: 32/@rem;
           line-height: 42/@rem;
           color: #333;
+        }
+        .item-content.show {
+          height: 126/@rem;
+          overflow: hidden;
+        }
+        .item-toggle {
+          max-height: 9999px;
+          font-size: 28/@rem;
+          line-height: 42/@rem;
+          color: #4A669D;
+          margin-top: 9/@rem;
         }
         .item-book {
           .size(580,
@@ -951,26 +967,25 @@
           position: relative;
           background: #eee;
           border-radius: 4/@rem;
-          margin-top: 20/@rem;
+          margin-top: 36/@rem;
           .book-bg {}
           .book-img {
-            .pos(30,
-            13);
+            .pos(22,
+            15);
             .size(80,
-            112);
+            108);
             border: 5/@rem solid #fff;
           }
           .book-name {
             .pos(0,
             25);
-            .text(30,
+            .text(28,
             42);
             color: #555;
             width: 100%;
-            padding-left: 134/@rem;
+            padding-left: 121/@rem;
             padding-right: 10/@rem;
             box-sizing: border-box;
-
           }
 
           .book-author {
@@ -986,16 +1001,29 @@
           }
         }
         .item-bottom {
-          .text(22,
-          30);
+          width: 580/@rem;
+          .text(26,
+          37);
           margin-top: 25/@rem;
-          color: #666;
-          width: 100%;
+          color: #949494;
           box-sizing: border-box;
+          vertical-align: middle;
           .iconfont {
-            line-height: 30/@rem;
-            font-size: 24/@rem;
-            padding: 0 10/@rem
+            display: block;
+            height: 37/@rem;
+            width: 37/@rem;
+            line-height: 37/@rem;
+            font-size: 28/@rem;
+            margin-right: 8/@rem;
+            text-align: center;
+          }
+          .icon-share {
+            margin-right: 54/@rem;
+            color: #949494;
+          }
+          span {
+            .text(26,
+            37);
           }
         }
       }
@@ -1028,12 +1056,17 @@
     .home-bottom.bottom {
       bottom: 100/@rem;
     }
+    .home-course.bottom {
+      padding-bottom: 200/@rem;
+    }
     .home-course {
       background: #f1f1f1;
-      padding-top: 60/@rem;
-      padding-bottom: 120/@rem;
+      padding-top: 160/@rem;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
+      height: 100%;
+      padding-bottom: 100/@rem;
+      box-sizing: border-box;
       .item,
       .item-name,
       .item-box,
@@ -1049,6 +1082,30 @@
         /* Safari and Chrome */
         -o-transition: all 0.25s ease;
         /* Opera */
+      }
+      .course-none {
+        height: 100%;
+        background: #fff;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        img {
+          .pos(220,
+          153);
+          .size(310,
+          310);
+        }
+        p {
+          .text(32,
+          45);
+          .pos(0,
+          492);
+          text-align: center;
+          color: #888;
+          width: 100%;
+        }
       }
       .item {
         margin: 0 45/@rem 50/@rem 45/@rem;
@@ -1068,7 +1125,7 @@
             position: absolute;
             right: 0;
             top: 0;
-            background: url('http://yun.dui88.com/youfen/images/read_yz.png') no-repeat center;
+            background: url('http://yun.dui88.com/read_yz.png') no-repeat center;
             background-size: 100% 100%;
           }
           .item-name {
@@ -1079,6 +1136,10 @@
             color: #333;
             font-weight: blod;
             padding-left: 24/@rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 596/@rem;
           }
           .item-name:after {
             content: '';
@@ -1140,6 +1201,7 @@
           span,
           p,
           div {
+            max-height: 9999px;
             font-size: 28/@rem  !important;
           }
         }
@@ -1183,6 +1245,7 @@
       }
     }
     .home-wechat {
+      z-index: 100;
       .text-a {
         .text(40,
         56);
@@ -1217,7 +1280,7 @@
         padding-top: 24/@rem;
         color: #666;
       }
-      img {
+      .text-ewm {
         .size(688,
         688);
         margin: 40/@rem auto;
@@ -1225,6 +1288,7 @@
       }
     }
     .home-nonevent {
+      z-index: 100;
       position: relative;
       padding: 50/@rem 34/@rem 20/@rem 34/@rem;
       text-align: center;
@@ -1258,8 +1322,8 @@
         img {
           margin: 24/@rem auto 36/@rem auto;
           display: block;
-          height: 430/@rem;
-          width: 369/@rem;
+          height: 630/@rem;
+          width: 540/@rem;
         }
       }
       .text-d {
@@ -1304,6 +1368,29 @@
     }
     .home-already {
       padding: 0 36/@rem;
+      padding-bottom: 100/@rem;
+      width: 100%;
+      height: 100%;
+      overflow: scroll;
+      position: relative;
+      box-sizing: border-box;
+      -webkit-overflow-scrolling: touch;
+      z-index: 100;
+
+      .already-no {
+        .text(32,
+        90);
+        .size(420,
+        90);
+        position: fixed;
+        top: 600/@rem;
+        left: 165/@rem;
+        background: rgba(0, 0, 0, 0.66);
+        border-radius: 10/@rem;
+        color: #fff;
+        text-align: center;
+        z-index: 10000;
+      }
       h2 {
         .text(50,
         70);
@@ -1312,16 +1399,21 @@
         span {
           font-size: 26/@rem
         }
+
+        a {
+          color: #38558F;
+        }
       }
       .already-book {
         background: #eee;
         height: 300/@rem;
         border-radius: 20/@rem;
         position: relative;
+        width: 678/@rem;
         .book-img {
-          .pos(40,
+          .pos(30,
           30);
-          .size(170,
+          .size(180,
           240);
           border: 5/@rem solid #fff;
           box-sizing: border-box;
@@ -1332,14 +1424,14 @@
           .text(30,
           42);
           color: #333;
-          padding-left: 245/@rem;
+          padding-left: 232/@rem;
           padding-right: 32/@rem;
           box-sizing: border-box;
           width: 100%;
-
+          font-weight: bold;
         }
         .book-msg {
-          .pos(256,
+          .pos(243,
           86);
           font-size: 26/@rem;
           line-height: 36/@rem;
@@ -1350,7 +1442,7 @@
           -webkit-box-orient: vertical;
         }
         .book-btn {
-          .pos(256,
+          .pos(243,
           218);
           .size(160,
           54);
@@ -1371,17 +1463,17 @@
         padding: 0 14/@rem;
         .item {
           float: left;
-          margin-right: 70/@rem;
+          margin-right: 55/@rem;
           overflow: hidden;
           position: relative;
-          width: 170/@rem;
+          width: 180/@rem;
           .item-box {
             position: relative;
             border-radius: 6/@rem;
             overflow: hidden;
           }
           .item-img {
-            .size(170,
+            .size(180,
             240);
             display: block;
           }
@@ -1390,7 +1482,10 @@
             line-height: 32/@rem;
             color: #333;
             margin-top: 20/@rem;
-            margin-bottom: 36/@rem;
+            margin-bottom: 34/@rem;
+            font-weight: bold;
+            height: 64/@rem;
+            overflow: hidden;
           }
           .item-lock {
             background: rgba(0, 0, 0, 0.7);
@@ -1403,7 +1498,7 @@
             line-height: 240/@rem;
           }
           .icon-lock {
-            font-size: 30/@rem;
+            font-size: 36/@rem;
             color: #fff;
           }
         }
@@ -1421,7 +1516,7 @@
         .alert-bg {
           position: fixed;
           left: 0;
-          bottom: 0;
+          bottom: 0/@rem;
           top: 0;
           right: 0;
           z-index: 999;
@@ -1470,7 +1565,7 @@
           position: absolute;
           z-index: 9999;
           left: 0;
-          bottom: 0;
+          bottom: 0/@rem;
           right: 0;
           text-align: center;
           color: #888;

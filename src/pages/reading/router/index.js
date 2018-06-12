@@ -32,7 +32,7 @@ export default new Router({
         }
       },
       {
-        path: '/index/card/:isTodayClock',
+        path: '/index/card',
         component: function (resolve) {
           require.ensure([], function () {
             resolve(require('../views/card/Card'));
@@ -98,7 +98,7 @@ export default new Router({
       }
     },
     {
-      path: '/audio/index/:type',
+      path: '/audio/index',
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../views/audio/Index'));
@@ -231,7 +231,7 @@ export default new Router({
       }
     },
     {
-      path: '/poster/:commentId/:lastClock/:isClock',
+      path: '/poster',
       name:'poster',
       component: function (resolve) {
         require.ensure([], function () {

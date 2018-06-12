@@ -27,13 +27,13 @@
             
         </div>
       </router-link>
-      <!-- <router-link :to="{ path: '/journey' }">
+      <router-link :to="{ path: '/journey' }">
         <div class="bgfff">
           <div class="person-h90 row mt20 border" >
             <div class="icon-box column-center">
-              <i class="iconfont icon-clock person-icon"></i>
+              <i class="iconfont icon-wodelicheng person-icon"></i>
             </div>
-            <div class="row ft32 ml30">我的历程</div>
+            <div class="row ft28 ml30 ftbold">我的历程</div>
           </div>
         </div>
       </router-link>
@@ -43,42 +43,42 @@
             <div class="icon-box column-center">
               <i class="iconfont icon-booklist person-icon"></i>
             </div>
-            <div class="row ft32 ml30">往期书架</div>
+            <div class="row ft28 ml30 ftbold">往期书架</div>
           </div>
         </div>
       </router-link>
       <router-link :to="{ path: '/lecturer' }">
         <div class="bgfff">
-          <div class="person-h90 row" >
+          <div class="person-h90 row border" >
             <div class="icon-box column-center">
-              <i class="iconfont icon-user person-icon"></i>
+              <i class="iconfont icon-teacher person-icon"></i>
             </div>
-            <div class="row ft32 ml30">我的老师</div>
-          </div>
-        </div>
-      </router-link> -->
-      <router-link :to="{ path: '/personal/share' }">
-        <div class="bgfff">
-          <div class="person-h90 row mt20 " >
-            <div class="icon-box column-center">
-              <i class="iconfont icon-income person-icon"></i>
-            </div>
-            <div class="row ft32 ml30">我的收益</div>
+            <div class="row ft28 ml30 ftbold">我的老师</div>
           </div>
         </div>
       </router-link>
-      <!-- <div class="bgfff" @click="contactToggle = true">
+      <router-link :to="{ path: '/personal/share' }">
+        <div class="bgfff">
+          <div class="person-h90 row " >
+            <div class="icon-box column-center">
+              <i class="iconfont icon-income person-icon"></i>
+            </div>
+            <div class="row ft28 ml30 ftbold">我的收益</div>
+          </div>
+        </div>
+      </router-link>
+      <div class="bgfff" @click="contactToggle = true">
         <div class="person-h90 row mt20" >
           <div class="icon-box column-center">
             <i class="iconfont icon-ear person-icon"></i>
           </div>
-          <div class="row ft32 ml30" @click="contactToggle = true">联系客服</div>
+          <div class="row ft28 ml30 ftbold" @click="contactToggle = true">联系客服</div>
         </div>
-      </div> -->
+      </div>
     </div>
-    <!-- <Contact v-show="contactToggle" v-on:success="success"/> -->
+    <Contact v-show="contactToggle" v-on:success="success"/>
     <bnav></bnav>
-    <!-- <AudioBar/> -->
+    <AudioBar/>
   </div>
 
 </template>
@@ -107,7 +107,7 @@ export default {
       book: 0,
       time: "分钟",
       // 分享
-      recommendUrl: 'https://yun.duiba.com.cn/yoofans/images/201805/read/share2.png'
+      recommendUrl: 'https://yun.duiba.com.cn/yoofans/images/201805/read/recommend2.png'
     };
   },
   computed: {
@@ -130,10 +130,10 @@ export default {
     async getNumberInfo (){
       let objs = await user.getInfo();
         if (objs.success) {
-          // this.day = objs.data.clocks;
-          // this.minute = objs.data.listens > 999?(objs.data.listens/60).toFixed(1): objs.data.listens;
-          // this.time = objs.data.listens > 999?"小时": "分钟";
-          // this.book = objs.data.books ? objs.data.books : 0;
+          this.day = objs.data.clocks;
+          this.minute = objs.data.listens > 999?(objs.data.listens/60).toFixed(1): objs.data.listens;
+          this.time = objs.data.listens > 999?"小时": "分钟";
+          this.book = objs.data.books ? objs.data.books : 0;
           this.personname = objs.data.userNickname;
           this.imageUrl = objs.data.userHeadImgUrl;
         } else {
@@ -166,10 +166,19 @@ export default {
 // }
 .user{
   background:rgba(244,244,244,1);
+  width: 750/@rem;
   height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  z-index:100;
 }
 .person-main {
-  
+  padding-bottom: 240/@rem;
   .person-box{
     width: 750/@rem;
     background: rgba(255,255,255,1);
@@ -239,12 +248,17 @@ export default {
   .person-h90{
     height: 90/@rem;
     margin:0 42/@rem;
-    font-weight: bold;
     border-radius:0;
     color: @color-strong;
   }
+  .ftbold{
+    font-weight: bold;
+  }
   .ft32{
     .fontSize(32);
+  }
+  .ft28{
+    .fontSize(28);
   }
   .ml30{
     margin-left:30/@rem;

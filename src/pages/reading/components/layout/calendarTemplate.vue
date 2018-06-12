@@ -9,7 +9,7 @@
         <div class="dateBgView">
           <div class="dateEmptyView" v-for="item2 in empytGrids[index1]">{{item2.index}}
           </div>
-          <div class="dateView" :class="[{isToday_def:item3.isToday},{isFirstLackCard:item3.lackCard}]" v-for="(item3,index) in days[index1]"  :key="index" @click="clickDay(index1,index,item3)">
+          <div class="dateView" v-for="(item3,index) in days[index1]"  :class="[{isToday_def:item3.isToday},{isFirstLackCard:item3.lackCard}]" :key="index" @click="clickDay(index1,index,item3)">
             <a href="javascript:;" >
               <div class="datesView"  :class="[
               {'isClock':item3.isClock},
@@ -17,7 +17,7 @@
               {'isToday':item3.isToday&&item3.isClick},
               {'isRange':item3.isRange},
               {'isNotClock':item3.isRange&&!item3.isClock&&item3.afterToday},
-              {'borderClick':item3.isClick&&item3.isClock&&item3.afterToday||item3.isClick&&!item3.isClock&&item3.afterToday}]">
+              {'borderClick':item3.isClick&&item3.isClock&&item3.isToday||item3.isClick&&item3.isClock&&item3.afterToday||item3.isClick&&!item3.isClock&&item3.afterToday}]">
                 <span v-if="item3.isToday">今</span>
                 <span v-else>{{item3.index+1}}</span>
               </div>
@@ -52,11 +52,19 @@
         caledarArr: [],
         hhh:0,
         isFrist:true,
-        isTodayClock:''
+        isTodayClock:'',
+        isHistroy:false
       }
     },
+    computed: {
+
+    },
     mounted: function () {
-      this.isTodayClock = this.$route.params.isTodayClock;
+      if(this.$route.query.isClock){
+        this.isTodayClock = this.$route.query.isClock
+      }else{
+        this.isTodayClock = 1
+      }
     },
     watch: {
       calendarDate (){
@@ -68,17 +76,15 @@
         let child;
         let father = document.querySelector('.calendar-box');
         if(this.isFrist){
-          if(this.isTodayClock){
+          if(this.isTodayClock==1&&!this.isHistroy){
             //定位当天
-            console.log('当天定位')
             child = document.querySelector('.isToday_def');
-          }else{
+          }else if(this.isTodayClock==0&&!this.isHistroy){
             //定位第一次缺卡位置
-            console.log('缺卡第一天定位')
             child = document.querySelector('.isFirstLackCard');
+          }else{
+            child = document.querySelector('.isClick').parentNode.parentNode
           }
-          //console.log('child---'+child.offsetTop)
-          //console.log('father---'+father.offsetTop)
           father.scrollTop = child.offsetTop - father.offsetTop-10;
           this.isFrist = false
         }
@@ -114,7 +120,6 @@
           }
         }
         _this.caledarArr = caledarArr
-
         /**月 */
         this.nowYear = cur_year;
         this.nowMonth = cur_month;
@@ -127,17 +132,27 @@
         this.cur_month = cur_month;
         this._month = _month;
         this.today = today;
+        let clickData = JSON.parse(sessionStorage.getItem('clickData'));
+        let histroyUrl = sessionStorage.getItem('histroyUrl')
         for(let i = 0;i<_this.caledarArr.length;i++){
           this.calculateEmptyGrids(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
           /**调用计算空格子*/
           this.calculateDays(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
           //选中当天或者缺卡第一天
-          if(this.isTodayClock){
+          if(histroyUrl){
+            if(histroyUrl.indexOf('/comment')!=-1||histroyUrl.indexOf('/poster')!=-1||histroyUrl.indexOf('/audio')!=-1 ){
+              //编辑页，海报页 返回
+              _this.isHistroy = true
+            }else {
+              _this.isHistroy = false
+            }
+          }
+          if(this.isTodayClock&&!this.isHistroy){
             //当天
             if(_this.caledarArr[i].cur_month==_this._month){ //默认选中当天
               _this.clickDay(i,_this.today-1,_this.days[i][_this.today-1])
             }
-          }else{
+          }else if(!this.isTodayClock&&!this.isHistroy){
             //缺卡第一天
             for(let i=0;i<this.days.length;i++){
               for(let j=0;j<this.days[i].length;j++){
@@ -146,12 +161,21 @@
                 }
               }
             }
+          }else {
+            //返回点击天
+            _this.clickDay(clickData.month_index,clickData.day_index,clickData.itemData)
           }
 
         }
       },
 
       clickDay: function (index1,index,item) { //点击态
+        let msg = {
+          month_index:index1,
+          day_index:index,
+          itemData:item
+        }
+        sessionStorage.setItem('clickData',JSON.stringify(msg));
         this.index = index
         if(this.days[index1][index].isRange){
           this.$emit('getDate',item)
@@ -182,7 +206,7 @@
           _this.empytGrids.push(empytGrids);
         } else {
           _this.hasEmptyGrid = false;
-          _this.empytGrids = []
+          _this.empytGrids.push([]);
         }
       },
       calculateDays(year, month) {
@@ -228,6 +252,9 @@
 
 <style lang="less">
   @import "../../less/variable";
+  .box{
+    background: #fff;
+  }
   .calendarTemplate_box{
     height:auto;
     .isRange{
