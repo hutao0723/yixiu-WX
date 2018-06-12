@@ -29,8 +29,8 @@
           <span class="fl">{{item.releaseTime | timeTransition}}</span>
         </div>
       </div>
+      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100"></div>
     </div>
-    <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0"></div>
     <bnav></bnav>
     <AudioBar/>
   </div>
@@ -155,38 +155,47 @@
         this.pageNum++;
         this.getCommentTop()
       },
+      // 获取详情
       getCommentTop() {
-
-        let self = this;
-        let params = {};
-        params = {
-          last: this.lastData,
+        let params = {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
+          last: this.lastData,
         }
-        const url = API.commentPage;
-        this.$http.get(url, {
+        this.$http.get(API.commentPage, {
           params
         }).then((res) => {
-          this.reviewList = res.data.data.content;
+          let obj = res.data.data.content;
           this.lastData = res.data.data.last;
+          if (obj && obj.length) {
+            this.busy = false;
+            if (!this.reviewList.length) {
+              this.reviewList = obj;
+            } else {
+              this.reviewList = this.reviewList.concat(obj);
+              console.log(this.reviewList)
+            };
 
-          function countLines(ele) {
-            var styles = window.getComputedStyle(ele, null);
-            var lh = parseInt(styles.lineHeight, 10);
-            var h = parseInt(styles.height, 10);
-            var lc = Math.round(h / lh);
-            console.log('line count:', lc, 'line-height:', lh, 'height:', h);
-            return lc;
-          }
-          this.$mount()
-          this.reviewList.forEach((item, index) => {
-            let dom = document.getElementById('content' + index)
-            if (countLines(dom) > 3) {
-              item['show'] = 1
+
+            function countLines(ele) {
+              var styles = window.getComputedStyle(ele, null);
+              var lh = parseInt(styles.lineHeight, 10);
+              var h = parseInt(styles.height, 10);
+              var lc = Math.round(h / lh);
+              console.log('line count:', lc, 'line-height:', lh, 'height:', h);
+              return lc;
             }
-          })
-        });
+            this.$mount()
+            this.reviewList.forEach((item, index) => {
+              let dom = document.getElementById('content' + index)
+              if (countLines(dom) > 3) {
+                item['show'] = 1
+              }
+            })
+          } else {
+            this.busy = true
+          };
+        })
       },
       setCommentPraise(id, status) {
         if (this.pageStatus == 0) {
@@ -233,7 +242,7 @@
     }
     .home-review {
       background: #fff;
-      padding-bottom: 240/@rem;
+      /* padding-bottom: 240/@rem; */
       h2 {
         .text(40,
         56);

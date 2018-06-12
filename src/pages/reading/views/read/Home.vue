@@ -254,17 +254,17 @@
       let refreshCookie = true;
 
       // 防止cookie丢失
-        // if (window.location.href.indexOf('afterLogin') == -1) {
-        //   let res = await this.$http.get('/baseLogin', {
-        //     params: {
-        //       dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
-        //     }
-        //   })
-        //   if (res.data.success && res.data.data) {
-        //     refreshCookie = false;
-        //     location.replace(res.data.data);
-        //   }
-        // }
+        if (window.location.href.indexOf('afterLogin') == -1) {
+          let res = await this.$http.get('/baseLogin', {
+            params: {
+              dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
+            }
+          })
+          if (res.data.success && res.data.data) {
+            refreshCookie = false;
+            location.replace(res.data.data);
+          }
+        }
 
       if (refreshCookie) {
         this.setTitle('一修读书')
