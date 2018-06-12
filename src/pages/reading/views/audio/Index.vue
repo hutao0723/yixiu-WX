@@ -35,9 +35,9 @@
           </button>
         </div>
       </div>
-      <div class="bottom" @click="clickFun($event,goComment)" v-if=" !readAudio.clockState" :monitor-log="getMonitor(5,3)">去打卡</div>
-      <div class="bottom" @click="clickFun($event,goComment)" v-if=" readAudio.clockState && readAudio.commentState" :monitor-log="getMonitor(5,1)">我的感想</div>
-      <div class="bottom" @click="clickFun($event,goComment)" v-if=" readAudio.clockState && !readAudio.commentState" :monitor-log="getMonitor(5,2)">写想法</div>
+      <div class="bottom" @click="clickFun($event,goComment)" v-if="readAudio.curRead && !readAudio.clockState" :monitor-log="getMonitor(5,3)">去打卡</div>
+      <div class="bottom" @click="clickFun($event,goComment)" v-if="readAudio.curRead && readAudio.clockState && readAudio.commentState" :monitor-log="getMonitor(5,1)">我的感想</div>
+      <div class="bottom" @click="clickFun($event,goComment)" v-if="readAudio.curRead && readAudio.clockState && !readAudio.commentState" :monitor-log="getMonitor(5,2)">写想法</div>
     </div> 
     <div class="card-modal" v-if="showCardModal" >
       <div class="pop-mask"></div>

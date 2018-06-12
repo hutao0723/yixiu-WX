@@ -50,7 +50,7 @@ export default {
         getMonitor(dcm, dpm){
             return JSON.stringify({
                 'dcm': dcm,
-                'dpm': 'appid.' + dpm,
+                'dpm': '157.' + dpm,
             });
         }
     },
