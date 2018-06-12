@@ -91,7 +91,7 @@ export default {
 			let params = {
 				commentId: _this.$route.query.commentId
 			};
-			const url = `/api/comment/share`;
+			const url = `/comment/share`;
 			const res = await _this.$http.get(url, {
 				params
 			});
