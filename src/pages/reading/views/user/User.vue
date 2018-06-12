@@ -132,7 +132,7 @@ export default {
       getMonitor(b, c, d) {
         // item tabindex dpmc
         return JSON.stringify({
-          'dcm': '8001.0.0.0',
+          'dcm': '0.0.0.0',
           'dpm': 'appid.' + b + '.' + c + '.' + d,
         });
       },

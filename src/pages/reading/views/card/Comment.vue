@@ -1,5 +1,5 @@
 <template>
-  <div class="comment-main" ref="comment" >
+  <div class="comment-main" ref="comment">
     <div class="book-book">
       <div class="book-img">
         <img v-if="courseDetail.courseUrl" :src="courseDetail.courseUrl" alt="">
@@ -14,12 +14,12 @@
       <div style="clear: both"></div>
     </div>
     <div class="comment-box">
-      <textarea id="textarea"  @click="getFocus()" @blur="blurFocus()"  @input="contentChange()"   placeholder="写下对这本书的感想和收获吧" v-model="content">
+      <textarea id="textarea"  @click="clickFun($event,getFocus)" :monitor-log="getMonitor('8001.'+readId+'.0.'+courseId,'832.1.0')" @blur="blurFocus()"  @input="contentChange()"   placeholder="写下对这本书的感想和收获吧" v-model="content">
       </textarea>
       <div class="placeDom" @click="focusDom()" v-if="!content">不读书的人，思想都会停止。没有比读书更好的娱乐、更持久的满足了。你多久没读书了？</div>
     </div>
     <span class="contentNum" id="contentNum">{{conLenght}}/1000</span>
-    <div id="subBtn" @click="subComment()" >提交并打卡</div>
+    <div id="subBtn" @click="clickFun($event,subComment)" :monitor-log="getMonitor('8001.'+readId+'.0.'+courseId,'832.2.0')">提交并打卡</div>
   </div>
 </template>
 
@@ -71,11 +71,20 @@
       this.getContent();
     },
     mounted () {
-
-
-    this.bodyHeight = document.documentElement.clientHeight || document.body.clientHeight;
+      let self = this;
+      setTimeout(() => {
+        window.monitor && window.monitor.showLog(self);
+      }, 100)
+      this.bodyHeight = document.documentElement.clientHeight || document.body.clientHeight;
     },
     methods: {
+      getMonitor(dcm,dpm) {
+        // item tabindex dpmc
+        return JSON.stringify({
+          'dcm': dcm,
+          'dpm': 'appid.' + dpm,
+        });
+      },
       isIos: function () {  //ios终端
         return !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
       },

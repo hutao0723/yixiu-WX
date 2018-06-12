@@ -1,36 +1,38 @@
 <template>
   <div class="opinion-main" ref="optionMain">
     <div class="home-review">
-        <div class="item" v-for="(item,index) in reviewList" :key="index">
-            <img :src="item.userImgUrl" alt="" class="item-header">
-            <div class="item-name">{{item.userNickname}}</div>
-            <div class="item-periods">{{item.readName}}第{{item.readStageNum}}期学员</div>
-            <div class="item-content" ref="cheight" :id="'content' + index" :class="{show:item.show == 1}">{{item.content}}</div>
-            <div v-show="item.show == 1" @click="unfoldToggle(2,index)" class="item-toggle">展开</div>
-            <div v-show="item.show == 2" @click="unfoldToggle(1,index)" class="item-toggle">收起</div>
-            <div class="item-book">
-              <div class="book-bg">
-                <img class="book-img" :src="item.courseVerticalCover" alt="" v-if="item.courseVerticalCover">
-                <img class="book-img" src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="" v-else>
-              </div>
-              <div class="book-name otw">《{{item.courseTitle}}》</div>
-              <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
-            </div>
-            <div class="item-bottom">
-              <p @click="clickFun($event,setCommentPraise,item)"  :monitor-log="getMonitor(823,3,'2-' + index)">
-                  <span class="fr" v-show="item.praiseCount>0">{{item.praiseCount}}</span>
-                <i class="iconfont icon-dianzan fr" v-show="!item.userPraise"></i>
-                <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
-              </p>
-              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr" v-if="userId == item.userId" @click="clickFun($event)"  :monitor-log="getMonitor(823,3,'1-' + index)"></router-link>
-              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr" v-if="userId != item.userId" @click="clickFun($event)"  :monitor-log="getMonitor(823,3,'1-' + index)"></router-link>
-              <span class="fl">{{item.releaseTime | timeTransition}}</span>
-            </div>
+      <div class="item" v-for="(item,index) in reviewList" :key="index">
+        <img :src="item.userImgUrl" alt="" class="item-header">
+        <div class="item-name">{{item.userNickname}}</div>
+        <div class="item-periods">{{item.readName}}第{{item.readStageNum}}期学员</div>
+        <div class="item-content" ref="cheight" :id="'content' + index" :class="{show:item.show == 1}">{{item.content}}</div>
+        <div v-show="item.show == 1" @click="unfoldToggle(2,index)" class="item-toggle">展-if开</div>
+        <div v-show="item.show == 2" @click="unfoldToggle(1,index)" class="item-toggle">收起</div>
+        <div class="item-book">
+          <div class="book-bg">
+            <img class="book-img" :src="item.courseVerticalCover" alt="" v-if="item.courseVerticalCover">
+            <img class="book-img" src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="" v-if="!item.courseVerticalCover">
           </div>
+          <div class="book-name otw">《{{item.courseTitle}}》</div>
+          <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
+        </div>
+        <div class="item-bottom">
+          <p @click="clickFun($event,setCommentPraise,item)" :monitor-log="getMonitor('8002.' + item.courseId + '.0.0', '823.3.2-'+index)">
+            <span class="fr" v-show="item.praiseCount>0">{{item.praiseCount}}</span>
+            <i class="iconfont icon-dianzan fr" v-show="!item.userPraise"></i>
+            <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
+          </p>
+          <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"
+            v-if="userId == item.userId" @click.native="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '823.3.1-'+index)"></router-link>
+          <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr"
+            v-if="userId != item.userId" @click.native="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '823.3.1-'+index)"></router-link>
+          <span class="fl">{{item.releaseTime | timeTransition}}</span>
+        </div>
+      </div>
     </div>
-    <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="0"></div>
+    <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100"></div>
     <bnav :dpm-b="823" :dcm-a="8002"></bnav>
-    <AudioBar  @click="clickFun($event)"  :monitor-log="getMonitor(823,1,0)"/>
+    <AudioBar @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '823.1.0')" />
   </div>
 </template>
 
@@ -57,10 +59,12 @@
         pageSize: 20,
         busy: true,
         userId: '',
+        lastData: '',
       };
     },
     components: {
-      AudioBar, bnav
+      AudioBar,
+      bnav
     },
     computed: {
       ...mapState({})
@@ -72,15 +76,15 @@
         let nowDateNum = nowDate.getTime()
         // 获取现在的时间戳
 
-        value=value.replace(new RegExp(/-/gm) ,"/"); 
+        value = value.replace(new RegExp(/-/gm), "/");
         let valueDate = new Date(value)
         let valueDateNum = valueDate.getTime()
-        
+
         // 获取当时的时间戳
         let key = parseInt(nowDateNum) - parseInt(valueDateNum)
         let keya = parseInt(nowDateNum - valueDateNum)
-        
-        
+
+
 
         let today = new Date();
         today.setHours(0);
@@ -91,9 +95,9 @@
         let yesterday = new Date(today);
         let yesterdayNum = yesterday.getTime()
         let yest = parseInt(valueDateNum) - parseInt(yesterdayNum);
-        
+
         let text = '';
-        
+
         if (key > 0 && key < 60 * 1000) {
           text = '刚刚'
         }
@@ -107,13 +111,14 @@
         }
 
         if (key >= 2 * 60 * 60 * 1000 && key < yest) {
-          text = (valueDate.getHours() < 10 ? '0' + valueDate.getHours() : valueDate.getHours()) + ':' + (valueDate.getMinutes() < 10 ? '0' + valueDate.getMinutes() : valueDate.getMinutes())
+          text = (valueDate.getHours() < 10 ? '0' + valueDate.getHours() : valueDate.getHours()) + ':' + (valueDate.getMinutes() <
+            10 ? '0' + valueDate.getMinutes() : valueDate.getMinutes())
         }
 
         if (key >= yest) {
-          text = (valueDate.getMonth() + 1) + '月' + (valueDate.getDate())+ '日'
+          text = (valueDate.getMonth() + 1) + '月' + (valueDate.getDate()) + '日'
         }
-        
+
         return text
       },
     },
@@ -134,15 +139,15 @@
     },
     methods: {
       // 获取monitor
-      getMonitor(b, c, d) {
+      getMonitor(dcm,dpm) {
         // item tabindex dpmc
         return JSON.stringify({
-          'dcm': '8002.0.0.0',
-          'dpm': 'appid.' + b + '.' + c + '.' + d,
+          'dcm': dcm,
+          'dpm': 'appid.' + dpm,
         });
       },
       // 触发滚动
-      dispatchScroll () {
+      dispatchScroll() {
         window.monitor && window.monitor.showLog(this);
       },
       // 获取用户信息
@@ -154,7 +159,7 @@
         const res = await this.$http.get(url, {
           params
         });
-        
+
         return res.data;
       },
       // 展开收起
@@ -165,37 +170,52 @@
       },
 
       loadMore() {
+        console.log(11)
         this.busy = true;
         this.pageNum++;
         this.getCommentTop()
       },
+      // 获取详情
       getCommentTop() {
-
-        let self = this;
-        let params = {};
-        params = {}
-        const url = API.commentPage;
-        this.$http.get(url, {
+        let params = {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          last: this.lastData,
+        }
+        this.$http.get(API.commentPage, {
           params
         }).then((res) => {
-          this.reviewList = res.data.data.content;
+          let obj = res.data.data.content;
+          this.lastData = res.data.data.last;
+          if (obj && obj.length) {
+            this.busy = false;
+            if (!this.reviewList.length) {
+              this.reviewList = obj;
+            } else {
+              this.reviewList = this.reviewList.concat(obj);
+              console.log(this.reviewList)
+            };
 
-          function countLines(ele) {
-            var styles = window.getComputedStyle(ele, null);
-            var lh = parseInt(styles.lineHeight, 10);
-            var h = parseInt(styles.height, 10);
-            var lc = Math.round(h / lh);
-            console.log('line count:', lc, 'line-height:', lh, 'height:', h);
-            return lc;
-          }
-          this.$mount()
-          this.reviewList.forEach((item, index) => {
-            let dom = document.getElementById('content' + index)
-            if (countLines(dom) > 3) {
-              item['show'] = 1
+
+            function countLines(ele) {
+              var styles = window.getComputedStyle(ele, null);
+              var lh = parseInt(styles.lineHeight, 10);
+              var h = parseInt(styles.height, 10);
+              var lc = Math.round(h / lh);
+              console.log('line count:', lc, 'line-height:', lh, 'height:', h);
+              return lc;
             }
-          })
-        });
+            this.$mount()
+            this.reviewList.forEach((item, index) => {
+              let dom = document.getElementById('content' + index)
+              if (countLines(dom) > 3) {
+                item['show'] = 1
+              }
+            })
+          } else {
+            this.busy = true
+          };
+        })
       },
       setCommentPraise(item) {
         if (this.pageStatus == 0) {
@@ -216,7 +236,6 @@
       },
     }
   };
-
 </script>
 
 <style lang="less">
@@ -236,14 +255,14 @@
     padding-top: 20/@rem;
     background: #fff;
     font-size: 24/@rem;
-    z-index:100;
+    z-index: 100;
     .icon-nav {
       height: 480/@rem;
       border: 1px solid #ccc;
     }
     .home-review {
       background: #fff;
-      padding-bottom: 240/@rem;
+      /* padding-bottom: 240/@rem; */
       h2 {
         .text(40,
         56);
@@ -283,7 +302,7 @@
           .text(30,
           42);
           color: #333;
-          font-weight:bold;
+          font-weight: bold;
         }
         .item-periods {
           /* .pos(118, 82); */
@@ -292,9 +311,9 @@
           color: #666;
           margin-top: 4/@rem;
           margin-bottom: 26/@rem;
-          overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap
         }
         .item-content {
           /* .pos(118, 130); */
@@ -356,7 +375,7 @@
         }
         .item-bottom {
           width: 580/@rem;
-          .text(26,37);
+          .text(26, 37);
           margin-top: 25/@rem;
           color: #949494;
           box-sizing: border-box;
@@ -365,17 +384,17 @@
             display: block;
             height: 37/@rem;
             width: 37/@rem;
-            line-height:37/@rem;
+            line-height: 37/@rem;
             font-size: 28/@rem;
             margin-right: 8/@rem;
             text-align: center;
           }
-          .icon-share{
+          .icon-share {
             margin-right: 54/@rem;
             color: #949494;
           }
-          span{
-            .text(26,37);
+          span {
+            .text(26, 37);
           }
         }
       }
@@ -394,6 +413,4 @@
 
     }
   }
-
 </style>
-

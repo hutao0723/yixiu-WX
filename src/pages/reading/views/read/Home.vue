@@ -1,29 +1,29 @@
 <template>
   <div class="home-main">
     <!-- 未报名已关注 -->
-    <div class="home-type" v-show="pageStatus == 1 || pageStatus == 0">
+    <div class="home-type" v-if="pageStatus == 1 || pageStatus == 0">
       <bnav :dpm-b="820"  :dcm-a="8001"></bnav>
       <a href="https://kefu.easemob.com/webim/im.html?configId=f56195f3-2ff6-412b-983e-0231f5586efb" class="home-service" :class="{bottom:bottomNavToggle}"
-        @click="clickFun($event)" :monitor-log="getMonitor(820,8,0)"></a>
+        @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '820.8.1')"></a>
       <div class="home-tab clearfix" id="hometab">
-        <div class="item" @click="clickFun($event,tabActiveToggle,true)" :monitor-log="getMonitor(820,1,1)">
+        <div class="item" @click="clickFun($event,tabActiveToggle,true)" :monitor-log="getMonitor('0.0.0.0', '820.1.1')">
           <span :class="{ active: tabActive}">简介</span>
         </div>
-        <div class="item" @click="clickFun($event,tabActiveToggle,false)" :monitor-log="getMonitor(820,1,2)">
+        <div class="item" @click="clickFun($event,tabActiveToggle,false)" :monitor-log="getMonitor('0.0.0.0', '820.1.2')">
           <span :class="{ active: !tabActive}">课程</span>
         </div>
       </div>
       <div class="home-bottom" @click="clickFun($event,tabActiveToggle,false)" :class="{bottom:bottomNavToggle}" v-show="tabActive"
-        :monitor-log="getMonitor(820,4,0)">去选课程</div>
+        :monitor-log="getMonitor('0.0.0.0', '820.4.0')">去选课程</div>
       <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="!tabActive&&readList.length>0&&payBtnShow">
         <p>
           <span class="text-del">{{selectCourseObj.costPrice}}</span>
           <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>
         </p>
-        <span @click="clickFun($event,orderPay)" class="btn-pay" :monitor-log="getMonitor(820,6,0)">立即购买</span>
+        <span @click="clickFun($event,orderPay)" class="btn-pay" :monitor-log="getMonitor('0.0.0.0', '820.6.0')">立即购买</span>
       </div>
       <div id="maincontent" class="home-detail" ref="homemain" v-show="tabActive">
-        <div class="home-content" :monitor-log="getMonitor(820,2,0)">
+        <div class="home-content" :monitor-log="getMonitor('0.0.0.0', '820.2.0')">
           <img src="http://yun.dui88.com/youfen/images/read_img01.jpg" alt="">
           <img src="http://yun.dui88.com/youfen/images/read_img02.jpg" alt="">
           <img src="http://yun.dui88.com/youfen/images/read_img03.jpg" alt="">
@@ -48,22 +48,22 @@
               <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
             </div>
             <div class="item-bottom">
-              <p @click="clickFun($event,setCommentPraise,item)" :monitor-log="getMonitor(820,3,'2-'+index)">
+              <p @click="clickFun($event,setCommentPraise,item)"  :monitor-log="getMonitor('8002.'+ item.courseId +'.0.0', '820.3.2-'+index)">
                 <span class="fr" v-show="item.praiseCount>0">{{item.praiseCount}}</span>
                 <i class="iconfont icon-dianzan fr" v-show="!item.userPraise"></i>
                 <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
               </p>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"
-                v-if="userId == item.userId" :monitor-log="getMonitor(820,3,'1-'+index)" @click.native="clickFun($event)"></router-link>
+                v-if="userId == item.userId" :monitor-log="getMonitor('0.0.0.0', '820.3.1-'+index)" @click.native="clickFun($event)"></router-link>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr"
-                v-if="userId != item.userId" :monitor-log="getMonitor(820,3,'1-'+index)" @click.native="clickFun($event)"></router-link>
+                v-if="userId != item.userId" :monitor-log="getMonitor('0.0.0.0', '820.3.1-'+index)" @click.native="clickFun($event)"></router-link>
             </div>
           </div>
         </div>
       </div>
       <div class="home-course" v-show="!tabActive" :class="{bottom:bottomNavToggle}">
         <div class="item" v-for="(item,index) in readList" :key="index" :class="{active: selectCourseId == item.readId,none: item.purchased}"
-          @click="clickFun($event,selectCourse,item)" v-show="readList.length > 0" :monitor-log="getMonitor(820,5,index)">
+          @click="clickFun($event,selectCourse,item)" v-show="readList.length > 0"  :monitor-log="getMonitor('8001.' + item.readId + '.0.0', '820.5.'+index)">
           <div class="item-box">
             <div class="item-top">
               <div class="item-none" v-if="item.purchased"></div>
@@ -92,7 +92,7 @@
         <i class="iconfont"></i>您已成功报名</p>
       <p class="text-b">长按识别二维码</p>
       <p class="text-c">关注公众号，去等待开课</p>
-      <img src="http://yun.dui88.com/youfen/images/read_ewm3.png" alt="" class="text-ewm" @click="clickFun($event)" :monitor-log="getMonitor(822,1,0)">
+      <img src="http://yun.dui88.com/youfen/images/read_ewm3.png" alt="" class="text-ewm" @click="clickFun($event)"  :monitor-log="getMonitor('0.0.0.0', '822.1.0')">
     </div>
     <!-- 报名未开课 -->
     <div class="home-nonevent" v-if="pageStatus == 3">
@@ -105,14 +105,14 @@
       <p class="text-d">长按识别二维码添加老师微信</p>
       <p class="text-e">因添加学员较多，老师会在3个工作日内通过，请耐心等待~</p>
       <div class="ewm-bg">
-        <img :src="courseDetail.teacherWxQrcodeUrl" alt="" @click="clickFun($event)" :monitor-log="getMonitor(821,1,0)">
+        <img :src="courseDetail.teacherWxQrcodeUrl" alt="" @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '821.1.0')">
       </div>
       <p class="text-g">微信添加老师后，你的专属老师会在课程</br>开始前邀请你进入对应班级群</p>
     </div>
     <!-- 已关注已开课 -->
     <div class="home-already" v-if="pageStatus == 4">
       <bnav :dpm-b="830" :dcm-a="8001"></bnav>
-      <AudioBar @click="clickFun($event)" :monitor-log="getMonitor(822,1,0)" />
+      <AudioBar @click="clickFun($event)"  :monitor-log="getMonitor('0.0.0.0', '830.2.0')" />
       <h2>今日学习
         <span> | 第{{todayBookDetail.days}}/{{todayBookDetail.totalDays}}天</span>
       </h2>
@@ -121,7 +121,7 @@
         <img src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="" class="book-img" v-else>
         <div class="book-name otw">《{{todayBookDetail.courseTitle}}》</div>
         <div class="book-msg">{{todayBookDetail.courseSubTitle}}</div>
-        <div class="book-btn" @click="playAudio(todayBookDetail.courseId)">播放
+        <div class="book-btn" @click="clickFun($event,playAudio,todayBookDetail.courseId)" :monitor-log="getMonitor('8001.'+ todayBookDetail.readId +'.0.'+ todayBookDetail.courseId, '830.3.0')" >播放
           <i class="iconfont icon-bofang"></i>
         </div>
       </div>
@@ -131,7 +131,7 @@
         </span>
       </h2>
       <div class="already-list clearfix">
-        <div class="item" v-for="(item,index) in historyBookList" :key="index" @click="playAudio(item.courseId,item.lockStatus)">
+        <div class="item" v-for="(item,index) in historyBookList" :key="index"  @click="clickFun($event,playAudio,item)"  :monitor-log="getMonitor('8001.'+item.readId+ '.0.'+item.courseId, '830.1.0')">
           <div class="item-box">
             <img :src="item.verticalCover" alt="" class="item-img" v-if="item.verticalCover">
             <img src="http://yun.dui88.com/youfen/images/read_course_none.png
@@ -142,16 +142,6 @@
           </div>
           <div class="item-name">《{{item.title}}》</div>
         </div>
-      </div>
-      <div class="already-alert" v-show="alertToggle">
-        <div class="alert-top">
-          <h3>《{{bookName}}》</h3>
-          <div class="clearfix">
-            <div class="item" v-for="(item,index) in courseList" :key="index" :class="{none: item.lockStatus}" @click="playAudio(item.courseId,item.lockStatus)">{{index+1}}</div>
-          </div>
-        </div>
-        <div class="alert-btn" @click="alertToggle = false;">取消</div>
-        <div class="alert-bg" @click="alertToggle = false;"></div>
       </div>
       <div v-show="noneValueAlert" class="already-no">内容还没有解锁喔！</div>
     </div>
@@ -252,17 +242,17 @@
       let refreshCookie = true;
 
       // 防止cookie丢失
-      // if (window.location.href.indexOf('afterLogin') == -1) {
-      //   let res = await this.$http.get('/baseLogin', {
-      //     params: {
-      //       dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
-      //     }
-      //   })
-      //   if (res.data.success && res.data.data) {
-      //     refreshCookie = false;
-      //     location.replace(res.data.data);
-      //   }
-      // }
+      if (window.location.href.indexOf('afterLogin') == -1) {
+        let res = await this.$http.get('/baseLogin', {
+          params: {
+            dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
+          }
+        })
+        if (res.data.success && res.data.data) {
+          refreshCookie = false;
+          location.replace(res.data.data);
+        }
+      }
 
       if (refreshCookie) {
         this.setTitle('一修读书')
@@ -420,11 +410,11 @@
         window.monitor && window.monitor.showLog(this);
       },
       // 获取monitor
-      getMonitor(b, c, d) {
+      getMonitor(dcm,dpm) {
         // item tabindex dpmc
         return JSON.stringify({
-          'dcm': '8001.0.0.0',
-          'dpm': 'appid.' + b + '.' + c + '.' + d,
+          'dcm': dcm,
+          'dpm': 'appid.' + dpm,
         });
       },
       // 展开收起
@@ -590,15 +580,15 @@
         this.buy(this.selectCourseId, 4)
       },
       // 开始播放
-      playAudio(id, lockStatus) {
-        if (lockStatus) {
+      playAudio(item) {
+        if (item.lockStatus) {
           this.noneValueAlert = true;
           setTimeout(() => {
             this.noneValueAlert = false;
           }, 2000)
           return false;
         }
-        play.audioInit(this.readId, id, true, this)
+        play.audioInit(this.readId, item.courseId, true, this)
       },
       // 选择课程
       selectCourse(item) {
