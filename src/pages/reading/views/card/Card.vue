@@ -24,7 +24,7 @@
     </header>
     <div class="calendar_header">
       <div class="card-head">
-        <span class="head-left" @click="clickFun($event);noticeFlag = true "  :monitor-log="getMonitor(831,1,0)"> <i class="iconfont icon-gift"></i>坚持打卡送大礼<i class="iconfont icon-right"></i> </span>
+        <span class="head-left" @click="clickFun($event);noticeFlag = true "  :monitor-log="getMonitor('8001.'+readId+'.0.0','831.1.0')"> <i class="iconfont icon-gift"></i>坚持打卡送大礼<i class="iconfont icon-right"></i> </span>
         <div class="head-right">
           <span><i></i> 已打卡</span>
           <span><i></i>未打卡</span>
@@ -57,16 +57,16 @@
             </div>
           </div>
           <div class="book-btn" v-show="afterToday||isToday">
-              <span  v-show="courseDetail.clockState&&courseDetail.commentState" @click.stop="clickFun($event,goComment);"  :monitor-log="getMonitor(831,3,1)">查看</span>
-              <span  v-show="courseDetail.clockState&&!courseDetail.commentState" @click.stop="clickFun($event,goComment);"  :monitor-log="getMonitor(831,3,2)">写想法</span>
-              <span  v-show="!courseDetail.clockState"  @click.stop="clickFun($event,goComment);"  :monitor-log="getMonitor(831,3,3)">去打卡</span>
+              <span  v-show="courseDetail.clockState&&courseDetail.commentState" @click.stop="clickFun($event,goComment);"  :monitor-log="getMonitor('8001.'+readId+'.0.'+courseId,'831.3.1')">查看</span>
+              <span  v-show="courseDetail.clockState&&!courseDetail.commentState" @click.stop="clickFun($event,goComment);"  :monitor-log="getMonitor('8001.'+readId+'.0.'+courseId,'831.3.2')">写想法</span>
+              <span  v-show="!courseDetail.clockState"  @click.stop="clickFun($event,goComment);"  :monitor-log="getMonitor('8001.'+readId+'.0.'+courseId,'831.3.3')">去打卡</span>
           </div>
         </div>
         <div style="clear: both"></div>
       </div>
     </div>
     <div class="card_bottom_text">轻松阅读，日有所得</div>
-    <AudioBar  @click="clickFun($event);"  :monitor-log="getMonitor(831,2,0)"/>
+    <AudioBar  @click="clickFun($event);"  :monitor-log="getMonitor('0.0.0.0','831.2.0')"/>
     <bnav  :dpm-b="831"  :dcm-a="8002"></bnav>
 
   </div>
@@ -112,13 +112,15 @@
     },
     mounted () {
       this.getReadStatus()
-      console.log('*****')
-      let aaa = document.querySelector('.calendar-box');
-      console.log(aaa.offsetTop,aaa.offsetHeight,aaa.offsetTop+aaa.offsetHeight)
       let self = this;
-      setTimeout(() => {
-        window.monitor && window.monitor.showLog(self);
-      }, 100)
+      self.$nextTick(function () {
+        setTimeout(() => {
+          // 滚动
+          self.$refs.optionMain.addEventListener('scroll', self.dispatchScroll, false);
+          // 埋点
+          window.monitor && window.monitor.showLog(self);
+        }, 100)
+      })
     },
    watch:{
      readId(){
@@ -127,11 +129,11 @@
    },
     methods: {
       // 获取monitor
-      getMonitor(b, c, d) {
+      getMonitor(dcm,dpm) {
         // item tabindex dpmc
         return JSON.stringify({
-          'dcm': '8001.0.0.0',
-          'dpm': 'appid.' + b + '.' + c + '.' + d,
+          'dcm': dcm,
+          'dpm': '157.' + dpm,
         });
       },
       //bodyHidden bodyScroll
@@ -230,12 +232,6 @@
       },
       goPoster(){
         this.$router.push({name:'poster',query:{commentId:this.commentId,lastClock:0,isClock:1}})
-      },
-      getMonitor (c,d) {
-        return JSON.stringify({
-          dcm: '8001.' + 'courseid.' + '0.0',
-          dpm: '110.831.' + c + '.' + d
-        })
       }
     }
   };

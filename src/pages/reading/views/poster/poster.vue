@@ -37,9 +37,13 @@ export default {
 		_this.popup = _this.$route.query.lastClock * 1;
 		_this.isSelf = _this.$route.query.isClock * 1;
 		_this.getInfo();
-        setTimeout(() => {
-	      window.monitor && window.monitor.showLog(_this);
-	    }, 100)
+        // 曝光
+	    _this.$nextTick(function () {
+	      setTimeout(() => {
+	        // 埋点
+	        window.monitor && window.monitor.showLog(_this);
+	      }, 100)
+	    })
 		// _this.info = {
 		// 	"id": 58,
 		// 	"userId": 100052000,
@@ -441,7 +445,7 @@ export default {
 		getMonitor (c,d) {
 	      return JSON.stringify({
 	        dcm: '8002.' + 'courseid' + '0.0',
-	        dpm: '110.824.' + c + '.' + d
+	        dpm: '157.824.' + c + '.' + d
 	      })
 	    }
   	}

@@ -1,6 +1,6 @@
 <template>
   <div class="index-main">
-    <bnav></bnav>
+    <bnav :isLog="true"></bnav>
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
@@ -27,4 +27,6 @@ export default {
 </script>
 
 <style lang="less">
+.index-main{
+}
 </style>
