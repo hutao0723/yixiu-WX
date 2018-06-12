@@ -22,8 +22,8 @@ setDPR();
 remChange();
 
 // // monitor 埋点
-// import { monitorHandler } from './components/utils/monitorHandler';
-// monitorHandler();
+import { monitorHandler } from './components/utils/monitorHandler';
+monitorHandler();
 // 设备id
 if (!window.localStorage.getItem('deviceId')) {
   setTimeout(function(){
@@ -31,9 +31,10 @@ if (!window.localStorage.getItem('deviceId')) {
     window.localStorage.setItem('deviceId', deviceId) // a hash, representing your device fingerprint
   })},100)
 }
+
+// 埋点辅助tk
 (function GetRequest() {   
   var url = window.location.href; //获取url中"?"符后的字串   
-  console.log(1)
   var theRequest = new Object();   
   if (url.indexOf("?") != -1) {
     var index= url.indexOf('?')
@@ -50,7 +51,7 @@ if (!window.localStorage.getItem('deviceId')) {
 
 Vue.http.headers.common['ext-deviceId'] = window.localStorage.getItem('deviceId');
 Vue.http.headers.common['from'] = 'read';
-// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWU3mytFEThAbVRbBsiG99J5L3AycHw9RQzaApFRydFrQ94M49MsJcX715G25172Pf1KBoFocRFwKY5dnB1hHqaxtZhKtX8vv65wehmLQumJMZem1Y7WHFSr4bvsC3XqGaocEDcpWCb1';
+// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjrgAVYrS2jWTFx5xqHDj2QQBH1uXBFMw3gMPxWGMYXWq992G8UBUUjtDPenDWhHayUB6cTjNCScruS3vsPcREhmMXmK2rxgixHsa31XHprvefiBtesVeVWfFpmzSsK8oSwS8P';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
@@ -82,9 +83,31 @@ Vue.http.interceptors.push((request, next) => {
     }
   });
 });
+
+// 点击曝光辅助函数
+Vue.prototype.clickFun = function (event, cb, obj) {
+  // 获取公共字段
+  let app_id = 'appid';
+  let referer = store.getters.getReferer;
+  let url = window.location.href.split('?')[0];
+  let adzoneId = this.$route.query.dcd ? this.$route.query.dcd : ''; 
+  let itemType = 4;
+  // 发送埋点
+  var {dpm, dcm} = JSON.parse(event.currentTarget.getAttribute('monitor-log'));
+  let params = {app_id, referer, url, adzoneId, itemType, dcm, dpm};
+  Vue.http.post('/embed/click', params).then((res) => {
+    // 埋点成功
+  }, (res) => {
+    // 埋点失败
+  });
+  console.log(event.currentTarget.getAttribute('monitor-log'))
+  if(cb)cb(obj);
+}
+
 Vue.prototype.setTitle = function (t) {
   document.title = t;
 }
+
 Vue.prototype.wxShare = function (id) {
   let msg = {
     title: '每天10分钟，轻松阅读，日有所得', // 分享标题
@@ -159,9 +182,24 @@ new Vue({
   }
 });
 
+// 页面访问日志
 router.beforeEach((to, from, next) => {
   let histroyUrl = from.path;
   sessionStorage.setItem('histroyUrl',histroyUrl);
+  this.referer = store.getters.getReferer;
+  let outTime = new Date().getTime();
+    let referer = store.getters.getReferer,
+        stayTime = outTime - store.getters.getEnterTime,
+        action = referer == '' ? 'entry' : 0,
+        url = window.location.href.split('#')[0] + '#' + from.path,
+        app_id = 'app_id';
+    store.commit({ type: 'setReferer', referer: url });  // 设置来源路径
+    store.commit({ type: 'setEnterTime', enterTime: outTime });  // 设置来源路径为空
+    Vue.http.post('/embed/access',{stayTime, action, url, referer}).then((res) => {
+      // 埋点成功
+    }, (res) => {
+      // 埋点失败
+    });
   next()
 })
 
