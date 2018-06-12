@@ -18,7 +18,7 @@
           <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
         </div>
         <div class="item-bottom">
-          <p @click="clickFun($event,setCommentPraise,item)" :monitor-log="getMonitor('8002.' + item.courseId + '.0.0', '823.3.2-'+index)">
+          <p @click="clickFun($event,setCommentPraise,{item:item,index:index})" :monitor-log="getMonitor('8002.' + item.courseId + '.0.0', '823.3.2-'+index)">
             <span class="fr" v-show="item.praiseCount>0">{{item.praiseCount}}</span>
             <i class="iconfont icon-dianzan fr" v-show="!item.userPraise"></i>
             <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
@@ -139,7 +139,7 @@
     },
     methods: {
       // 获取monitor
-      getMonitor(dcm,dpm) {
+      getMonitor(dcm, dpm) {
         // item tabindex dpmc
         return JSON.stringify({
           'dcm': dcm,
@@ -175,7 +175,7 @@
         this.getCommentTop()
       },
       // 获取详情
-      getCommentTop() {
+      getCommentTop(cb) {
         let params = {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
@@ -186,16 +186,18 @@
         }).then((res) => {
           let obj = res.data.data.content;
           this.lastData = res.data.data.last;
+
           if (obj && obj.length) {
-            this.busy = false;
-            if (!this.reviewList.length) {
+            if (cb) {
               this.reviewList = obj;
             } else {
-              this.reviewList = this.reviewList.concat(obj);
-              console.log(this.reviewList)
-            };
-
-
+              this.busy = false;
+              if (!this.reviewList.length) {
+                this.reviewList = obj;
+              } else {
+                this.reviewList = this.reviewList.concat(obj);
+              };
+            }
             function countLines(ele) {
               var styles = window.getComputedStyle(ele, null);
               var lh = parseInt(styles.lineHeight, 10);
@@ -216,21 +218,21 @@
           };
         })
       },
-      setCommentPraise(item) {
-        if (this.pageStatus == 0) {
-          return false;
-        }
+      setCommentPraise(obj) {
         let self = this;
         let params = {};
         params = {
-          status: item.userPraise ? 0 : 1,
-          commentId: item.id
+          status: obj.item.userPraise ? 0 : 1,
+          commentId: obj.item.id
         }
         const url = API.commentPraise;
         this.$http.get(url, {
           params
         }).then((res) => {
-          this.getCommentTop();
+          let item = this.reviewList[obj.index]
+          item.userPraise =! item.userPraise
+          item.praiseCount = item.userPraise?item.praiseCount+1:item.praiseCount-1
+          this.$set(this.reviewList,obj.index,item)
         });
       },
     }
