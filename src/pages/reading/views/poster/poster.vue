@@ -57,7 +57,7 @@ export default {
 		// 	"readName": "阅读计划-测试1",
 		// 	"readStageId": 9,
 		// 	"readStageNum": 1,
-		// 	"content": "觉得你You are running Vue in development mode发怒oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo发怒<br/>奶粉！仿佛个Make sure to turn on production mode when deploying for production.See more tips at大家都觉得觉Leaders",
+		// 	"content": "evelopmenppppppppdevelopmenppppppppdevelopmenppppppppdevelopmenppppppppdevelopmenppppppppdevelopmenpppppppppt",
 		// 	"releaseTime": "2018-05-30 14:22:13",
 		// 	"releaseTimeLabel": "深夜",
 		// 	"praiseCount": 3,
@@ -204,7 +204,9 @@ export default {
 								}else{
 									A_Z = A_Z+string[i];
 									string_w = ctx.measureText(A_Z).width-1;
+									console.log()
 									if(string_w>_this.conversion(560)){
+										console.log(string_w)
 										let long_string = A_Z.split('');
 										long_string.forEach((item)=>{
 											string_w = ctx.measureText(item).width-1;
@@ -235,16 +237,33 @@ export default {
 							}else{
 								A_Z = A_Z+string[i];
 								string_w = ctx.measureText(A_Z).width-1;
-								if(num+string_w>_this.conversion(560)){
-									x = _this.conversion(78);
-									num = string_w;
-									line_number++;
+								if(string_w>_this.conversion(560)){
+									let long_string = A_Z.split('');
+									long_string.forEach((item)=>{
+										string_w = ctx.measureText(item).width-1;
+										ctx.fillText(item, x, y*1+line_number*_this.conversion(52));
+										// 确定下一个字符的横坐标
+										if(num<_this.conversion(560)){
+											num = num + string_w ;
+											x = x + string_w ;
+										}else{
+											x = _this.conversion(78);
+											num = 0;
+											line_number++;
+										}
+									})
 								}else{
-									num = num + string_w ;
+									if(num+string_w>_this.conversion(560)){
+										x = _this.conversion(78);
+										num = string_w;
+										line_number++;
+									}else{
+										num = num + string_w ;
+									}
+									ctx.fillText(A_Z, x, y*1+line_number*_this.conversion(52));
+									x = x + string_w ;
+									A_Z = '';
 								}
-								ctx.fillText(A_Z, x, y*1+line_number*_this.conversion(52));
-								x = x + string_w ;
-								A_Z = '';
 							}
 						}else{
 							string_w = ctx.measureText(string[i]).width-1;
