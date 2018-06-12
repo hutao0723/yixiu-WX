@@ -39,7 +39,7 @@ export default {
 		_this.popup = _this.$route.query.lastClock * 1;
 		_this.isSelf = _this.$route.query.isClock * 1;
 
-		//_this.getInfo();
+		_this.getInfo();
 
 		// _this.info = {
 		// 	"id": 58,
@@ -81,8 +81,7 @@ export default {
 		// if(!_this.info.content){
 		// 	_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
 		// };
-		// this.createdCode()
-		this.getCodeUrl()
+		// this.createdCanvas()
 	},
   	methods: {
 		createdCode() {
@@ -122,7 +121,6 @@ export default {
 				if(!_this.info.content){
 					_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
 				};
-				console.log()
 				_this.createdCanvas();
 			} else {
 				console.log("获取数据失败");
@@ -370,7 +368,8 @@ export default {
 					ctx.fillText("长按识别二维码",_this.conversion(126),_this.conversion(1108) * 1 + responseHeight * 1);
 					let drawImg = new Image();
 					drawImg.crossOrigin = "Anonymous";
-					drawImg.src = _this.code64;
+					//drawImg.src = _this.code64;
+					drawImg.src = 'http://yun.dui88.com/youfen/images/code_ewm.png';
 					drawImg.onload = function() {
 						ctx.drawImage(drawImg,_this.conversion(600),_this.conversion(1051) * 1 + responseHeight * 1,_this.conversion(100),_this.conversion(100));
 						resolve();
