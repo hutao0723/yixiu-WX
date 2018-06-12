@@ -121,7 +121,7 @@
         <img src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="" class="book-img" v-else>
         <div class="book-name otw">《{{todayBookDetail.courseTitle}}》</div>
         <div class="book-msg">{{todayBookDetail.courseSubTitle}}</div>
-        <div class="book-btn" @click="clickFun($event,playAudio,todayBookDetail.courseId)" :monitor-log="getMonitor('8001.'+ todayBookDetail.readId +'.0.'+ todayBookDetail.courseId, '830.3.0')" >播放
+        <div class="book-btn" @click="clickFun($event,playAudio,todayBookDetail)" :monitor-log="getMonitor('8001.'+ todayBookDetail.readId +'.0.'+ todayBookDetail.courseId, '830.3.0')" >播放
           <i class="iconfont icon-bofang"></i>
         </div>
       </div>
