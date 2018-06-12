@@ -57,7 +57,7 @@
           </div>
         </div>
       </router-link>
-      <router-link :to="{ path: '/personal/share' }" @click.native="clickFun($event)" :monitor-log="getNewMonitor('0.0.0.0', '825.7.0')">
+      <router-link :to="{ path: '/personal/share' }" @click.native="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '825.7.0')">
         <div class="bgfff">
           <div class="person-h90 row " >
             <div class="icon-box column-center">
@@ -131,18 +131,17 @@ export default {
     // 获取monitor
       getMonitor(b, c, d) {
         // item tabindex dpmc
-        return JSON.stringify({
-          'dcm': '0.0.0.0',
-          'dpm': '157.' + b + '.' + c + '.' + d,
-        });
-      },
-
-      getNewMonitor(b, c, d) {
-        // item tabindex dpmc
-        return JSON.stringify({
-            'dcm': dcm,
-            'dpm': 'appid.' + dpm,
-        });
+        if(b == '0.0.0.0'){
+          return JSON.stringify({
+            'dcm': b,
+            'dpm': 'appid.' + c,
+          });
+        }else{
+          return JSON.stringify({
+            'dcm': '0.0.0.0',
+            'dpm': '157.' + b + '.' + c + '.' + d,
+          });
+        }
       },
     // 联系客服
     success(){

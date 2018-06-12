@@ -4,7 +4,7 @@
     <div class="home-type" v-if="pageStatus == 1 || pageStatus == 0">
       <bnav :dpm-b="820"  :dcm-a="8001"></bnav>
       <a href="https://kefu.easemob.com/webim/im.html?configId=f56195f3-2ff6-412b-983e-0231f5586efb" class="home-service" :class="{bottom:bottomNavToggle}"
-        @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '820.8.1')"></a>
+        @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '820.8.0')"></a>
       <div class="home-tab clearfix" id="hometab">
         <div class="item" @click="clickFun($event,tabActiveToggle,true)" :monitor-log="getMonitor('0.0.0.0', '820.1.1')">
           <span :class="{ active: tabActive}">简介</span>
@@ -54,9 +54,9 @@
                 <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
               </p>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"
-                v-if="userId == item.userId" :monitor-log="getMonitor('0.0.0.0', '820.3.1-'+index)" @click.native="clickFun($event)"></router-link>
+                v-if="userId == item.userId" :monitor-log="getMonitor('8002.'+ item.courseId +'.0.0', '820.3.1-'+index)" @click.native="clickFun($event)"></router-link>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr"
-                v-if="userId != item.userId" :monitor-log="getMonitor('0.0.0.0', '820.3.1-'+index)" @click.native="clickFun($event)"></router-link>
+                v-if="userId != item.userId" :monitor-log="getMonitor('8002.'+ item.courseId +'.0.0', '820.3.1-'+index)" @click.native="clickFun($event)"></router-link>
             </div>
           </div>
         </div>
@@ -121,7 +121,7 @@
         <img src="http://yun.dui88.com/youfen/images/read_course_none.png" alt="" class="book-img" v-else>
         <div class="book-name otw">《{{todayBookDetail.courseTitle}}》</div>
         <div class="book-msg">{{todayBookDetail.courseSubTitle}}</div>
-        <div class="book-btn" @click="clickFun($event,playAudio,todayBookDetail.courseId)" :monitor-log="getMonitor('8001.'+ todayBookDetail.readId +'.0.'+ todayBookDetail.courseId, '830.3.0')" >播放
+        <div class="book-btn" @click="clickFun($event,playAudio,todayBookDetail)" :monitor-log="getMonitor('8001.'+ todayBookDetail.readId +'.0.'+ todayBookDetail.courseId, '830.3.0')" >播放
           <i class="iconfont icon-bofang"></i>
         </div>
       </div>
@@ -151,7 +151,7 @@
         <img src="http://yun.dui88.com/youfen/images/read_headimg01.png" alt="">
         <div class="text-name">小雪老师</div>
         <div class="text-msg">智慧与美貌并存的读书达人</div>
-        <a class="btn" href="https://kefu.easemob.com/webim/im.html?configId=1738cfa5-7e3c-4fe2-9302-0997c4e3bd9f">跟她聊聊</a>
+        <a class="btn" href="https://kefu.easemob.com/webim/im.html?configId=1738cfa5-7e3c-4fe2-9302-0997c4e3bd9f" @click.native="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '820.9.0')">跟她聊聊</a>
       </div>
       <div class="pop-bg"></div>
       <i class="pop-close iconfont icon-close" @click="payCancelToggle = false;"></i>
@@ -242,17 +242,17 @@
       let refreshCookie = true;
 
       // 防止cookie丢失
-      if (window.location.href.indexOf('afterLogin') == -1) {
-        let res = await this.$http.get('/baseLogin', {
-          params: {
-            dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
-          }
-        })
-        if (res.data.success && res.data.data) {
-          refreshCookie = false;
-          location.replace(res.data.data);
-        }
-      }
+      // if (window.location.href.indexOf('afterLogin') == -1) {
+      //   let res = await this.$http.get('/baseLogin', {
+      //     params: {
+      //       dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
+      //     }
+      //   })
+      //   if (res.data.success && res.data.data) {
+      //     refreshCookie = false;
+      //     location.replace(res.data.data);
+      //   }
+      // }
 
       if (refreshCookie) {
         this.setTitle('一修读书')
