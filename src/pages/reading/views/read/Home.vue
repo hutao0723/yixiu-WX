@@ -381,7 +381,7 @@
       self.$nextTick(function () {
         setTimeout(() => {
           // 滚动
-          self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, false);
+          if (self.$refs.homemain) self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, false);
           // 埋点
           window.monitor && window.monitor.showLog(self);
         }, 100)
@@ -413,7 +413,7 @@
         // item tabindex dpmc
         return JSON.stringify({
           'dcm': dcm,
-          'dpm': 'appid.' + dpm,
+          'dpm': '157.' + dpm,
         });
       },
       // 展开收起

@@ -143,7 +143,7 @@
         // item tabindex dpmc
         return JSON.stringify({
           'dcm': dcm,
-          'dpm': 'appid.' + dpm,
+          'dpm': '157.' + dpm,
         });
       },
       // 触发滚动
@@ -154,7 +154,6 @@
       async getUsetState() {
         let self = this;
         let params = {};
-        // const url = API.userState;
         const url = API.userState;
         const res = await this.$http.get(url, {
           params

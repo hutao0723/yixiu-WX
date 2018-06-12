@@ -133,7 +133,7 @@ export default {
     getMonitor (c,d) {
       return JSON.stringify({
         dcm: '8001.' + this.readAudio.courseId + '.0.0',
-        dpm: 'appid.828.' + c + '.' + d
+        dpm: '157.828.' + c + '.' + d
       })
     }
   },

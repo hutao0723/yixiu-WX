@@ -25,7 +25,7 @@
         // item tabindex dpmc
         return JSON.stringify({
           'dcm': dcm,
-          'dpm': 'appid.' + dpm,
+          'dpm': '157.' + dpm,
         });
       },
             // 获取证书图片

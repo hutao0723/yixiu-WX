@@ -117,10 +117,10 @@ export default {
     },
   async mounted () {
     let self = this;
-    // this.getNumberInfo()
-    // this.setTitle('一修读书')
-    // let userState = await self.getThumbUp();
-    // self.wxShare(userState.data.userId);
+    this.getNumberInfo()
+    this.setTitle('一修读书')
+    let userState = await self.getThumbUp();
+    self.wxShare(userState.data.userId);
     self.$nextTick(function () {
       setTimeout(() => {
         window.monitor && window.monitor.showLog(self);
@@ -133,7 +133,7 @@ export default {
         // item tabindex dpmc
         return JSON.stringify({
           'dcm': '0.0.0.0',
-          'dpm': 'appid.' + b + '.' + c + '.' + d,
+          'dpm': '157.' + b + '.' + c + '.' + d,
         });
       },
     // 联系客服

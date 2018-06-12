@@ -38,7 +38,7 @@ export default {
         // item tabindex dpmc
         return JSON.stringify({
           'dcm': dcm,
-          'dpm': 'appid.' + dpm,
+          'dpm': '157.' + dpm,
         });
       },
     async getLecturerInfo (){

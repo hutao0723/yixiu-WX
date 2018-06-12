@@ -445,7 +445,7 @@ export default {
 		getMonitor (c,d) {
 	      return JSON.stringify({
 	        dcm: '8002.' + 'courseid' + '0.0',
-	        dpm: '110.824.' + c + '.' + d
+	        dpm: '157.824.' + c + '.' + d
 	      })
 	    }
   	}
