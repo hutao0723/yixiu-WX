@@ -6,7 +6,7 @@
           <SwiperBar :param.sync="item" @newSwiperIndex="getBookList"/>
         </div>
         <div class="clearfix">
-          <div class="book-table" v-for="(item, index) in bookList" >
+          <div class="book-table" v-for="(item, index) in bookList"  @click="clickFun($event)" :monitor-log="getMonitor('8001.'+item.readId+'.0.'+item.courseId, '827.1.'+index)">
             <div @click="playAudio(item.readId,item.courseId)">
               <div class="book-cover">
                 <img :src="item.verticalCover || frontImgUrl">
@@ -37,7 +37,7 @@
       </div> -->
     </div>
      
-     <AudioBar/>
+     <AudioBar @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '827.2.0')"/>
   </div>
 
 </template>
@@ -87,6 +87,13 @@ export default {
     await this.getSwipeInfo()
   },
   methods: {
+    getMonitor(dcm,dpm) {
+        // item tabindex dpmc
+        return JSON.stringify({
+          'dcm': dcm,
+          'dpm': 'appid.' + dpm,
+        });
+      },
     playAudio(readId,courseId){
       play.audioInit(readId,courseId,true,this)
     },

@@ -112,7 +112,7 @@
       getMonitor(b, c, d) {
         // item tabindex dpmc
         return JSON.stringify({
-          'dcm': this.dcmA + '.0.0.0',
+          'dcm': '0.0.0.0',
           'dpm': 'appid.' + b + '.' + c + '.' + d,
         });
       }

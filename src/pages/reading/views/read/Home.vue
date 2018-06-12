@@ -256,7 +256,6 @@
 
       if (refreshCookie) {
         this.setTitle('一修读书')
-
         if (self.$route.query.dcd) {
           self.getDcd(self.$route.query.dcd || self.getCookie('dcd'))
         }

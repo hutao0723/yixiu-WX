@@ -6,7 +6,7 @@
         <div class="item-name">{{item.userNickname}}</div>
         <div class="item-periods">{{item.readName}}第{{item.readStageNum}}期学员</div>
         <div class="item-content" ref="cheight" :id="'content' + index" :class="{show:item.show == 1}">{{item.content}}</div>
-        <div v-show="item.show == 1" @click="unfoldToggle(2,index)" class="item-toggle">展-if开</div>
+        <div v-show="item.show == 1" @click="unfoldToggle(2,index)" class="item-toggle">展开</div>
         <div v-show="item.show == 2" @click="unfoldToggle(1,index)" class="item-toggle">收起</div>
         <div class="item-book">
           <div class="book-bg">
