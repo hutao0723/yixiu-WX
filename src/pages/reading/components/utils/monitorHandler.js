@@ -46,7 +46,6 @@ export function monitorHandler () {
 
             try {
               monitorList.push(JSON.parse(monitorLog));
-              // monitorList.push(monitorLog);
             } catch (e) {
             }
           }
@@ -63,7 +62,7 @@ export function monitorHandler () {
         return;
       }
       var list = [];
-      var exposeUrl = '/embed/exposure';
+      var exposeUrl = 'http://embedlog.youfen666test.com/embed/exposure';
       // iframe数据过滤，防刷
       try {
         list = JSON.stringify(data);
@@ -75,7 +74,7 @@ export function monitorHandler () {
       }
       
       // 获取公共字段
-      var app_id = 'appid';
+      var app_id = '157';
       var referer = store.getters.getReferer;
       var url = window.location.href.split('?')[0];
       var adzoneId = pointer.$route.query.dcd ? pointer.$route.query.dcd : ''; 
@@ -89,7 +88,6 @@ export function monitorHandler () {
           body.push({dpm, dcm});
         }
         params.body = JSON.stringify(body); 
-        console.log(params.body)
       } else {
         var {dpm, dcm} = data[0];
         params = {app_id, referer, url, adzoneId, itemType, dcm, dpm};

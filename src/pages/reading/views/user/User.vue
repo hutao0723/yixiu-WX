@@ -116,29 +116,24 @@ export default {
   created() {
     },
   async mounted () {
-    // setTimeout(() => {
-    //   console.log(8888)
-    //   window.monitor && window.monitor.showLog(self);
-    // }, 100)
     let self = this;
-    self.$nextTick(function () {
-      setTimeout(() => {
-      // console.log(8888)
-      window.monitor && window.monitor.showLog(self);
-    }, 2000)
-    })
     this.getNumberInfo()
     this.setTitle('一修读书')
     let userState = await self.getThumbUp();
     self.wxShare(userState.data.userId);
+    self.$nextTick(function () {
+      setTimeout(() => {
+        window.monitor && window.monitor.showLog(self);
+      }, 100)
+    })
   },
   methods: {
     // 获取monitor
       getMonitor(b, c, d) {
         // item tabindex dpmc
         return JSON.stringify({
-          'dcm': '8001.0.0.0',
-          'dpm': 'appid.' + b + '.' + c + '.' + d,
+          'dcm': '0.0.0.0',
+          'dpm': '157.' + b + '.' + c + '.' + d,
         });
       },
     // 联系客服

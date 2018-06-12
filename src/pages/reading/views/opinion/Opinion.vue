@@ -6,7 +6,7 @@
         <div class="item-name">{{item.userNickname}}</div>
         <div class="item-periods">{{item.readName}}第{{item.readStageNum}}期学员</div>
         <div class="item-content" ref="cheight" :id="'content' + index" :class="{show:item.show == 1}">{{item.content}}</div>
-        <div v-show="item.show == 1" @click="unfoldToggle(2,index)" class="item-toggle">展-if开</div>
+        <div v-show="item.show == 1" @click="unfoldToggle(2,index)" class="item-toggle">展开</div>
         <div v-show="item.show == 2" @click="unfoldToggle(1,index)" class="item-toggle">收起</div>
         <div class="item-book">
           <div class="book-bg">
@@ -17,22 +17,22 @@
           <div class="book-author otw" v-if="item.courseAuthor">{{item.courseAuthor}} 著</div>
         </div>
         <div class="item-bottom">
-          <p @click="clickFun($event,setCommentPraise,item)" :monitor-log="getMonitor(823,3,'2-' + index)">
+          <p @click="clickFun($event,setCommentPraise,item)" :monitor-log="getMonitor('8002.' + item.courseId + '.0.0', '823.3.2-'+index)">
             <span class="fr" v-show="item.praiseCount>0">{{item.praiseCount}}</span>
             <i class="iconfont icon-dianzan fr" v-show="!item.userPraise"></i>
             <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
           </p>
           <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"
-            v-if="userId == item.userId" @click.native="clickFun($event)" :monitor-log="getMonitor(823,3,'1-' + index)"></router-link>
+            v-if="userId == item.userId" @click.native="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '823.3.1-'+index)"></router-link>
           <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr"
-            v-if="userId != item.userId" @click.native="clickFun($event)" :monitor-log="getMonitor(823,3,'1-' + index)"></router-link>
+            v-if="userId != item.userId" @click.native="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '823.3.1-'+index)"></router-link>
           <span class="fl">{{item.releaseTime | timeTransition}}</span>
         </div>
       </div>
     </div>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100"></div>
     <bnav :dpm-b="823" :dcm-a="8002"></bnav>
-    <AudioBar @click="clickFun($event)" :monitor-log="getMonitor(823,1,0)" />
+    <AudioBar @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '823.1.0')" />
   </div>
 </template>
 
@@ -125,26 +125,25 @@
     created() {},
     async mounted() {
       let self = this;
-      // self.$nextTick(function () {
-      //   window.monitor && window.monitor.showLog(self);
-      // })
       this.getCommentTop();
       let userState = await this.getUsetState();
       this.userId = userState.data.userId;
-      setTimeout(() => {
-        // 滚动
-        self.$refs.optionMain.addEventListener('scroll', self.dispatchScroll, false);
-        // 埋点
-        window.monitor && window.monitor.showLog(self);
-      }, 100);
+      self.$nextTick(function () {
+        setTimeout(() => {
+          // 滚动
+          self.$refs.optionMain.addEventListener('scroll', self.dispatchScroll, false);
+          // 埋点
+          window.monitor && window.monitor.showLog(self);
+        }, 100)
+      })
     },
     methods: {
       // 获取monitor
-      getMonitor(b, c, d) {
+      getMonitor(dcm,dpm) {
         // item tabindex dpmc
         return JSON.stringify({
-          'dcm': '8002.0.0.0',
-          'dpm': 'appid.' + b + '.' + c + '.' + d,
+          'dcm': dcm,
+          'dpm': '157.' + dpm,
         });
       },
       // 触发滚动
@@ -155,7 +154,6 @@
       async getUsetState() {
         let self = this;
         let params = {};
-        // const url = API.userState;
         const url = API.userState;
         const res = await this.$http.get(url, {
           params
