@@ -64,11 +64,10 @@ export default {
 	// 设置音乐是否正在加载
 	setReadLoadStart (state, obj) {
 		state.readLoadStart = obj.isloadstart;
-		state.readPlaying = true;
 	},
 	// 设置音乐停止播放状态
-	setPlaying (state) {
-		state.readPlaying = false;
+	setPlaying (state, obj) {
+		state.readPlaying = obj.readPlaying;
 	},
 	// 重置打卡弹窗
 	resetShowCardModal (state) {
@@ -78,6 +77,9 @@ export default {
     // 设置referer
     setReferer (state, obj) {
     	state.referer = obj.referer;
+    },
+    setEnterTime (state, obj) {
+    	state.enterTime = obj.enterTime;
     },
     setBottomNavType(state, obj) {
       state.bottomNavType = obj.bottomNavType;

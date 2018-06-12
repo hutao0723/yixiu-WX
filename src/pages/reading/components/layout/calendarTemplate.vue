@@ -52,8 +52,20 @@
         caledarArr: [],
         hhh:0,
         isFrist:true,
-        isTodayClock:''
+        isTodayClock:'',
+        isHistroy:false
       }
+    },
+    activated:function(){
+      let child;
+      let father = document.querySelector('.calendar-box');
+      this.$nextTick(function(){
+        if(document.querySelector('.isClick')){
+          child = document.querySelector('.isClick').parentNode.parentNode
+          father.scrollTop = child.offsetTop - father.offsetTop-10;
+        }
+      })
+
     },
     mounted: function () {
       if(this.$route.query.isClock){
@@ -67,22 +79,21 @@
         this.setNowDate()
       }
     },
+
     updated:function(){
       this.$nextTick(function () {
         let child;
         let father = document.querySelector('.calendar-box');
         if(this.isFrist){
-          if(this.isTodayClock==1){
+          if(this.isTodayClock==1&&!this.isHistroy){
             //定位当天
-            console.log('当天定位')
             child = document.querySelector('.isToday_def');
-          }else{
+          }else if(this.isTodayClock==0&&!this.isHistroy){
             //定位第一次缺卡位置
-            console.log('缺卡第一天定位')
             child = document.querySelector('.isFirstLackCard');
+          }else{
+            child = document.querySelector('.isClick').parentNode.parentNode
           }
-          //console.log('child---'+child.offsetTop)
-          //console.log('father---'+father.offsetTop)
           father.scrollTop = child.offsetTop - father.offsetTop-10;
           this.isFrist = false
         }
@@ -118,7 +129,6 @@
           }
         }
         _this.caledarArr = caledarArr
-
         /**月 */
         this.nowYear = cur_year;
         this.nowMonth = cur_month;
@@ -131,18 +141,27 @@
         this.cur_month = cur_month;
         this._month = _month;
         this.today = today;
+        let clickData = JSON.parse(sessionStorage.getItem('clickData'));
+        let histroyUrl = sessionStorage.getItem('histroyUrl')
         for(let i = 0;i<_this.caledarArr.length;i++){
-          console.log(_this.caledarArr)
           this.calculateEmptyGrids(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
           /**调用计算空格子*/
           this.calculateDays(_this.caledarArr[i].cur_year, _this.caledarArr[i].cur_month);
           //选中当天或者缺卡第一天
-          if(this.isTodayClock){
+          if(histroyUrl){
+            if(histroyUrl.indexOf('/comment')!=-1||histroyUrl.indexOf('/poster')!=-1||histroyUrl.indexOf('/audio')!=-1 ){
+              //编辑页，海报页 返回
+              _this.isHistroy = true
+            }else {
+              _this.isHistroy = false
+            }
+          }
+          if(this.isTodayClock&&!this.isHistroy){
             //当天
             if(_this.caledarArr[i].cur_month==_this._month){ //默认选中当天
               _this.clickDay(i,_this.today-1,_this.days[i][_this.today-1])
             }
-          }else{
+          }else if(!this.isTodayClock&&!this.isHistroy){
             //缺卡第一天
             for(let i=0;i<this.days.length;i++){
               for(let j=0;j<this.days[i].length;j++){
@@ -151,12 +170,21 @@
                 }
               }
             }
+          }else {
+            //返回点击天
+            _this.clickDay(clickData.month_index,clickData.day_index,clickData.itemData)
           }
 
         }
       },
 
       clickDay: function (index1,index,item) { //点击态
+        let msg = {
+          month_index:index1,
+          day_index:index,
+          itemData:item
+        }
+        sessionStorage.setItem('clickData',JSON.stringify(msg));
         this.index = index
         if(this.days[index1][index].isRange){
           this.$emit('getDate',item)

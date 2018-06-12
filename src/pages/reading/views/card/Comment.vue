@@ -95,7 +95,6 @@
         this.$http.get('/comment/getByReadAndCourse?readId='+readId +'&courseId='+courseId).then(res=>{
           let resp = res.data;
           if(resp.success){
-            console.log(resp.data)
             this.content = resp.data.content
             if(this.content){
               this.conLenght = this.content.length;
