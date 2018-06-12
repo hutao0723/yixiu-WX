@@ -32,7 +32,7 @@
       </div>
     </div>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100"></div>
-    <AudioBar @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '823.1.0')" />
+    <AudioBar :monitorlog="getMonitor('0.0.0.0', '823.1.0')" />
   </div>
 </template>
 

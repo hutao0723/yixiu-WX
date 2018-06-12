@@ -110,9 +110,9 @@
       <p class="text-g">微信添加老师后，你的专属老师会在课程</br>开始前邀请你进入对应班级群</p>
     </div>
     <!-- 已关注已开课 -->
-    <div class="home-already" v-if="pageStatus == 4">
+    <div class="home-already" v-if="pageStatus == 4" ref="homealready">
       <bnav :dpm-b="830" :dcm-a="8001"></bnav>
-      <AudioBar @click="clickFun($event)"  :monitor-log="getMonitor('0.0.0.0', '830.2.0')" />
+      <AudioBar  :monitorlog="getMonitor('0.0.0.0', '830.2.0')" />
       <h2>今日学习
         <span> | 第{{todayBookDetail.days}}/{{todayBookDetail.totalDays}}天</span>
       </h2>
@@ -242,17 +242,17 @@
       let refreshCookie = true;
 
       // 防止cookie丢失
-      // if (window.location.href.indexOf('afterLogin') == -1) {
-      //   let res = await this.$http.get('/baseLogin', {
-      //     params: {
-      //       dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
-      //     }
-      //   })
-      //   if (res.data.success && res.data.data) {
-      //     refreshCookie = false;
-      //     location.replace(res.data.data);
-      //   }
-      // }
+      if (window.location.href.indexOf('afterLogin') == -1) {
+        let res = await this.$http.get('/baseLogin', {
+          params: {
+            dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
+          }
+        })
+        if (res.data.success && res.data.data) {
+          refreshCookie = false;
+          location.replace(res.data.data);
+        }
+      }
 
       if (refreshCookie) {
         this.setTitle('一修读书')
@@ -382,6 +382,7 @@
         setTimeout(() => {
           // 滚动
           if (self.$refs.homemain) self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, false);
+          if (self.$refs.homealready) self.$refs.homealready.addEventListener('scroll', self.dispatchScroll, false);
           // 埋点
           window.monitor && window.monitor.showLog(self);
         }, 100)

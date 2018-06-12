@@ -74,14 +74,19 @@ export default {
 
     },
     mounted () {
-
+      let self = this;
+      self.$nextTick(function () {
+      setTimeout(() => {
+        window.monitor && window.monitor.showLog(self);
+      }, 100)
+    })
     },
     methods: {
         // 获取monitor
         getMonitor(dcm, dpm){
             return JSON.stringify({
                 'dcm': dcm,
-                'dpm': 'appid.' + dpm,
+                'dpm': '157.' + dpm,
             });
         },
 

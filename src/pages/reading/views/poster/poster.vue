@@ -8,7 +8,7 @@
 			</div>
 			<img :src="imgUrl" v-if="imgUrl"  class="pic"/>
 		</div>
-		<div class="btn" v-if="btn" :monitor-log="getMonitor(1,0)">
+		<div class="btn" v-if="btn" :monitor-log="getMonitor(1,0)" @click="clickFun($event)">
 			长按保存分享
 			<img :src="imgUrl" />    
 		</div>
@@ -444,7 +444,7 @@ export default {
 		},
 		getMonitor (c,d) {
 	      return JSON.stringify({
-	        dcm: '8002.' + 'courseid' + '0.0',
+	        dcm: '8002.' + this.courseId + '.0.0',
 	        dpm: '157.824.' + c + '.' + d
 	      })
 	    }

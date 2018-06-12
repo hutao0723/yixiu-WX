@@ -66,7 +66,7 @@
       </div>
     </div>
     <div class="card_bottom_text">轻松阅读，日有所得</div>
-    <AudioBar  @click="clickFun($event);"  :monitor-log="getMonitor('0.0.0.0','831.2.0')"/>
+    <AudioBar :monitorlog="getMonitor('0.0.0.0','831.2.0')"/>
     <bnav  :dpm-b="831"  :dcm-a="8002"></bnav>
 
   </div>

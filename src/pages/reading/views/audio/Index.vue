@@ -35,9 +35,9 @@
           </button>
         </div>
       </div>
-      <div class="bottom" @click="clickFun($event,goComment)" v-if=" !readAudio.clockState" :monitor-log="getMonitor(3,3)">去打卡</div>
-      <div class="bottom" @click="clickFun($event,goComment)" v-if=" readAudio.clockState && readAudio.commentState" :monitor-log="getMonitor(3,1)">我的感想</div>
-      <div class="bottom" @click="clickFun($event,goComment)" v-if=" readAudio.clockState && !readAudio.commentState" :monitor-log="getMonitor(3,2)">写想法</div>
+      <div class="bottom" @click="clickFun($event,goComment)" v-if=" !readAudio.clockState" :monitor-log="getMonitor(5,3)">去打卡</div>
+      <div class="bottom" @click="clickFun($event,goComment)" v-if=" readAudio.clockState && readAudio.commentState" :monitor-log="getMonitor(5,1)">我的感想</div>
+      <div class="bottom" @click="clickFun($event,goComment)" v-if=" readAudio.clockState && !readAudio.commentState" :monitor-log="getMonitor(5,2)">写想法</div>
     </div> 
     <div class="card-modal" v-if="showCardModal" >
       <div class="pop-mask"></div>
@@ -45,12 +45,12 @@
         <div class="btn-yes column-center">
             <i class="iconfont icon-yes"></i>
         </div>
-        <div class="btn-close column-center" @click="hideModal">
+        <div class="btn-close column-center" @click="clickFun($event,hideModal)" :monitor-log="getMonitor(3,1)">
             <i class="iconfont icon-close"></i>
         </div>
         <p class="des">你已完成今日课程，趁热打铁来打卡吧！</p>
         <p class="info">今日已打卡<span class="warm">{{clockCount}}</span>人</p>
-        <div class="btn-card" @click="goComment">打卡</div>
+        <div class="btn-card" @click="clickFun($event,goComment)" :monitor-log="getMonitor(3,2)">打卡</div>
       </div>
     </div>
   </div>
@@ -75,6 +75,15 @@ export default {
     },
     duration() {
       return this.timerFomart(this.readDuration)
+    }
+  },
+  watch: {
+    showCardModal() {
+      let self = this;
+      setTimeout(() => {
+        // 埋点
+        window.monitor && window.monitor.showLog(self);
+      }, 100)
     }
   },
   async mounted () {
@@ -132,7 +141,7 @@ export default {
     },
     getMonitor (c,d) {
       return JSON.stringify({
-        dcm: '8001.' + this.readAudio.courseId + '.0.0',
+        dcm: '8001.' + this.readAudio.readId + '.0.' + this.readAudio.courseId,
         dpm: '157.828.' + c + '.' + d
       })
     }

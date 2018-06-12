@@ -21,8 +21,8 @@
               <div class="text">累计阅读</div>
             </li>
         </ul>
-      <router-link :to="{ path: '/personal/share/poster' }" @click="clickFun($event)"  :monitor-log="getMonitor(825,6,0)">
-        <div class="mt20 recommend bgfff">
+      <router-link :to="{ path: '/personal/share/poster' }">
+        <div class="mt20 recommend bgfff" @click="clickFun($event)"  :monitor-log="getMonitor(825,6,0)">
             <img :src="recommendUrl">
             
         </div>
@@ -57,8 +57,8 @@
           </div>
         </div>
       </router-link>
-      <router-link :to="{ path: '/personal/share' }" @click.native="clickFun($event)" :monitor-log="getMonitor(825,7,0)">
-        <div class="bgfff">
+      <router-link :to="{ path: '/personal/share' }">
+        <div class="bgfff" @click="clickFun($event)" :monitor-log="getMonitor(825,7,0)">
           <div class="person-h90 row " >
             <div class="icon-box column-center">
               <i class="iconfont icon-income person-icon"></i>
@@ -78,7 +78,7 @@
     </div>
     <Contact v-show="contactToggle" v-on:success="success"/>
     <bnav :dpm-b="825" :dcm-a="8001"></bnav>
-    <AudioBar @click="clickFun($event)"  :monitor-log="getMonitor(825,8,0)"/>
+    <AudioBar :monitorlog="getMonitor(825,8,0)"/>
   </div>
 
 </template>
