@@ -57,13 +57,11 @@
       }
     },
     activated:function(){
-      console.log('activated执行')
       let child;
       let father = document.querySelector('.calendar-box');
       this.$nextTick(function(){
         if(document.querySelector('.isClick')){
           child = document.querySelector('.isClick').parentNode.parentNode
-          console.log(child)
           father.scrollTop = child.offsetTop - father.offsetTop-10;
         }
       })
