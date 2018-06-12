@@ -112,9 +112,6 @@
     },
     mounted () {
       this.getReadStatus()
-      console.log('*****')
-      let aaa = document.querySelector('.calendar-box');
-      console.log(aaa.offsetTop,aaa.offsetHeight,aaa.offsetTop+aaa.offsetHeight)
       let self = this;
       setTimeout(() => {
         window.monitor && window.monitor.showLog(self);
@@ -231,12 +228,12 @@
       goPoster(){
         this.$router.push({name:'poster',query:{commentId:this.commentId,lastClock:0,isClock:1}})
       },
-      getMonitor (c,d) {
-        return JSON.stringify({
-          dcm: '8001.' + 'courseid.' + '0.0',
-          dpm: '110.831.' + c + '.' + d
-        })
-      }
+      // getMonitor (c,d) {
+      //   return JSON.stringify({
+      //     dcm: '8001.' + 'courseid.' + '0.0',
+      //     dpm: '110.831.' + c + '.' + d
+      //   })
+      // }
     }
   };
 </script>
