@@ -89,6 +89,7 @@ export function monitorHandler () {
           body.push({dpm, dcm});
         }
         params.body = JSON.stringify(body); 
+        console.log(params.body)
       } else {
         var {dpm, dcm} = data[0];
         params = {app_id, referer, url, adzoneId, itemType, dcm, dpm};

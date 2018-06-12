@@ -98,7 +98,7 @@ export default new Router({
       }
     },
     {
-      path: '/audio/index/:type',
+      path: '/audio/index',
       component: function (resolve) {
         require.ensure([], function () {
           resolve(require('../views/audio/Index'));

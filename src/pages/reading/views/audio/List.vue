@@ -40,9 +40,23 @@ export default {
     play.getReadList(this.readAudio.readId)
   },
   methods: {
-    playAudio(item) {
-      // 播放某一课程
-      play.audioInit(item.readId, item.id, false);
+    async playAudio(item) {
+      store.commit('play');
+      // 获取课程详情
+      let readAudio = await play.getReadDetail(item.readId, item.id);
+      readAudio.index = store.getters.getReadIds.indexOf(item.id);
+      readAudio.isPrev = readAudio.index == 0 ? false : true;
+      readAudio.isNext = readAudio.index == (store.getters.getReadIds.length - 1) ? false : true;
+      // 获取播放地址
+      readAudio.src = await play.getAudioUrl(item.readId, item.id);
+      // 更新vx数据
+      store.commit({ type: 'setAudio', readAudio: readAudio });
+      // 设置播放元素数据
+      store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
+      store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
+      // 这里，很迷，触发播放
+      store.commit('play');
+      document.title = store.getters.getAudioInfo.courseTitle;
       this.$router.go(-1);
     }
   },

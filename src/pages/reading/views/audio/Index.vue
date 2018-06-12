@@ -15,29 +15,29 @@
           </div>
         </div>
         <div class="row-between control-bar">
-          <button type="primary" class="column-around btn-bottom" @click="routeToArticle" :monitor-log="getMonitor(1,0)">
+          <button type="primary" class="column-around btn-bottom" @click="clickFun($event,routeToArticle)" :monitor-log="getMonitor(1,0)">
             <i class="iconfont icon-page"></i>
             <span class="xxs primary">文稿</span>
           </button>
           <button type="primary" class="btn-switch" @click="audioPrev">
             <i class="iconfont icon-prev" :style="{color: `${readAudio.isPrev ? '#343434' : '#919191'}`}"></i>
           </button>
-          <button type="primary" class="btn-play " :class="readLoadStart ? 'rotation' : ''" @click="togglePlay">
+          <button type="primary" class="btn-play " :class="readLoadStart ? 'rotation' : ''" @click="clickFun($event,togglePlay)"  :monitor-log="getMonitor(4,0)">
             <i class="iconfont icon-musicload" v-if="readLoadStart"></i>
             <i class="iconfont" :class="readPlaying ? 'icon-pause' : 'icon-play'" v-else></i>
           </button>
           <button type="primary" class="btn-switch" @click="audioNext">
             <i class="iconfont icon-next" :style="{color: `${readAudio.isNext ? '#343434' : '#919191'}`}"></i>
           </button>
-          <button type="primary"  class="column-around btn-bottom" @click="routeToList" :monitor-log="getMonitor(2,0)">
+          <button type="primary"  class="column-around btn-bottom" @click="clickFun($event,routeToList)" :monitor-log="getMonitor(2,0)">
             <i class="iconfont icon-list"></i>
             <span class="xxs primary">播放列表</span>
           </button>
         </div>
       </div>
-      <div class="bottom" @click="goComment" v-if="readAudio.curRead" monitor-log="">
-         {{text}}
-      </div>
+      <div class="bottom" @click="clickFun($event,goComment)" v-if=" !readAudio.clockState" :monitor-log="getMonitor(3,3)">去打卡</div>
+      <div class="bottom" @click="clickFun($event,goComment)" v-if=" readAudio.clockState && readAudio.commentState" :monitor-log="getMonitor(3,1)">我的感想</div>
+      <div class="bottom" @click="clickFun($event,goComment)" v-if=" readAudio.clockState && !readAudio.commentState" :monitor-log="getMonitor(3,2)">写想法</div>
     </div> 
     <div class="card-modal" v-if="showCardModal" >
       <div class="pop-mask"></div>
@@ -76,17 +76,6 @@ export default {
     },
     duration() {
       return this.timerFomart(this.readDuration)
-    },
-    text() {
-      if (!this.readAudio.clockState) {
-          return '去打卡'
-      } else {
-        if (!this.readAudio.commentState) {
-          return '写想法'
-        } else {
-          return '查看'
-        }
-      }
     }
   },
   async mounted () {
@@ -141,7 +130,7 @@ export default {
     },
     getMonitor (c,d) {
       return JSON.stringify({
-        dcm: '8001.' + this.readAudio.courseId + '0.0',
+        dcm: '8001.' + this.readAudio.courseId + '.0.0',
         dpm: '110.828.' + c + '.' + d
       })
     }

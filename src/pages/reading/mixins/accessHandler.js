@@ -19,6 +19,7 @@
       this.referer = store.getters.getReferer;
     },
     beforeDestroy() {
+      alert(2)
       this.outTime = new Date().getTime();
       let referer = this.referer,
           stayTime = this.outTime - this.entryTime,

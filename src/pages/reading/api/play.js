@@ -91,7 +91,7 @@ export default class play extends base {
   /**
    * 初始化音频
    */
-  static async audioInit(readId, courseId, refresh) {
+  static async audioInit(readId, courseId, refresh, self) {
     // 这里，很迷
     store.commit('play');
     // 是否更新播放列表
@@ -110,6 +110,8 @@ export default class play extends base {
     store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
     // 这里，很迷，触发播放
     store.commit('play');
+    document.title = store.getters.getAudioInfo.courseTitle;
+    self.$router.push(`/audio/index`);
   }
   
   /**

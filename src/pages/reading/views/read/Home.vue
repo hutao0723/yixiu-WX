@@ -31,7 +31,7 @@
           <img src="http://yun.dui88.com/youfen/images/read_img08.jpg" alt="">
         </div>
         <div class="home-review" v-show="reviewList.length> 0">
-          <h2>学员观点</h2>
+          <h2>学员感想</h2>
           <div class="item" v-for="(item,index) in reviewList" :key="index">
             <img :src="item.userImgUrl" alt="" class="item-header">
             <div class="item-name">{{item.userNickname}}</div>
@@ -54,9 +54,9 @@
                 <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
               </p>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"
-                v-if="userId == item.userId" :monitor-log="getMonitor(820,3,'1-'+index)" @click="clickFun($event)"></router-link>
+                v-if="userId == item.userId" :monitor-log="getMonitor(820,3,'1-'+index)" @click.native="clickFun($event)"></router-link>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr"
-                v-if="userId != item.userId" :monitor-log="getMonitor(820,3,'1-'+index)" @click="clickFun($event)"></router-link>
+                v-if="userId != item.userId" :monitor-log="getMonitor(820,3,'1-'+index)" @click.native="clickFun($event)"></router-link>
             </div>
           </div>
         </div>
@@ -131,10 +131,9 @@
         </span>
       </h2>
       <div class="already-list clearfix">
-        <div class="item" v-for="(item,index) in historyBookList" :key="index" @click="getDetailList
-        (item)">
+        <div class="item" v-for="(item,index) in historyBookList" :key="index" @click="playAudio(item.courseId,item.lockStatus)">
           <div class="item-box">
-            <img :src="item.imgUrl" alt="" class="item-img" v-if="item.imgUrl">
+            <img :src="item.verticalCover" alt="" class="item-img" v-if="item.verticalCover">
             <img src="http://yun.dui88.com/youfen/images/read_course_none.png
             " alt="" class="item-img" v-else>
             <div class="item-lock" v-if="item.lockStatus">
@@ -175,11 +174,14 @@
   import bnav from '../../components/basic/Nav';
   import play from '../../api/play';
   import store from '../../vuex/store';
+  import access from '../../mixins/accessHandler';
   import {
     mapState
   } from 'vuex';
 
   const testUrl = window.location.hostname == 'localhost' ? '/api' : '';
+  // const testUrl = '/api';
+
   const API = {
     orderSubmit: testUrl + '/order/submit',
     paySubmit: testUrl + '/pay/submit',
@@ -203,6 +205,7 @@
       AudioBar,
       bnav
     },
+    mixins: [access],
     data() {
       return {
         reviewList: [],
@@ -239,13 +242,17 @@
     created() {},
     async mounted() {
       let self = this;
+      // dcd存入cookie
+      if (self.$route.query.dcd) {
+          this.setCookie('dcd',self.$route.query.dcd,2)
+        }
       // 如果是支付流程直接支付
       if (window.location.href.indexOf('from') != -1) {
         location.replace('/reading.html#/index/home?' + window.location.href.split('?')[2])
       }
+      let refreshCookie = true;
 
       // 防止cookie丢失
-      let refreshCookie = true;
       // if (window.location.href.indexOf('afterLogin') == -1) {
       //   let res = await this.$http.get('/baseLogin', {
       //     params: {
@@ -262,7 +269,7 @@
         this.setTitle('一修读书')
 
         if (self.$route.query.dcd) {
-          self.getDcd(self.$route.query.dcd)
+          self.getDcd(self.$route.query.dcd || self.getCookie('dcd'))
         }
         if (self.$route.query.courseId) {
           self.tabActive = false;
@@ -357,10 +364,7 @@
               type: 'setBottomNavType',
               bottomNavType: true
             })
-            store.commit({
-              type: 'setVideoToggle',
-              videoToggle: true
-            })
+            
           }
 
           if (
@@ -384,9 +388,39 @@
         self.changeLoginDays();
         self.changeReadStatus();
       }
+      
+      // 曝光
+      self.$nextTick(function () {
+        window.monitor && window.monitor.showLog(self);
+      })
+      setTimeout(() => {
+        // 滚动
+        self.$refs.homemain.addEventListener('scroll', self.dispatchScroll, false);
+        // 埋点
+        window.monitor && window.monitor.showLog(self);
+      }, 100);
     },
     methods: {
-
+      setCookie(cname,cvalue,exhours){   
+        var d = new Date();
+        d.setTime(d.getTime()+(exhours*60*60*1000));
+        var expires = "expires="+d.toGMTString();
+        document.cookie = cname + "=" + cvalue + "; " + expires;
+      },
+      getCookie(cname){
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) 
+        {
+          var c = ca[i].trim();
+          if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+        }
+        return "";
+      },
+      // 触发滚动
+      dispatchScroll () {
+        window.monitor && window.monitor.showLog(this);
+      },
       // 获取monitor
       getMonitor(b, c, d) {
         // item tabindex dpmc
@@ -428,7 +462,7 @@
         const res = await this.$http.post(url, {
           itemId,
           itemType,
-          dcd: this.$route.query.dcd ? this.$route.query.dcd : '',
+          dcd: this.$route.query.dcd || this.getCookie('dcd') || '',
         });
         if (!res.data.success) {
           location.href = '/reading.html#/index/home';
@@ -510,8 +544,13 @@
 
       // 课程详情切换
       tabActiveToggle(e) {
+        let self = this;
         this.$refs.homemain.scrollTop = 0
         this.tabActive = e;
+        setTimeout(() => {
+          // 埋点
+          window.monitor && window.monitor.showLog(self);
+        }, 100);
       },
       // ded
       getDcd(dcd) {
@@ -561,9 +600,7 @@
           }, 2000)
           return false;
         }
-        play.audioInit(this.readId, id, true)
-        // 跳转到播放页
-        this.$router.push('/audio/index/1')
+        play.audioInit(this.readId, id, true, this)
       },
       // 选择课程
       selectCourse(item) {
@@ -696,7 +733,7 @@
         this.$http.get(url, {
           params
         }).then((res) => {
-          this.historyBookList = res.data.data.content;
+          this.historyBookList = res.data.data;
         });
       },
       // 获取详情list
@@ -1468,6 +1505,8 @@
             margin-top: 20/@rem;
             margin-bottom: 34/@rem;
             font-weight: bold;
+            height: 64/@rem;
+            overflow: hidden;
           }
           .item-lock {
             background: rgba(0, 0, 0, 0.7);
