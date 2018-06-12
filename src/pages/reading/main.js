@@ -37,13 +37,12 @@ if (!window.localStorage.getItem('deviceId')) {
   var url = window.location.href; //获取url中"?"符后的字串   
   var theRequest = new Object();   
   if (url.indexOf("?") != -1) {
-    var index= url.indexOf('?')
+     var index= url.indexOf('?')
      var str = url.substr(index+1); 
      console.log(str)  
      var strs = str.split("&");   
      for(var i = 0; i < strs.length; i ++) {   
         Vue.http.headers.common['ext-'+ strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
-        
      }   
   }   
 })()
@@ -83,25 +82,6 @@ Vue.http.interceptors.push((request, next) => {
     }
   });
 });
-
-// 点击曝光辅助函数
-Vue.prototype.clickFun = function (event, cb, obj) {
-  // 获取公共字段
-  let app_id = '157';
-  let referer = store.getters.getReferer;
-  let url = window.location.href.split('?')[0];
-  let adzoneId = this.$route.query.dcd ? this.$route.query.dcd : ''; 
-  let itemType = 4;
-  // 发送埋点
-  var {dpm, dcm} = JSON.parse(event.currentTarget.getAttribute('monitor-log'));
-  let params = {app_id, referer, url, adzoneId, itemType, dcm, dpm};
-  Vue.http.post('http://embedlog.youfen666test.com/embed/click', params).then((res) => {
-    // 埋点成功
-  }, (res) => {
-    // 埋点失败
-  });
-  if(cb)cb(obj);
-}
 
 Vue.prototype.setTitle = function (t) {
   document.title = t;
@@ -181,24 +161,50 @@ new Vue({
   }
 });
 
-// 页面访问日志
-router.beforeEach((to, from, next) => {
-  let histroyUrl = from.path;
-  sessionStorage.setItem('histroyUrl',histroyUrl);
-  this.referer = store.getters.getReferer;
-  let outTime = new Date().getTime();
-    let referer = store.getters.getReferer,
-        stayTime = outTime - store.getters.getEnterTime,
-        action = referer == '' ? 'entry' : 0,
-        url = window.location.href.split('#')[0] + '#' + from.path,
-        app_id = '157';
-    store.commit({ type: 'setReferer', referer: url });  // 设置来源路径
-    store.commit({ type: 'setEnterTime', enterTime: outTime });  // 设置来源路径为空
-    Vue.http.post('http://embedlog.youfen666test.com/embed/access',{app_id, stayTime, action, url, referer}).then((res) => {
+// 点击曝光辅助函数
+Vue.prototype.clickFun = function (event, cb, obj) {
+  try {
+    if(cb)cb(obj);
+    // 获取公共字段
+    let app_id = '157';
+    let referer = store.getters.getReferer;
+    let url = window.location.href.split('?')[0];
+    let adzoneId = this.$route.query.dcd ? this.$route.query.dcd : ''; 
+    let itemType = 4;
+    // 发送埋点
+    var {dpm, dcm} = JSON.parse(event.currentTarget.getAttribute('monitor-log'));
+    let params = {app_id, referer, url, adzoneId, itemType, dcm, dpm};
+    Vue.http.post('http://embedlog.youfen666test.com/embed/click', params).then((res) => {
       // 埋点成功
     }, (res) => {
       // 埋点失败
     });
-  next()
+  } catch (e) {
+    if(cb)cb(obj);
+  }
+}
+
+// 页面访问日志
+router.beforeEach((to, from, next) => {
+  try {
+      sessionStorage.setItem('histroyUrl',from.path);
+      this.referer = store.getters.getReferer;
+      let outTime = new Date().getTime();
+      let referer = store.getters.getReferer,
+          stayTime = outTime - store.getters.getEnterTime,
+          action = referer == '' ? 'entry' : 0,
+          url = window.location.href.split('#')[0] + '#' + from.path,
+          app_id = '157';
+      store.commit({ type: 'setReferer', referer: url });  // 设置来源路径
+      store.commit({ type: 'setEnterTime', enterTime: outTime });  // 设置来源路径为空
+      Vue.http.post('http://embedlog.youfen666test.com/embed/access',{app_id, stayTime, action, url, referer}).then((res) => {
+        // 埋点成功
+      }, (res) => {
+        // 埋点失败
+      });
+    next()
+  } catch (e) {
+    next()
+  }
 })
 
