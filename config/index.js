@@ -7,8 +7,8 @@ module.exports = {
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'knowledge',
-    assetsPublicPath: '//yun.dui88.com/yoofans/',
-    // assetsPublicPath: './',
+    // assetsPublicPath: '//yun.dui88.com/yoofans/',
+    assetsPublicPath: './',
     //yun.dui88.com/yoofans/konwledge
     productionSourceMap: false, // 设为true生成map可以作调试
     // Gzip off by default as many popular static hosts such as
