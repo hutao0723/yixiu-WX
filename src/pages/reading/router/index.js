@@ -32,6 +32,14 @@ export default new Router({
         }
       },
       {
+        path: '/index/course',
+        component: function (resolve) {
+          require.ensure([], function () {
+            resolve(require('../views/read/Course'));
+          }, 'reading_course');
+        }
+      },
+      {
         path: '/index/card',
         component: function (resolve) {
           require.ensure([], function () {
