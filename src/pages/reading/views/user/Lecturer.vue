@@ -5,7 +5,7 @@
     <div class="point">
       温馨提示：由于微信对添加好友的限制，老师可能收不到你的好友请求，如果在三个工作日内老师还未通过你的好友申请，你可以再发一次哦！
     </div>
-     <AudioBar  @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '829.2.0')"/>
+     <AudioBar :monitorlog="getMonitor('0.0.0.0', '829.2.0')"/>
   </div>
 </template>
 
@@ -32,6 +32,12 @@ export default {
     },
   mounted () {
     this.getLecturerInfo();
+    let self = this;
+    self.$nextTick(function () {
+      setTimeout(() => {
+        window.monitor && window.monitor.showLog(self);
+      }, 100)
+    })
   },
   methods: {
      getMonitor(dcm,dpm) {
