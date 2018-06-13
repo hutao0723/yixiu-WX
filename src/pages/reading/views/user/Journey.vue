@@ -7,7 +7,7 @@
           <div class="text-box">
             <div class="text-journal" v-if="item.diploma"><span class="otw-title">{{item.readName}}{{item.readStageNum}}期毕业</span>
 
-              <router-link :to="{ path: '/look/' + item.readId}"  @click.native="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '826.0.3')"><span class="look">查看证书></span></router-link>
+              <router-link :to="{ path: '/look/' + item.readId}"  @click.native="clickFun($event)" :monitor-log="getMonitor('8001.'+item.readId+'.0.'+item.courseId, '826.0.3')"><span class="look">查看证书></span></router-link>
             </div>
             <div class="text-container clearfix">
               <div class="content-container">
@@ -25,10 +25,10 @@
                 </div>
               </div>
               <div class="row operate fr">
-                <div class="column-center operate-share" @click="clickFun($event,goPoster,item.id)" :monitor-log="getMonitor('8002.'+item.courseId+'.0.0', '826.0.1-'+ $index)">
+                <div class="column-center operate-share" @click="clickFun($event,goPoster,item.id)" :monitor-log="getMonitor('8001.'+item.readId+'.0.'+item.courseId, '826.0.1-'+ $index)">
                   <i class="iconfont icon-share"></i>
                 </div>
-                <div class="column-center" :class="point?'point':''"   @click.stop="clickFun($event,thumbsUp,{item:item,index:$index})" :monitor-log="getMonitor('8002.'+ item.courseId +'.0.0', '826.0.2-' + $index)">
+                <div class="column-center" :class="point?'point':''"   @click.stop="clickFun($event,thumbsUp,{item:item,index:$index})" :monitor-log="getMonitor('8001.'+ item.readId +'.0.'+item.courseId, '826.0.2-' + $index)">
                   <i class="iconfont" :class="(item.userPraise==0) ? 'icon-dianzan':'icon-heart zan'"></i>
                 </div>
                 <div class="row">
