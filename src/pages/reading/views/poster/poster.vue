@@ -392,7 +392,6 @@ export default {
 					drawImg.crossOrigin = "Anonymous";
 					//drawImg.src = _this.code64;
 					drawImg.src = _this.info.readQrcodeImgUrl;
-					alert(drawImg.src); // todo
 					drawImg.onload = function() {
 						ctx.drawImage(drawImg,_this.conversion(600),_this.conversion(1051) * 1 + responseHeight * 1,_this.conversion(100),_this.conversion(100));
 						resolve();
