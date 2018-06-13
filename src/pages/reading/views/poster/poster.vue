@@ -39,7 +39,7 @@ export default {
 		_this.popup = _this.$route.query.lastClock * 1;
 		_this.isSelf = _this.$route.query.isClock * 1;
 
-		//_this.getInfo();
+		_this.getInfo();
 
 		// _this.info = {
 		// 	"id": 58,
@@ -57,7 +57,7 @@ export default {
 		// 	"readName": "阅读计划-测试1",
 		// 	"readStageId": 9,
 		// 	"readStageNum": 1,
-		// 	"content": "觉得你You are running Vue in development mode发怒oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo发怒<br/>奶粉！仿佛个Make sure to turn on production mode when deploying for production.See more tips at大家都觉得觉Leaders",
+		// 	"content": "evelopmenppppppppdevelopmenppppppppdevelopmenppppppppdevelopmenppppppppdevelopmenppppppppdevelopmenpppppppppt",
 		// 	"releaseTime": "2018-05-30 14:22:13",
 		// 	"releaseTimeLabel": "深夜",
 		// 	"praiseCount": 3,
@@ -81,8 +81,7 @@ export default {
 		// if(!_this.info.content){
 		// 	_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
 		// };
-		// this.createdCode()
-		this.getCodeUrl()
+		// this.createdCanvas()
 	},
   	methods: {
 		createdCode() {
@@ -122,7 +121,6 @@ export default {
 				if(!_this.info.content){
 					_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
 				};
-				console.log()
 				_this.createdCanvas();
 			} else {
 				console.log("获取数据失败");
@@ -206,7 +204,9 @@ export default {
 								}else{
 									A_Z = A_Z+string[i];
 									string_w = ctx.measureText(A_Z).width-1;
+									console.log()
 									if(string_w>_this.conversion(560)){
+										console.log(string_w)
 										let long_string = A_Z.split('');
 										long_string.forEach((item)=>{
 											string_w = ctx.measureText(item).width-1;
@@ -237,16 +237,33 @@ export default {
 							}else{
 								A_Z = A_Z+string[i];
 								string_w = ctx.measureText(A_Z).width-1;
-								if(num+string_w>_this.conversion(560)){
-									x = _this.conversion(78);
-									num = string_w;
-									line_number++;
+								if(string_w>_this.conversion(560)){
+									let long_string = A_Z.split('');
+									long_string.forEach((item)=>{
+										string_w = ctx.measureText(item).width-1;
+										ctx.fillText(item, x, y*1+line_number*_this.conversion(52));
+										// 确定下一个字符的横坐标
+										if(num<_this.conversion(560)){
+											num = num + string_w ;
+											x = x + string_w ;
+										}else{
+											x = _this.conversion(78);
+											num = 0;
+											line_number++;
+										}
+									})
 								}else{
-									num = num + string_w ;
+									if(num+string_w>_this.conversion(560)){
+										x = _this.conversion(78);
+										num = string_w;
+										line_number++;
+									}else{
+										num = num + string_w ;
+									}
+									ctx.fillText(A_Z, x, y*1+line_number*_this.conversion(52));
+									x = x + string_w ;
+									A_Z = '';
 								}
-								ctx.fillText(A_Z, x, y*1+line_number*_this.conversion(52));
-								x = x + string_w ;
-								A_Z = '';
 							}
 						}else{
 							string_w = ctx.measureText(string[i]).width-1;
@@ -370,7 +387,8 @@ export default {
 					ctx.fillText("长按识别二维码",_this.conversion(126),_this.conversion(1108) * 1 + responseHeight * 1);
 					let drawImg = new Image();
 					drawImg.crossOrigin = "Anonymous";
-					drawImg.src = _this.code64;
+					//drawImg.src = _this.code64;
+					drawImg.src = 'http://yun.dui88.com/youfen/images/code_ewm.png';
 					drawImg.onload = function() {
 						ctx.drawImage(drawImg,_this.conversion(600),_this.conversion(1051) * 1 + responseHeight * 1,_this.conversion(100),_this.conversion(100));
 						resolve();
