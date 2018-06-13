@@ -1,7 +1,8 @@
 <template>
     <div class="diploma-container">
-        <div class="class=""><img :src="diplomaUrl"></div>
-        <div class="save">
+        <div class=""><img :src="diplomaUrl">
+        </div>
+        <div class="save"  @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '833.1.0')">
             <div class="btn">长按保存分享</div>
             <img :src="diplomaUrl" class="btn-img">
         </div>
@@ -20,6 +21,13 @@
             this.getImage()
         },
         methods: {
+             getMonitor(dcm,dpm) {
+        // item tabindex dpmc
+        return JSON.stringify({
+          'dcm': dcm,
+          'dpm': '157.' + dpm,
+        });
+      },
             // 获取证书图片
             async getImage (){
                 let readId = this.$route.params.readId

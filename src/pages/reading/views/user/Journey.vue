@@ -7,7 +7,7 @@
           <div class="text-box">
             <div class="text-journal" v-if="item.diploma"><span class="otw-title">{{item.readName}}{{item.readStageNum}}期毕业</span>
 
-              <router-link :to="{ path: '/look/' + item.readId}"><span class="look">查看证书></span></router-link>
+              <router-link :to="{ path: '/look/' + item.readId}"  @click.native="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '826.0.3')"><span class="look">查看证书></span></router-link>
             </div>
             <div class="text-container clearfix">
               <div class="content-container">
@@ -25,10 +25,10 @@
                 </div>
               </div>
               <div class="row operate fr">
-                <div class="column-center operate-share" @click="goPoster(item.id)">
+                <div class="column-center operate-share" @click="clickFun($event,goPoster,item.id)" :monitor-log="getMonitor('8002.'+item.courseId+'.0.0', '826.0.1-'+ $index)">
                   <i class="iconfont icon-share"></i>
                 </div>
-                <div class="column-center" @click.stop="thumbsUp(item,$index)" :class="point?'point':''">
+                <div class="column-center" :class="point?'point':''"   @click.stop="clickFun($event,thumbsUp,{item:item,index:$index})" :monitor-log="getMonitor('8002.'+ item.courseId +'.0.0', '826.0.2-' + $index)">
                   <i class="iconfont" :class="(item.userPraise==0) ? 'icon-dianzan':'icon-heart zan'"></i>
                 </div>
                 <div class="row">
@@ -48,7 +48,7 @@
         </div>
       </div>
     </div>
-    <AudioBar/>
+    <AudioBar @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '826.1.0')"/>
   </div>
 </template>
 
@@ -88,6 +88,14 @@ export default {
     this.init();
   },
   methods: {
+    // 获取monitor
+      getMonitor(dcm,dpm) {
+        // item tabindex dpmc
+        return JSON.stringify({
+          'dcm': dcm,
+          'dpm': '157.' + dpm,
+        });
+      },
     async getJourneyInfo (){
       let objs = await user.getJourneyList();
       if (objs.success) {
@@ -119,19 +127,19 @@ export default {
       }
 
     },
-    async thumbsUp(row,index) {
+    async thumbsUp(obj) {
       this.point = true
-      let praise = row.userPraise == 0 ? 1 : 0
-      let objs = await user.getThumbUp(praise,row.id);
+      let praise = obj.item.userPraise == 0 ? 1 : 0
+      let objs = await user.getThumbUp(praise,obj.item.id);
       if (objs.success) {
         if(praise){
-          this.journeyList[index].praiseCount += 1
+          this.journeyList[obj.index].praiseCount += 1
         }else{
-          this.journeyList[index].praiseCount -= 1
+          this.journeyList[obj.index].praiseCount -= 1
         }
         // await this.getJourneyInfo();
         // this.init();
-        this.journeyList[index].userPraise = praise
+        this.journeyList[obj.index].userPraise = praise
         this.point = false
       }else{
         console.log("获取数据失败")

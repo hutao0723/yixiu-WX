@@ -1,7 +1,7 @@
 <template>
   <div class="bottom-nav" v-if="bottomNavToggle">
     <ul>
-      <li v-for="(item, index) in navlist" :style="bottomNavType ? 'width: 25%;' : 'width: 33.33%;'">
+      <li v-for="(item, index) in navlist" :style="bottomNavType ? 'width: 25%;' : 'width: 33.33%;'" @click="clickFun($event)" :monitor-log="getMonitor(dpmB,10,item.dpm)" :monitor-log-get="isLog">
         <router-link :to="item.path" :class="item.path === $route.path ? 'active' : ''">
           <p>
             <!-- <i class="iconfont" :class="item.path === $route.path ? item.active : item.icon"></i> -->
@@ -22,11 +22,23 @@
     data() {
       return {};
     },
+    props : {
+      dpmB: {
+        default: false
+      },
+      dcmA: {
+        default: false
+      },
+      isLog: {
+        default: false
+      }
+    },
     computed: {
       ...mapState(['bottomNavType', 'bottomNavToggle']),
       navlist() {
         if (this.bottomNavType) {
           return [{
+              dpm: 1,
               title: '阅读',
               icon: 'icon-book',
               active: 'icon-book active tag',
@@ -35,6 +47,7 @@
               imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_new01.png'
             },
             {
+              dpm: 4,
               title: '打卡',
               icon: 'icon-date',
               active: 'icon-date active tag',
@@ -43,6 +56,7 @@
               imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_new07.png'
             },
             {
+              dpm: 2,
               title: '感想',
               icon: 'icon-opinion',
               active: 'icon-opinion active tag',
@@ -51,6 +65,7 @@
               imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_new05.png'
             },
             {
+              dpm: 3,
               title: '我的',
               icon: 'icon-user',
               active: 'icon-user active tag',
@@ -61,6 +76,7 @@
           ]
         } else {
           return [{
+              dpm: 1,
               title: '阅读',
               icon: 'icon-book',
               active: 'icon-book active tag',
@@ -69,6 +85,7 @@
               imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_new01.png'
             },
             {
+              dpm: 2,
               title: '感想',
               icon: 'icon-opinion',
               active: 'icon-opinion active tag',
@@ -77,6 +94,7 @@
               imgActiveUrl: 'http://yun.dui88.com/youfen/images/read_icon_new05.png'
             },
             {
+              dpm: 3,
               title: '我的',
               icon: 'icon-user',
               active: 'icon-user active tag',
@@ -88,8 +106,18 @@
           ]
         }
       }
-    }
-  };
+    },
+    methods: {
+      // 获取monitor
+      getMonitor(b, c, d) {
+        // item tabindex dpmc
+        return JSON.stringify({
+          'dcm': '0.0.0.0',
+          'dpm': '157.' + b + '.' + c + '.' + d,
+        });
+      }
+  }
+}
 
 </script>
 <style lang="less">

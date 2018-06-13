@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-  import router from '../../mixins/router';
+  // import router from '../../mixins/router';
   import { Swipe, SwipeItem } from '../swipe';
   export default {
     data () {
@@ -49,7 +49,7 @@
         }
       }
     },
-    mixins: [router]
+    mixins: []
   };
 </script>
 <style lang="less">

@@ -26,7 +26,6 @@ import { mapState } from 'vuex';
 import store from '../../vuex/store';
 import order from '../../api/order';
 import play from '../../api/play';
-import access from '../../mixins/accessHandler';
 export default {
   computed: {
     ...mapState(['readAudio','readList'])
@@ -59,8 +58,7 @@ export default {
       document.title = store.getters.getAudioInfo.courseTitle;
       this.$router.go(-1);
     }
-  },
-  mixins: [access]
+  }
   };
 </script>
 <style lang="less">

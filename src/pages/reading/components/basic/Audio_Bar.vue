@@ -1,6 +1,6 @@
 <template>
   <div class="audio-bar">
-    <div class="audio-controler row"  @click="goAudioPage"> 
+    <div class="audio-controler row"  @click="clickFun($event,goAudioPage)" :monitor-log="monitorlog"> 
       <div class="right-bar row-around" style="background-repeat:no-repeat;background-size:100% 100%;" 
       :style="{backgroundImage:`url(${readAudio.verticalCover || baseImg}`}" >
         <div class="icon-state column-center mask">
@@ -27,6 +27,9 @@ import { mapState } from 'vuex';
     props : {
       bottom: {
         default: false
+      },
+      monitorlog: {
+        default: ''
       }
     },
     data () {

@@ -24,7 +24,7 @@
     </header>
     <div class="calendar_header">
       <div class="card-head">
-        <span class="head-left" @click="noticeFlag = true "> <i class="iconfont icon-gift"></i>坚持打卡送大礼<i class="iconfont icon-right"></i> </span>
+        <span class="head-left" @click="clickFun($event);noticeFlag = true "  :monitor-log="getMonitor('8001.'+readId+'.0.0','831.1.0')"> <i class="iconfont icon-gift"></i>坚持打卡送大礼<i class="iconfont icon-right"></i> </span>
         <div class="head-right">
           <span><i></i> 已打卡</span>
           <span><i></i>未打卡</span>
@@ -57,17 +57,17 @@
             </div>
           </div>
           <div class="book-btn" v-show="afterToday||isToday">
-              <span  v-show="courseDetail.clockState&&courseDetail.commentState" @click.stop="goComment()">我的感想</span>
-              <span  v-show="courseDetail.clockState&&!courseDetail.commentState" @click.stop="goComment()">写想法</span>
-              <span  v-show="!courseDetail.clockState" @click.stop="goComment()">去打卡</span>
+              <span  v-show="courseDetail.clockState&&courseDetail.commentState" @click.stop="clickFun($event,goComment);"  :monitor-log="getMonitor('8001.'+readId+'.0.'+courseId,'831.3.1')">查看</span>
+              <span  v-show="courseDetail.clockState&&!courseDetail.commentState" @click.stop="clickFun($event,goComment);"  :monitor-log="getMonitor('8001.'+readId+'.0.'+courseId,'831.3.2')">写想法</span>
+              <span  v-show="!courseDetail.clockState"  @click.stop="clickFun($event,goComment);"  :monitor-log="getMonitor('8001.'+readId+'.0.'+courseId,'831.3.3')">去打卡</span>
           </div>
         </div>
         <div style="clear: both"></div>
       </div>
     </div>
     <div class="card_bottom_text">轻松阅读，日有所得</div>
-    <AudioBar></AudioBar>
-    <bnav></bnav>
+    <AudioBar :monitorlog="getMonitor('0.0.0.0','831.2.0')"/>
+    <bnav  :dpm-b="831"  :dcm-a="8002"></bnav>
 
   </div>
 </template>
@@ -112,6 +112,15 @@
     },
     mounted () {
       this.getReadStatus()
+      let self = this;
+      self.$nextTick(function () {
+        setTimeout(() => {
+          // 滚动
+          self.$refs.optionMain.addEventListener('scroll', self.dispatchScroll, false);
+          // 埋点
+          window.monitor && window.monitor.showLog(self);
+        }, 100)
+      })
     },
    watch:{
      readId(){
@@ -119,6 +128,14 @@
      }
    },
     methods: {
+      // 获取monitor
+      getMonitor(dcm,dpm) {
+        // item tabindex dpmc
+        return JSON.stringify({
+          'dcm': dcm,
+          'dpm': '157.' + dpm,
+        });
+      },
       //bodyHidden bodyScroll
       bodyTouchMove(ev){
         ev = ev || event;

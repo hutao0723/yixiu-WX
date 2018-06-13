@@ -56,7 +56,15 @@
         isHistroy:false
       }
     },
-    computed: {
+    activated:function(){
+      let child;
+      let father = document.querySelector('.calendar-box');
+      this.$nextTick(function(){
+        if(document.querySelector('.isClick')){
+          child = document.querySelector('.isClick').parentNode.parentNode
+          father.scrollTop = child.offsetTop - father.offsetTop-10;
+        }
+      })
 
     },
     mounted: function () {
@@ -71,6 +79,7 @@
         this.setNowDate()
       }
     },
+
     updated:function(){
       this.$nextTick(function () {
         let child;
@@ -186,6 +195,11 @@
           }
           this.days[index1][index].isClick=true;
         }
+        // 切换曝光
+        let self = this;
+        setTimeout(() => {
+          window.monitor && window.monitor.showLog(self);
+        }, 100)
       },
       getThisMonthDays(year, month) { //月 天数
         return new Date(year, month, 0).getDate();

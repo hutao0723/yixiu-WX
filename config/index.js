@@ -8,7 +8,7 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'knowledge',
     assetsPublicPath: '//yun.dui88.com/yoofans/',
-    //yun.dui88.com/yoofans/
+    // assetsPublicPath: './',
     productionSourceMap: false, // 设为true生成map可以作调试
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
@@ -31,7 +31,7 @@ module.exports = {
     proxyTable: {
         '/api': {
           // 测试环境
-          target: 'http://k.youfen666test.com',  // 接口域名   172.31.10.130:9106
+          target: 'http://k.youfen666dev.com',  // 接口域名   172.31.10.130:9106
           changeOrigin: true,  //是否跨域
           pathRewrite: {
             '/api': ''   //需要rewrite重写的,
