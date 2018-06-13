@@ -18,7 +18,7 @@
       <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="tabActive&&readList.length>0&&payBtnShow">
           <p class="text-day">每天仅需<span>{{selectCourseObj.priceDay}}</span>元</p>
           <p class="text-del">原价：{{selectCourseObj.costPrice}}</p>
-        <span @click="clickFun($event,orderPay)" class="btn-pay" :monitor-log="getMonitor('0.0.0.0', '820.6.0')"><span class="text-red">¥ {{selectCourseObj.presentPrice}}</span>立即购买</span>
+        <span @click="clickFun($event,orderPay)" class="btn-pay" :monitor-log="getMonitor('0.0.0.0', '819.1.0')"><span class="text-red">¥ {{selectCourseObj.presentPrice}}</span>立即购买</span>
       </div>
       <div id="maincontent" class="home-detail" ref="homemain" v-show="tabActive">
         <div class="home-content" :monitor-log="getMonitor('0.0.0.0', '820.2.0')">
