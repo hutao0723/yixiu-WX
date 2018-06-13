@@ -1,7 +1,7 @@
 <template>
-  <div class="main">
+  <div class="main" ref="journeymain">
     <div class="journey-main">
-      <div v-if="!noData">
+      <div v-if="!noData" >
         <div class="module" v-for="(item, $index) in journeyList" :style="item.content?'':'display:none'">
           <div class="date">{{item.releaseTime}}</div>
           <div class="text-box">
@@ -48,7 +48,7 @@
         </div>
       </div>
     </div>
-    <AudioBar @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '826.1.0')"/>
+    <AudioBar :monitorlog="getMonitor('0.0.0.0', '826.1.0')"/>
   </div>
 </template>
 
@@ -86,16 +86,27 @@ export default {
   async mounted () {
     await this.getJourneyInfo();
     this.init();
+    let self = this;
+    self.$nextTick(function () {
+      setTimeout(() => {
+        window.monitor && window.monitor.showLog(self);
+        self.$refs.journeymain.addEventListener('scroll', self.dispatchScroll, false);
+      }, 100)
+    })
   },
   methods: {
     // 获取monitor
-      getMonitor(dcm,dpm) {
-        // item tabindex dpmc
-        return JSON.stringify({
-          'dcm': dcm,
-          'dpm': '157.' + dpm,
-        });
-      },
+    getMonitor(dcm,dpm) {
+      // item tabindex dpmc
+      return JSON.stringify({
+        'dcm': dcm,
+        'dpm': '157.' + dpm,
+      });
+    },
+    // 触发滚动
+    dispatchScroll () {
+      window.monitor && window.monitor.showLog(this);
+    },
     async getJourneyInfo (){
       let objs = await user.getJourneyList();
       if (objs.success) {

@@ -1,6 +1,6 @@
 <template>
-  <div class="main">
-    <div class="shelf-main" >
+  <div class="main" ref="shelfmain">
+    <div class="shelf-main">
       <div v-if="!noData">
         <div v-for="(item, index) in swipeList">
           <SwiperBar :param.sync="item" @newSwiperIndex="getBookList"/>
@@ -37,7 +37,7 @@
       </div> -->
     </div>
      
-     <AudioBar @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '827.2.0')"/>
+     <AudioBar :monitorlog="getMonitor('0.0.0.0', '827.2.0')"/>
   </div>
 
 </template>
@@ -83,17 +83,28 @@ export default {
   created() {
     },
   async mounted () {
-    this.setTitle('一修读书')
-    await this.getSwipeInfo()
+    this.setTitle('一修读书');
+    await this.getSwipeInfo();
+    let self = this;
+    self.$nextTick(function () {
+      setTimeout(() => {
+        window.monitor && window.monitor.showLog(self);
+        if (self.$refs.shelfmain) self.$refs.shelfmain.addEventListener('scroll', self.dispatchScroll, false);
+      }, 100)
+    })
   },
   methods: {
     getMonitor(dcm,dpm) {
-        // item tabindex dpmc
-        return JSON.stringify({
-          'dcm': dcm,
-          'dpm': '157.' + dpm,
-        });
-      },
+      // item tabindex dpmc
+      return JSON.stringify({
+        'dcm': dcm,
+        'dpm': '157.' + dpm,
+      });
+    },
+    // 触发滚动
+    dispatchScroll () {
+      window.monitor && window.monitor.showLog(this);
+    },
     playAudio(readId,courseId){
       play.audioInit(readId,courseId,true,this)
     },
@@ -138,6 +149,12 @@ export default {
           }
 
         });
+        let self = this;
+        self.$nextTick(function () {
+          setTimeout(() => {
+            window.monitor && window.monitor.showLog(self);
+          }, 100)
+        })
     }
     // // 获取弹框列表
     // async getdayNumInfo (bookId,readId,title) {
