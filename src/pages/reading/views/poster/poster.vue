@@ -109,6 +109,9 @@ export default {
 			});
 			if (res.data.success) {
 				_this.info = res.data.data;
+
+				//二维码写死的地方
+				//_this.info.readQrcodeImgUrl = ''
 				//头部背景图
 				if (!_this.info.bookBgimgUrl) {
 					_this.info.bookBgimgUrl = "http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg";
@@ -388,7 +391,7 @@ export default {
 					let drawImg = new Image();
 					drawImg.crossOrigin = "Anonymous";
 					//drawImg.src = _this.code64;
-					drawImg.src = 'http://yun.dui88.com/youfen/images/code_ewm.png';
+					drawImg.src = _this.info.readQrcodeImgUrl;
 					drawImg.onload = function() {
 						ctx.drawImage(drawImg,_this.conversion(600),_this.conversion(1051) * 1 + responseHeight * 1,_this.conversion(100),_this.conversion(100));
 						resolve();
