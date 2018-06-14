@@ -1,5 +1,4 @@
 import base from './base';
-import store from '../vuex/store';
 
 export default class user extends base {
 
