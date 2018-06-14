@@ -22,11 +22,20 @@
       </div>
       <div id="maincontent" class="home-detail" ref="homemain" v-show="tabActive">
         <div class="home-content" :monitor-log="getMonitor('0.0.0.0', '820.2.0')">
-          <img src="http://yun.dui88.com/youfen/images/read_img01.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/read_img02.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/read_img03.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/read_img07.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/read_img08.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/detail20180614_01.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/detail20180614_02.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/detail20180614_03.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/detail20180614_04.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/detail20180614_05.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/detail20180614_06.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/detail20180614_07.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/detail20180614_08.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/detail20180614_09.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/detail20180614_10.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/detail20180614_11.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/detail20180614_12.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/detail20180614_13.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/detail20180614_14.jpg" alt="">
         </div>
         <div class="home-review" v-show="reviewList.length> 0">
           <h2>学员感想</h2>
