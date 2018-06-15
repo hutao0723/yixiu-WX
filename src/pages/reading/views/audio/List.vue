@@ -24,7 +24,6 @@
 <script>
 import { mapState } from 'vuex';
 import store from '../../vuex/store';
-import order from '../../api/order';
 import play from '../../api/play';
 export default {
   computed: {
