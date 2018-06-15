@@ -18,7 +18,13 @@
             };
         },
         mounted () {
-            this.getImage()
+            this.getImage();
+            let self = this;
+            self.$nextTick(function () {
+              setTimeout(() => {
+                window.monitor && window.monitor.showLog(self);
+              }, 100)
+            })
         },
         methods: {
              getMonitor(dcm,dpm) {

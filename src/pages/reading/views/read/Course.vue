@@ -5,37 +5,30 @@
       <bnav :dpm-b="820"  :dcm-a="8001"></bnav>
       <a href="https://kefu.easemob.com/webim/im.html?configId=f56195f3-2ff6-412b-983e-0231f5586efb" class="home-service" :class="{bottom:bottomNavToggle}"
         @click="clickFun($event)" :monitor-log="getMonitor('0.0.0.0', '820.8.0')"></a>
-      <!-- <div class="home-tab clearfix" id="hometab">
+      <div class="home-tab clearfix" id="hometab">
         <div class="item" @click="clickFun($event,tabActiveToggle,true)" :monitor-log="getMonitor('0.0.0.0', '820.1.1')">
           <span :class="{ active: tabActive}">简介</span>
         </div>
         <div class="item" @click="clickFun($event,tabActiveToggle,false)" :monitor-log="getMonitor('0.0.0.0', '820.1.2')">
           <span :class="{ active: !tabActive}">课程</span>
         </div>
-      </div> -->
-      <!-- <div class="home-bottom" @click="clickFun($event,tabActiveToggle,false)" :class="{bottom:bottomNavToggle}" v-show="tabActive"
-        :monitor-log="getMonitor('0.0.0.0', '820.4.0')">去选课程</div> -->
-      <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="tabActive&&readList.length>0&&payBtnShow">
-          <p class="text-day">每天仅需<span>{{selectCourseObj.priceDay}}</span>元</p>
-          <p class="text-del">原价：{{selectCourseObj.costPrice}}</p>
-        <span @click="clickFun($event,orderPay)" class="btn-pay" :monitor-log="getMonitor('0.0.0.0', '819.1.0')"><span class="text-red">¥ {{selectCourseObj.presentPrice}}</span>立即购买</span>
+      </div>
+      <div class="home-bottom" @click="clickFun($event,tabActiveToggle,false)" :class="{bottom:bottomNavToggle}" v-show="tabActive"
+        :monitor-log="getMonitor('0.0.0.0', '820.4.0')">去选课程</div>
+      <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="!tabActive&&readList.length>0&&payBtnShow">
+        <p>
+          <span class="text-del">{{selectCourseObj.costPrice}}</span>
+          <span class="text-red">¥{{selectCourseObj.presentPrice}}</span>
+        </p>
+        <span @click="clickFun($event,orderPay)" class="btn-pay" :monitor-log="getMonitor('0.0.0.0', '820.6.0')">立即购买</span>
       </div>
       <div id="maincontent" class="home-detail" ref="homemain" v-show="tabActive">
         <div class="home-content" :monitor-log="getMonitor('0.0.0.0', '820.2.0')">
-          <img src="http://yun.dui88.com/youfen/images/detail20180614_01.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/detail20180614_02.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/detail20180614_03.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/detail20180614_04.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/detail20180614_05.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/detail20180614_06.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/detail20180614_07.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/detail20180614_08.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/detail20180614_09.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/detail20180614_10.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/detail20180614_11.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/detail20180614_12.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/detail20180614_13.jpg" alt="">
-          <img src="http://yun.dui88.com/youfen/images/detail20180614_14.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/read_img01.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/read_img02.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/read_img03.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/read_img07.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/read_img08.jpg" alt="">
         </div>
         <div class="home-review" v-show="reviewList.length> 0">
           <h2>学员感想</h2>
@@ -176,6 +169,7 @@
   } from 'vuex';
 
   const testUrl = window.location.hostname == 'localhost' ? '/api' : '';
+  // const testUrl = '/api';
 
   const API = {
     orderSubmit: testUrl + '/order/submit',
@@ -282,7 +276,7 @@
             console.log('用户未购买未授权')
             self.pageStatus = 0;
             self.getCommentTop();
-            self.getReadList(self.$route.query.readId);
+            self.getReadList();
             store.commit({
               type: 'setBottomNavToggle',
               bottomNavToggle: false
@@ -299,7 +293,7 @@
             console.log('用户未购买已授权')
             self.pageStatus = 1;
             self.getCommentTop();
-            self.getReadList(self.$route.query.readId);
+            self.getReadList();
             store.commit({
               type: 'setBottomNavToggle',
               bottomNavToggle: false
@@ -367,7 +361,7 @@
             console.log('用户购买已关注已读完')
             self.pageStatus = 1;
             self.getCommentTop();
-            self.getReadList(self.$route.query.readId);
+            self.getReadList();
             store.commit({
               type: 'setBottomNavToggle',
               bottomNavToggle: true
@@ -678,12 +672,10 @@
         });
       },
       // 获取阅读计划
-      getReadList(id) {
+      getReadList() {
         let self = this;
         let params = {};
-        params = {
-          readId: id?id:'',
-        }
+        params = {}
         const url = API.readList;
         this.$http.get(url, {
           params
@@ -801,7 +793,7 @@
       bottom: 240/@rem;
     }
     .home-detail {
-      // padding-top: 100/@rem;
+      padding-top: 100/@rem;
       /* padding-bottom: 100/@rem; */
       -webkit-overflow-scrolling: touch;
       position: absolute;
@@ -870,23 +862,7 @@
       box-sizing: border-box;
       text-align: right;
       box-shadow: 0px -1px 20px 0px rgba(0, 0, 0, 0.1);
-      .text-day{
-        .text(26,37);
-        .pos(0,14);
-        width: 270/@rem;
-        color: #FF4343;
-        text-align: right;
-        span{
-          font-size: 30/@rem;
-          font-weight: bold;
-        }
-      }
       .text-del {
-        .text(24,33);
-        .pos(0,50);
-        width: 270/@rem;
-        color: #FF4343;
-        text-align: right;
         color: #777;
         text-decoration: line-through;
       }
@@ -897,9 +873,9 @@
 
       }
       .btn-pay {
-        .size(450,
+        .size(360,
         100);
-        .text(30,
+        .text(40,
         100);
         position: absolute;
         right: 0;
@@ -909,10 +885,6 @@
         text-align: center;
         box-shadow: 0px -1px 20px 0px rgba(0, 0, 0, 0.1);
         z-index: 666;
-        .text-red{
-          .text(44,100);
-          font-weight: bold;
-        }
       }
     }
     .home-bottom.bottom {

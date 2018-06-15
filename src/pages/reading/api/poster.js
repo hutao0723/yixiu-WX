@@ -1,5 +1,4 @@
 import base from './base';
-import play from './play';
 
 export default class poster extends base {
 
