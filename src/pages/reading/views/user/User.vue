@@ -31,7 +31,7 @@
         <div class="bgfff">
           <div class="person-h90 row mt20 border" >
             <div class="icon-box column-center">
-              <i class="iconfont icon-wodelicheng person-icon"></i>
+              <i class="iconfont icon-youhuiquan person-icon"></i>
             </div>
             <div class="row ft28 ml30 ftbold">我的优惠券</div>
           </div>
