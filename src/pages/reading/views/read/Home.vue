@@ -653,7 +653,6 @@
           this.selectCourseId = item.readId;
           this.couponId = item.couponId ? item.couponId : ''
           this.selectCourseObj = item;
-          console.log(this.selectCourseObj)
         }
       },
       // 阅读详情
@@ -885,7 +884,8 @@
 
       // 关闭优惠券弹框
       closeCouponDialog() {
-        if(this.couponCourseId){
+        // 如果优惠券匹配的课程id是当前页展示的id，则替换原来的价格，否则则关闭弹框
+        if(this.couponCourseId == this.selectCourseId){
           this.selectCourseId = this.couponCourseId
           this.getSelectById(this.couponCourseId ,this.couponId)
         }
