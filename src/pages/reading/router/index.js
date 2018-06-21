@@ -90,6 +90,14 @@ export default new Router({
       }
     },
     {
+      path: '/coupon',
+      component: function (resolve) {
+        require.ensure([], function () {
+          resolve(require('../views/user/Coupon'));
+        }, 'reading_coupon');
+      }
+    },
+    {
       path: '/look/:readId',
       component: function (resolve) {
         require.ensure([], function () {

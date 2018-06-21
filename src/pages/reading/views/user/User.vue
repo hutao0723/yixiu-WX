@@ -27,9 +27,19 @@
             
         </div>
       </router-link>
+      <router-link :to="{ path: '/coupon' }" >
+        <div class="bgfff">
+          <div class="person-h90 row mt20 border" >
+            <div class="icon-box column-center">
+              <i class="iconfont icon-wodelicheng person-icon"></i>
+            </div>
+            <div class="row ft28 ml30 ftbold">我的优惠券</div>
+          </div>
+        </div>
+      </router-link>
       <router-link :to="{ path: '/journey' }" >
         <div class="bgfff" @click="clickFun($event)"  :monitor-log="getMonitor(825,2,0)">
-          <div class="person-h90 row mt20 border" >
+          <div class="person-h90 row  border" >
             <div class="icon-box column-center">
               <i class="iconfont icon-wodelicheng person-icon"></i>
             </div>
