@@ -309,6 +309,9 @@ export default {
   .person-icon{
     color: #414141;
     .fontSize(34);
+    &.icon-youhuiquan{
+      .fontSize(29);
+    }
   }
   .ear-icon{
     color: #414141;
