@@ -60,10 +60,11 @@
                 <i class="iconfont icon-dianzan fr" v-show="!item.userPraise"></i>
                 <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
               </p>
-              <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"
-                v-if="userId == item.userId" :monitor-log="getMonitor('8002.'+ item.courseId +'.0.0', '820.3.1-'+index)" @click.native="clickFun($event)"></router-link>
+              <i class="iconfont icon-share fr" :monitor-log="getMonitor('8002.'+ item.courseId +'.0.0', '820.3.1-'+index)" @click.native="clickFun($event,shareFun,item)"></i>
+             <!--  <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:1}}" tag="a" class="iconfont icon-share fr"
+                v-if="userId == item.userId" ></router-link>
               <router-link :to="{ path: '/poster',query:{commentId:item.id,lastClock:0,isClock:0}}" tag="a" class="iconfont icon-share fr"
-                v-if="userId != item.userId" :monitor-log="getMonitor('8002.'+ item.courseId +'.0.0', '820.3.1-'+index)" @click.native="clickFun($event)"></router-link>
+                v-if="userId != item.userId" :monitor-log="getMonitor('8002.'+ item.courseId +'.0.0', '820.3.1-'+index)" @click.native="clickFun($event)"></router-link> -->
             </div>
           </div>
         </div>
@@ -395,6 +396,20 @@
       })
     },
     methods: {
+      shareFun(item){
+        if(item.posterType == "H5"){
+
+          this.$router.push({name:'share',query:{commentId:item.id,lastClock:0,isClock:1}})
+        }else{
+          if(this.userId == item.userId){
+          this.$router.push({name:'poster',query:{commentId:item.id,lastClock:0,isClock:1}})
+
+          }else{
+          this.$router.push({name:'poster',query:{commentId:item.id,lastClock:0,isClock:0}})
+
+          }
+        }
+      },
       hrefFun(){
         window.location.href = 'https://kefu.easemob.com/webim/im.html?configId=1738cfa5-7e3c-4fe2-9302-0997c4e3bd9f'
       },
