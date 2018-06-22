@@ -221,7 +221,7 @@ export default {
         .range{
             .duration{
                 .ball{
-                    background: url('./../../views/poster/circular.png');
+                    background: url('http://yun.dui88.com/circular.png');
                     background-size: 100%;  
                 }    
             }    

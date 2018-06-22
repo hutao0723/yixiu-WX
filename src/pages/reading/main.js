@@ -26,16 +26,15 @@ import { monitorHandler } from './components/utils/monitorHandler';
 monitorHandler();
 // 设备id
 if (!window.localStorage.getItem('deviceId')) {
-  setTimeout(function(){
-    new fingerprint().get(function(deviceId) {
-    window.localStorage.setItem('deviceId', deviceId) // a hash, representing your device fingerprint
-  })},100)
+      new fingerprint().get(function(deviceId) {
+      Vue.http.headers.common['ext-deviceId'] = deviceId;
+  })
 }
 
 // 埋点辅助tk
 (function GetRequest() {   
   var url = window.location.href; //获取url中"?"符后的字串   
-  var theRequest = new Object();   
+  var theRequest = new Object();
   if (url.indexOf("?") != -1) {
      var index= url.indexOf('?')
      var str = url.substr(index+1); 
@@ -50,7 +49,7 @@ if (!window.localStorage.getItem('deviceId')) {
 
 Vue.http.headers.common['ext-deviceId'] = window.localStorage.getItem('deviceId');
 Vue.http.headers.common['from'] = 'read';
-// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjrgAVYrS2jWTFx5xqHDj2QQBH1uXBFMw3gMPxWGMYXWq992G8UBUUjtDPenDWhHayUB6cTjNCScruS3vsPcREhmMXmK2rxgixHsa31XHprvefiBtesVeVWfFpmzSsK8oSwS8P';
+// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWU3mytFEThAbVRbBsiG99J5L3AycHw9RQzaApFRydFrQ94M49MsJcX715G25172Pf1KBoFocRFwKY5dnB1hHqaxtZhKtX8vv65wehmLQumJMZem1Y7WHFSr4bvsC39NHLkGmgpSiZPB';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
