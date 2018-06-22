@@ -216,6 +216,17 @@ export default {
 
 <style lang="less">
 @import '../../less/variable';
+    // 海报页面
+    .sharePages{
+        .range{
+            .duration{
+                .ball{
+                    background: url('./../../views/poster/circular.png');
+                    background-size: 100%;  
+                }    
+            }    
+        }    
+    }
 	.range{
 		width:100%;
 		height:100%;
