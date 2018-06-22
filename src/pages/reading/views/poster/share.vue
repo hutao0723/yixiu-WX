@@ -198,7 +198,7 @@ export default {
                     height: 84/@rem;
                     width: 64/@rem;
                     display: inline-block;
-                    background-image: url('yun.dui88.com/logo.png');
+                    background-image: url('http://yun.dui88.com/logo.png');
                     background-size: 100% 100%;
                     vertical-align: middle
                 }
@@ -235,7 +235,7 @@ export default {
                     left: 38/@rem;
                     width: 72/@rem;
                     height: 58/@rem;
-                    background: url('yun.dui88.com/symbol.png') no-repeat;
+                    background: url('http://yun.dui88.com/symbol.png') no-repeat;
                     background-size: 100% 100%;
                 }
                 .userInfo{
