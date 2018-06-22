@@ -16,13 +16,28 @@
       <!-- <div class="home-bottom" @click="clickFun($event,tabActiveToggle,false)" :class="{bottom:bottomNavToggle}" v-show="tabActive"
         :monitor-log="getMonitor('0.0.0.0', '820.4.0')">去选课程</div> -->
       
-      
-      <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="tabActive&&readList.length>0&&payBtnShow" >
-          <p class="text-day">每天仅需<span>{{selectCourseObj.priceDay}}</span>元</p>
-          <p class="text-del">原价：{{selectCourseObj.costPrice}}</p>
-          <!-- <span class="text-red"><span class="discount">券后</span><span>￥{{selectCourseObj.preferPrice}}</span></span> -->          
-        <span @click="clickFun($event,orderPay)" class="btn-pay" :monitor-log="getMonitor('0.0.0.0', '819.1.0')"><span class="text-red">¥ {{selectCourseObj.presentPrice}}</span>立即购买</span>
+      <div class="coupon-box clearfix" v-show="selectCourseObj.preferPrice">
+        <div class="fl coupon-text">{{selectCourseObj.couponUsedDesc}}</div>
+        <div class="fr coupon-money"><span class="ft22">￥</span>{{selectCourseObj.couponPrice}}</div>
       </div>
+
+      <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="tabActive&&readList.length>0&&payBtnShow" >
+          <div v-if="selectCourseObj.preferPrice">
+            <p class="text-daily">券后￥{{selectCourseObj.preferPrice}}</p>
+            <p class="text-origin">￥{{selectCourseObj.costPrice}}</p>
+          </div>
+          <div v-else>
+            <p class="text-day">每天仅需<span>{{selectCourseObj.priceDay}}</span>元</p>
+            <p class="text-del">原价：{{selectCourseObj.costPrice}}</p> 
+          </div>
+        
+        <div  class="btn-daily coupon" v-if="selectCourseObj.preferPrice" @click="clickFun($event,orderPay)" :monitor-log="getMonitor('0.0.0.0', '819.1.0')">
+          <div class="word">立即购买</div>
+          <div class="favour">每天仅需{{selectCourseObj.dailyPrice}}元</div>
+        </div>
+        <span v-else @click="clickFun($event,orderPay)" class="btn-pay" :monitor-log="getMonitor('0.0.0.0', '819.1.0')"><span class="text-red">¥ {{selectCourseObj.presentPrice}}</span>立即购买</span> 
+      </div>
+
       <div id="maincontent" class="home-detail" ref="homemain" v-show="tabActive">
         <div class="home-content" :monitor-log="getMonitor('0.0.0.0', '820.2.0')">
           <img src="http://yun.dui88.com/youfen/images/detail20180614_01.jpg" alt="">
@@ -953,7 +968,7 @@
       .size(100, 100);
       position: fixed;
       right: 30/@rem;
-      bottom: 140/@rem;
+      bottom: 200/@rem;
       background: url('http://yun.dui88.com/youfen/images/read_btn1.png') no-repeat center;
       background-size: 100% 100%;
       z-index: 1000;
@@ -1016,6 +1031,7 @@
         }
       }
     }
+
     .home-btn {
       .text(24,
       100);
@@ -1051,6 +1067,22 @@
         color: #777;
         text-decoration: line-through;
       }
+      .text-daily{
+        .text(30,37);
+        .pos(0,14);
+        width: 310/@rem;
+        color: #FF4343;
+        text-align: right;
+      }
+      .text-origin{
+        .text(24,33);
+        .pos(0,54);
+        width: 310/@rem;
+        color: #FF4343;
+        text-align: right;
+        color: #777;
+        text-decoration: line-through;
+      }
       .text-red {
         font-size: 40/@rem;
         margin-left: 20/@rem;
@@ -1073,6 +1105,41 @@
         .text-red{
           .text(44,100);
           font-weight: bold;
+        }
+      }
+      .btn-daily {
+        .size(400,
+        100);
+        .text(30,
+        100);
+        position: absolute;
+        right: 0;
+        top: 0;
+        background: #FF4343;
+        color: #fff;
+        text-align: center;
+        box-shadow: 0px -1px 20px 0px rgba(0, 0, 0, 0.1);
+        z-index: 666;
+        .text-red{
+          .text(44,100);
+          font-weight: bold;
+        }
+        &.origin{
+          .size(360,100);
+          .text(40,100);
+        }
+        &.coupon{
+          .size(400,100);
+        }
+        .word{
+          height: 60/@rem;
+          line-height: 70/@rem;
+          font-size: 40/@rem;
+        }
+        .favour{
+          height: 40/@rem;
+          line-height: 35/@rem;
+          font-size: 20/@rem;
         }
       }
     }
@@ -2049,6 +2116,39 @@
     color: #FF2B39;
   }
 
+}
+
+.coupon-box{
+    position: fixed;
+    width: 720/@rem;
+    height: 100/@rem;
+    z-index:1000;
+    left: 15/@rem;
+    bottom: 115/@rem;
+    background-size: 100% 100%;
+    background-image: url("http://yun.duiba.com.cn/yoofans/images/201806/coupon-box.png");
+    background-repeat: no-repeat;
+  .coupon-text{
+    margin-left: 272/@rem;
+    color: #fff;
+    margin-top: 23/@rem;
+    height: 80/@rem;
+    font-size:26/@rem;
+    line-height: 80/@rem;
+  }
+  .coupon-money{
+    margin-right: 30/@rem;
+    color: #fff;
+    width:112/@rem;
+    text-align: center;
+    margin-top: 23/@rem;
+    height: 80/@rem;
+    font-size:30/@rem;
+    line-height: 80/@rem;
+  }
+  .ft22{
+    font-size: 22/@rem;
+  }
 }
 </style>
 
