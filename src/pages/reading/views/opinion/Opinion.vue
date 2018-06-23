@@ -136,7 +136,8 @@
     },
     methods: {
       shareFun(item){
-          
+        console.log('h5'+item.posterType) 
+        console.log(item)   
         if(item.posterType == "H5"){
            if(this.userId == item.userId){
                 this.$router.push({name:'share',query:{commentId:item.id,lastClock:0,isClock:1}})

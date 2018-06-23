@@ -2,7 +2,7 @@
   <div id="app">
     <audio id="myaudio" ref="audio" @timeupdate="musicTimeUpdate" @canplay="musicCanPlay" @playing="musicOnPlaying" @ended="musicEnded" @waiting="musicOnWaiting" @pause="musicOnPause" @loadstart="loadStart"></audio>
       <transition name="router-fade" mode="out-in">
-        <router-view :key="key"></router-view>
+        <router-view></router-view>
       </transition>
   </div>
 </template>
@@ -17,10 +17,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['readPlaying','readCurrentTime','readAudio']),
-    key() {
-        return this.$route.name !== undefined? this.$route.name + +new Date(): this.$route + +new Date()
-    }
+    ...mapState(['readPlaying','readCurrentTime','readAudio'])
   },
   watch: {
     readPlaying(val) {
