@@ -1,6 +1,6 @@
 <template>
     <div class="sharePages">
-        <div class="container">
+        <div class="shareContainer">
             <div class="bg">
                 <div class="logo">
                     <span class="icon"></span>
@@ -23,7 +23,7 @@
                     <div class="text">
                         <div class="viewpoint">
                             <span class="big">{{ viewPoint_frist }}</span>
-                            <span>{{info.content}}</span>
+                            <span v-html="info.content"></span>
                         </div>
                         <p class="author">{{ info.userNickname }}</p>
                         <p class="time">写于{{info.releaseTime}}&nbsp;&nbsp;{{info.releaseTimeLabel}}</p>
@@ -220,7 +220,7 @@ export default {
     }
     .sharePages {
         height: 100%;
-        .container{
+        .shareContainer{
             display: block;
             width: 10rem;
             height: 100%;
