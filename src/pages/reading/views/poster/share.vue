@@ -127,6 +127,7 @@ export default {
         // };
         // this.playSetting();
         // this.dataInitail();
+
     },
     methods:{
         togglePlay() {
@@ -228,15 +229,14 @@ export default {
 		top: 0;
 		bottom: 0;
         box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
         .container{
             display: block;
             width: 100%;
             height: 100%;
             position: relative;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            right: 0;
             overflow-x: hidden;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
