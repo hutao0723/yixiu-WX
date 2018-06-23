@@ -1,5 +1,6 @@
 <template>
-  <div class="opinion-main" ref="optionMain">
+  <div class="opinion-main test" ref="optionMain">
+      <p>文字显示</p>
     <bnav :dpm-b="823" :dcm-a="8002"></bnav>
     <div class="home-review">
       <div class="item" v-for="(item,index) in reviewList" :key="index">
