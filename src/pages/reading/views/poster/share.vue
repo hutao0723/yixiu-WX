@@ -53,7 +53,7 @@
                 </div>    
             </div>
         </div>
-        <div class="btn" @click='seeYixiu'>{{ info.userBuy || info.nowRead?"分享朋友圈":"了解一修读书" }}</div>
+        <div class="btn" @click='seeYixiu'>{{ info.nowRead?"分享朋友圈":"了解一修读书" }}</div>
         <shareBtn v-show="shareBtn" v-on:success="sharePage" />
     </div>
 </template>
@@ -196,7 +196,7 @@ export default {
         seeYixiu(){
             const _this = this;
             // 判断是否购买过书籍
-            if(_this.info.userBuy || _this.info.nowRead){
+            if(_this.info.nowRead){
                 _this.shareBtn = true;   
             }else{
                 _this.$router.push({path:'/'})
