@@ -85,7 +85,7 @@ export default {
     created(){
         this.getInfo();
         // _this.popup = _this.$route.query.lastClock * 1;
-		// _this.isSelf = _this.$route.query.isClock * 1;
+		console.log(this.$route.query.isClock)
     },
     methods:{
         togglePlay() {
@@ -333,13 +333,11 @@ export default {
                         width: 108/@rem;
                         position: relative;
                         overflow: hidden;
+                        background: #fff;
                         img{
                             display: block;
-                            width: 100%;
-                            position: absolute;
-                            left: 0;
-                            top: 50%;
-                            transform: translateY(-50%)
+                            height: 100%;
+                            margin: o auto;
                         }
                         .playIcon{
                             position: absolute;

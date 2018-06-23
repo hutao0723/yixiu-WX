@@ -136,6 +136,7 @@
     },
     methods: {
       shareFun(item){
+          console.log('ID'+this.userId,'点击'+item.userId)
         if(item.posterType == "H5"){
 
           this.$router.push({name:'share',query:{commentId:item.id,lastClock:0,isClock:1}})
