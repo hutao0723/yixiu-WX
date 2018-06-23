@@ -1,6 +1,6 @@
 <template>
     <div class="sharePages">
-        
+        <div class="container">
             <div class="bg">
                 <div class="logo">
                     <span class="icon"></span>
@@ -52,7 +52,7 @@
                     <p class="intro" v-if="info.introduction">{{info.introduction}}</p>
                 </div>    
             </div>
-        
+        </div>
         <div class="btn" @click='seeYixiu'>{{ info.userBuy || info.nowRead?"分享朋友圈":"了解一修读书" }}</div>
         <shareBtn v-show="shareBtn" v-on:success="sharePage" />
     </div>
@@ -86,9 +86,6 @@ export default {
     created(){
         this.getInfo();
 
-        // _this.popup = _this.$route.query.lastClock * 1;
-        // console.log(this.$route.query.isClock)
-        
         // this.info = {
         //     "id": 161,
         //     "userId": 100049014,
@@ -127,7 +124,6 @@ export default {
         // };
         // this.playSetting();
         // this.dataInitail();
-
     },
     methods:{
         togglePlay() {
@@ -223,29 +219,20 @@ export default {
         }
     }
     .sharePages {
-        right: 0;
-		position: absolute;
-		left: 0;
-		top: 0;
-		bottom: 0;
-        box-sizing: border-box;
-        width: 100%;
         height: 100%;
-        overflow-x: hidden;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        
-        background: #fff;
         .container{
             display: block;
-            width: 100%;
+            width: 10rem;
             height: 100%;
-            position: relative;
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
             overflow-x: hidden;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-            box-sizing: border-box;
             background: #fff;
+            z-index: 100;
         }
         .bg{
             width: 100%;
@@ -445,6 +432,7 @@ export default {
         }
         .btn{
             position: fixed;
+            z-index: 200;
             bottom: 0;
             left: 0;
             right: 0;
@@ -458,3 +446,4 @@ export default {
         }
     }
 </style>
+
