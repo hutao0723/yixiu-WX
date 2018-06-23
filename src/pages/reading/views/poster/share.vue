@@ -1,56 +1,57 @@
 <template>
     <div class="sharePages">
-        <div class="bg">
-            <div class="logo">
-                <span class="icon"></span>
-                <span class="name">一修读书</span>
-            </div>
-            <div class="content">
-                <div class="bookPic">
-                    <img :src="info.bookImageUrl">
+        <div class="container">
+            <div class="bg">
+                <div class="logo">
+                    <span class="icon"></span>
+                    <span class="name">一修读书</span>
                 </div>
-                <div class="symbol"></div>
-                <div class="userInfo">
-                    <div class="userIcon">
-                        <img :src="info.userImgUrl  ">
-                    </div>
-                    <div class="bookInfo">
-                        <p>今日读后感</p>
-                        <h5>{{ info.courseTitle }}</h5>
-                    </div>
-                </div>
-                <div class="text">
-                    <div class="viewpoint">
-                        <span class="big">{{ viewPoint_frist }}</span>
-                        <span>{{info.content}}</span>
-                    </div>
-                    <p class="author">{{ info.userNickname }}</p>
-                    <p class="time">写于{{info.releaseTime}}&nbsp;&nbsp;{{info.releaseTimeLabel}}</p>
-                </div>
-                <!--不是自己不渲染-->
-                <div class="insist" v-if="$route.query.isClock * 1">
-                    <span></span>这是我坚持读书的第{{info.clocks}}天
-                </div>
-            </div>
-            <div class="player">
-                <div class="audio" v-if="info.simpleAudition">
-                    <div class="play" @click="togglePlay">
+                <div class="content">
+                    <div class="bookPic">
                         <img :src="info.bookImageUrl">
-                        <div class="playIcon">
-                            <i class="iconfont" :class="{'icon-sanjiaoxing':!isPlaying,'icon-pause':isPlaying}"></i>
+                    </div>
+                    <div class="symbol"></div>
+                    <div class="userInfo">
+                        <div class="userIcon">
+                            <img :src="info.userImgUrl  ">
+                        </div>
+                        <div class="bookInfo">
+                            <p>今日读后感</p>
+                            <h5>{{ info.courseTitle }}</h5>
                         </div>
                     </div>
-                    <div class="playInfo">
-                        <p class="name">{{ playBookName }}</p>
-                        <div class="range">
-                            <range />   
+                    <div class="text">
+                        <div class="viewpoint">
+                            <span class="big">{{ viewPoint_frist }}</span>
+                            <span>{{info.content}}</span>
                         </div>
-                        <div class="time"><span>{{current}}</span><span>{{duration}}</span></div>
+                        <p class="author">{{ info.userNickname }}</p>
+                        <p class="time">写于{{info.releaseTime}}&nbsp;&nbsp;{{info.releaseTimeLabel}}</p>
+                    </div>
+                    <!--不是自己不渲染-->
+                    <div class="insist" v-if="$route.query.isClock * 1">
+                        <span></span>这是我坚持读书的第{{info.clocks}}天
                     </div>
                 </div>
-                <p class="intro" v-if="info.introduction">{{info.introduction}}</p>
+                <div class="player">
+                    <div class="audio" v-if="info.simpleAudition">
+                        <div class="play" @click="togglePlay">
+                            <img :src="info.bookImageUrl">
+                            <div class="playIcon">
+                                <i class="iconfont" :class="{'icon-sanjiaoxing':!isPlaying,'icon-pause':isPlaying}"></i>
+                            </div>
+                        </div>
+                        <div class="playInfo">
+                            <p class="name">{{ playBookName }}</p>
+                            <div class="range">
+                                <range />   
+                            </div>
+                            <div class="time"><span>{{current}}</span><span>{{duration}}</span></div>
+                        </div>
+                    </div>
+                    <p class="intro" v-if="info.introduction">{{info.introduction}}</p>
+                </div>    
             </div>
-            
         </div>
         <div class="btn" @click='seeYixiu'>{{info.userBuy?"分享朋友圈":"了解一修读书"}}</div>
         <shareBtn v-show="shareBtn" v-on:success="sharePage" />
@@ -84,8 +85,49 @@ export default {
     },
     created(){
         this.getInfo();
+
         // _this.popup = _this.$route.query.lastClock * 1;
-		// console.log(this.$route.query.isClock)
+        // console.log(this.$route.query.isClock)
+        
+        // this.info = {
+        //     "id": 161,
+        //     "userId": 100049014,
+        //     "userNickname": "露露😇嘎嘎",
+        //     "userImgUrl": "https://yun.dui88.com/youfen/images/4u0ale98b5.jpg",
+        //     "courseId": 210,
+        //     "courseTitle": "《解忧杂货铺》",
+        //     "courseSubTitle": "副标题《解忧杂货铺》",
+        //     "courseUrl": "https://yun.dui88.com/youfen/images/kcj9cj75xr.jpg",
+        //     "courseVerticalCover": "https://yun.dui88.com/youfen/images/kcj9cj75xr.jpg",
+        //     "courseLateralCover": "",
+        //     "readId": 39,
+        //     "readName": "模板测试阅读计划",
+        //     "readStageId": 67,
+        //     "readStageNum": 3,
+        //     "content": "测试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想",
+        //     "releaseTime": "2018-06-23 10:47:10",
+        //     "releaseTimeLabel": "上午",
+        //     "praiseCount": 1,
+        //     "userPraise": false,
+        //     "myself": 0,
+        //     "posterType": "H5",
+        //     "listens": 12,
+        //     "clocks": 0,
+        //     "books": 0,
+        //     "loginDays": 4,
+        //     "readQrcodeImgUrl": "https://yun.dui88.com/youfen/images/code_ewm.png",
+        //     "bookBgimgUrl": "https://yun.dui88.com/youfen/images/fqo7uezb7x.jpg",
+        //     "commentPosterType": "H5",
+        //     "introduction": "测试数据书籍简介",
+        //     "simpleAudition": "http://yun.youfen666.com/knowledge/1529720575185?auth_key=1529739376-0-0-d72bce20fe74b27ffdc7369c8168085c",
+        //     "shareContent": "用户昵称：露露😇嘎嘎，感想指数：8，感想时间：上午，阅读天数：4，书籍标题：模板测试书籍",
+        //     "userBuy": false,
+        //     "bookImageUrl": "https://yun.dui88.com/youfen/images/sf9ud364ot.png",
+        //     "nowRead": false
+        // };
+        // this.playSetting();
+        // this.dataInitail();
+
     },
     methods:{
         togglePlay() {
@@ -181,17 +223,29 @@ export default {
         }
     }
     .sharePages {
-        width: 750/@rem;
-        height: 100%;
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        overflow-x: hidden;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+        right: 0;
+		position: fixed;
+		left: 0;
+		top: 0;
+		bottom: 0;
         box-sizing: border-box;
-        background: #fff;
+        .container{
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            box-sizing: border-box;
+            background: #fff;
+        }
+
+        
         .bg{
             width: 100%;
             height: 482/@rem;
@@ -389,7 +443,7 @@ export default {
             }
         }
         .btn{
-            position: absolute;
+            position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
