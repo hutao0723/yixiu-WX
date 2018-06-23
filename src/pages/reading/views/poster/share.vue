@@ -1,6 +1,6 @@
 <template>
     <div class="sharePages">
-        <div class="container">
+        
             <div class="bg">
                 <div class="logo">
                     <span class="icon"></span>
@@ -52,7 +52,7 @@
                     <p class="intro" v-if="info.introduction">{{info.introduction}}</p>
                 </div>    
             </div>
-        </div>
+        
         <div class="btn" @click='seeYixiu'>{{ info.userBuy || info.nowRead?"分享朋友圈":"了解一修读书" }}</div>
         <shareBtn v-show="shareBtn" v-on:success="sharePage" />
     </div>
@@ -231,7 +231,11 @@ export default {
         box-sizing: border-box;
         width: 100%;
         height: 100%;
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        
+        background: #fff;
         .container{
             display: block;
             width: 100%;
