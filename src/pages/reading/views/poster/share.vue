@@ -95,10 +95,10 @@ export default {
         async getInfo() {
 			let _this = this;
 			let params = {
-                commentId: _this.$route.query.commentId
-                // commentId: 71
+                // commentId: _this.$route.query.commentId
+                commentId: 71
 			};
-			const url = `/comment/h5/share`;
+			const url = `/api/comment/h5/share`;
 			const res = await _this.$http.get(url, {
 				params
 			});
@@ -174,6 +174,12 @@ export default {
 
 <style lang="less">
     @import '../../less/variable';
+    .bg-image(@url) {
+        background-image: url('@{url}@2x.png');
+        @media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3){
+            background-image: url('@{url}@3x.png');
+        }
+    }
     .sharePages {
         width: 750/@rem;
         height: 100%;
@@ -198,9 +204,10 @@ export default {
                     height: 84/@rem;
                     width: 64/@rem;
                     display: inline-block;
-                    background-image: url('http://yun.dui88.com/logo.png');
+                    //background-image: url('http://yun.dui88.com/logo.png');
+                    .bg-image('http://yun.dui88.com/logo');
                     background-size: 100% 100%;
-                    vertical-align: middle
+                    vertical-align: middle;
                 }
                 .name{
                     font-size: 36/@rem;
@@ -235,7 +242,8 @@ export default {
                     left: 38/@rem;
                     width: 72/@rem;
                     height: 58/@rem;
-                    background: url('http://yun.dui88.com/symbol.png') no-repeat;
+                    // background: url('http://yun.dui88.com/symbol.png') no-repeat;
+                    .bg-image('http://yun.dui88.com/symbol');
                     background-size: 100% 100%;
                 }
                 .userInfo{
