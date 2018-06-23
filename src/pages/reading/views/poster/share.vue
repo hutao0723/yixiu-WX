@@ -84,49 +84,49 @@ export default {
         }
     },
     created(){
-        this.getInfo();
+        // this.getInfo();
 
         // _this.popup = _this.$route.query.lastClock * 1;
         // console.log(this.$route.query.isClock)
         
-        // this.info = {
-        //     "id": 161,
-        //     "userId": 100049014,
-        //     "userNickname": "露露😇嘎嘎",
-        //     "userImgUrl": "https://yun.dui88.com/youfen/images/4u0ale98b5.jpg",
-        //     "courseId": 210,
-        //     "courseTitle": "《解忧杂货铺》",
-        //     "courseSubTitle": "副标题《解忧杂货铺》",
-        //     "courseUrl": "https://yun.dui88.com/youfen/images/kcj9cj75xr.jpg",
-        //     "courseVerticalCover": "https://yun.dui88.com/youfen/images/kcj9cj75xr.jpg",
-        //     "courseLateralCover": "",
-        //     "readId": 39,
-        //     "readName": "模板测试阅读计划",
-        //     "readStageId": 67,
-        //     "readStageNum": 3,
-        //     "content": "测试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想",
-        //     "releaseTime": "2018-06-23 10:47:10",
-        //     "releaseTimeLabel": "上午",
-        //     "praiseCount": 1,
-        //     "userPraise": false,
-        //     "myself": 0,
-        //     "posterType": "H5",
-        //     "listens": 12,
-        //     "clocks": 0,
-        //     "books": 0,
-        //     "loginDays": 4,
-        //     "readQrcodeImgUrl": "https://yun.dui88.com/youfen/images/code_ewm.png",
-        //     "bookBgimgUrl": "https://yun.dui88.com/youfen/images/fqo7uezb7x.jpg",
-        //     "commentPosterType": "H5",
-        //     "introduction": "测试数据书籍简介",
-        //     "simpleAudition": "http://yun.youfen666.com/knowledge/1529720575185?auth_key=1529739376-0-0-d72bce20fe74b27ffdc7369c8168085c",
-        //     "shareContent": "用户昵称：露露😇嘎嘎，感想指数：8，感想时间：上午，阅读天数：4，书籍标题：模板测试书籍",
-        //     "userBuy": false,
-        //     "bookImageUrl": "https://yun.dui88.com/youfen/images/sf9ud364ot.png",
-        //     "nowRead": false
-        // };
-        // this.playSetting();
-        // this.dataInitail();
+        this.info = {
+            "id": 161,
+            "userId": 100049014,
+            "userNickname": "露露😇嘎嘎",
+            "userImgUrl": "https://yun.dui88.com/youfen/images/4u0ale98b5.jpg",
+            "courseId": 210,
+            "courseTitle": "《解忧杂货铺》",
+            "courseSubTitle": "副标题《解忧杂货铺》",
+            "courseUrl": "https://yun.dui88.com/youfen/images/kcj9cj75xr.jpg",
+            "courseVerticalCover": "https://yun.dui88.com/youfen/images/kcj9cj75xr.jpg",
+            "courseLateralCover": "",
+            "readId": 39,
+            "readName": "模板测试阅读计划",
+            "readStageId": 67,
+            "readStageNum": 3,
+            "content": "测试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想",
+            "releaseTime": "2018-06-23 10:47:10",
+            "releaseTimeLabel": "上午",
+            "praiseCount": 1,
+            "userPraise": false,
+            "myself": 0,
+            "posterType": "H5",
+            "listens": 12,
+            "clocks": 0,
+            "books": 0,
+            "loginDays": 4,
+            "readQrcodeImgUrl": "https://yun.dui88.com/youfen/images/code_ewm.png",
+            "bookBgimgUrl": "https://yun.dui88.com/youfen/images/fqo7uezb7x.jpg",
+            "commentPosterType": "H5",
+            "introduction": "测试数据书籍简介",
+            "simpleAudition": "http://yun.youfen666.com/knowledge/1529720575185?auth_key=1529739376-0-0-d72bce20fe74b27ffdc7369c8168085c",
+            "shareContent": "用户昵称：露露😇嘎嘎，感想指数：8，感想时间：上午，阅读天数：4，书籍标题：模板测试书籍",
+            "userBuy": false,
+            "bookImageUrl": "https://yun.dui88.com/youfen/images/sf9ud364ot.png",
+            "nowRead": false
+        };
+        this.playSetting();
+        this.dataInitail();
 
     },
     methods:{
@@ -224,7 +224,7 @@ export default {
     }
     .sharePages {
         right: 0;
-		position: fixed;
+		position: absolute;
 		left: 0;
 		top: 0;
 		bottom: 0;
