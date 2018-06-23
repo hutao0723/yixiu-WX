@@ -216,7 +216,6 @@ export default {
       this.$set(row,'expand', this.expandStatus[row.id])
     },
     goPoster(item){
-        console.log(item.posterType)
       if(item.posterType == "H5"){
         this.$router.push({name:'share',query:{commentId:item.id,lastClock:0,isClock:1}})
       }else{

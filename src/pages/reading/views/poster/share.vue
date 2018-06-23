@@ -95,8 +95,8 @@ export default {
         async getInfo() {
 			let _this = this;
 			let params = {
-                // commentId: _this.$route.query.commentId
-                commentId: 71
+                commentId: _this.$route.query.commentId
+                // commentId: 71
 			};
 			const url = `/api/comment/h5/share`;
 			const res = await _this.$http.get(url, {
