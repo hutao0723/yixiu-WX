@@ -136,16 +136,21 @@
     },
     methods: {
       shareFun(item){
-          console.log('ID'+this.userId,'点击'+item.userId)
+          
         if(item.posterType == "H5"){
+           if(this.userId == item.userId){
+                this.$router.push({name:'share',query:{commentId:item.id,lastClock:0,isClock:1}})
 
-          this.$router.push({name:'share',query:{commentId:item.id,lastClock:0,isClock:1}})
+            }else{
+                this.$router.push({name:'share',query:{commentId:item.id,lastClock:0,isClock:0}})
+
+            }
         }else{
           if(this.userId == item.userId){
-          this.$router.push({name:'poster',query:{commentId:item.id,lastClock:0,isClock:1}})
+            this.$router.push({name:'poster',query:{commentId:item.id,lastClock:0,isClock:1}})
 
           }else{
-          this.$router.push({name:'poster',query:{commentId:item.id,lastClock:0,isClock:0}})
+            this.$router.push({name:'poster',query:{commentId:item.id,lastClock:0,isClock:0}})
 
           }
         }
