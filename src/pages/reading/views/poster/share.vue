@@ -52,7 +52,7 @@
             </div>
             
         </div>
-        <div class="btn" @click='seeYixiu'>了解一修读书</div>
+        <div class="btn" @click='seeYixiu'>{{info.userBuy?"分享朋友圈":"了解一修读书"}}</div>
         <shareBtn v-show="shareBtn" v-on:success="sharePage" />
     </div>
 </template>
@@ -98,7 +98,7 @@ export default {
                 commentId: _this.$route.query.commentId
                 // commentId: 71
 			};
-			const url = `/api/comment/h5/share`;
+			const url = `/comment/h5/share`;
 			const res = await _this.$http.get(url, {
 				params
 			});
@@ -161,7 +161,7 @@ export default {
             if(_this.info.userBuy){
                 _this.shareBtn = true;   
             }else{
-                 _this.$router.push({path:'/'})
+                _this.$router.push({path:'/'})
             }
         },
         sharePage(){
