@@ -136,18 +136,20 @@
     },
     methods: {
       shareFun(item){
-        console.log(item.posterType)
+        console.log('事件执行没有')
+        console.log('类型'+item.posterType)
         if(item.posterType == "H5"){
 
           this.$router.push({name:'share',query:{commentId:item.id,lastClock:0,isClock:1}})
         }else{
-          if(this.userId == item.userId){
-          this.$router.push({name:'poster',query:{commentId:item.id,lastClock:0,isClock:1}})
+            this.$router.push({name:'share',query:{commentId:item.id,lastClock:0,isClock:1}})
+        //   if(this.userId == item.userId){
+        //   this.$router.push({name:'poster',query:{commentId:item.id,lastClock:0,isClock:1}})
 
-          }else{
-          this.$router.push({name:'poster',query:{commentId:item.id,lastClock:0,isClock:0}})
+        //   }else{
+        //   this.$router.push({name:'poster',query:{commentId:item.id,lastClock:0,isClock:0}})
 
-          }
+          //}
         }
       },
       // 获取monitor
