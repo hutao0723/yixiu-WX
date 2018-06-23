@@ -153,7 +153,7 @@ export default {
             const _this = this;
             // 播放书名转换
             if(_this.info.courseTitle.length>15){
-                _this.playBookName = _this.info.courseSubTitle.substring(0,14)
+                _this.playBookName = _this.info.courseTitle.substring(0,14)
                 _this.playBookName = _this.playBookName +'...》'    
             }else{
                 _this.playBookName = _this.info.courseTitle
