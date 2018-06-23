@@ -16,7 +16,7 @@
                     </div>
                     <div class="bookInfo">
                         <p>今日读后感</p>
-                        <h5>{{ info.courseSubTitle }}</h5>
+                        <h5>{{ info.courseTitle }}</h5>
                     </div>
                 </div>
                 <div class="text">
@@ -114,11 +114,11 @@ export default {
         dataInitail(){
             const _this = this;
             // 播放书名转换
-            if(_this.info.courseSubTitle.length>15){
+            if(_this.info.courseTitle.length>15){
                 _this.playBookName = _this.info.courseSubTitle.substring(0,14)
                 _this.playBookName = _this.playBookName +'...》'    
             }else{
-                _this.playBookName = _this.info.courseSubTitle.length    
+                _this.playBookName = _this.info.courseTitle
             }
                         
             // 时间格式转换
@@ -332,6 +332,7 @@ export default {
                         height: 108/@rem;
                         width: 108/@rem;
                         position: relative;
+                        overflow: hidden;
                         img{
                             display: block;
                             width: 100%;
