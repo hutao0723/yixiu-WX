@@ -33,7 +33,7 @@
                 </div>
             </div>
             <div class="player">
-                <div class="audio">
+                <div class="audio" v-if="info.simpleAudition">
                     <div class="play" @click="togglePlay">
                         <img :src="info.bookImageUrl">
                         <div class="playIcon">
@@ -48,7 +48,7 @@
                         <div class="time"><span>{{current}}</span><span>{{duration}}</span></div>
                     </div>
                 </div>
-                <p class="intro">{{info.introduction}}</p>
+                <p class="intro" v-if="info.introduction">{{info.introduction}}</p>
             </div>
             
         </div>
@@ -85,7 +85,7 @@ export default {
     created(){
         this.getInfo();
         // _this.popup = _this.$route.query.lastClock * 1;
-		console.log(this.$route.query.isClock)
+		// console.log(this.$route.query.isClock)
     },
     methods:{
         togglePlay() {
@@ -337,7 +337,7 @@ export default {
                         img{
                             display: block;
                             height: 100%;
-                            margin: o auto;
+                            margin: 0 auto;
                         }
                         .playIcon{
                             position: absolute;
@@ -389,7 +389,7 @@ export default {
             }
         }
         .btn{
-            position: fixed;
+            position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
