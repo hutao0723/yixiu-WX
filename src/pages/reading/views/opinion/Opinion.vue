@@ -1,6 +1,5 @@
 <template>
-  <div class="opinion-main test" ref="optionMain">
-      <p>文字显示</p>
+  <div class="opinion-main" ref="optionMain">
     <bnav :dpm-b="823" :dcm-a="8002"></bnav>
     <div class="home-review">
       <div class="item" v-for="(item,index) in reviewList" :key="index">
@@ -24,7 +23,7 @@
             <i class="iconfont icon-dianzan fr" v-show="!item.userPraise"></i>
             <i class="iconfont icon-heart fr" :style="{color:'red'}" v-show="item.userPraise"></i>
           </p>
-          <i class="iconfont icon-share fr" :monitor-log="getMonitor('8002.'+ item.courseId +'.0.0', '820.3.1-'+index)" @click.native="clickFun($event,shareFun,item)"></i>
+          <i class="iconfont icon-share fr" :monitor-log="getMonitor('8002.'+ item.courseId +'.0.0', '820.3.1-'+index)" @click="clickFun($event,shareFun,item)"></i>
           <span class="fl">{{item.releaseTime | timeTransition}}</span>
         </div>
       </div>
