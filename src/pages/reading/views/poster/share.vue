@@ -57,157 +57,182 @@
         <shareBtn v-show="shareBtn" v-on:success="sharePage" />
     </div>
 </template>
+
 <script>
-import range from '../../components/basic/Range'
-import shareBtn from '../../components/basic/Share'
-import { mapState } from 'vuex'
-import store from '../../vuex/store';
+    import range from '../../components/basic/Range'
+    import shareBtn from '../../components/basic/Share'
+    import { mapState } from 'vuex'
+    import store from '../../vuex/store';
 
-export default {
-    name:'share',
-    data(){
-        return{
-            info:'',
-            viewPoint_frist:'',
-            isPlaying:false,
-            playBookName:'',
-            shareBtn:false,
-        }
-    },
-    computed: {
-        ...mapState(['readAudio','readPlaying','readCurrentTime','readDuration','showCardModal','readLoadStart']),
-        current() {
-            return this.timerFomart(this.readCurrentTime)
+    export default {
+        name:'share',
+        data(){
+            return{
+                info:'',
+                viewPoint_frist:'',
+                isPlaying:false,
+                playBookName:'',
+                shareBtn:false,
+            }
         },
-        duration() {
-            return this.timerFomart(this.readDuration)
-        }
-    },
-    created(){
-        this.getInfo();
-
-        // this.info = {
-        //     "id": 161,
-        //     "userId": 100049014,
-        //     "userNickname": "露露😇嘎嘎",
-        //     "userImgUrl": "https://yun.dui88.com/youfen/images/4u0ale98b5.jpg",
-        //     "courseId": 210,
-        //     "courseTitle": "《解忧杂货铺》",
-        //     "courseSubTitle": "副标题《解忧杂货铺》",
-        //     "courseUrl": "https://yun.dui88.com/youfen/images/kcj9cj75xr.jpg",
-        //     "courseVerticalCover": "https://yun.dui88.com/youfen/images/kcj9cj75xr.jpg",
-        //     "courseLateralCover": "",
-        //     "readId": 39,
-        //     "readName": "模板测试阅读计划",
-        //     "readStageId": 67,
-        //     "readStageNum": 3,
-        //     "content": "测试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想",
-        //     "releaseTime": "2018-06-23 10:47:10",
-        //     "releaseTimeLabel": "上午",
-        //     "praiseCount": 1,
-        //     "userPraise": false,
-        //     "myself": 0,
-        //     "posterType": "H5",
-        //     "listens": 12,
-        //     "clocks": 0,
-        //     "books": 0,
-        //     "loginDays": 4,
-        //     "readQrcodeImgUrl": "https://yun.dui88.com/youfen/images/code_ewm.png",
-        //     "bookBgimgUrl": "https://yun.dui88.com/youfen/images/fqo7uezb7x.jpg",
-        //     "commentPosterType": "H5",
-        //     "introduction": "测试数据书籍简介",
-        //     "simpleAudition": "http://yun.youfen666.com/knowledge/1529720575185?auth_key=1529739376-0-0-d72bce20fe74b27ffdc7369c8168085c",
-        //     "shareContent": "用户昵称：露露😇嘎嘎，感想指数：8，感想时间：上午，阅读天数：4，书籍标题：模板测试书籍",
-        //     "userBuy": false,
-        //     "bookImageUrl": "https://yun.dui88.com/youfen/images/sf9ud364ot.png",
-        //     "nowRead": false
-        // };
-        // this.playSetting();
-        // this.dataInitail();
-    },
-    methods:{
-        togglePlay() {
-            this.isPlaying = !this.isPlaying;
-            store.commit('togglePlay');
+        computed: {
+            ...mapState(['readAudio','readPlaying','readCurrentTime','readDuration','showCardModal','readLoadStart']),
+            current() {
+                return this.timerFomart(this.readCurrentTime)
+            },
+            duration() {
+                return this.timerFomart(this.readDuration)
+            }
         },
-        async getInfo() {
-			let _this = this;
-			let params = {
-                commentId: _this.$route.query.commentId
-                // commentId: 71
-			};
-			const url = `/comment/h5/share`;
-			const res = await _this.$http.get(url, {
-				params
-			});
-			if (res.data.success) {
-                _this.info = res.data.data;
+        async created(){
+            let _this = this;
+            let pageInfo = await this.getInfo();
 
+            if (pageInfo.success) {
+                _this.info = pageInfo.data;
                 _this.playSetting();
                 _this.dataInitail();
-			} else {
-				console.log("获取数据失败");
-			}
-        },
-        dataInitail(){
-            const _this = this;
-            // 播放书名转换
-            if(_this.info.courseTitle.length>15){
-                _this.playBookName = _this.info.courseTitle.substring(0,14)
-                _this.playBookName = _this.playBookName +'...》'    
-            }else{
-                _this.playBookName = _this.info.courseTitle
+            } else {
+                console.log("获取数据失败");
             }
-                        
-            // 时间格式转换
-            let createdTime = _this.info.releaseTime.replace(/-/g, "/");
-            createdTime = new Date(createdTime);
-            let year = createdTime.getFullYear();
-            let month = createdTime.getMonth() + 1;
-            let day = createdTime.getDate();
-            _this.info.releaseTime = year +"." +month +"." +day;
+
+            let userInfo=await _this.getUserInfo();
+            let msg = {
+                title: '每天10分钟，轻松阅读，日有所得', // 分享标题
+                desc: pageInfo.data.shareContent, // 分享描述
+                link: window.location.href, // 分享链接 默认以当前链接
+                imgUrl: pageInfo.data.bookImageUrl, // 分享图标
+            }
+            _this.wxShare(userInfo.data.userId,msg);
+
+
+            // this.info = {
+            //     "id": 161,
+            //     "userId": 100049014,
+            //     "userNickname": "露露😇嘎嘎",
+            //     "userImgUrl": "https://yun.dui88.com/youfen/images/4u0ale98b5.jpg",
+            //     "courseId": 210,
+            //     "courseTitle": "《解忧杂货铺》",
+            //     "courseSubTitle": "副标题《解忧杂货铺》",
+            //     "courseUrl": "https://yun.dui88.com/youfen/images/kcj9cj75xr.jpg",
+            //     "courseVerticalCover": "https://yun.dui88.com/youfen/images/kcj9cj75xr.jpg",
+            //     "courseLateralCover": "",
+            //     "readId": 39,
+            //     "readName": "模板测试阅读计划",
+            //     "readStageId": 67,
+            //     "readStageNum": 3,
+            //     "content": "测试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想",
+            //     "releaseTime": "2018-06-23 10:47:10",
+            //     "releaseTimeLabel": "上午",
+            //     "praiseCount": 1,
+            //     "userPraise": false,
+            //     "myself": 0,
+            //     "posterType": "H5",
+            //     "listens": 12,
+            //     "clocks": 0,
+            //     "books": 0,
+            //     "loginDays": 4,
+            //     "readQrcodeImgUrl": "https://yun.dui88.com/youfen/images/code_ewm.png",
+            //     "bookBgimgUrl": "https://yun.dui88.com/youfen/images/fqo7uezb7x.jpg",
+            //     "commentPosterType": "H5",
+            //     "introduction": "测试数据书籍简介",
+            //     "simpleAudition": "http://yun.youfen666.com/knowledge/1529720575185?auth_key=1529739376-0-0-d72bce20fe74b27ffdc7369c8168085c",
+            //     "shareContent": "用户昵称：露露😇嘎嘎，感想指数：8，感想时间：上午，阅读天数：4，书籍标题：模板测试书籍",
+            //     "userBuy": false,
+            //     "bookImageUrl": "https://yun.dui88.com/youfen/images/sf9ud364ot.png",
+            //     "nowRead": false
+            // };
+            // this.playSetting();
+            // this.dataInitail();
+        },
+        mounted(){
             
-            // 观点字符串转换
-            let viewPoint = _this.info.content.split('');
-            _this.viewPoint_frist = viewPoint.shift();
-            _this.info.content = viewPoint.join('') 
         },
-        playSetting(){
-            const _this = this;
-            let readAudio = {};
-            readAudio.isPrev = false;
-            readAudio.isNext = false;
-            // 获取播放地址
-            readAudio.src = _this.info.simpleAudition;
-            // 更新vx数据
-            store.commit({ type: 'setAudio', readAudio: readAudio });
-            // 设置播放元素数据
-            store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
-            // store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
-            // 这里，很迷，触发播放
-            store.getters.getAudioElement.load()
-        },
-        timerFomart (time) {
-            if (isNaN(time)) return '00:00';
-            let mm = time / 60 > 9 ? Math.floor(time / 60) : '0' + Math.floor(time / 60);
-            let ss = time % 60 > 9 ? Math.floor(time % 60) : '0' + Math.floor(time % 60);
-            return mm + ':' + ss;
-        },
-        seeYixiu(){
-            const _this = this;
-            // 判断是否购买过书籍
-            if(_this.info.nowRead){
-                _this.shareBtn = true;   
-            }else{
-                _this.$router.push({path:'/'})
+        methods:{
+            togglePlay() {
+                this.isPlaying = !this.isPlaying;
+                store.commit('togglePlay');
+            },
+            async getUserInfo() {
+                let self = this;
+                let params = {};
+                const url = '/user/read/state';
+                const res = await this.$http.get(url, {
+                    params
+                });
+                return res.data;
+            },
+            async getInfo() {
+                let _this = this;
+                let params = {
+                    // commentId: _this.$route.query.commentId
+                    commentId: 71
+                };
+                const url = `/comment/h5/share`;
+                const res = await _this.$http.get(url, {
+                    params
+                });
+                return res.data;
+            },
+            dataInitail(){
+                const _this = this;
+                // 播放书名转换
+                if(_this.info.courseTitle.length>15){
+                    _this.playBookName = _this.info.courseTitle.substring(0,14)
+                    _this.playBookName = _this.playBookName +'...》'    
+                }else{
+                    _this.playBookName = _this.info.courseTitle
+                }
+                            
+                // 时间格式转换
+                let createdTime = _this.info.releaseTime.replace(/-/g, "/");
+                createdTime = new Date(createdTime);
+                let year = createdTime.getFullYear();
+                let month = createdTime.getMonth() + 1;
+                let day = createdTime.getDate();
+                _this.info.releaseTime = year +"." +month +"." +day;
+                
+                // 观点字符串转换
+                let viewPoint = _this.info.content.split('');
+                _this.viewPoint_frist = viewPoint.shift();
+                _this.info.content = viewPoint.join('') 
+            },
+            playSetting(){
+                const _this = this;
+                let readAudio = {};
+                readAudio.isPrev = false;
+                readAudio.isNext = false;
+                // 获取播放地址
+                readAudio.src = _this.info.simpleAudition;
+                // 更新vx数据
+                store.commit({ type: 'setAudio', readAudio: readAudio });
+                // 设置播放元素数据
+                store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
+                // store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
+                // 这里，很迷，触发播放
+                store.getters.getAudioElement.load()
+            },
+            timerFomart (time) {
+                if (isNaN(time)) return '00:00';
+                let mm = time / 60 > 9 ? Math.floor(time / 60) : '0' + Math.floor(time / 60);
+                let ss = time % 60 > 9 ? Math.floor(time % 60) : '0' + Math.floor(time % 60);
+                return mm + ':' + ss;
+            },
+            seeYixiu(){
+                const _this = this;
+                // 判断是否购买过书籍
+                if(_this.info.nowRead){
+                    _this.shareBtn = true;   
+                }else{
+                    _this.$router.push({path:'/'})
+                }
+            },
+            sharePage(){
+                this.shareBtn = false;
             }
         },
-        sharePage(){
-            this.shareBtn = false;
-        }
-    },
-    components:{ range,shareBtn }
-}
+        components:{ range,shareBtn }
+    }
 </script>
 
 <style lang="less">
