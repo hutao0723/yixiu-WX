@@ -111,9 +111,11 @@
                 link: _this.delUrl(window.location.href,'lastClock'), // 分享链接 默认以当前链接
                 imgUrl: pageInfo.data.bookImageUrl, // 分享图标
             }
-            if(pageInfo.data.readState>=0){
+            console.log('状态'+readState)
+            if(pageInfo.data.readState*1>=0){
                 msg.title = info.shareConetent   
             }
+            console.log('title'+msg.title)
             _this.wxShare(userInfo.data.userId,msg);
         },
         mounted(){
