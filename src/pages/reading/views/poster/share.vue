@@ -50,7 +50,7 @@
                             <div class="time"><span>{{current}}</span><span>{{duration}}</span></div>
                         </div>
                     </div>
-                    <p class="intro" v-if="info.introduction">{{info.introduction}}</p>
+                    <!-- <p class="intro" v-if="info.introduction">{{info.introduction}}</p> -->
                 </div>    
             </div>
         </div>
@@ -420,8 +420,8 @@
             }
             .player{
                 width: 626/@rem;
-                margin: 110/@rem auto 0;
-                padding-bottom: 100/@rem;
+                margin: 90/@rem auto 0;
+                padding-bottom: 150/@rem;
                 .audio{
                     position: relative;
                     box-sizing: border-box;
@@ -504,7 +504,7 @@
                     color: #4D4D4D;
                     line-height: 42/@rem;
                     padding-top: 46/@rem;
-                    padding-bottom: 80/@rem;
+                    
                     letter-spacing: 0/@rem;
                 }
             }
