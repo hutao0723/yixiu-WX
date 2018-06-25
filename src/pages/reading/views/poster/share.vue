@@ -35,7 +35,7 @@
                 </div>
                 <div class="player">
                     <div class="audio" v-if="info.simpleAudition">
-                        <div class="play" @click="clickFun($event,togglePlay)" :monitor-log="getMonitor('0.0.0.0', '818.1.0')">
+                        <div class="play" @click="clickFun($event,togglePlay)" :monitor-log="getMonitor('8002.booKID.0.0', '818.1.0')">
                             <img :src="info.bookImageUrl">
                             <div class="playIcon">
                                 <i class="iconfont" :class="{'icon-play':!isPlaying,'icon-pause':isPlaying}"></i>
@@ -53,8 +53,8 @@
                 </div>    
             </div>
         </div>
-        <div class="btn" v-if='info.nowRead' @click="clickFun($event,shareFriend)" :monitor-log="getMonitor('0.0.0.0', '818.2.1')">分享朋友圈</div>
-        <div class="btn" v-if='!info.nowRead' @click="clickFun($event,goToIndex)" :monitor-log="getMonitor('0.0.0.0', '818.2.2')">了解一修读书</div>
+        <div class="btn" v-if='info.nowRead' @click="clickFun($event,shareFriend)" :monitor-log="getMonitor('8002.booKID.0.0', '818.2.1')">分享朋友圈</div>
+        <div class="btn" v-if='!info.nowRead' @click="clickFun($event,goToIndex)" :monitor-log="getMonitor('8002.booKID.0.0', '818.2.2')">了解一修读书</div>
         <shareBtn v-show="shareBtn" v-on:success="closeShare" />
     </div>
 </template>
@@ -75,6 +75,7 @@
                 isPlaying:false,
                 playBookName:'',
                 shareBtn:false,
+                booKID:'',
             }
         },
         computed: {
@@ -100,6 +101,10 @@
             } else {
                 console.log("获取数据失败");
             }
+
+            // 书籍ID
+            _this.booKID = info.readBookId;
+
             // 请求用户信息
             let userInfo=await _this.getUserInfo();
             // 配置分享链接参数
