@@ -95,8 +95,7 @@ Vue.prototype.wxShare = function (id,obj) {
     imgUrl: 'http://yun.dui88.com/youfen/images/read_share.png', // 分享图标
   }
   if(obj){
-    msg = obj;  
-    console.log('数据',obj)  
+    msg = obj;   
   }
   const urlData = `/wechat/getJsapiSignature`;
   const url = location.href.split("#")[0];
