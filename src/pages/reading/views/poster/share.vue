@@ -98,6 +98,7 @@
 
             let userInfo=await _this.getUserInfo();
             // 配置分享链接参数
+            console.log(delUrl(window.location.href,'lastClock'))
             let msg = {
                 title: '每天10分钟，轻松阅读，日有所得', // 分享标题
                 desc: pageInfo.data.content, // 分享描述
