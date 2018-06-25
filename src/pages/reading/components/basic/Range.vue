@@ -217,11 +217,17 @@ export default {
 <style lang="less">
 @import '../../less/variable';
     // 海报页面
+    .bg-image(@url) {
+        background-image: url('@{url}@2x.png');
+        @media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3){
+            background-image: url('@{url}@3x.png');
+        }
+    }
     .sharePages{
         .range{
             .duration{
                 .ball{
-                    background: url('http://yun.dui88.com/circular.png');
+                    .bg-image('http://yun.dui88.com/circular');
                     background-size: 100%;  
                 } 
                 .currentProgress{

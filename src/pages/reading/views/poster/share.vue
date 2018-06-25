@@ -121,7 +121,7 @@
             async getUserInfo() {
                 let self = this;
                 let params = {};
-                const url = '/api/user/read/state';
+                const url = '/user/read/state';
                 const res = await this.$http.get(url, {
                     params
                 });
@@ -130,10 +130,10 @@
             async getInfo() {
                 let _this = this;
                 let params = {
-                    // commentId: _this.$route.query.commentId
-                    commentId: 71
+                    commentId: _this.$route.query.commentId
+                    //commentId: 71
                 };
-                const url = `/api/comment/h5/share`;
+                const url = `/comment/h5/share`;
                 const res = await _this.$http.get(url, {
                     params
                 });
@@ -211,6 +211,7 @@
     .sharePages {
         height: 100%;
         font-family:"SimSun";
+        letter-spacing:2/@rem;
         .shareContainer{
             display: block;
             width: 10rem;
@@ -315,7 +316,7 @@
                 }
                 .text{
                     padding: 0 56/@rem 56/@rem;
-                    // letter-spacing:25;
+                    letter-spacing:4/@rem;
                     .viewpoint{
                         font-size: 0;
                         color: #444;
