@@ -33,7 +33,7 @@
         
         <div  class="btn-daily coupon" v-if="selectCourseObj.preferPrice" @click="clickFun($event,orderPay)" :monitor-log="getMonitor('0.0.0.0', '819.1.0')">
           <div class="word">立即购买</div>
-          <div class="favour">每天仅需{{selectCourseObj.dailyPrice}}元</div>
+          <div class="favour">每天仅需{{selectCourseObj.dailyPrice}}</div>
         </div>
         <span v-else @click="clickFun($event,orderPay)" class="btn-pay" :monitor-log="getMonitor('0.0.0.0', '819.1.0')"><span class="text-red">¥ {{selectCourseObj.presentPrice}}</span>立即购买</span> 
       </div>
@@ -306,18 +306,18 @@
       }
       let refreshCookie = true;
 
-      // // 防止cookie丢失
-      // if (window.location.href.indexOf('afterLogin') == -1) {
-      //   let res = await this.$http.get('/baseLogin', {
-      //     params: {
-      //       dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
-      //     }
-      //   })
-      //   if (res.data.success && res.data.data) {
-      //     refreshCookie = false;
-      //     location.replace(res.data.data);
-      //   }
-      // }
+      // 防止cookie丢失
+      if (window.location.href.indexOf('afterLogin') == -1) {
+        let res = await this.$http.get('/baseLogin', {
+          params: {
+            dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
+          }
+        })
+        if (res.data.success && res.data.data) {
+          refreshCookie = false;
+          location.replace(res.data.data);
+        }
+      }
 
       if (refreshCookie) {
         this.setTitle('一修读书')
@@ -756,22 +756,27 @@
             if (res.data.data[0].purchased) {
               this.payBtnShow = false;
             } else {
+
               // 根据传的id 判断是否定位到课程,定位到实际优惠券的课程
               let planId = this.$route.query.planId
               let couponId = this.$route.query.couponId
-              if(planId && couponId){
-                this.selectCourseId = planId
-                this.getSelectById(planId, couponId) 
-                
-              }
+              let activityId = this.$route.query.activityId
+
               // 如果传过来的planId不存在，并且优惠券定向Id不存在则选择列表中的第一个
-              if(!planId && !couponId){
-                this.selectCourseId = res.data.data[0].readId
-                // 获取定位到第一个
-                this.selectCourseObj = res.data.data[0];
-                if(res.data.data[0].couponId){
+              this.selectCourseId = res.data.data[0].readId
+                // 获取定位到第一个优惠券的id,
+              if(res.data.data[0].couponId){
+                //如果活动id不存在，则返回的优惠券id替换全局id
+                if(!activityId){
                   this.couponId = res.data.data[0].couponId
                 }
+              }
+              this.selectCourseObj = res.data.data[0];
+
+              if(planId && couponId){
+                this.couponId = couponId
+                this.selectCourseId = planId
+                this.getSelectById(planId, couponId) 
               }
             }
           }
@@ -889,6 +894,7 @@
               // 优惠券关联的课程Id
 
               this.couponCourseId = resp.awards[0].items[0].itemId;
+
               this.couponId = resp.awards[0].couponId
             }
           } else {
@@ -899,6 +905,7 @@
 
       // 关闭优惠券弹框
       closeCouponDialog() {
+        console.log("关闭弹框")
         // 如果优惠券匹配的课程id是当前页展示的id，则替换原来的价格，否则则关闭弹框
         if(this.couponCourseId == this.selectCourseId){
           this.selectCourseId = this.couponCourseId
@@ -913,7 +920,6 @@
           readId : readId,
           couponId: couponId
         }
-        console.log(params)
         this.$http.get(url, {params}).then((res) => {
           let objs = res.data
           if (objs.success) {
@@ -924,6 +930,8 @@
                   item.couponId = objs.data.couponId
                   item.preferPrice = objs.data.preferPrice
                   item.couponUsedDesc = objs.data.couponUsedDesc
+                  item.dailyPrice = objs.data.dailyPrice
+                  item.couponPrice= objs.data.couponPrice
                   // 改变列表中原来的最优值
                   this.selectCourseObj = item
                   this.couponId = couponId
@@ -2064,7 +2072,7 @@
     margin:100/@rem auto 0;
     height: 170/@rem;
     background-size: 100%;
-    background-image: url('https://yun.dui88.com/yoofans/images/201806/box.png');
+    background-image: url('https://yun.duiba.com.cn/yoofans/images/201806/box.png');
     background-repeat:no-repeat;
     .frame-prize{
       width: 173/@rem;
@@ -2122,7 +2130,7 @@
     position: fixed;
     width: 720/@rem;
     height: 100/@rem;
-    z-index:1000;
+    z-index:100;
     left: 15/@rem;
     bottom: 115/@rem;
     background-size: 100% 100%;

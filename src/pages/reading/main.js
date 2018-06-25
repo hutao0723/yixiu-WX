@@ -49,7 +49,7 @@ if (!window.localStorage.getItem('deviceId')) {
 
 Vue.http.headers.common['ext-deviceId'] = window.localStorage.getItem('deviceId');
 Vue.http.headers.common['from'] = 'read';
-Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjrgAVYqk8AMGNneTZ9ZbWAxFnvP6y5WPZUa33nDuGDBWcVKQdzwjDjvaMXXmhtMPGGpRddnbWVEX48yPaiUEHAwsWfAqFXGQGZzbxK12ftU7X2r9hnvz5RmvZC5rfWhVcVWxs';
+// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjrgAVYqk8AMGNneTZ9ZbWAxFnvP6y5WPZUa33nDuGDBWcVKQdzwjDjvaMXXmhtMPGGpRddnbWVEX48yPaiUEHAwsWfAqFXGQGZzbxK12ftU7X2r9hnvz5RmvZC5rfWhVcVWxs';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
