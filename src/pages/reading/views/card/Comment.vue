@@ -170,9 +170,9 @@
               lastClock=0
             }
             if(resp.data.posterType == 'H5'){
-              this.$router.push({name:'poster',query:{commentId:commentId,lastClock:lastClock,isClock:1}})
+              this.$router.push({name:'share',query:{commentId:commentId,lastClock:lastClock,isClock:1}})
             }else{
-              this.$router.push({name:'poster',query:{commentId:commentId,lastClock:lastClock,isClock:0}})
+              this.$router.push({name:'poster',query:{commentId:commentId,lastClock:lastClock,isClock:1}})
             }
           }
         })
