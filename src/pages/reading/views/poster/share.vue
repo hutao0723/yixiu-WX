@@ -29,7 +29,7 @@
                         <p class="time">写于{{info.releaseTime}}&nbsp;&nbsp;{{info.releaseTimeLabel}}</p>
                     </div>
                     <!--不是自己不渲染-->
-                    <div class="insist" v-if="$route.query.isClock * 1">
+                    <div class="insist" v-if="info.myself*1">
                         <span></span>这是我坚持读书的第{{info.clocks}}天
                     </div>
                 </div>
@@ -97,55 +97,18 @@
             }
 
             let userInfo=await _this.getUserInfo();
-            console.log(window.location.href);
-            console.log(pageInfo.data.bookImageUrl)
             let msg = {
                 title: '每天10分钟，轻松阅读，日有所得', // 分享标题
                 desc: pageInfo.data.shareContent, // 分享描述
-                link: 'https://k.youfen666test.com/reading.html#/index/home?dcd=c_94', // 分享链接 默认以当前链接
+                link: window.location.href, // 分享链接 默认以当前链接
                 imgUrl: pageInfo.data.bookImageUrl, // 分享图标
             }
+        
+            if(userInfo.data.readState*1>=0){
+                msg.title = pageInfo.data.shareContent;
+            }
+            
             _this.wxShare(userInfo.data.userId,msg);
-
-
-            // this.info = {
-            //     "id": 161,
-            //     "userId": 100049014,
-            //     "userNickname": "露露😇嘎嘎",
-            //     "userImgUrl": "https://yun.dui88.com/youfen/images/4u0ale98b5.jpg",
-            //     "courseId": 210,
-            //     "courseTitle": "《解忧杂货铺》",
-            //     "courseSubTitle": "副标题《解忧杂货铺》",
-            //     "courseUrl": "https://yun.dui88.com/youfen/images/kcj9cj75xr.jpg",
-            //     "courseVerticalCover": "https://yun.dui88.com/youfen/images/kcj9cj75xr.jpg",
-            //     "courseLateralCover": "",
-            //     "readId": 39,
-            //     "readName": "模板测试阅读计划",
-            //     "readStageId": 67,
-            //     "readStageNum": 3,
-            //     "content": "测试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想试数据测试感想",
-            //     "releaseTime": "2018-06-23 10:47:10",
-            //     "releaseTimeLabel": "上午",
-            //     "praiseCount": 1,
-            //     "userPraise": false,
-            //     "myself": 0,
-            //     "posterType": "H5",
-            //     "listens": 12,
-            //     "clocks": 0,
-            //     "books": 0,
-            //     "loginDays": 4,
-            //     "readQrcodeImgUrl": "https://yun.dui88.com/youfen/images/code_ewm.png",
-            //     "bookBgimgUrl": "https://yun.dui88.com/youfen/images/fqo7uezb7x.jpg",
-            //     "commentPosterType": "H5",
-            //     "introduction": "测试数据书籍简介",
-            //     "simpleAudition": "http://yun.youfen666.com/knowledge/1529720575185?auth_key=1529739376-0-0-d72bce20fe74b27ffdc7369c8168085c",
-            //     "shareContent": "用户昵称：露露😇嘎嘎，感想指数：8，感想时间：上午，阅读天数：4，书籍标题：模板测试书籍",
-            //     "userBuy": false,
-            //     "bookImageUrl": "https://yun.dui88.com/youfen/images/sf9ud364ot.png",
-            //     "nowRead": false
-            // };
-            // this.playSetting();
-            // this.dataInitail();
         },
         mounted(){
             
@@ -158,7 +121,7 @@
             async getUserInfo() {
                 let self = this;
                 let params = {};
-                const url = '/user/read/state';
+                const url = '/api/user/read/state';
                 const res = await this.$http.get(url, {
                     params
                 });
@@ -167,10 +130,10 @@
             async getInfo() {
                 let _this = this;
                 let params = {
-                    commentId: _this.$route.query.commentId
-                    // commentId: 71
+                    // commentId: _this.$route.query.commentId
+                    commentId: 71
                 };
-                const url = `/comment/h5/share`;
+                const url = `/api/comment/h5/share`;
                 const res = await _this.$http.get(url, {
                     params
                 });
@@ -226,7 +189,7 @@
                 if(_this.info.nowRead){
                     _this.shareBtn = true;   
                 }else{
-                    _this.$router.push({path:'/'})
+                    _this.$router.push({path:'/',query:{dcd:'c_94'}})
                 }
             },
             sharePage(){
