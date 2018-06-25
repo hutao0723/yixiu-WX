@@ -110,7 +110,8 @@
                 imgUrl: pageInfo.data.bookImageUrl, // 分享图标
             }
             console.log('状态'+userInfo.data.readState)
-            if(puserInfo.data.readState*1>=0){
+
+            if(userInfo.data.readState*1>=0){
                 msg.title = info.shareConetent   
             }
             console.log('title'+msg.title)
@@ -143,7 +144,7 @@
                 let _this = this;
                 let params = {
                     commentId: _this.$route.query.commentId
-                    //commentId: 71
+                    // commentId: 71
                 };
                 const url = `/comment/h5/share`;
                 const res = await _this.$http.get(url, {
