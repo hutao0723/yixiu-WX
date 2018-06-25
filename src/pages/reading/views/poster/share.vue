@@ -23,7 +23,7 @@
                     <div class="text">
                         <div class="viewpoint">
                             <span class="big">{{ viewPoint_frist }}</span>
-                            <span v-html="info.content"></span>
+                            <span v-html="viewPoint_main"></span>
                         </div>
                         <p class="author">{{ info.userNickname }}</p>
                         <p class="time">写于{{info.releaseTime}}&nbsp;&nbsp;{{info.releaseTimeLabel}}</p>
@@ -35,10 +35,10 @@
                 </div>
                 <div class="player">
                     <div class="audio" v-if="info.simpleAudition">
-                        <div class="play" @click="togglePlay">
+                        <div class="play" @click="clickFun($event,togglePlay)" :monitor-log="getMonitor('0.0.0.0', '818.1.0')">
                             <img :src="info.bookImageUrl">
                             <div class="playIcon">
-                                <i class="iconfont" :class="{'icon-zanting':!isPlaying,'icon-pause':isPlaying}"></i>
+                                <i class="iconfont" :class="{'icon-play':!isPlaying,'icon-pause':isPlaying}"></i>
                             </div>
                         </div>
                         <div class="playInfo">
@@ -53,8 +53,9 @@
                 </div>    
             </div>
         </div>
-        <div class="btn" @click='seeYixiu'>{{ info.nowRead?"分享朋友圈":"了解一修读书" }}</div>
-        <shareBtn v-show="shareBtn" v-on:success="sharePage" />
+        <div class="btn" v-if='info.nowRead' @click="clickFun($event,shareFriend)" :monitor-log="getMonitor('0.0.0.0', '818.2.1')">分享朋友圈</div>
+        <div class="btn" v-if='!info.nowRead' @click="clickFun($event,goToIndex)" :monitor-log="getMonitor('0.0.0.0', '818.2.2')">了解一修读书</div>
+        <shareBtn v-show="shareBtn" v-on:success="closeShare" />
     </div>
 </template>
 
@@ -70,6 +71,7 @@
             return{
                 info:'',
                 viewPoint_frist:'',
+                viewPoint_main:'',
                 isPlaying:false,
                 playBookName:'',
                 shareBtn:false,
@@ -86,9 +88,9 @@
         },
         async created(){
             let _this = this;
-            console.log('前'+_this.$store.state.readCurrentTime)
+            //  初始化播放器值
             _this.$store.commit('setSharePlayWidth'); 
-            console.log('后'+_this.$store.state.readCurrentTime)
+            
             let pageInfo = await this.getInfo();
 
             if (pageInfo.success) {
@@ -102,17 +104,26 @@
             let userInfo=await _this.getUserInfo();
             // 配置分享链接参数
             console.log(_this.delUrl(window.location.href,'lastClock'))
+            
             let msg = {
                 title: '每天10分钟，轻松阅读，日有所得', // 分享标题
                 desc: pageInfo.data.content, // 分享描述
                 link: _this.delUrl(window.location.href,'lastClock'), // 分享链接 默认以当前链接
                 imgUrl: pageInfo.data.bookImageUrl, // 分享图标
             }
-        
+            if(pageInfo.data.readState>=0){
+                msg.title = info.shareConetent   
+            }
             _this.wxShare(userInfo.data.userId,msg);
         },
         mounted(){
-            
+            const _this = this;
+            this.$nextTick(function () {
+                setTimeout(() => {
+                    // 埋点
+                    window.monitor && window.monitor.showLog(_this);
+                }, 100)
+            })   
         },
         methods:{
             togglePlay() {
@@ -161,7 +172,7 @@
                 // 观点字符串转换
                 let viewPoint = _this.info.content.split('');
                 _this.viewPoint_frist = viewPoint.shift();
-                _this.info.content = viewPoint.join('') 
+                _this.viewPoint_main = viewPoint.join('') 
             },
             playSetting(){
                 const _this = this;
@@ -184,16 +195,14 @@
                 let ss = time % 60 > 9 ? Math.floor(time % 60) : '0' + Math.floor(time % 60);
                 return mm + ':' + ss;
             },
-            seeYixiu(){
+            goToIndex(){
                 const _this = this;
-                // 判断是否购买过书籍
-                if(_this.info.nowRead){
-                    _this.shareBtn = true;   
-                }else{
-                    _this.$router.push({path:'/',query:{dcd:'c_94'}})
-                }
+                _this.$router.push({path:'/',query:{dcd:'c_94'}})
             },
-            sharePage(){
+            shareFriend(){
+                this.shareBtn = true;   
+            },
+            closeShare(){
                 this.shareBtn = false;
             },
             // 去除地址url中某个参数
@@ -218,7 +227,15 @@
                     arr_param.splice(index, 1);
                     return base + "?" + arr_param.join('&');
                 }
-            }
+            },
+            getMonitor(dcm,dpm) {
+                console.log(dpm)
+                // item tabindex dpmc
+                return JSON.stringify({
+                    'dcm': dcm,
+                    'dpm': '157.' + dpm,
+                });
+            },
         },
         components:{ range,shareBtn }
     }
