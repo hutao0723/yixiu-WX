@@ -164,14 +164,16 @@
           if(resp.success){
             let commentId = resp.data.commentId;
             let lastClock;
-            let isClock = 1;
             if(resp.data.lastClock){
               lastClock=1
             }else{
               lastClock=0
             }
-            //this.$router.push('/poster/'+commentId+'/'+lastClock+'/'+isClock)
-            this.$router.push({name:'poster',query:{commentId:commentId,lastClock:lastClock,isClock:isClock}})
+            if(resp.data.posterType == 'H5'){
+              this.$router.push({name:'poster',query:{commentId:commentId,lastClock:lastClock,isClock:1}})
+            }else{
+              this.$router.push({name:'poster',query:{commentId:commentId,lastClock:lastClock,isClock:0}})
+            }
           }
         })
       },
