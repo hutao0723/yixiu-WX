@@ -100,7 +100,7 @@
             } else {
                 console.log("获取数据失败");
             }
-
+            // 请求用户信息
             let userInfo=await _this.getUserInfo();
             // 配置分享链接参数
             let msg = {
@@ -109,10 +109,8 @@
                 link: _this.delUrl(window.location.href,'lastClock'), // 分享链接 默认以当前链接
                 imgUrl: pageInfo.data.bookImageUrl, // 分享图标
             }
-            console.log('状态'+pageInfo.data.readState)
-            console.log('content'+info.shareConetent)
-            
-            if(pageInfo.data.readState*1>=0){
+            console.log('状态'+userInfo.data.readState)
+            if(puserInfo.data.readState*1>=0){
                 msg.title = info.shareConetent   
             }
             console.log('title'+msg.title)
@@ -145,7 +143,7 @@
                 let _this = this;
                 let params = {
                     commentId: _this.$route.query.commentId
-                    // commentId: 71
+                    //commentId: 71
                 };
                 const url = `/comment/h5/share`;
                 const res = await _this.$http.get(url, {
