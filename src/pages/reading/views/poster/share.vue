@@ -38,7 +38,7 @@
                         <div class="play" @click="togglePlay">
                             <img :src="info.bookImageUrl">
                             <div class="playIcon">
-                                <i class="iconfont" :class="{'icon-sanjiaoxing':!isPlaying,'icon-pause':isPlaying}"></i>
+                                <i class="iconfont" :class="{'icon-zanting':!isPlaying,'icon-pause':isPlaying}"></i>
                             </div>
                         </div>
                         <div class="playInfo">
@@ -86,6 +86,9 @@
         },
         async created(){
             let _this = this;
+            console.log('前'+_this.$store.state.readCurrentTime)
+            _this.$store.commit('setSharePlayWidth'); 
+            console.log('后'+_this.$store.state.readCurrentTime)
             let pageInfo = await this.getInfo();
 
             if (pageInfo.success) {
@@ -231,7 +234,6 @@
     }
     .sharePages {
         height: 100%;
-        font-family:"SimSun";
         letter-spacing:2/@rem;
         .shareContainer{
             display: block;
@@ -255,6 +257,7 @@
                 padding: 84/@rem 46/@rem 30/@rem;
                 line-height: 84/@rem;
                 height: 84/@rem;
+                font-family:"SimSun";
                 .icon{
                     height: 84/@rem;
                     width: 64/@rem;
@@ -273,6 +276,7 @@
                 }
             }
             .content{
+                font-family:"SimSun";
                 width: 690/@rem;
                 margin: 0 auto;
                 background: #fff;

@@ -86,6 +86,10 @@ export default {
     },
     setBottomNavToggle(state, obj) {
       state.bottomNavToggle = obj.bottomNavToggle;
+    },
+    // 分享页面设置初始为0
+    setSharePlayWidth (state) {
+        state.readCurrentTime = 0;
     }
 }
 
