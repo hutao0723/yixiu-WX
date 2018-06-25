@@ -42,7 +42,7 @@
                             </div>
                         </div>
                         <div class="playInfo">
-                            <p class="name">{{ playBookName }}</p>
+                            <p class="name"><span class="taste">试听</span>{{ playBookName }}</p>
                             <div class="range">
                                 <range />   
                             </div>
@@ -116,11 +116,12 @@
                 imgUrl: pageInfo.data.bookImageUrl, // 分享图标
             }
             console.log('状态'+userInfo.data.readState)
-            console.log(_this.info.shareContent)
+            console.log(pageInfo.data.shareConetent)
 
             if(userInfo.data.readState*1>=0){
-                msg.title = _this.info.shareConetent   
+                msg.title = pageInfo.data.shareConetent   
             }
+            
             console.log('title'+msg.title)
             _this.wxShare(userInfo.data.userId,msg);
 
@@ -455,6 +456,11 @@
                         p{
                             font-size: 30/@rem;
                             line-height: 1;
+                            .taste{
+                                background: #FF464A;
+                                color: #fff;
+                                border-radius: 3/@rem;
+                            }
                         }
                         .range{
                             height: 60/@rem;
