@@ -93,9 +93,11 @@
             _this.$store.commit('setSharePlayWidth'); 
             
             let pageInfo = await this.getInfo();
-
+            // 分享内容
+            let shareContent = '';
             if (pageInfo.success) {
                 _this.info = pageInfo.data;
+                shareContent = pageInfo.data.shareContent
                 _this.playSetting();
                 _this.dataInitail();
             } else {
@@ -103,24 +105,19 @@
             }
 
             // 书籍ID
-            console.log(_this.info)
             _this.bookID = _this.info.readBookId;
 
             // 请求用户信息
             let userInfo=await _this.getUserInfo();
             // 配置分享链接参数
             let msg = {
-                title: '每天10分钟，轻松阅读，日有所得', // 分享标题
+                title: userInfo.data.readState*1>=0?shareContent:'每天10分钟，轻松阅读，日有所得', // 分享标题
                 desc: pageInfo.data.content, // 分享描述
                 link: _this.delUrl(window.location.href,'lastClock'), // 分享链接 默认以当前链接
                 imgUrl: pageInfo.data.bookImageUrl, // 分享图标
             }
             console.log('状态'+userInfo.data.readState)
-            console.log(pageInfo.data.shareConetent)
-
-            if(userInfo.data.readState*1>=0){
-                msg.title = pageInfo.data.shareConetent   
-            }
+            console.log(shareContent)
             
             console.log('title'+msg.title)
             _this.wxShare(userInfo.data.userId,msg);
@@ -157,7 +154,7 @@
                 let _this = this;
                 let params = {
                     commentId: _this.$route.query.commentId
-                    //commentId: 71
+                    // commentId: 71
                 };
                 const url = `/comment/h5/share`;
                 const res = await _this.$http.get(url, {
@@ -460,6 +457,12 @@
                                 background: #FF464A;
                                 color: #fff;
                                 border-radius: 3/@rem;
+                                font-size: 22/@rem;
+                                display: inline-block;
+                                height: 32/@rem;
+                                width: 54/@rem;
+                                line-height: 32/@rem;
+                                text-align: center;
                             }
                         }
                         .range{
