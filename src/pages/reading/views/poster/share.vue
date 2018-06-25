@@ -97,10 +97,12 @@
             }
 
             let userInfo=await _this.getUserInfo();
+            console.log(window.location.href);
+            console.log(pageInfo.data.bookImageUrl)
             let msg = {
                 title: '每天10分钟，轻松阅读，日有所得', // 分享标题
                 desc: pageInfo.data.shareContent, // 分享描述
-                link: 'https://k.youfen666.com/reading.html#/index/home?dcd=c_94', // 分享链接 默认以当前链接
+                link: 'https://k.youfen666test.com/reading.html#/index/home?dcd=c_94', // 分享链接 默认以当前链接
                 imgUrl: pageInfo.data.bookImageUrl, // 分享图标
             }
             _this.wxShare(userInfo.data.userId,msg);
