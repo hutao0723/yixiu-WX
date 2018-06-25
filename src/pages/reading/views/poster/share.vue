@@ -98,11 +98,11 @@
 
             let userInfo=await _this.getUserInfo();
             // 配置分享链接参数
-            console.log(delUrl(window.location.href,'lastClock'))
+            console.log(_this.delUrl(window.location.href,'lastClock'))
             let msg = {
                 title: '每天10分钟，轻松阅读，日有所得', // 分享标题
                 desc: pageInfo.data.content, // 分享描述
-                link: delUrl(window.location.href,'lastClock'), // 分享链接 默认以当前链接
+                link: _this.delUrl(window.location.href,'lastClock'), // 分享链接 默认以当前链接
                 imgUrl: pageInfo.data.bookImageUrl, // 分享图标
             }
         
@@ -119,7 +119,7 @@
             async getUserInfo() {
                 let self = this;
                 let params = {};
-                const url = '/user/read/state';
+                const url = '/api/user/read/state';
                 const res = await this.$http.get(url, {
                     params
                 });
@@ -128,10 +128,10 @@
             async getInfo() {
                 let _this = this;
                 let params = {
-                    commentId: _this.$route.query.commentId
-                    // commentId: 71
+                    // commentId: _this.$route.query.commentId
+                    commentId: 71
                 };
-                const url = `/comment/h5/share`;
+                const url = `/api/comment/h5/share`;
                 const res = await _this.$http.get(url, {
                     params
                 });
