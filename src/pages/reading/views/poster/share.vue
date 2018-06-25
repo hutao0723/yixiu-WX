@@ -103,15 +103,15 @@
 
             let userInfo=await _this.getUserInfo();
             // 配置分享链接参数
-            console.log(_this.delUrl(window.location.href,'lastClock'))
-            
             let msg = {
                 title: '每天10分钟，轻松阅读，日有所得', // 分享标题
                 desc: pageInfo.data.content, // 分享描述
                 link: _this.delUrl(window.location.href,'lastClock'), // 分享链接 默认以当前链接
                 imgUrl: pageInfo.data.bookImageUrl, // 分享图标
             }
-            console.log('状态'+readState)
+            console.log('状态'+pageInfo.data.readState)
+            console.log('content'+info.shareConetent)
+            
             if(pageInfo.data.readState*1>=0){
                 msg.title = info.shareConetent   
             }
