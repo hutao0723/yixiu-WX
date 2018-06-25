@@ -100,7 +100,7 @@
             let msg = {
                 title: '每天10分钟，轻松阅读，日有所得', // 分享标题
                 desc: pageInfo.data.shareContent, // 分享描述
-                link: window.location.href, // 分享链接 默认以当前链接
+                link: 'https://k.youfen666.com/reading.html#/index/home?dcd=c_94', // 分享链接 默认以当前链接
                 imgUrl: pageInfo.data.bookImageUrl, // 分享图标
             }
             _this.wxShare(userInfo.data.userId,msg);
@@ -165,8 +165,8 @@
             async getInfo() {
                 let _this = this;
                 let params = {
-                    // commentId: _this.$route.query.commentId
-                    commentId: 71
+                    commentId: _this.$route.query.commentId
+                    // commentId: 71
                 };
                 const url = `/comment/h5/share`;
                 const res = await _this.$http.get(url, {
@@ -245,6 +245,7 @@
     }
     .sharePages {
         height: 100%;
+        font-family:"SimSun";
         .shareContainer{
             display: block;
             width: 10rem;
@@ -290,10 +291,10 @@
                 background: #fff;
                 border-radius: 10/@rem;
                 position: relative;
-                box-shadow: 8/@rem  14/@rem 32/@rem #A6A6A6; 
+                box-shadow: 8/@rem  13/@rem 32/@rem rgba(166,166,166,0.29); 
                 .bookPic{
                     position: absolute;
-                    right: 12/@rem;
+                    right: 22/@rem;
                     top: -86/@rem;
                     width: 166/@rem;
                     height: 222/@rem;
@@ -349,6 +350,7 @@
                 }
                 .text{
                     padding: 0 56/@rem 56/@rem;
+                    // letter-spacing:25;
                     .viewpoint{
                         font-size: 0;
                         color: #444;

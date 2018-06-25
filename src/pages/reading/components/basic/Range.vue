@@ -223,7 +223,10 @@ export default {
                 .ball{
                     background: url('http://yun.dui88.com/circular.png');
                     background-size: 100%;  
-                }    
+                } 
+                .currentProgress{
+                    background: #a4a4a4;
+                }   
             }    
         }    
     }
