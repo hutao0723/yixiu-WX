@@ -50,7 +50,7 @@
                             <div class="time"><span>{{current}}</span><span>{{duration}}</span></div>
                         </div>
                     </div>
-                    <!-- <p class="intro" v-if="info.introduction">{{info.introduction}}</p> -->
+                    <p class="intro" v-if="info.introduction">{{info.introduction}}</p>
                 </div>    
             </div>
         </div>
