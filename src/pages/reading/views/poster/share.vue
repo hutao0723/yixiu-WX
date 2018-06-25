@@ -119,7 +119,7 @@
             async getUserInfo() {
                 let self = this;
                 let params = {};
-                const url = '/api/user/read/state';
+                const url = '/user/read/state';
                 const res = await this.$http.get(url, {
                     params
                 });
@@ -128,10 +128,10 @@
             async getInfo() {
                 let _this = this;
                 let params = {
-                    // commentId: _this.$route.query.commentId
-                    commentId: 71
+                    commentId: _this.$route.query.commentId
+                    // commentId: 71
                 };
-                const url = `/api/comment/h5/share`;
+                const url = `/comment/h5/share`;
                 const res = await _this.$http.get(url, {
                     params
                 });
