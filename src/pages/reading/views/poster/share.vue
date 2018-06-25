@@ -116,6 +116,7 @@
                 imgUrl: pageInfo.data.bookImageUrl, // 分享图标
             }
             console.log('状态'+userInfo.data.readState)
+            console.log(_this.info.shareContent)
 
             if(userInfo.data.readState*1>=0){
                 msg.title = _this.info.shareConetent   
@@ -145,7 +146,7 @@
             async getUserInfo() {
                 let self = this;
                 let params = {};
-                const url = '/user/read/state';
+                const url = '/api/user/read/state';
                 const res = await this.$http.get(url, {
                     params
                 });
@@ -154,10 +155,10 @@
             async getInfo() {
                 let _this = this;
                 let params = {
-                    commentId: _this.$route.query.commentId
-                    // commentId: 71
+                    //commentId: _this.$route.query.commentId
+                    commentId: 71
                 };
-                const url = `/comment/h5/share`;
+                const url = `/api/comment/h5/share`;
                 const res = await _this.$http.get(url, {
                     params
                 });
