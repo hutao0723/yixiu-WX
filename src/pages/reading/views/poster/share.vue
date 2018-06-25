@@ -97,17 +97,14 @@
             }
 
             let userInfo=await _this.getUserInfo();
+            // 配置分享链接参数
             let msg = {
                 title: '每天10分钟，轻松阅读，日有所得', // 分享标题
-                desc: pageInfo.data.shareContent, // 分享描述
-                link: window.location.href, // 分享链接 默认以当前链接
+                desc: pageInfo.data.content, // 分享描述
+                link: delUrl(window.location.href,'lastClock'), // 分享链接 默认以当前链接
                 imgUrl: pageInfo.data.bookImageUrl, // 分享图标
             }
         
-            if(userInfo.data.readState*1>=0){
-                msg.title = pageInfo.data.shareContent;
-            }
-            
             _this.wxShare(userInfo.data.userId,msg);
         },
         mounted(){
@@ -131,7 +128,7 @@
                 let _this = this;
                 let params = {
                     commentId: _this.$route.query.commentId
-                    //commentId: 71
+                    // commentId: 71
                 };
                 const url = `/comment/h5/share`;
                 const res = await _this.$http.get(url, {
@@ -194,6 +191,29 @@
             },
             sharePage(){
                 this.shareBtn = false;
+            },
+            // 去除地址url中某个参数
+            delUrl (url,ref) {
+                if (url.indexOf(ref) == -1){
+                    return url;
+                };
+                let arr_url = url.split('?');
+                let base = arr_url[0];
+                let arr_param = arr_url[1].split('&');
+                let index = -1;
+                for (let i = 0; i < arr_param.length; i++) {
+                    let paired = arr_param[i].split('=');
+                    if (paired[0] == ref) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index == -1) {
+                    return url;
+                } else {
+                    arr_param.splice(index, 1);
+                    return base + "?" + arr_param.join('&');
+                }
             }
         },
         components:{ range,shareBtn }
