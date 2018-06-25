@@ -17,13 +17,14 @@
                         </div>
                         <div class="bookInfo">
                             <p>今日读后感</p>
-                            <h5>{{ info.courseTitle }}</h5>
+                            <h5>{{ bookNameInit(info.courseTitle,24) }}</h5>
                         </div>
                     </div>
                     <div class="text">
                         <div class="viewpoint">
-                            <span class="big">{{ viewPoint_frist }}</span>
-                            <span v-html="viewPoint_main"></span>
+                            <!-- <span class="big">{{ viewPoint_frist }}</span>
+                            <span v-html="viewPoint_main"></span> -->
+                            <span v-html="info.content"></span>
                         </div>
                         <p class="author">{{ info.userNickname }}</p>
                         <p class="time">写于{{info.releaseTime}}&nbsp;&nbsp;{{info.releaseTimeLabel}}</p>
@@ -42,7 +43,7 @@
                             </div>
                         </div>
                         <div class="playInfo">
-                            <p class="name"><span class="taste">试听</span>{{ playBookName }}</p>
+                            <p class="name"><span class="taste">试听</span>{{ bookNameInit(info.courseTitle,14) }}</p>
                             <div class="range">
                                 <range />   
                             </div>
@@ -116,15 +117,10 @@
                 link: _this.delUrl(window.location.href,'lastClock'), // 分享链接 默认以当前链接
                 imgUrl: pageInfo.data.bookImageUrl, // 分享图标
             }
-            console.log('状态'+userInfo.data.readState)
-            console.log(shareContent)
-            
-            console.log('title'+msg.title)
             _this.wxShare(userInfo.data.userId,msg);
 
 
             // 曝光
-            console.log(_this.bookID)
             this.$nextTick(function () {
                 setTimeout(() => {
                     // 埋点
@@ -164,13 +160,6 @@
             },
             dataInitail(){
                 const _this = this;
-                // 播放书名转换
-                if(_this.info.courseTitle.length>15){
-                    _this.playBookName = _this.info.courseTitle.substring(0,14)
-                    _this.playBookName = _this.playBookName +'...》'    
-                }else{
-                    _this.playBookName = _this.info.courseTitle
-                }
                             
                 // 时间格式转换
                 let createdTime = _this.info.releaseTime.replace(/-/g, "/");
@@ -184,6 +173,17 @@
                 let viewPoint = _this.info.content.split('');
                 _this.viewPoint_frist = viewPoint.shift();
                 _this.viewPoint_main = viewPoint.join('') 
+            },
+            // 书名转换
+            bookNameInit(str,l){
+                let text = str
+                if(str.length>l){
+                    text = str.substring(0,l-1)
+                    text = '《'+ text +'...》'    
+                    return text
+                }else{
+                   return '《'+ text +'》'  
+                }
             },
             playSetting(){
                 const _this = this;
@@ -254,6 +254,11 @@
 
 <style lang="less">
     @import '../../less/variable';
+    @font-face{
+		font-family: 'pingFangSC-Light';
+		src: url('./../../assets/PingFang Light.ttf');
+		font-weight: lighter;
+	}
     .bg-image(@url) {
         background-image: url('@{url}@2x.png');
         @media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3){
@@ -262,7 +267,6 @@
     }
     .sharePages {
         height: 100%;
-        letter-spacing:2/@rem;
         .shareContainer{
             display: block;
             width: 10rem;
@@ -282,10 +286,10 @@
             height: 482/@rem;
             background: #FFC936;
             .logo{
-                padding: 84/@rem 46/@rem 30/@rem;
+                padding: 84/@rem 46/@rem 25/@rem;
                 line-height: 84/@rem;
                 height: 84/@rem;
-                font-family:"SimSun";
+                font-family:"pingFangSC-Light";
                 .icon{
                     height: 84/@rem;
                     width: 64/@rem;
@@ -304,7 +308,7 @@
                 }
             }
             .content{
-                font-family:"SimSun";
+                font-family:"pingFangSC-Light";
                 width: 690/@rem;
                 margin: 0 auto;
                 background: #fff;
@@ -360,27 +364,31 @@
                             line-height: 1;
                         }  
                         h5{
-                            font-size: 32/@rem;
+                            font-size: 30/@rem;
                             color: #333;
-                            line-height: 60/@rem;
+                            line-height: 42/@rem;
+                            letter-spacing:0/@rem;
+                            margin-left: -12/@rem;
+                            margin-top: 14/@rem;
 
                         }
                     }
                 }
                 .text{
                     padding: 0 56/@rem 56/@rem;
-                    letter-spacing:4/@rem;
+                    letter-spacing:1/@rem;
                     .viewpoint{
                         font-size: 0;
-                        color: #444;
+                        color: #222;
                         padding-bottom: 90/@rem;
                         span{
-                            font-size: 30/@rem;
-                            line-height: 44/@rem;
-                            &.big{
-                                font-size: 46/@rem;
-                                line-height: 1;
-                            }
+                            font-size: 29/@rem;
+                            line-height: 46/@rem;
+                            letter-spacing: 1/@rem;
+                            // &.big{
+                            //     font-size: 40/@rem;
+                            //     line-height: 1;
+                            // }
                         }
                     }
                     .author,.time{
@@ -393,7 +401,8 @@
                 .insist{
                     width: 632/@rem;
                     margin: 0 auto;
-                    border-top: 1px #C5C5C5 dashed;
+                    //border-top: 1px #C5C5C5 dashed;
+                    background: url('./Line-5_02.png') repeat-x top left;
                     line-height: 80/@rem;
                     font-size: 26/@rem;
                     color: #4D4D4D;
@@ -402,7 +411,7 @@
                         display: inline-block;
                         height: 10/@rem;
                         border-radius: 50%;
-                        background: #000;
+                        background: #666;
                         width: 10/@rem;
                         margin-right: 12/@rem;
                         vertical-align: middle;
@@ -414,18 +423,24 @@
                 margin: 110/@rem auto 0;
                 padding-bottom: 100/@rem;
                 .audio{
-                    display: flex;
-                    flex-flow:row;
+                    position: relative;
+                    box-sizing: border-box;
+                    padding-left: 134/@rem;
                     .play{
                         height: 108/@rem;
                         width: 108/@rem;
-                        position: relative;
+                        position: absolute;
                         overflow: hidden;
                         background: #fff;
+                        top: 0;
+                        left: 0;
                         img{
                             display: block;
-                            height: 100%;
-                            margin: 0 auto;
+                            width: 100%;
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%,-50%)
                         }
                         .playIcon{
                             position: absolute;
@@ -441,18 +456,19 @@
                             .iconfont{
                                 font-size: 30/@rem;
                                 color: #fff;
+                                padding-left: 3/@rem;
                             }
                         }
                         
                     }
                     .playInfo{
-                        padding-left: 30/@rem;
-                        
                         color: #333;
                         flex:1;
+                        
                         p{
+                            line-height: 32/@rem;
                             font-size: 30/@rem;
-                            line-height: 1;
+                            white-space: nowrap;
                             .taste{
                                 background: #FF464A;
                                 color: #fff;
@@ -463,10 +479,14 @@
                                 width: 54/@rem;
                                 line-height: 32/@rem;
                                 text-align: center;
+                                vertical-align: top;
+                                padding: 0 7/@rem;
+                                
                             }
                         }
                         .range{
                             height: 60/@rem;
+                            padding: 0 7/@rem;
                         }
                         .time{
                             display: flex;
@@ -474,6 +494,7 @@
                             font-size: 22/@rem;
                             color: #B3B3B3;
                             line-height: 1;
+                            padding: 0 7/@rem;
                         }
                        
                     }
@@ -484,6 +505,7 @@
                     line-height: 42/@rem;
                     padding-top: 46/@rem;
                     padding-bottom: 80/@rem;
+                    letter-spacing: 0/@rem;
                 }
             }
         }
