@@ -35,7 +35,7 @@
                 </div>
                 <div class="player">
                     <div class="audio" v-if="info.simpleAudition">
-                        <div class="play" @click="clickFun($event,togglePlay)" :monitor-log="getMonitor('8002.booKID.0.0', '818.1.0')">
+                        <div class="play" @click="clickFun($event,togglePlay)" :monitor-log="getMonitor('8002.'+bookID+'.0.0', '818.1.0')">
                             <img :src="info.bookImageUrl">
                             <div class="playIcon">
                                 <i class="iconfont" :class="{'icon-play':!isPlaying,'icon-pause':isPlaying}"></i>
@@ -53,8 +53,8 @@
                 </div>    
             </div>
         </div>
-        <div class="btn" v-if='info.nowRead' @click="clickFun($event,shareFriend)" :monitor-log="getMonitor('8002.booKID.0.0', '818.2.1')">分享朋友圈</div>
-        <div class="btn" v-if='!info.nowRead' @click="clickFun($event,goToIndex)" :monitor-log="getMonitor('8002.booKID.0.0', '818.2.2')">了解一修读书</div>
+        <div class="btn" v-if='info.nowRead' @click="clickFun($event,shareFriend)" :monitor-log="getMonitor('8002.'+bookID+'.0.0', '818.2.1')">分享朋友圈</div>
+        <div class="btn" v-if='!info.nowRead' @click="clickFun($event,goToIndex)" :monitor-log="getMonitor('8002.'+bookID+'.0.0', '818.2.2')">了解一修读书</div>
         <shareBtn v-show="shareBtn" v-on:success="closeShare" />
     </div>
 </template>
@@ -75,7 +75,7 @@
                 isPlaying:false,
                 playBookName:'',
                 shareBtn:false,
-                booKID:'',
+                bookID:'',
             }
         },
         computed: {
@@ -103,7 +103,8 @@
             }
 
             // 书籍ID
-            _this.booKID = info.readBookId;
+            console.log(_this.info)
+            _this.bookID = _this.info.readBookId;
 
             // 请求用户信息
             let userInfo=await _this.getUserInfo();
@@ -117,19 +118,24 @@
             console.log('状态'+userInfo.data.readState)
 
             if(userInfo.data.readState*1>=0){
-                msg.title = info.shareConetent   
+                msg.title = _this.info.shareConetent   
             }
             console.log('title'+msg.title)
             _this.wxShare(userInfo.data.userId,msg);
-        },
-        mounted(){
-            const _this = this;
+
+
+            // 曝光
+            console.log(_this.bookID)
             this.$nextTick(function () {
                 setTimeout(() => {
                     // 埋点
                     window.monitor && window.monitor.showLog(_this);
                 }, 100)
-            })   
+            })  
+        },
+        mounted(){
+            const _this = this;
+             
         },
         methods:{
             togglePlay() {
