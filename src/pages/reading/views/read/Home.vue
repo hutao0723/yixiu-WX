@@ -898,7 +898,7 @@
 
                 //resultCode为0 已参与活动(awards有数据则未使用)
                 if(resp.resultCode == 0){
-                  this.frameTitleClass = "frame-line1"
+                  this.frameTitleClass = "frame-line3"
                   this.titleText = "您有一张优惠券可以使用哦"
                   this.CouponDialog = true
                 }
@@ -2046,7 +2046,7 @@
     width: 100%;
     background-size: 100%;
     margin-top: 95/@rem;
-    background-image: url('https://yun.dui88.com/yoofans/images/201806/circle.png');
+    background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/frame-line1.png');
     position:relative;
     background-repeat:no-repeat; 
   }
@@ -2055,7 +2055,7 @@
     width: 100%;
     background-size: 100%;
     margin-top: 95/@rem;
-    background-image: url('https://yun.dui88.com/yoofans/images/201806/line2.png');
+    background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/line2.png');
     position:relative;
     background-repeat:no-repeat; 
   }
@@ -2064,7 +2064,7 @@
     width: 100%;
     background-size: 100%;
     margin-top: 50/@rem;
-    background-image: url('https://yun.dui88.com/yoofans/images/201806/circle.png');
+    background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/circle.png');
     position:relative;
     background-repeat:no-repeat; 
   }
