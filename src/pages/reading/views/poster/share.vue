@@ -1,5 +1,6 @@
 <template>
     <div class="sharePages">
+        <audio id="myaudio" ref="tryaudio" @timeupdate="musicTimeUpdate" @canplay="musicCanPlay"  @ended="musicEnded"></audio>
         <div class="shareContainer">
             <div class="bg">
                 <div class="logo">
@@ -45,7 +46,7 @@
                         <div class="playInfo">
                             <p class="name"><span class="taste">试听</span>{{ bookNameInit(info.courseTitle,14) }}</p>
                             <div class="range">
-                                <range />   
+                                <ranger />   
                             </div>
                             <div class="time"><span>{{current}}</span><span>{{duration}}</span></div>
                         </div>
@@ -61,7 +62,7 @@
 </template>
 
 <script>
-    import range from '../../components/basic/Range'
+    import ranger from './ranger'
     import shareBtn from '../../components/basic/Share'
     import { mapState } from 'vuex'
     import store from '../../vuex/store';
@@ -80,7 +81,7 @@
             }
         },
         computed: {
-            ...mapState(['readAudio','readPlaying','readCurrentTime','readDuration','showCardModal','readLoadStart']),
+            ...mapState(['readCurrentTime','readDuration']),
             current() {
                 return this.timerFomart(this.readCurrentTime)
             },
@@ -133,9 +134,33 @@
              
         },
         methods:{
+            // 音频播放结束事件
+            musicEnded () {
+              this.$refs.tryaudio.load()
+              this.$refs.tryaudio.pause()
+            },
+            // 音乐播放时间更新事件
+            musicTimeUpdate () {
+              store.dispatch({
+                type: 'set_CurrentTime',
+                time: Math.floor(this.$refs.tryaudio.currentTime)
+              })
+            },
+            // 可以播放事件
+            musicCanPlay () {
+              store.dispatch({
+                type: 'set_ReadDuration',
+                duration: Math.floor(this.$refs.tryaudio.duration)
+              })
+            },
             togglePlay() {
-                this.isPlaying = !this.isPlaying;
-                store.commit('togglePlay');
+                if (this.isPlaying) {
+                    this.isPlaying = false
+                    state.audioelement.pause()
+                } else {
+                    this.isPlaying = true
+                    state.audioelement.play()
+                };
             },
             async getUserInfo() {
                 let self = this;
@@ -187,18 +212,10 @@
             },
             playSetting(){
                 const _this = this;
-                let readAudio = {};
-                readAudio.isPrev = false;
-                readAudio.isNext = false;
-                // 获取播放地址
-                readAudio.src = _this.info.simpleAudition;
-                // 更新vx数据
-                store.commit({ type: 'setAudio', readAudio: readAudio });
                 // 设置播放元素数据
-                store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
-                // store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
+                this.$refs.tryaudio.src = _this.info.simpleAudition;
                 // 这里，很迷，触发播放
-                store.getters.getAudioElement.load()
+                this.$refs.tryaudio.load()
             },
             timerFomart (time) {
                 if (isNaN(time)) return '00:00';
@@ -248,7 +265,7 @@
                 });
             },
         },
-        components:{ range,shareBtn }
+        components:{ ranger,shareBtn }
     }
 </script>
 
