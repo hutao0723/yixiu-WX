@@ -24,5 +24,7 @@ export default {
 	startTimestamp: 0,
 	// 曝光参数相关
 	referer: '',
-	videoToggle: true
+    videoToggle: true,
+    //h5分享audio元素
+    shareAudioElement:''
 };

@@ -1,6 +1,6 @@
 <template>
     <div class="sharePages">
-        <audio id="myaudio" ref="tryaudio" @timeupdate="musicTimeUpdate" @canplay="musicCanPlay"  @ended="musicEnded"></audio>
+        <audio  ref="tryaudio" @timeupdate="musicTimeUpdate" @canplay="musicCanPlay"  @ended="musicEnded"></audio>
         <div class="shareContainer">
             <div class="bg">
                 <div class="logo">
@@ -78,6 +78,7 @@
                 playBookName:'',
                 shareBtn:false,
                 bookID:'',
+                dataUpdated:false,
             }
         },
         computed: {
@@ -98,9 +99,9 @@
             // 分享内容
             let shareContent = '';
             if (pageInfo.success) {
+                _this.dataUpdated = true;
                 _this.info = pageInfo.data;
                 shareContent = pageInfo.data.shareContent
-                _this.playSetting();
                 _this.dataInitail();
             } else {
                 console.log("获取数据失败");
@@ -130,14 +131,23 @@
             })  
         },
         mounted(){
+            
+        },
+        updated(){
             const _this = this;
-             
+            if(_this.dataUpdated){
+                _this.playSetting();
+                _this.dataUpdated = false;
+                let el = _this.$refs.tryaudio;
+                _this.$store.commit('getShareAudioElement',el)
+            }
         },
         methods:{
             // 音频播放结束事件
             musicEnded () {
-              this.$refs.tryaudio.load()
-              this.$refs.tryaudio.pause()
+                this.$refs.tryaudio.load()
+                this.$refs.tryaudio.pause()
+                this.$store.commit('setSharePlayWidth'); 
             },
             // 音乐播放时间更新事件
             musicTimeUpdate () {
@@ -154,12 +164,14 @@
               })
             },
             togglePlay() {
+                console.log(this.$refs.tryaudio)
                 if (this.isPlaying) {
                     this.isPlaying = false
-                    state.audioelement.pause()
+                    this.$refs.tryaudio.pause()
                 } else {
                     this.isPlaying = true
-                    state.audioelement.play()
+                    console.log(this.$refs.tryaudio)
+                    this.$refs.tryaudio.play()
                 };
             },
             async getUserInfo() {
@@ -175,7 +187,7 @@
                 let _this = this;
                 let params = {
                     commentId: _this.$route.query.commentId
-                    // commentId: 71
+                     //commentId: 71
                 };
                 const url = `/comment/h5/share`;
                 const res = await _this.$http.get(url, {
@@ -215,7 +227,7 @@
                 // 设置播放元素数据
                 this.$refs.tryaudio.src = _this.info.simpleAudition;
                 // 这里，很迷，触发播放
-                this.$refs.tryaudio.load()
+                // this.$refs.tryaudio.load()
             },
             timerFomart (time) {
                 if (isNaN(time)) return '00:00';
@@ -257,7 +269,6 @@
                 }
             },
             getMonitor(dcm,dpm) {
-                console.log(dpm)
                 // item tabindex dpmc
                 return JSON.stringify({
                     'dcm': dcm,
@@ -419,7 +430,7 @@
                     width: 632/@rem;
                     margin: 0 auto;
                     //border-top: 1px #C5C5C5 dashed;
-                    background: url('./Line-5_02.png') repeat-x top left;
+                    background: url('http://yun.dui88.com/Line-5_02.png') repeat-x top left;
                     line-height: 80/@rem;
                     font-size: 26/@rem;
                     color: #4D4D4D;
@@ -440,17 +451,16 @@
                 margin: 90/@rem auto 0;
                 padding-bottom: 150/@rem;
                 .audio{
-                    position: relative;
+                    display:flex;
+                    flex-flow:row;
                     box-sizing: border-box;
-                    padding-left: 134/@rem;
                     .play{
                         height: 108/@rem;
                         width: 108/@rem;
-                        position: absolute;
+                        position: relative;
                         overflow: hidden;
                         background: #fff;
-                        top: 0;
-                        left: 0;
+                        margin-right: 26/@rem;
                         img{
                             display: block;
                             width: 100%;
@@ -481,7 +491,7 @@
                     .playInfo{
                         color: #333;
                         flex:1;
-                        
+                        overflow: hidden;
                         p{
                             line-height: 32/@rem;
                             font-size: 30/@rem;

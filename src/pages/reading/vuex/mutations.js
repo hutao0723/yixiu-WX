@@ -91,5 +91,9 @@ export default {
     setSharePlayWidth (state) {
         state.readCurrentTime = 0;
     },
+    // 获取H5分享元素
+    getShareAudioElement (state,el) {
+        state.shareAudioElement = el;
+    },
 }
 

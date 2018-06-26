@@ -67,8 +67,8 @@ export default {
 					}
 				}
 			}
-			if (this.type === 'volume' && this.$store.getters.getAudioElement) {
-				this.$store.getters.getAudioElement.volume = this.volume
+			if (this.type === 'volume' && this.$store.state.shareAudioElement) {
+				this.$store.state.shareAudioElement.volume = this.volume
 				return {
 					'width': `${this.volume * 100}%`
 				}
@@ -76,6 +76,7 @@ export default {
 		},
 
 		progressBall () {
+
 			if (this.type === 'progress') {
 				if (this.$store.getters.getIsLoadStart) {
 					return {
@@ -83,16 +84,17 @@ export default {
 					}
 				} else {
 					return {
+                        // 播放进度 / 播放时长
 						'left': `calc(${(this.$store.getters.getCurrentTime / this.$store.getters.getMusicDuration * 100).toFixed(2)}%)`
 					}
 				}
 			}
-			if (this.type === 'volume' && this.$store.getters.getAudioElement) {
-				this.$store.getters.getAudioElement.volume = this.volume
+			if (this.type === 'volume' && this.$store.state.shareAudioElement) {
+				this.$store.state.shareAudioElement.volume = this.volume
 				return {
 					'left': `calc(${this.volume * 100}% - 7px)`
 				}
-			}
+            }
 		}
 	},
 	methods: {
@@ -102,18 +104,19 @@ export default {
 		mouseMove (event) {
 			if (canDrag) {
 				let e = event || window.event
-				let mouseX = e.pageX
+                let mouseX = e.pageX
+                console.log(mouseX)
 				let offsetLeft = this.$refs.duration.offsetLeft
 				persentWidth = Math.floor((mouseX - offsetLeft) / this.$refs.duration.offsetWidth * 100)
 				persentWidth = persentWidth > 100 ? 100 : persentWidth
 				persentWidth = persentWidth < 0 ? 0 : persentWidth
 				if (this.type === 'progress') {
-					// this.$store.getters.getAudioElement.currentTime = this.duration * persentWidth / 100
+					// this.$store.state.shareAudioElement.currentTime = this.duration * persentWidth / 100
 					this.$refs.currentProgress.style.width = `${persentWidth}%`
 					this.$refs.ball.style.left = `calc(${persentWidth}% - 7px)`
 				}
 				if (this.type === 'volume') {
-					this.$store.getters.getAudioElement.volume = persentWidth / 100
+					this.$store.state.shareAudioElement.volume = persentWidth / 100
 					this.$refs.currentProgress.style.width = `calc(${persentWidth}%`
 					this.$refs.ball.style.left = `calc(${persentWidth}% - 7px)`
 				}
@@ -125,11 +128,11 @@ export default {
 			if (canDrag !== false) {
 				canDrag = false
 				if (this.type === 'progress') {
-					if (isNaN(this.$store.getters.getAudioElement.duration)) return
-					this.$store.getters.getAudioElement.currentTime = this.$store.getters.getAudioElement.duration * persentWidth / 100
+					if (isNaN(this.$store.state.shareAudioElement.duration)) return
+					this.$store.state.shareAudioElement.currentTime = this.$store.state.shareAudioElement.duration * persentWidth / 100
 				}
 				if (this.type === 'volume') {
-					this.$store.getters.getAudioElement.volume = persentWidth / 100
+					this.$store.state.shareAudioElement.volume = persentWidth / 100
 				}
 			}
 		},
@@ -137,11 +140,12 @@ export default {
 			if (canDrag) {
 				if (this.type === 'progress') {
 					let mouseX = event.touches[0].pageX
-					let offsetLeft = this.$refs.duration.offsetLeft
+                    let offsetLeft = this.$refs.duration.offsetLeft
+                    console.log(offsetLeft)
 					persentWidth = Math.floor((mouseX - offsetLeft) / this.$refs.duration.offsetWidth * 100)
 					persentWidth = persentWidth > 100 ? 100 : persentWidth
 					persentWidth = persentWidth < 0 ? 0 : persentWidth
-					// this.$store.getters.getAudioElement.currentTime = this.duration * persentWidth / 100
+					// this.$store.state.shareAudioElement.currentTime = this.duration * persentWidth / 100
 					this.$refs.currentProgress.style.width = `${persentWidth}%`
 					this.$refs.ball.style.left = `calc(${persentWidth}% - 7px)`
 				}
@@ -150,7 +154,7 @@ export default {
 					let offsetLeft = this.$refs.duration.offsetLeft
 					persentWidth = Math.floor((mouseX - offsetLeft) / this.$refs.duration.offsetWidth * 100)
 					// alert(Math.floor((mouseX - offsetLeft) / this.$refs.duration.offsetWidth * 100))
-					this.$store.getters.getAudioElement.volume = persentWidth / 100
+					this.$store.state.shareAudioElement.volume = persentWidth / 100
 					this.$refs.currentProgress.style.width = `${persentWidth}%`
 					this.$refs.ball.style.left = `calc(${persentWidth}% - 7px)`
 				}
@@ -162,11 +166,11 @@ export default {
 			if (canDrag !== false) {
 				canDrag = false
 				if (this.type === 'progress') {
-					if (isNaN(this.$store.getters.getAudioElement.duration)) return
-					this.$store.getters.getAudioElement.currentTime = this.$store.getters.getAudioElement.duration * persentWidth / 100
+					if (isNaN(this.$store.state.shareAudioElement.duration)) return
+					this.$store.state.shareAudioElement.currentTime = this.$store.state.shareAudioElement.duration * persentWidth / 100
 				}
 				if (this.type === 'volume') {
-					this.$store.getters.getAudioElement.volume = persentWidth / 100
+					this.$store.state.shareAudioElement.volume = persentWidth / 100
 				}
 			}
 		},
@@ -178,8 +182,8 @@ export default {
 				persentWidth = Math.floor((mouseX - offsetLeft) / this.$refs.duration.offsetWidth * 100)
 				persentWidth = persentWidth > 100 ? 100 : persentWidth
 				persentWidth = persentWidth < 0 ? 0 : persentWidth
-				if (isNaN(this.$store.getters.getAudioElement.duration)) return
-				this.$store.getters.getAudioElement.currentTime = Math.floor(this.$store.getters.getAudioElement.duration * persentWidth) / 100
+				if (isNaN(this.$store.state.shareAudioElement.duration)) return
+				this.$store.state.shareAudioElement.currentTime = Math.floor(this.$store.state.shareAudioElement.duration * persentWidth) / 100
 				this.$refs.currentProgress.style.width = `${persentWidth}%`
 				this.$refs.ball.style.left = `calc(${persentWidth}% - 7px)`
 			// }
@@ -188,7 +192,7 @@ export default {
 			// 	let mouseX = e.pageX
 			// 	let offsetLeft = this.$refs.duration.offsetLeft
 			// 	persentWidth = Math.floor((mouseX - offsetLeft) / this.$refs.duration.offsetWidth * 100)
-			// 	this.$store.getters.getAudioElement.volume = persentWidth / 100
+			// 	this.$store.state.shareAudioElement.volume = persentWidth / 100
 			// 	this.$refs.currentProgress.style.width = `${persentWidth}%`
 			// 	this.$refs.ball.style.left = `calc(${persentWidth}% - 7px)`
 			// }
