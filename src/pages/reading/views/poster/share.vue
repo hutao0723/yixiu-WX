@@ -1,5 +1,6 @@
 <template>
     <div class="sharePages">
+        <audio  ref="tryaudio" @timeupdate="musicTimeUpdate" @canplay="musicCanPlay"  @ended="musicEnded"></audio>
         <div class="shareContainer">
             <div class="bg">
                 <div class="logo">
@@ -43,9 +44,9 @@
                             </div>
                         </div>
                         <div class="playInfo">
-                            <p class="name"><span class="taste">试听</span>{{ bookNameInit(info.courseTitle,14) }}</p>
+                            <p class="name"><span class="taste">试听</span>{{ bookNameInit(info.courseTitle,13) }}</p>
                             <div class="range">
-                                <range />   
+                                <ranger />   
                             </div>
                             <div class="time"><span>{{current}}</span><span>{{duration}}</span></div>
                         </div>
@@ -61,7 +62,7 @@
 </template>
 
 <script>
-    import range from '../../components/basic/Range'
+    import ranger from './ranger'
     import shareBtn from '../../components/basic/Share'
     import { mapState } from 'vuex'
     import store from '../../vuex/store';
@@ -77,15 +78,16 @@
                 playBookName:'',
                 shareBtn:false,
                 bookID:'',
+                dataUpdated:false,
             }
         },
         computed: {
-            ...mapState(['readAudio','readPlaying','readCurrentTime','readDuration','showCardModal','readLoadStart']),
+            ...mapState(['shareCurrentTime','shareDuration']),
             current() {
-                return this.timerFomart(this.readCurrentTime)
+                return this.timerFomart(this.shareCurrentTime)
             },
             duration() {
-                return this.timerFomart(this.readDuration)
+                return this.timerFomart(this.shareDuration)
             }
         },
         async created(){
@@ -97,9 +99,9 @@
             // 分享内容
             let shareContent = '';
             if (pageInfo.success) {
+                _this.dataUpdated = true;
                 _this.info = pageInfo.data;
                 shareContent = pageInfo.data.shareContent
-                _this.playSetting();
                 _this.dataInitail();
             } else {
                 console.log("获取数据失败");
@@ -129,13 +131,49 @@
             })  
         },
         mounted(){
+            
+        },
+        updated(){
             const _this = this;
-             
+            if(_this.dataUpdated){
+                _this.playSetting();
+                _this.dataUpdated = false;
+                let el = _this.$refs.tryaudio;
+                _this.$store.commit('getShareAudioElement',el)
+            }
         },
         methods:{
+            // 音频播放结束事件
+            musicEnded () {
+                this.$refs.tryaudio.load()
+                this.$refs.tryaudio.pause()
+                this.$store.commit('setSharePlayWidth'); 
+                // 播放结束切换图标
+                this.isPlaying = false;
+            },
+            // 音乐播放时间更新事件
+            musicTimeUpdate () {
+              store.dispatch({
+                type: 'set_shareCurrentTime',
+                time: Math.floor(this.$refs.tryaudio.currentTime)
+              })
+            },
+            // 可以播放事件
+            musicCanPlay () {
+              store.dispatch({
+                type: 'set_shareReadDuration',
+                duration: Math.floor(this.$refs.tryaudio.duration)
+              })
+            },
             togglePlay() {
-                this.isPlaying = !this.isPlaying;
-                store.commit('togglePlay');
+                if (this.isPlaying) {
+                    this.isPlaying = false
+                    this.$refs.tryaudio.pause()
+                } else {
+                    this.isPlaying = true
+                    this.$store.commit('pause')
+                    this.$refs.tryaudio.play()
+                };
             },
             async getUserInfo() {
                 let self = this;
@@ -150,7 +188,7 @@
                 let _this = this;
                 let params = {
                     commentId: _this.$route.query.commentId
-                    // commentId: 71
+                    //commentId: 71
                 };
                 const url = `/comment/h5/share`;
                 const res = await _this.$http.get(url, {
@@ -187,18 +225,11 @@
             },
             playSetting(){
                 const _this = this;
-                let readAudio = {};
-                readAudio.isPrev = false;
-                readAudio.isNext = false;
-                // 获取播放地址
-                readAudio.src = _this.info.simpleAudition;
-                // 更新vx数据
-                store.commit({ type: 'setAudio', readAudio: readAudio });
                 // 设置播放元素数据
-                store.getters.getAudioElement.setAttribute('src', store.getters.getAudioInfo.src);
-                // store.getters.getAudioElement.setAttribute('title', store.getters.getAudioInfo.title); 
+                this.$refs.tryaudio.src = _this.info.simpleAudition;
+                
                 // 这里，很迷，触发播放
-                store.getters.getAudioElement.load()
+                // this.$refs.tryaudio.load()
             },
             timerFomart (time) {
                 if (isNaN(time)) return '00:00';
@@ -240,7 +271,6 @@
                 }
             },
             getMonitor(dcm,dpm) {
-                console.log(dpm)
                 // item tabindex dpmc
                 return JSON.stringify({
                     'dcm': dcm,
@@ -248,7 +278,7 @@
                 });
             },
         },
-        components:{ range,shareBtn }
+        components:{ ranger,shareBtn }
     }
 </script>
 
@@ -402,7 +432,7 @@
                     width: 632/@rem;
                     margin: 0 auto;
                     //border-top: 1px #C5C5C5 dashed;
-                    background: url('./Line-5_02.png') repeat-x top left;
+                    background: url('http://yun.dui88.com/Line-5_02.png') repeat-x top left;
                     line-height: 80/@rem;
                     font-size: 26/@rem;
                     color: #4D4D4D;
@@ -423,17 +453,16 @@
                 margin: 90/@rem auto 0;
                 padding-bottom: 150/@rem;
                 .audio{
-                    position: relative;
+                    display:flex;
+                    flex-flow:row;
                     box-sizing: border-box;
-                    padding-left: 134/@rem;
                     .play{
                         height: 108/@rem;
                         width: 108/@rem;
-                        position: absolute;
+                        position: relative;
                         overflow: hidden;
                         background: #fff;
-                        top: 0;
-                        left: 0;
+                        margin-right: 26/@rem;
                         img{
                             display: block;
                             width: 100%;
@@ -464,7 +493,7 @@
                     .playInfo{
                         color: #333;
                         flex:1;
-                        
+                        overflow: hidden;
                         p{
                             line-height: 32/@rem;
                             font-size: 30/@rem;

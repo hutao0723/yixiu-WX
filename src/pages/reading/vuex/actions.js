@@ -11,6 +11,13 @@ export default {
 	},
 	set_ReadDuration ({commit}, obj) {
 		commit('setReadDuration', obj)
+    },
+    // H5分享
+    set_shareCurrentTime ({commit}, obj) {
+		commit('setShareCurrentTime', obj)
+	},
+	set_shareReadDuration ({commit}, obj) {
+		commit('setShareReadDuration', obj)
 	},
 	play_Next ({commit}) {
 		commit('playNext')
