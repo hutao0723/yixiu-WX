@@ -873,7 +873,13 @@
         const url = API.getCoupon;
         let activityId
         let distributorId
-        activityId = this.$route.query.activityId ? this.$route.query.activityId: ''
+        // activityId = this.$route.query.activityId ? this.$route.query.activityId: ''
+        if(this.$route.query.activityId){
+          console.log(activityId)
+          activityId = this.$route.query.activityId 
+        }else{
+          return
+        }
         distributorId = this.$route.query.distributorId ? this.$route.query.distributorId:''
         const res = await this.$http.post(url, {activityId,distributorId},{ emulateJSON: true });
         console.log(res)
@@ -2040,7 +2046,7 @@
     width: 100%;
     background-size: 100%;
     margin-top: 95/@rem;
-    background-image: url('https://yun.dui88.com/yoofans/images/201806/line1.png');
+    background-image: url('https://yun.dui88.com/yoofans/images/201806/circle.png');
     position:relative;
     background-repeat:no-repeat; 
   }
