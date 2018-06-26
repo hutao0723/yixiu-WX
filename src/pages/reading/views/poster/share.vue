@@ -44,7 +44,7 @@
                             </div>
                         </div>
                         <div class="playInfo">
-                            <p class="name"><span class="taste">试听</span>{{ bookNameInit(info.courseTitle,14) }}</p>
+                            <p class="name"><span class="taste">试听</span>{{ bookNameInit(info.courseTitle,13) }}</p>
                             <div class="range">
                                 <ranger />   
                             </div>
@@ -82,12 +82,12 @@
             }
         },
         computed: {
-            ...mapState(['readCurrentTime','readDuration']),
+            ...mapState(['shareCurrentTime','shareDuration']),
             current() {
-                return this.timerFomart(this.readCurrentTime)
+                return this.timerFomart(this.shareCurrentTime)
             },
             duration() {
-                return this.timerFomart(this.readDuration)
+                return this.timerFomart(this.shareDuration)
             }
         },
         async created(){
@@ -148,29 +148,30 @@
                 this.$refs.tryaudio.load()
                 this.$refs.tryaudio.pause()
                 this.$store.commit('setSharePlayWidth'); 
+                // 播放结束切换图标
+                this.isPlaying = false;
             },
             // 音乐播放时间更新事件
             musicTimeUpdate () {
               store.dispatch({
-                type: 'set_CurrentTime',
+                type: 'set_shareCurrentTime',
                 time: Math.floor(this.$refs.tryaudio.currentTime)
               })
             },
             // 可以播放事件
             musicCanPlay () {
               store.dispatch({
-                type: 'set_ReadDuration',
+                type: 'set_shareReadDuration',
                 duration: Math.floor(this.$refs.tryaudio.duration)
               })
             },
             togglePlay() {
-                console.log(this.$refs.tryaudio)
                 if (this.isPlaying) {
                     this.isPlaying = false
                     this.$refs.tryaudio.pause()
                 } else {
                     this.isPlaying = true
-                    console.log(this.$refs.tryaudio)
+                    this.$store.commit('pause')
                     this.$refs.tryaudio.play()
                 };
             },
@@ -187,7 +188,7 @@
                 let _this = this;
                 let params = {
                     commentId: _this.$route.query.commentId
-                     //commentId: 71
+                    //commentId: 71
                 };
                 const url = `/comment/h5/share`;
                 const res = await _this.$http.get(url, {
@@ -226,6 +227,7 @@
                 const _this = this;
                 // 设置播放元素数据
                 this.$refs.tryaudio.src = _this.info.simpleAudition;
+                
                 // 这里，很迷，触发播放
                 // this.$refs.tryaudio.load()
             },

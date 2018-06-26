@@ -60,6 +60,14 @@ export default {
 	},
 	setReadDuration (state, obj) {
 		state.readDuration = obj.duration
+    },
+    // H5分享
+    setShareCurrentTime (state, obj) {
+		state.shareCurrentTime = obj.time
+	},
+	setShareReadDuration (state, obj) {
+        console.log(1)
+		state.shareDuration = obj.duration
 	},
 	// 设置音乐是否正在加载
 	setReadLoadStart (state, obj) {
