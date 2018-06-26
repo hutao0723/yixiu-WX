@@ -60,6 +60,14 @@ export default {
 	},
 	setReadDuration (state, obj) {
 		state.readDuration = obj.duration
+    },
+    // H5分享
+    setShareCurrentTime (state, obj) {
+		state.shareCurrentTime = obj.time
+	},
+	setShareReadDuration (state, obj) {
+        console.log(1)
+		state.shareDuration = obj.duration
 	},
 	// 设置音乐是否正在加载
 	setReadLoadStart (state, obj) {
@@ -86,6 +94,14 @@ export default {
     },
     setBottomNavToggle(state, obj) {
       state.bottomNavToggle = obj.bottomNavToggle;
-    }
+    },
+    // 分享页面设置初始为0
+    setSharePlayWidth (state) {
+        state.shareCurrentTime = 0;
+    },
+    // 获取H5分享元素
+    getShareAudioElement (state,el) {
+        state.shareAudioElement = el;
+    },
 }
 

@@ -50,7 +50,7 @@ import { mapState } from 'vuex';
     },
     methods: {
       goAudioPage: function() {
-        if (!this.readAudio.src) {
+        if (!this.readAudio.src || !this.readAudio.courseTitle) {
           this.notice = true;
           this.animation = true;
         } else {
