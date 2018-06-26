@@ -97,7 +97,7 @@ export default {
     },
     // 分享页面设置初始为0
     setSharePlayWidth (state) {
-        state.readCurrentTime = 0;
+        state.shareCurrentTime = 0;
     },
     // 获取H5分享元素
     getShareAudioElement (state,el) {
