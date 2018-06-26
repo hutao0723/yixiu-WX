@@ -22,7 +22,7 @@
       </div>
       <div id="maincontent" class="home-detail" ref="homemain" v-show="tabActive">
         <div class="home-content" :monitor-log="getMonitor('0.0.0.0', '820.2.0')">
-          <img src="http://yun.dui88.com/youfen/images/detail20180614_01.jpg" alt="">
+          <img src="http://yun.dui88.com/youfen/images/detail20180614_15.jpg" alt="">
           <img src="http://yun.dui88.com/youfen/images/detail20180614_02.jpg" alt="">
           <img src="http://yun.dui88.com/youfen/images/detail20180614_03.jpg" alt="">
           <img src="http://yun.dui88.com/youfen/images/detail20180614_04.jpg" alt="">
