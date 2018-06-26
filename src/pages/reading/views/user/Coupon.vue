@@ -294,6 +294,9 @@ export default {
     box-sizing: border-box;
     .coupon-title{
       height: 50/@rem;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
       padding-top: 35/@rem;
       padding-left: 50/@rem;
       .fontSize(36);
