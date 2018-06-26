@@ -1181,7 +1181,7 @@
     }
     .home-review {
       background: #fff;
-      padding-bottom: 240/@rem;
+      padding-bottom: 310/@rem;
       h2 {
         .text(40,
         56);
@@ -2105,6 +2105,11 @@
       color: #333;
       padding-left: 13/@rem;
       font-size: 28/@rem;
+      overflow: hidden;
+      white-space: nowrap;
+      box-sizing: border-box;
+      text-overflow: ellipsis;
+      width: 310/@rem;
       &::before{
         content:"";
         width: 3/@rem;
