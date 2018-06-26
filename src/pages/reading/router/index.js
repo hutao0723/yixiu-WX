@@ -256,6 +256,15 @@ export default new Router({
       }
     },
     {
+        path: '/share',
+        name:'share',
+        component: function (resolve) {
+          require.ensure([], function () {
+            resolve(require('../views/poster/share'));
+          }, 'reading_share');
+        }
+      },
+    {
       path: '/graduation',
       name:'graduation',
       component: function (resolve) {

@@ -26,16 +26,15 @@ import { monitorHandler } from './components/utils/monitorHandler';
 monitorHandler();
 // 设备id
 if (!window.localStorage.getItem('deviceId')) {
-  setTimeout(function(){
-    new fingerprint().get(function(deviceId) {
-    window.localStorage.setItem('deviceId', deviceId) // a hash, representing your device fingerprint
-  })},100)
+      new fingerprint().get(function(deviceId) {
+      Vue.http.headers.common['ext-deviceId'] = deviceId;
+  })
 }
 
 // 埋点辅助tk
 (function GetRequest() {   
   var url = window.location.href; //获取url中"?"符后的字串   
-  var theRequest = new Object();   
+  var theRequest = new Object();
   if (url.indexOf("?") != -1) {
      var index= url.indexOf('?')
      var str = url.substr(index+1); 
@@ -49,7 +48,7 @@ if (!window.localStorage.getItem('deviceId')) {
 
 Vue.http.headers.common['ext-deviceId'] = window.localStorage.getItem('deviceId');
 Vue.http.headers.common['from'] = 'read';
-// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjrgAVYqk8AMGNneTZ9ZbWAxFnvP6y5WPZUa33nDuGDBWcVKQdzwjDjvaMXXmhtMPGGpRddnbWVEX48yPaiUEHAwsWfAqFXGQGZzbxK12ftU7X2r9hnvz5RmvZC5rfWhVcVWxs';
+// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWU3mytFEThAbVRbBsiG99J5L3AycHw9RQzaApFRydFrQ94M49MsJcX715G25172Pf1KBoFocRFwKY5dnB1hHqaxtZhKtX8vv65wehmLQumJMZem1Y7WHFSr4bvsC39NHLkGmgpSiZPB';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
@@ -86,12 +85,16 @@ Vue.prototype.setTitle = function (t) {
   document.title = t;
 }
 
-Vue.prototype.wxShare = function (id) {
+Vue.prototype.wxShare = function (id,obj) {
+    
   let msg = {
     title: '每天10分钟，轻松阅读，日有所得', // 分享标题
     desc: '打卡满49天，退还所有学费，还可以获得奖学金！', // 分享描述
     link: id?'http://k.youfen666.com/reading.html#/index/home?dcd=u_'+ id:'http://k.youfen666.com/reading.html#/index/home', // 分享链接 默认以当前链接
     imgUrl: 'http://yun.dui88.com/youfen/images/read_share.png', // 分享图标
+  }
+  if(obj){
+    msg = obj;   
   }
   const urlData = `/wechat/getJsapiSignature`;
   const url = location.href.split("#")[0];

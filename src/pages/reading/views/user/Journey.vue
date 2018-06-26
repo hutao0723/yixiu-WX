@@ -25,7 +25,7 @@
                 </div>
               </div>
               <div class="row operate fr">
-                <div class="column-center operate-share" @click="clickFun($event,goPoster,item.id)" :monitor-log="getMonitor('8001.'+item.readId+'.0.'+item.courseId, '826.0.1-'+ $index)">
+                <div class="column-center operate-share" @click="clickFun($event,goPoster,item)" :monitor-log="getMonitor('8001.'+item.readId+'.0.'+item.courseId, '826.0.1-'+ $index)">
                   <i class="iconfont icon-share"></i>
                 </div>
                 <div class="column-center" :class="point?'point':''"   @click.stop="clickFun($event,thumbsUp,{item:item,index:$index})" :monitor-log="getMonitor('8001.'+ item.readId +'.0.'+item.courseId, '826.0.2-' + $index)">
@@ -215,12 +215,15 @@ export default {
       }
       this.$set(row,'expand', this.expandStatus[row.id])
     },
-    goPoster(id){
-      console.log(id)
-      this.$router.push({name:'poster',query:{commentId:id,lastClock:0,isClock:1}})
+    goPoster(item){
+      if(item.posterType == "H5"){
+        this.$router.push({name:'share',query:{commentId:item.id,lastClock:0,isClock:1}})
+      }else{
+        this.$router.push({name:'poster',query:{commentId:item.id,lastClock:0,isClock:1}})
+      }
     }
   }
-};
+}
 </script>
 
 <style lang="less">

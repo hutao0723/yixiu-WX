@@ -21,7 +21,8 @@
         "courseVerticalCover":"https://yun.dui88.com/youfen/images/1eimpc7gu1.jpg",
         "userImgUrl": "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=768904644,500415380&fm=27&gp=0.jpg",
         "userNickname": "我的名字",
-        "userPraise": 0
+        "userPraise": 0,
+        "posterType":"H5"
       },
       {
         "content": "我们曾经都是文艺青年，，但从前我们不知道，红是世界的，尘是自己的，没有阳光的季节。",
@@ -43,7 +44,8 @@
         "userId": 2,
         "userImgUrl": "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=768904644,500415380&fm=27&gp=0.jpg",
         "userNickname": "我的名字",
-        "userPraise": 1
+        "userPraise": 1,
+        "posterType":"IMG"
       },
       {
         "content": "我们曾经都是文艺青年，而原来文艺青年们，现在都已经不玩儿憔悴了。我们曾经都是文艺青年，而原来文艺青年们，现在都已经不玩儿憔悴了。",
@@ -65,7 +67,8 @@
         "userId": 3,
         "userImgUrl": "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=768904644,500415380&fm=27&gp=0.jpg",
         "userNickname": "我的名字",
-        "userPraise": 0
+        "userPraise": 0,
+        "posterType":"H5"
       },
       {
         "content": "",
@@ -85,7 +88,8 @@
         "userId": 3,
         "userImgUrl": "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=768904644,500415380&fm=27&gp=0.jpg",
         "userNickname": "我的名字",
-        "userPraise": 0
+        "userPraise": 0,
+        "posterType":"IMG"
       }
     ],
     "first": 0,
