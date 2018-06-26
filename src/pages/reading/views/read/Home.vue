@@ -997,7 +997,7 @@
       z-index: 1000;
     }
     .home-service.bottom {
-      bottom: 240/@rem;
+      bottom: 300/@rem;
     }
     .home-detail {
       // padding-top: 100/@rem;
@@ -2147,7 +2147,7 @@
     height: 100/@rem;
     z-index:100;
     left: 15/@rem;
-    bottom: 115/@rem;
+    bottom: 210/@rem;
     background-size: 100% 100%;
     background-image: url("http://yun.duiba.com.cn/yoofans/images/201806/coupon-box.png");
     background-repeat: no-repeat;
