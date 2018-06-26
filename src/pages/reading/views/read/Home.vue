@@ -308,7 +308,7 @@
       let refreshCookie = true;
 
       // 防止cookie丢失
-      if (window.location.href.indexOf('afterLogin') == -1) {
+      if (window.location.href.indexOf('afterLogin') == -1 && window.location.href.indexOf('activityId') == -1) {
         let res = await this.$http.get('/baseLogin', {
           params: {
             dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
@@ -873,7 +873,13 @@
         const url = API.getCoupon;
         let activityId
         let distributorId
-        activityId = this.$route.query.activityId ? this.$route.query.activityId: ''
+        // activityId = this.$route.query.activityId ? this.$route.query.activityId: ''
+        if(this.$route.query.activityId){
+          console.log(activityId)
+          activityId = this.$route.query.activityId 
+        }else{
+          return
+        }
         distributorId = this.$route.query.distributorId ? this.$route.query.distributorId:''
         const res = await this.$http.post(url, {activityId,distributorId},{ emulateJSON: true });
         console.log(res)
@@ -892,7 +898,7 @@
 
                 //resultCode为0 已参与活动(awards有数据则未使用)
                 if(resp.resultCode == 0){
-                  this.frameTitleClass = "frame-line1"
+                  this.frameTitleClass = "frame-line3"
                   this.titleText = "您有一张优惠券可以使用哦"
                   this.CouponDialog = true
                 }
@@ -2040,7 +2046,7 @@
     width: 100%;
     background-size: 100%;
     margin-top: 95/@rem;
-    background-image: url('https://yun.dui88.com/yoofans/images/201806/line1.png');
+    background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/frame-line1.png');
     position:relative;
     background-repeat:no-repeat; 
   }
@@ -2049,7 +2055,7 @@
     width: 100%;
     background-size: 100%;
     margin-top: 95/@rem;
-    background-image: url('https://yun.dui88.com/yoofans/images/201806/line2.png');
+    background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/line2.png');
     position:relative;
     background-repeat:no-repeat; 
   }
@@ -2058,7 +2064,7 @@
     width: 100%;
     background-size: 100%;
     margin-top: 50/@rem;
-    background-image: url('https://yun.dui88.com/yoofans/images/201806/circle.png');
+    background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/circle.png');
     position:relative;
     background-repeat:no-repeat; 
   }
