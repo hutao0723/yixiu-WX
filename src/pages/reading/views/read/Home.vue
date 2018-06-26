@@ -869,53 +869,55 @@
       },
 
       // 获取优惠券弹框
-      getProjectile() {
+      async getProjectile() {
         const url = API.getCoupon;
         let activityId
         let distributorId
         activityId = this.$route.query.activityId ? this.$route.query.activityId: ''
         distributorId = this.$route.query.distributorId ? this.$route.query.distributorId:''
-        this.$http.post(url, {activityId,distributorId},{ emulateJSON: true }).then((res) => {
-          let objs = res.data
-          if (objs.success) {
-            let resp = objs.data
-            if(objs.data){
-              if(resp.awards.length <= 0){
-                return
-              }
-              this.awards = resp.awards[0]
-              this.resultCode = resp.resultCode
-              this.distributorHeadImgurl = resp.distributorHeadImgurl
-              this.distributorName = resp.distributorName
+        const res = await this.$http.post(url, {activityId,distributorId},{ emulateJSON: true });
+        console.log(res)
+        //this.$http.post(url, ,{ emulateJSON: true }).then((res) => {
+            let objs = res.data
+            if (objs.success) {
+              let resp = objs.data
+              if(objs.data){
+                if(resp.awards.length <= 0){
+                  return
+                }
+                this.awards = resp.awards[0]
+                this.resultCode = resp.resultCode
+                this.distributorHeadImgurl = resp.distributorHeadImgurl
+                this.distributorName = resp.distributorName
 
-              //resultCode为0 已参与活动(awards有数据则未使用)
-              if(resp.resultCode == 0){
-                this.frameTitleClass = "frame-line1"
-                this.titleText = "您有一张优惠券可以使用哦"
-                this.CouponDialog = true
-              }
-              // resultCode为1 券发放成功
-              if(resp.resultCode == 1){
-                if(resp.distributorName){
-                  this.frameTitleClass = resp.distributorName.length > 6?'frame-line2':'frame-line1'
-                  this.titleText = resp.distributorName + "送你一张优惠券"
-                  this.CouponDialog = true
-                }else{
-                  this.titleText = "恭喜您，捡到一张优惠券"
-                  this.frameTitleClass = "frame-line3"
+                //resultCode为0 已参与活动(awards有数据则未使用)
+                if(resp.resultCode == 0){
+                  this.frameTitleClass = "frame-line1"
+                  this.titleText = "您有一张优惠券可以使用哦"
                   this.CouponDialog = true
                 }
+                // resultCode为1 券发放成功
+                if(resp.resultCode == 1){
+                  if(resp.distributorName){
+                    this.frameTitleClass = resp.distributorName.length > 6?'frame-line2':'frame-line1'
+                    this.titleText = resp.distributorName + "送你一张优惠券"
+                    this.CouponDialog = true
+                  }else{
+                    this.titleText = "恭喜您，捡到一张优惠券"
+                    this.frameTitleClass = "frame-line3"
+                    this.CouponDialog = true
+                  }
+                }
+                // 优惠券关联的课程Id
+
+                this.couponCourseId = resp.awards[0].items[0].itemId;
+
+                this.couponId = resp.awards[0].couponId
               }
-              // 优惠券关联的课程Id
-
-              this.couponCourseId = resp.awards[0].items[0].itemId;
-
-              this.couponId = resp.awards[0].couponId
-            }
-          } else {
-            console.log("获取数据失败")
-          } 
-        }); 
+            } else {
+              console.log("获取数据失败")
+            } 
+        //}); 
       },
 
       // 关闭优惠券弹框

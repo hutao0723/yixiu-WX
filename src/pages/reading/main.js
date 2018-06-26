@@ -48,7 +48,7 @@ if (!window.localStorage.getItem('deviceId')) {
 
 Vue.http.headers.common['ext-deviceId'] = window.localStorage.getItem('deviceId');
 Vue.http.headers.common['from'] = 'read';
-// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWU3mytFEThAbVRbBsiG99J5L3AycHw9RQzaApFRydFrQ94M49MsJcX715G25172Pf1KBoFocRFwKY5dnB1hHqaxtZhKtX8vv65wehmLQumJMZem1Y7WHFSr4bvsC39NHLkGmgpSiZPB';
+// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjrgAVYqk8AMGNneTZ9ZbWAxFnvP6y5WPZUa33nDuGDBWcVKQdzwjDjvaMXXmhtMPGGpRddnbWVEX48yPaiUEHAwsWfAqFXGQGZzbxK12ftU7X2r9hnvz5RmusYsXdNg8fWHGN';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
@@ -58,9 +58,9 @@ Vue.http.interceptors.push((request, next) => {
     if (response.data.code == '000001') {
       console.log(response.data.code)
       let o = '/' + window.location.href.split('/').slice(3).join('/')
-      let reqObj = JSON.parse(request.body)
       let url;
       if (response.url.indexOf('/order/submit') > -1) {
+        let reqObj = JSON.parse(request.body)
         if (o.indexOf('?') > -1) {
           url = encodeURIComponent(o + '&courseId=' + reqObj.itemId);
         } else {
