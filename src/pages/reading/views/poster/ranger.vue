@@ -41,7 +41,7 @@ export default {
 	computed: {
 		musicCurrentTime () {
 			if (this.type === 'progress') {
-				return this.$store.getters.getCurrentTime ? this.$store.getters.getCurrentTime : '00:00'
+				return this.$store.getters.getShareCurrentTime ? this.$store.getters.getShareCurrentTime : '00:00'
 			}
 			if (this.type === 'volume') {
 				return false
@@ -49,7 +49,7 @@ export default {
 		},
 		musicDuration () {
 			if (this.type === 'progress') {
-				return this.$store.getters.getMusicDuration ? this.$store.getters.getMusicDuration : '00:00'
+				return this.$store.getters.getShareMusicDuration ? this.$store.getters.getShareMusicDuration : '00:00'
 			}
 			if (this.type === 'volume') {
 				return false
@@ -63,7 +63,7 @@ export default {
 					}
 				} else {
 					return {
-						'width': `calc(${(this.$store.getters.getCurrentTime / this.$store.getters.getMusicDuration * 100).toFixed(2)}%`
+						'width': `calc(${(this.$store.getters.getShareCurrentTime / this.$store.getters.getShareMusicDuration * 100).toFixed(2)}%`
 					}
 				}
 			}
@@ -85,7 +85,7 @@ export default {
 				} else {
 					return {
                         // 播放进度 / 播放时长
-						'left': `calc(${(this.$store.getters.getCurrentTime / this.$store.getters.getMusicDuration * 100).toFixed(2)}%)`
+						'left': `calc(${(this.$store.getters.getShareCurrentTime / this.$store.getters.getShareMusicDuration * 100).toFixed(2)}%)`
 					}
 				}
 			}
@@ -205,7 +205,6 @@ export default {
 		}
 	},
 	mounted () {
-		console.log(2222)
 		this.type = this.rangeType
 		this.currentcolor = this.currentColor
 		this.ballwidth = this.ballWidth

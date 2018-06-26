@@ -16,5 +16,9 @@ export default {
 	getMusicDuration: state => state.readDuration,
 	// 获取来源页面referer
 	getReferer: state => state.referer,
-	getEnterTime: state => state.enterTime
+    getEnterTime: state => state.enterTime,
+    // h5分享获取当前的播放进度
+	getShareCurrentTime: state => state.shareCurrentTime,
+	// h5分享获取音乐的播放时长
+	getShareMusicDuration: state => state.shareDuration,
 };
