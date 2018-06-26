@@ -308,7 +308,7 @@
       let refreshCookie = true;
 
       // 防止cookie丢失
-      if (window.location.href.indexOf('afterLogin') == -1) {
+      if (window.location.href.indexOf('afterLogin') == -1 && window.location.href.indexOf('activityId') == -1) {
         let res = await this.$http.get('/baseLogin', {
           params: {
             dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
