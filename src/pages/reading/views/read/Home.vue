@@ -293,7 +293,7 @@
     },
     filters: {},
     created() {
-      this.getProjectile()
+      
     },
     async mounted() {
       let self = this;
@@ -340,7 +340,9 @@
             userState.data.readState == -1
           ) {
             console.log('用户未购买未授权')
+
             self.pageStatus = 0;
+            self.getProjectile()
             self.getCommentTop();
             self.getReadList(self.$route.query.readId);
             store.commit({
@@ -358,8 +360,9 @@
           ) {
             console.log('用户未购买已授权')
             self.pageStatus = 1;
+            self.getProjectile()
             self.getCommentTop();
-            // self.getReadList(self.$route.query.readId);
+            self.getReadList(self.$route.query.readId);
             store.commit({
               type: 'setBottomNavToggle',
               bottomNavToggle: false
@@ -426,8 +429,9 @@
           ) {
             console.log('用户购买已关注已读完')
             self.pageStatus = 1;
+            self.getProjectile()
             self.getCommentTop();
-            // self.getReadList(self.$route.query.readId);
+            self.getReadList(self.$route.query.readId);
             store.commit({
               type: 'setBottomNavToggle',
               bottomNavToggle: true
