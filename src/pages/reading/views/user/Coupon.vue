@@ -49,6 +49,10 @@
         <div class="coupon-word">暂时没有优惠券哦</div>
       </div>
     </div> 
+    <div class="popup" v-show="popup">
+        <p>你还在训练营中</p>
+        <p>下次报名新训练营再使用</p>
+    </div>
   </div>
 </template>
 
@@ -75,7 +79,8 @@ export default {
       couponList: [],
 
       couponObj:{},
-
+        userState:false,
+        popup:false,
 
 
       //优惠券弹框
@@ -93,12 +98,24 @@ export default {
   computed: {
     ...mapState({})
   },
-  created() {
+  async created() {
     this.getTabList()
+    this.userState =  await self.getUsetState();
   },
   mounted () {
   },
   methods: {
+    // 获取用户状态
+    async getUsetState() {
+        let self = this;
+        let params = {};
+        const url = '/user/read/state';
+        const res = await this.$http.get(url, {
+            params
+        });
+
+        return res.data;
+    },
     checkTabList(num) {
       this.couponList = []
       this.pitch = num;
@@ -147,13 +164,21 @@ export default {
       });
     },
     jumpIndex(item) {
-      if(item.couponStatus == 2 && this.pitch == 1){
-        if(item.items != undefined){
-          this.$router.push("/index/home?planId=" + item.items[0].itemId +"&couponId="+item.couponId+'&readId=' + item.items[0].itemId);
+        const _this = this;
+        if(_this.userState.data.readState*1>=1 && _this.userState.data.readState*1<=2){
+            _this.popup = true;
+            setTimeout(() => {
+                _this.popup = false;
+            }, 2000)    
         }else{
-          this.$router.push("/index/home?planId=0&couponId="+item.couponId);
-        }
-      }
+            if(item.couponStatus == 2 && this.pitch == 1){
+                if(item.items != undefined){
+                    this.$router.push("/index/home?planId=" + item.items[0].itemId +"&couponId="+item.couponId+'&readId=' + item.items[0].itemId);
+                }else{
+                    this.$router.push("/index/home?planId=0&couponId="+item.couponId);
+                }
+            }
+        }   
     },
     waiting() {
       this.waitingToggle = true
@@ -185,6 +210,25 @@ export default {
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+}
+.popup{
+    position: fixed;
+    top: 600/@rem;
+    left: 165/@rem;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 14/@rem;
+    color: #fff;
+    text-align: center;
+    z-index: 10000;
+    width: 450/@rem;
+    height: 120/@rem;
+    color: #fff;
+    box-sizing: border-box;
+    padding: 18/@rem 0;
+    font-size: 30/@rem;
+    p{
+        line-height: 42/@rem;
+    }
 }
 .modal-mask{
   padding: 18/@rem 0;
