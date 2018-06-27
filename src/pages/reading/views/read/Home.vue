@@ -16,7 +16,7 @@
       <!-- <div class="home-bottom" @click="clickFun($event,tabActiveToggle,false)" :class="{bottom:bottomNavToggle}" v-show="tabActive"
         :monitor-log="getMonitor('0.0.0.0', '820.4.0')">去选课程</div> -->
       
-      <div class="coupon-box clearfix" v-show="selectCourseObj.preferPrice">
+      <div class="coupon-box clearfix" :class="{hasNav_b:bottomNavToggle}" v-show="selectCourseObj.preferPrice">
         <div class="fl coupon-text">{{selectCourseObj.couponUsedDesc}}</div>
         <div class="fr coupon-money"><span class="ft22">￥</span>{{selectCourseObj.couponPrice}}</div>
       </div>
@@ -874,7 +874,7 @@
         let activityId
         let distributorId
         // activityId = this.$route.query.activityId ? this.$route.query.activityId: ''
-        if(this.$route.query.activityId){
+        if(this.$route.query.activityId && !this.$route.query.courseId){
           console.log(activityId)
           activityId = this.$route.query.activityId 
         }else{
@@ -2160,10 +2160,14 @@
     height: 100/@rem;
     z-index:100;
     left: 15/@rem;
-    bottom: 210/@rem;
+    //bottom: 210/@rem;
+    bottom: 110/@rem;
     background-size: 100% 100%;
     background-image: url("http://yun.duiba.com.cn/yoofans/images/201806/coupon-box.png");
     background-repeat: no-repeat;
+    &.hasNav_b{
+        bottom: 210/@rem    
+    }
   .coupon-text{
     margin-left: 272/@rem;
     color: #fff;
