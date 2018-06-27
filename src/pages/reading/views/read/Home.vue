@@ -566,47 +566,55 @@
       // 支付
       wxPay(payment) {
         let self = this;
-
-        function onBridgeReady() {
-          WeixinJSBridge.invoke(
-            'getBrandWCPayRequest', {
-              "appId": payment.appId, //公众号名称，由商户传入     
-              "timeStamp": payment.timeStamp, //时间戳，自1970年以来的秒数     
-              "nonceStr": payment.nonceStr, //随机串     
-              "package": payment.package,
-              "signType": payment.signType, //微信签名方式：     
-              "paySign": payment.paySign //微信签名 
-            },
-            async function (res) {
-              if (res.err_msg == "get_brand_wcpay_request:ok") {
-
-                // 给url+时间戳
-                function url_add_hash(url, key) {
-                  var key = (key || 't') + '='; //默认是"t"  
-                  var reg = new RegExp(key + '\\d+'); //正则：t=1472286066028  
-                  var timestamp = +new Date();
-                  if (url.indexOf(key) > -1) { //有时间戳，直接更新  
-                    return url.replace(reg, key + timestamp);
-                  } else { //没有时间戳，加上时间戳  
-                    if (url.indexOf('#') > -1) {
-                      return url.split('#')[0] + '?' + key + timestamp + location.hash;
-                    } else {
-                      return url + '?' + key + timestamp;
-                    }
-                  }
-                }
-                setInterval(async function () {
-                  let userState = await self.getUsetState();
-                  if (userState.data.readState > 0) {
-                    window.location.href = url_add_hash(window.location.href)
-                  }
-                }, 1000)
-              } else {
-                self.payCancelToggle = true;
-                window.monitor && window.monitor.showLog(this);
-              }
+        // 给url+时间戳
+        function url_add_hash(url, key) {
+            var key = (key || 't') + '='; //默认是"t"  
+            var reg = new RegExp(key + '\\d+'); //正则：t=1472286066028  
+            var timestamp = +new Date();
+            if (url.indexOf(key) > -1) { //有时间戳，直接更新  
+            return url.replace(reg, key + timestamp);
+            } else { //没有时间戳，加上时间戳  
+            if (url.indexOf('#') > -1) {
+                return url.split('#')[0] + '?' + key + timestamp + location.hash;
+            } else {
+                return url + '?' + key + timestamp;
             }
-          );
+            }
+        }
+        function onBridgeReady() {
+            if(payment.appId*1<0){
+                setInterval(async function () {
+                    let userState = await self.getUsetState();
+                    if (userState.data.readState > 0) {
+                        window.location.href = url_add_hash(window.location.href)
+                    }
+                }, 1000)
+            }else{
+                WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest', {
+                        "appId": payment.appId, //公众号名称，由商户传入     
+                        "timeStamp": payment.timeStamp, //时间戳，自1970年以来的秒数     
+                        "nonceStr": payment.nonceStr, //随机串     
+                        "package": payment.package,
+                        "signType": payment.signType, //微信签名方式：     
+                        "paySign": payment.paySign //微信签名 
+                    },
+                    async function (res) {
+                        if (res.err_msg == "get_brand_wcpay_request:ok") {
+                            setInterval(async function () {
+                                let userState = await self.getUsetState();
+                                if (userState.data.readState > 0) {
+                                    window.location.href = url_add_hash(window.location.href)
+                                }
+                            }, 1000)
+                        } else {
+                            self.payCancelToggle = true;
+                            window.monitor && window.monitor.showLog(this);
+                        }
+                    }
+                );
+            }
+          
         }
         if (typeof WeixinJSBridge == "undefined") {
           if (document.addEventListener) {
