@@ -2046,10 +2046,12 @@
     width: 100%;
     background-size: 100%;
     margin-top: 95/@rem;
+    background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/line1.png');
     background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/line2.png');
+    background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/circle.png');
     position:relative;
     background-repeat:no-repeat;    
-    background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/circle.png');
+    background-image: url('');
   }
   .delete{
     position: absolute;
