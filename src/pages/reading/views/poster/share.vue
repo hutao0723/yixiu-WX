@@ -18,7 +18,7 @@
                         </div>
                         <div class="bookInfo">
                             <p>今日读后感</p>
-                            <h5>{{ bookNameInit(info.courseTitle,24) }}</h5>
+                            <h5 v-if="info.courseTitle">{{ bookNameInit(info.courseTitle,24) }}</h5>
                         </div>
                     </div>
                     <div class="text">
@@ -44,7 +44,7 @@
                             </div>
                         </div>
                         <div class="playInfo">
-                            <p class="name"><span class="taste">试听</span>{{ bookNameInit(info.courseTitle,13) }}</p>
+                            <p class="name" v-if="info.courseTitle"><span class="taste">试听</span>{{ bookNameInit(info.courseTitle,13) }}</p>
                             <div class="range">
                                 <ranger />   
                             </div>
@@ -96,10 +96,15 @@
             _this.$store.commit('setSharePlayWidth'); 
             
             let pageInfo = await this.getInfo();
-            // 分享内容
+            // 分享标题
             let shareContent = '';
             if (pageInfo.success) {
                 _this.dataUpdated = true;
+
+                // 内容为空，默认文本
+                if(!pageInfo.data.content){
+                    pageInfo.data.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+pageInfo.data.clocks+"天。"  
+                }
                 _this.info = pageInfo.data;
                 shareContent = pageInfo.data.shareContent
                 _this.dataInitail();
@@ -112,10 +117,12 @@
 
             // 请求用户信息
             let userInfo=await _this.getUserInfo();
+            let shareText = pageInfo.data.content;
+            shareText = shareText.replace(/\<br\/\>/g,"");
             // 配置分享链接参数
             let msg = {
                 title: userInfo.data.readState*1>=0?shareContent:'每天10分钟，轻松阅读，日有所得', // 分享标题
-                desc: pageInfo.data.content, // 分享描述
+                desc: shareText, // 分享描述
                 link: _this.delUrl(window.location.href,'lastClock'), // 分享链接 默认以当前链接
                 imgUrl: pageInfo.data.bookImageUrl, // 分享图标
             }
