@@ -8,7 +8,7 @@
 			</div>
 			<img :src="imgUrl" v-if="imgUrl"  class="pic"/>
 		</div>
-		<div class="btn" ref='longPress' v-if="btn" :monitor-log="getMonitor(1,0)">
+		<div class="btn" ref='longPress'  v-if= 'btn' :monitor-log="getMonitor(1,0)">
 			长按保存分享
 			<img :src="imgUrl" />
 		</div>
@@ -44,8 +44,9 @@ export default {
 
 		_this.getInfo();
 	},
-  	update(){
+  	updated(){
         // 长按事件监听、埋点
+        const _this = this;
         if(this.firstEnterPage){
             _this.longPressListener();
             this.firstEnterPage = false;
@@ -55,7 +56,6 @@ export default {
   	methods: {
         longPressListener(){
             let timeOutEvent = 0;
-            console.log(this.$refs.longPress)
             this.$refs.longPress.addEventListener('touchstart', (e) => {
                 const event = e.currentTarget;
                 timeOutEvent = setTimeout(() => {

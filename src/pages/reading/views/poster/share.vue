@@ -167,11 +167,11 @@
                 let adzoneId = this.$route.query.dcd ? this.$route.query.dcd : ''; 
                 let itemType = 4;
                 // 发送埋点
-                dpm = '8002.'+this.bookID+'.0.0',
-                dcm = '818.1.0'
+                let dpm = '8002.'+this.bookID+'.0.0';
+                let dcm = '157.818.1.0'
                 //var {dpm, dcm} = JSON.parse(event.currentTarget.getAttribute('monitor-log'));
                 let params = {app_id, referer, url, adzoneId, itemType, dcm, dpm};
-                Vue.http.post('https://embedlog.youfen666.com/embed/other', params).then((res) => {
+                this.$http.post('https://embedlog.youfen666.com/embed/other', params).then((res) => {
                     // 埋点成功
                 }, (res) => {
                     // 埋点失败
