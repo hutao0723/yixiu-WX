@@ -190,7 +190,8 @@
         <div class="delete column-center" @click="closeCouponDialog()">
           <i class="iconfont icon-close delete-icon"></i>
         </div>
-        <div :class="frameTitleClass">
+        <!--背景图片加载过慢，优化-->
+        <div :class="frameTitleClass" class="frameTitleClass">
           <div class="frame-user" v-if="distributorName"><img :src="distributorHeadImgurl"></div>
           <div class="frame-title" v-html="titleText"></div>
           <div class="frame-detail clearfix">
@@ -2039,6 +2040,17 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
+  // 优化图片加载过慢
+  .frameTitleClass{
+    height: 742/@rem;
+    width: 100%;
+    background-size: 100%;
+    margin-top: 95/@rem;
+    background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/line2.png');
+    position:relative;
+    background-repeat:no-repeat;    
+    background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/circle.png');
+  }
   .delete{
     position: absolute;
     width: 56/@rem;

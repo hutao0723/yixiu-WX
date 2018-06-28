@@ -442,6 +442,7 @@
                             font-size: 29/@rem;
                             line-height: 46/@rem;
                             letter-spacing: 1/@rem;
+                            word-wrap: break-word;
                             // &.big{
                             //     font-size: 40/@rem;
                             //     line-height: 1;
