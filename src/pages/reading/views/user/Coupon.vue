@@ -34,8 +34,7 @@
         <div class="right-img" :class="pitch !=1 && pitch == 3 ? 'outdate':''"></div>
       </div>
       <div class="modal-mask" v-show="uselessToggle">
-        <div>你还在训练营中</div>
-        <div>下次报名新训练营再使用</div>
+        <div class="one-line">暂无可用的训练营</div>
       </div>
       <div class="modal-mask" v-show="waitingToggle">
         <div>优惠券还没有到使用的</div>
@@ -49,9 +48,9 @@
         <div class="coupon-word">暂时没有优惠券哦</div>
       </div>
     </div> 
-    <div class="popup" v-show="popup">
-        <p>你还在训练营中</p>
-        <p>下次报名新训练营再使用</p>
+    <div class="modal-mask" v-show="popup">
+         <div>你还在训练营中</div>
+         <div>下次报名新训练营再使用</div>
     </div>
   </div>
 </template>
@@ -99,8 +98,9 @@ export default {
     ...mapState({})
   },
   async created() {
-    this.getTabList()
-    this.userState =  await self.getUsetState();
+        const _this = this;
+        this.getTabList()
+        this.userState =  await _this.getUsetState();
   },
   mounted () {
   },
@@ -169,7 +169,7 @@ export default {
             _this.popup = true;
             setTimeout(() => {
                 _this.popup = false;
-            }, 2000)    
+            }, 3000)    
         }else{
             if(item.couponStatus == 2 && this.pitch == 1){
                 if(item.items != undefined){
@@ -183,12 +183,12 @@ export default {
     waiting() {
       this.waitingToggle = true
       let that = this 
-      setTimeout(() => {that.waitingToggle = false} ,1000)
+      setTimeout(() => {that.waitingToggle = false} ,3000)
     },
     unavailable() {
       this.uselessToggle = true
       let that = this 
-      setTimeout(() => {that.uselessToggle = false} ,1000)
+      setTimeout(() => {that.uselessToggle = false} ,3000)
     },
 
   }
@@ -211,25 +211,6 @@ export default {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
-.popup{
-    position: fixed;
-    top: 600/@rem;
-    left: 165/@rem;
-    background: rgba(0, 0, 0, 0.8);
-    border-radius: 14/@rem;
-    color: #fff;
-    text-align: center;
-    z-index: 10000;
-    width: 450/@rem;
-    height: 120/@rem;
-    color: #fff;
-    box-sizing: border-box;
-    padding: 18/@rem 0;
-    font-size: 30/@rem;
-    p{
-        line-height: 42/@rem;
-    }
-}
 .modal-mask{
   padding: 18/@rem 0;
   position: fixed;
@@ -246,6 +227,9 @@ export default {
   .fontSize(30);
   line-height: 42/@rem;
   box-sizing: border-box;
+  .one-line{
+      line-height: 84/@rem;
+  }
 }
 .coupon-container{
   width:750/@rem;

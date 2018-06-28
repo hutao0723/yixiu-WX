@@ -150,6 +150,26 @@
                 this.$store.commit('setSharePlayWidth'); 
                 // 播放结束切换图标
                 this.isPlaying = false;
+
+                // 播放结束埋点事件
+                
+                // 获取公共字段
+                let app_id = '157';
+                let referer = store.getters.getReferer;
+                let url = window.location.href.split('?')[0];
+                let adzoneId = this.$route.query.dcd ? this.$route.query.dcd : ''; 
+                let itemType = 4;
+                // 发送埋点
+                dpm = '8002.'+this.bookID+'.0.0',
+                dcm = '818.1.0'
+                //var {dpm, dcm} = JSON.parse(event.currentTarget.getAttribute('monitor-log'));
+                let params = {app_id, referer, url, adzoneId, itemType, dcm, dpm};
+                Vue.http.post('https://embedlog.youfen666.com/embed/other', params).then((res) => {
+                    // 埋点成功
+                }, (res) => {
+                    // 埋点失败
+                });
+
             },
             // 音乐播放时间更新事件
             musicTimeUpdate () {
