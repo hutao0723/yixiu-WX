@@ -2051,7 +2051,7 @@
     background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/circle.png');
     position:relative;
     background-repeat:no-repeat;    
-    background-image: url('');
+    // background-image: url('');
   }
   .delete{
     position: absolute;
