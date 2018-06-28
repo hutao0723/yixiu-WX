@@ -220,7 +220,7 @@
     mapState
   } from 'vuex';
 
-  const testUrl = window.location.hostname == 'localhost' ? '/api' : '/api';
+  const testUrl = window.location.hostname == 'localhost' ? '/api' : '';
 
   const API = {
     orderSubmit: testUrl + '/order/submit',
@@ -236,7 +236,6 @@
     bookList: testUrl + '/readBook/bookList',
     courseList: testUrl + '/readBookCourse/courseList',
     userState: testUrl + '/user/read/state',
-
     getCoupon: testUrl + '/activity/getActivity',
     getOptimal: testUrl + '/coupon/info/optimal',
     getSelectCoupon: testUrl + "/coupon/getSelectedCoupon"
