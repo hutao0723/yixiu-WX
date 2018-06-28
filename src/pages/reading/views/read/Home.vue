@@ -220,7 +220,7 @@
     mapState
   } from 'vuex';
 
-  const testUrl = window.location.hostname == 'localhost' ? '/api' : '';
+  const testUrl = window.location.hostname == 'localhost' ? '/api' : '/api';
 
   const API = {
     orderSubmit: testUrl + '/order/submit',
@@ -2053,8 +2053,8 @@
   }
   .delete{
     position: absolute;
-    width: 56/@rem;
-    height: 56/@rem;
+    width: 60/@rem;
+    height: 60/@rem;
     position: absolute;
     right:0;
     top:0;
@@ -2063,14 +2063,14 @@
   }
   .delete-icon{
     color: #fff;
-    font-size: 19/@rem;
+    font-size: 22/@rem;
   }
   .frame-line1{
     height: 605/@rem;
     width: 100%;
     background-size: 100%;
     margin-top: 95/@rem;
-    background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/frame-line1.png');
+    background-image: url('http://yun.dui88.com/yoofans/images/201806/coupon/coupon/line1.png');
     position:relative;
     background-repeat:no-repeat; 
   }
@@ -2128,7 +2128,8 @@
       font-size: 26/@rem;
       text-align: center;
       .word{
-        font-size: 64/@rem;
+        font-size: 50/@rem;
+        padding-right: 5/@rem;
       }
     }
     .frame-fr-title{
@@ -2142,6 +2143,7 @@
       box-sizing: border-box;
       text-overflow: ellipsis;
       width: 310/@rem;
+      font-weight: 700;
       &::before{
         content:"";
         width: 3/@rem;
@@ -2170,10 +2172,11 @@
     height: 86/@rem;
     line-height: 86/@rem;
     background: #FFFA1E;
-    border-radius: 20/@rem;
+    border-radius: 18/@rem;
     text-align: center;
     font-size: 40/@rem;
     color: #FF2B39;
+    font-weight: 700;
   }
 
 }
@@ -2192,13 +2195,15 @@
     &.hasNav_b{
         bottom: 210/@rem    
     }
-  .coupon-text{
+.coupon-text{
     margin-left: 272/@rem;
     color: #fff;
     margin-top: 23/@rem;
     height: 80/@rem;
     font-size:26/@rem;
     line-height: 80/@rem;
+    float: right;
+    margin-right: 20/@rem;
   }
   .coupon-money{
     margin-right: 30/@rem;
@@ -2209,6 +2214,7 @@
     height: 80/@rem;
     font-size:30/@rem;
     line-height: 80/@rem;
+    float: right;
   }
   .ft22{
     font-size: 22/@rem;
