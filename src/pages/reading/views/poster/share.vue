@@ -167,8 +167,8 @@
                 let adzoneId = this.$route.query.dcd ? this.$route.query.dcd : ''; 
                 let itemType = 4;
                 // 发送埋点
-                let dpm = '8002.'+this.bookID+'.0.0';
-                let dcm = '157.818.1.0'
+                let dcm = '8002.'+this.bookID+'.0.0';
+                let dpm = '157.818.1.0'
                 //var {dpm, dcm} = JSON.parse(event.currentTarget.getAttribute('monitor-log'));
                 let params = {app_id, referer, url, adzoneId, itemType, dcm, dpm};
                 this.$http.post('https://embedlog.youfen666.com/embed/other', params).then((res) => {
