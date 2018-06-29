@@ -46,10 +46,9 @@ if (!window.localStorage.getItem('deviceId')) {
   }   
 })()
 
-
 Vue.http.headers.common['ext-deviceId'] = window.localStorage.getItem('deviceId');
 Vue.http.headers.common['from'] = 'read';
-// Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWU3mytFEThAbVRbBsiG99J5L3AycHw9RQzaApFRydFrQ94M49MsJcX715G25172Pf1KBoFocRFwKY5dnB1hHqaxtZhKtX8vv65wehmLQumJMZem1Y7WHFSr4bvsC39NHLkGmgpSiZPB';
+//Vue.http.headers.common['tk'] = '4DZvCWSG2VZjmoWt41H6dppeLDEH57kowX4aPDmKRCj8ZCvtX9GD1BkLYawDZWTVygPjnxWzfWjLZN9yN1mRusk1Nuk8NqLSe1svXukQ35tnv1q4nYB8zJGgiNSD3KRSXvHcQzSt75WES2GMgiuKfvycsEPowYRozrfGJAwBVzams3r4giXBoErHdxACrJSqqhz6rZCh';
 Vue.http.interceptors.push((request, next) => {
   // modify request
   // request.url = request.root + request.url;
@@ -57,16 +56,18 @@ Vue.http.interceptors.push((request, next) => {
   next((response) => { // 在响应之后传给then之前对response进行修改和逻辑判断。对于token时候已过期的判断，就添加在此处，页面中任何一次http请求都会先调用此处方法
     // response.body = '...';
     if (response.data.code == '000001') {
+      console.log(response.data.code)
       let o = '/' + window.location.href.split('/').slice(3).join('/')
-      let reqObj = JSON.parse(request.body)
       let url;
       if (response.url.indexOf('/order/submit') > -1) {
+        let reqObj = JSON.parse(request.body)
         if (o.indexOf('?') > -1) {
           url = encodeURIComponent(o + '&courseId=' + reqObj.itemId);
         } else {
           url = encodeURIComponent(o + '?courseId=' + reqObj.itemId);
         }
       } else {
+        console.log(o)
         url = encodeURIComponent(o);
       }
       Vue.http.get('/getH5LoginUrl', {
@@ -75,6 +76,7 @@ Vue.http.interceptors.push((request, next) => {
         }
       }).then(res => { // 获得签名配置
         if (res.data.data) {
+          console.log(res.data.data)
           location.href = res.data.data
         }
       });

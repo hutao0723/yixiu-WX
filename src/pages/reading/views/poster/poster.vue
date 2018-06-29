@@ -8,7 +8,7 @@
 			</div>
 			<img :src="imgUrl" v-if="imgUrl"  class="pic"/>
 		</div>
-		<div class="btn" v-if="btn" :monitor-log="getMonitor(1,0)" @click="clickFun($event)">
+		<div class="btn" ref='longPress'  v-if= 'btn' :monitor-log="getMonitor(1,0)">
 			长按保存分享
 			<img :src="imgUrl" />
 		</div>
@@ -28,7 +28,10 @@ export default {
 			isSelf: true,
 			btn:false,
 			codeUrl:'',
-			code64:'',
+            code64:'',
+            // 课程ID
+            courseId:'',
+            firstEnterPage:true,
 		};
   	},
   	components: {
@@ -40,50 +43,37 @@ export default {
 		_this.isSelf = _this.$route.query.isClock * 1;
 
 		_this.getInfo();
-
-		// _this.info = {
-		// 	"id": 58,
-		// 	"userId": 100052000,
-		// 	"userNickname": "💥",
-		// 	"userImgUrl": "http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg",
-		// 	"courseId": 198,
-		// 	"courseTitle": "课程-试听10s",
-		// 	"courseSubTitle": "课程-试听10s-副标",
-		// 	"courseUrl": "https://yun.dui88.com/youfen/images/lhk3dw0zk6.gif",
-		// 	"courseVerticalCover": "https://yun.dui88.com/youfen/images/zbp2zkq154.jpg",
-		// 	"courseLateralCover": "https://yun.dui88.com/youfen/images/2bmi5mohht.jpg",
-		// 	"courseAuthor": "",
-		// 	"readId": 9,
-		// 	"readName": "阅读计划-测试1",
-		// 	"readStageId": 9,
-		// 	"readStageNum": 1,
-		// 	"content": "evelopmenppppppppdevelopmenppppppppdevelopmenppppppppdevelopmenppppppppdevelopmenppppppppdevelopmenpppppppppt",
-		// 	"releaseTime": "2018-05-30 14:22:13",
-		// 	"releaseTimeLabel": "深夜",
-		// 	"praiseCount": 3,
-		// 	"userPraise": false,
-		// 	"myself": 0,
-		// 	"listens": 0,
-		// 	"clocks": 201,
-		// 	"books": 0,
-		// 	"loginDays": 2,
-		// 	"readQrcodeImgUrl": "https://yun.dui88.com/youfen/images/z6qj8zsviw.jpg",
-		// 	"bookBgimgUrl": ""
-		// }
-		// //头部背景图
-		// if (!_this.info.bookBgimgUrl) {
-		// 	_this.info.bookBgimgUrl = "http://yun.dui88.com/yoofans/images/201806/poster_bg.jpg";
-		// };
-		// if(!_this.info.courseUrl){
-		// 	_this.info.courseUrl = 'http://yun.dui88.com/youfen/images/read_course_none.png';
-		// };
-		// //默认观点
-		// if(!_this.info.content){
-		// 	_this.info.content = "不读书的人，思想就会停止。这是我在【一修读书】的第"+_this.info.clocks+"天。"
-		// };
-		// this.createdCanvas()
 	},
+  	updated(){
+        // 长按事件监听、埋点
+        const _this = this;
+        if(this.firstEnterPage){
+            _this.longPressListener();
+            this.firstEnterPage = false;
+        }
+        
+    },
   	methods: {
+        longPressListener(){
+            let timeOutEvent = 0;
+            this.$refs.longPress.addEventListener('touchstart', (e) => {
+                const event = e.currentTarget;
+                timeOutEvent = setTimeout(() => {
+                    let $event = {currentTarget:null}
+                    $event.currentTarget = event
+                    this.clickFun($event)
+                },500);
+            })
+            this.$refs.longPress.addEventListener('touchmove', () => {
+                clearTimeout(timeOutEvent);   
+                timeOutEvent = 0; 
+            })
+
+            this.$refs.longPress.addEventListener('touchend', () => {
+                clearTimeout(timeOutEvent);  
+                return false; 
+            })
+        },
 		createdCode() {
 			let _this = this;
 			let qrcode = new QRcode('code',{
@@ -526,7 +516,7 @@ export default {
 		},
 		getMonitor (c,d) {
 	      return JSON.stringify({
-	        dcm: '8002.' + this.courseId + '.0.0',
+	        dcm: '8002.' + this.info.courseId + '.0.0',
 	        dpm: '157.824.' + c + '.' + d
 	      })
 	    }

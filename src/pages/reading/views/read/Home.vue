@@ -15,11 +15,29 @@
       </div> -->
       <!-- <div class="home-bottom" @click="clickFun($event,tabActiveToggle,false)" :class="{bottom:bottomNavToggle}" v-show="tabActive"
         :monitor-log="getMonitor('0.0.0.0', '820.4.0')">去选课程</div> -->
-      <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="tabActive&&readList.length>0&&payBtnShow">
-          <p class="text-day">每天仅需<span>{{selectCourseObj.priceDay}}</span>元</p>
-          <p class="text-del">原价：{{selectCourseObj.costPrice}}</p>
-        <span @click="clickFun($event,orderPay)" class="btn-pay" :monitor-log="getMonitor('0.0.0.0', '819.1.0')"><span class="text-red">¥ {{selectCourseObj.presentPrice}}</span>立即购买</span>
+      
+      <div class="coupon-box clearfix" :class="{hasNav_b:bottomNavToggle}" v-show="selectCourseObj.preferPrice">
+        <div class="fl coupon-text">{{selectCourseObj.couponUsedDesc}}</div>
+        <div class="fr coupon-money"><span class="ft22">￥</span>{{selectCourseObj.couponPrice}}</div>
       </div>
+
+      <div class="home-btn" :class="{bottom:bottomNavToggle}" v-show="tabActive&&readList.length>0&&payBtnShow" >
+          <div v-if="selectCourseObj.preferPrice">
+            <p class="text-daily">券后￥{{selectCourseObj.preferPrice}}</p>
+            <p class="text-origin">￥{{selectCourseObj.costPrice}}</p>
+          </div>
+          <div v-else>
+            <p class="text-day">每天仅需<span>{{selectCourseObj.priceDay}}</span>元</p>
+            <p class="text-del">原价：{{selectCourseObj.costPrice}}</p> 
+          </div>
+        
+        <div  class="btn-daily coupon" v-if="selectCourseObj.preferPrice" @click="clickFun($event,orderPay)" :monitor-log="getMonitor('0.0.0.0', '819.1.0')">
+          <div class="word">立即购买</div>
+          <div class="favour">每天仅需{{selectCourseObj.dailyPrice}}</div>
+        </div>
+        <span v-else @click="clickFun($event,orderPay)" class="btn-pay" :monitor-log="getMonitor('0.0.0.0', '819.1.0')"><span class="text-red">¥ {{selectCourseObj.presentPrice}}</span>立即购买</span> 
+      </div>
+
       <div id="maincontent" class="home-detail" ref="homemain" v-show="tabActive">
         <div class="home-content" :monitor-log="getMonitor('0.0.0.0', '820.2.0')">
           <img src="http://yun.dui88.com/youfen/images/detail20180614_16.jpg" alt="">
@@ -164,6 +182,32 @@
       <div class="pop-bg"></div>
       <i class="pop-close iconfont icon-close" @click="payCancelToggle = false;"></i>
     </div>
+
+    <!--弹框模块-->
+    <div class="frame" v-if="CouponDialog">
+      <div class="coupon-mask"></div>
+      <div class="frame-box">
+        <div class="delete column-center" @click="closeCouponDialog()">
+          <i class="iconfont icon-close delete-icon"></i>
+        </div>
+        <!--背景图片加载过慢，优化-->
+        <div :class="frameTitleClass" class="frameTitleClass">
+          <div class="frame-user" v-if="distributorName"><img :src="distributorHeadImgurl"></div>
+          <div class="frame-title" v-html="titleText"></div>
+          <div class="frame-detail clearfix">
+            <div class="fl">
+              <div class="frame-prize"><span class="word">{{awards.couponPrice/100}}</span>元</div>
+            </div>
+            <div class="fl">
+              <div class="frame-fr-title">{{awards.couponTemplateTitle}}</div>
+              <div class="frame-fr-service">{{awards.useScopeTypeDesc}}</div>
+              <div class="frame-fr-time">{{awards.validityDate}}</div>
+            </div>
+          </div>
+          <div class="frame-btn" @click="closeCouponDialog()">立即使用</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -192,6 +236,9 @@
     bookList: testUrl + '/readBook/bookList',
     courseList: testUrl + '/readBookCourse/courseList',
     userState: testUrl + '/user/read/state',
+    getCoupon: testUrl + '/activity/getActivity',
+    getOptimal: testUrl + '/coupon/info/optimal',
+    getSelectCoupon: testUrl + "/coupon/getSelectedCoupon"
 
   };
 
@@ -228,14 +275,26 @@
         payBtnShow: true,
         noneValueAlert: false,
 
-
+        //优惠券弹框
+        CouponDialog: false,
+        resultCode: null,
+        awards:[],
+        distributorName: '',
+        distributorHeadImgurl: '',
+        titleText:'',
+        frameTitleClass:'',
+        couponCourseId:'', // 优惠券对应的第一个课程Id
+        selectCourseArray:[],
+        couponId:''
       };
     },
     computed: {
       ...mapState(['bottomNavToggle', 'bottomNavType', 'videoToggle'])
     },
     filters: {},
-    created() {},
+    created() {
+      
+    },
     async mounted() {
       let self = this;
       // dcd存入cookie
@@ -249,7 +308,7 @@
       let refreshCookie = true;
 
       // 防止cookie丢失
-      if (window.location.href.indexOf('afterLogin') == -1) {
+      if (window.location.href.indexOf('afterLogin') == -1 && window.location.href.indexOf('activityId') == -1) {
         let res = await this.$http.get('/baseLogin', {
           params: {
             dbredirect: '/' + window.location.href.split('/').slice(3).join('/')
@@ -281,7 +340,9 @@
             userState.data.readState == -1
           ) {
             console.log('用户未购买未授权')
+
             self.pageStatus = 0;
+            self.getProjectile()
             self.getCommentTop();
             self.getReadList(self.$route.query.readId);
             store.commit({
@@ -299,6 +360,7 @@
           ) {
             console.log('用户未购买已授权')
             self.pageStatus = 1;
+            self.getProjectile()
             self.getCommentTop();
             self.getReadList(self.$route.query.readId);
             store.commit({
@@ -367,6 +429,7 @@
           ) {
             console.log('用户购买已关注已读完')
             self.pageStatus = 1;
+            self.getProjectile()
             self.getCommentTop();
             self.getReadList(self.$route.query.readId);
             store.commit({
@@ -449,11 +512,12 @@
       },
 
       // 支付
-      async buy(itemId, itemType) {
+      async buy(itemId, itemType, couponId) {
         console.log('拉起支付')
         const orderId = await this.placeOrder({
           itemId,
           itemType,
+          couponId
         });
         if (!orderId) {
           return false;
@@ -467,13 +531,15 @@
       // 下单
       async placeOrder({
         itemId,
-        itemType
+        itemType,
+        couponId
       }) {
         console.log('下单')
         const url = API.orderSubmit;
         const res = await this.$http.post(url, {
           itemId,
           itemType,
+          couponId,
           dcd: this.$route.query.dcd || this.getCookie('dcd') || '',
         });
         if (!res.data.success) {
@@ -500,47 +566,55 @@
       // 支付
       wxPay(payment) {
         let self = this;
-
-        function onBridgeReady() {
-          WeixinJSBridge.invoke(
-            'getBrandWCPayRequest', {
-              "appId": payment.appId, //公众号名称，由商户传入     
-              "timeStamp": payment.timeStamp, //时间戳，自1970年以来的秒数     
-              "nonceStr": payment.nonceStr, //随机串     
-              "package": payment.package,
-              "signType": payment.signType, //微信签名方式：     
-              "paySign": payment.paySign //微信签名 
-            },
-            async function (res) {
-              if (res.err_msg == "get_brand_wcpay_request:ok") {
-
-                // 给url+时间戳
-                function url_add_hash(url, key) {
-                  var key = (key || 't') + '='; //默认是"t"  
-                  var reg = new RegExp(key + '\\d+'); //正则：t=1472286066028  
-                  var timestamp = +new Date();
-                  if (url.indexOf(key) > -1) { //有时间戳，直接更新  
-                    return url.replace(reg, key + timestamp);
-                  } else { //没有时间戳，加上时间戳  
-                    if (url.indexOf('#') > -1) {
-                      return url.split('#')[0] + '?' + key + timestamp + location.hash;
-                    } else {
-                      return url + '?' + key + timestamp;
-                    }
-                  }
-                }
-                setInterval(async function () {
-                  let userState = await self.getUsetState();
-                  if (userState.data.readState > 0) {
-                    window.location.href = url_add_hash(window.location.href)
-                  }
-                }, 1000)
-              } else {
-                self.payCancelToggle = true;
-                window.monitor && window.monitor.showLog(this);
-              }
+        // 给url+时间戳
+        function url_add_hash(url, key) {
+            var key = (key || 't') + '='; //默认是"t"  
+            var reg = new RegExp(key + '\\d+'); //正则：t=1472286066028  
+            var timestamp = +new Date();
+            if (url.indexOf(key) > -1) { //有时间戳，直接更新  
+            return url.replace(reg, key + timestamp);
+            } else { //没有时间戳，加上时间戳  
+            if (url.indexOf('#') > -1) {
+                return url.split('#')[0] + '?' + key + timestamp + location.hash;
+            } else {
+                return url + '?' + key + timestamp;
             }
-          );
+            }
+        }
+        function onBridgeReady() {
+            if(payment.appId*1<0){
+                setInterval(async function () {
+                    let userState = await self.getUsetState();
+                    if (userState.data.readState > 0) {
+                        window.location.href = url_add_hash(window.location.href)
+                    }
+                }, 1000)
+            }else{
+                WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest', {
+                        "appId": payment.appId, //公众号名称，由商户传入     
+                        "timeStamp": payment.timeStamp, //时间戳，自1970年以来的秒数     
+                        "nonceStr": payment.nonceStr, //随机串     
+                        "package": payment.package,
+                        "signType": payment.signType, //微信签名方式：     
+                        "paySign": payment.paySign //微信签名 
+                    },
+                    async function (res) {
+                        if (res.err_msg == "get_brand_wcpay_request:ok") {
+                            setInterval(async function () {
+                                let userState = await self.getUsetState();
+                                if (userState.data.readState > 0) {
+                                    window.location.href = url_add_hash(window.location.href)
+                                }
+                            }, 1000)
+                        } else {
+                            self.payCancelToggle = true;
+                            window.monitor && window.monitor.showLog(this);
+                        }
+                    }
+                );
+            }
+          
         }
         if (typeof WeixinJSBridge == "undefined") {
           if (document.addEventListener) {
@@ -602,7 +676,7 @@
       },
       // 开始支付
       orderPay() {
-        this.buy(this.selectCourseId, 4)
+        this.buy(this.selectCourseId, 4, this.couponId)
       },
       // 开始播放
       playAudio(item) {
@@ -619,6 +693,7 @@
       selectCourse(item) {
         if (this.selectCourseId != item.readId && !item.purchased) {
           this.selectCourseId = item.readId;
+          this.couponId = item.couponId ? item.couponId : ''
           this.selectCourseObj = item;
         }
       },
@@ -708,10 +783,39 @@
             if (res.data.data[0].purchased) {
               this.payBtnShow = false;
             } else {
+
+              // 根据传的id 判断是否定位到课程,定位到实际优惠券的课程
+              let planId = this.$route.query.planId
+              let couponId = this.$route.query.couponId
+              let activityId = this.$route.query.activityId
+
+              // 如果传过来的planId不存在，并且优惠券定向Id不存在则选择列表中的第一个
               this.selectCourseId = res.data.data[0].readId
+                // 获取定位到第一个优惠券的id,
+              if(res.data.data[0].couponId){
+                //如果活动id不存在，则返回的优惠券id替换全局id
+                if(!activityId){
+                  this.couponId = res.data.data[0].couponId
+                }
+              }
               this.selectCourseObj = res.data.data[0];
+
+              if(planId && couponId){
+                this.couponId = couponId
+                this.selectCourseId = planId
+                this.getSelectById(planId, couponId) 
+              }
             }
           }
+          // if (res.data.data.length > 0) {
+          //   if (res.data.data[0].purchased) {
+          //     this.payBtnShow = false;
+          //   } else {
+          //     this.selectCourseId = res.data.data[0].readId
+          //     this.selectCourseObj = res.data.data[0];
+          //   }
+          // }
+
         });
       },
       // 获取阅读详情
@@ -774,6 +878,106 @@
           this.bookName = item.title;
           this.alertToggle = true;
         });
+      },
+
+      // 获取优惠券弹框
+      async getProjectile() {
+        const url = API.getCoupon;
+        let activityId
+        let distributorId
+        // activityId = this.$route.query.activityId ? this.$route.query.activityId: ''
+        if(this.$route.query.activityId && !this.$route.query.courseId){
+          console.log(activityId)
+          activityId = this.$route.query.activityId 
+        }else{
+          return
+        }
+        distributorId = this.$route.query.distributorId ? this.$route.query.distributorId:''
+        const res = await this.$http.post(url, {activityId,distributorId},{ emulateJSON: true });
+        console.log(res)
+        //this.$http.post(url, ,{ emulateJSON: true }).then((res) => {
+            let objs = res.data
+            if (objs.success) {
+              let resp = objs.data
+              if(objs.data){
+                if(resp.awards.length <= 0){
+                  return
+                }
+                this.awards = resp.awards[0]
+                this.resultCode = resp.resultCode
+                this.distributorHeadImgurl = resp.distributorHeadImgurl
+                this.distributorName = resp.distributorName
+
+                //resultCode为0 已参与活动(awards有数据则未使用)
+                if(resp.resultCode == 0){
+                  this.frameTitleClass = "frame-line3"
+                  this.titleText = "您有一张优惠券可以使用哦"
+                  this.CouponDialog = true
+                }
+                // resultCode为1 券发放成功
+                if(resp.resultCode == 1){
+                  if(resp.distributorName){
+                    this.frameTitleClass = resp.distributorName.length > 6?'frame-line2':'frame-line1'
+                    this.titleText = resp.distributorName + "送你一张优惠券"
+                    this.CouponDialog = true
+                  }else{
+                    this.titleText = "恭喜您，捡到一张优惠券"
+                    this.frameTitleClass = "frame-line3"
+                    this.CouponDialog = true
+                  }
+                }
+                // 优惠券关联的课程Id
+
+                this.couponCourseId = resp.awards[0].items[0].itemId;
+
+                this.couponId = resp.awards[0].couponId
+              }
+            } else {
+              console.log("获取数据失败")
+            } 
+        //}); 
+      },
+
+      // 关闭优惠券弹框
+      closeCouponDialog() {
+        console.log("关闭弹框")
+        // 如果优惠券匹配的课程id是当前页展示的id，则替换原来的价格，否则则关闭弹框
+        if(this.couponCourseId == this.selectCourseId){
+          this.selectCourseId = this.couponCourseId
+          this.getSelectById(this.couponCourseId ,this.couponId)
+        }
+        this.CouponDialog = false
+      },
+      // 根据ID获取实际的价格，替换原来的列表中的价格
+      getSelectById(readId,couponId) {
+        const url = API.getSelectCoupon;
+        let params={
+          readId : readId,
+          couponId: couponId
+        }
+        this.$http.get(url, {params}).then((res) => {
+          let objs = res.data
+          if (objs.success) {
+            let resp = objs.data
+            if(this.readList.length > 0){
+              this.readList.forEach(item=>{
+                if(item.readId == readId){
+                  item.couponId = objs.data.couponId
+                  item.preferPrice = objs.data.preferPrice
+                  item.couponUsedDesc = objs.data.couponUsedDesc
+                  item.dailyPrice = objs.data.dailyPrice
+                  item.couponPrice= objs.data.couponPrice
+                  // 改变列表中原来的最优值
+                  this.selectCourseObj = item
+                  this.couponId = couponId
+                }
+              })
+            }
+            this.$set(this.readList)
+          } else {
+            console.log("获取数据失败")
+          } 
+        }); 
       }
 
     }
@@ -807,13 +1011,13 @@
       .size(100, 100);
       position: fixed;
       right: 30/@rem;
-      bottom: 140/@rem;
+      bottom: 200/@rem;
       background: url('http://yun.dui88.com/youfen/images/read_btn1.png') no-repeat center;
       background-size: 100% 100%;
       z-index: 1000;
     }
     .home-service.bottom {
-      bottom: 240/@rem;
+      bottom: 300/@rem;
     }
     .home-detail {
       // padding-top: 100/@rem;
@@ -870,6 +1074,7 @@
         }
       }
     }
+
     .home-btn {
       .text(24,
       100);
@@ -905,6 +1110,22 @@
         color: #777;
         text-decoration: line-through;
       }
+      .text-daily{
+        .text(30,37);
+        .pos(0,14);
+        width: 310/@rem;
+        color: #FF4343;
+        text-align: right;
+      }
+      .text-origin{
+        .text(24,33);
+        .pos(0,54);
+        width: 310/@rem;
+        color: #FF4343;
+        text-align: right;
+        color: #777;
+        text-decoration: line-through;
+      }
       .text-red {
         font-size: 40/@rem;
         margin-left: 20/@rem;
@@ -929,6 +1150,41 @@
           font-weight: bold;
         }
       }
+      .btn-daily {
+        .size(400,
+        100);
+        .text(30,
+        100);
+        position: absolute;
+        right: 0;
+        top: 0;
+        background: #FF4343;
+        color: #fff;
+        text-align: center;
+        box-shadow: 0px -1px 20px 0px rgba(0, 0, 0, 0.1);
+        z-index: 666;
+        .text-red{
+          .text(44,100);
+          font-weight: bold;
+        }
+        &.origin{
+          .size(360,100);
+          .text(40,100);
+        }
+        &.coupon{
+          .size(400,100);
+        }
+        .word{
+          height: 60/@rem;
+          line-height: 70/@rem;
+          font-size: 40/@rem;
+        }
+        .favour{
+          height: 40/@rem;
+          line-height: 35/@rem;
+          font-size: 20/@rem;
+        }
+      }
     }
     .home-bottom.bottom {
       bottom: 100/@rem;
@@ -945,7 +1201,7 @@
     }
     .home-review {
       background: #fff;
-      padding-bottom: 240/@rem;
+      padding-bottom: 310/@rem;
       h2 {
         .text(40,
         56);
@@ -1765,5 +2021,205 @@
     }
   }
 
+// 弹框
+.coupon-mask {
+  width: 750/@rem;
+  height: 100%;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  top: 0;
+  left: 0;
+}
+.frame-box{
+  width: 640/@rem;
+  position: fixed;
+  z-index: 1001;
+  box-sizing: border-box;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  // 优化图片加载过慢
+  .frameTitleClass{
+    height: 742/@rem;
+    width: 100%;
+    background-size: 100%;
+    margin-top: 95/@rem;
+    background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/line1.png');
+    background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/line2.png');
+    background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/circle.png');
+    position:relative;
+    background-repeat:no-repeat;    
+    // background-image: url('');
+  }
+  .delete{
+    position: absolute;
+    width: 60/@rem;
+    height: 60/@rem;
+    position: absolute;
+    right:0;
+    top:0;
+    background:rgba(0,0,0,0.5);
+    border-radius: 50%;
+  }
+  .delete-icon{
+    color: #fff;
+    font-size: 22/@rem;
+  }
+  .frame-line1{
+    height: 605/@rem;
+    width: 100%;
+    background-size: 100%;
+    margin-top: 95/@rem;
+    background-image: url('http://yun.dui88.com/yoofans/images/201806/coupon/coupon/line1.png');
+    position:relative;
+    background-repeat:no-repeat; 
+  }
+  .frame-line2{
+    height: 742/@rem;
+    width: 100%;
+    background-size: 100%;
+    margin-top: 95/@rem;
+    background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/line2.png');
+    position:relative;
+    background-repeat:no-repeat; 
+  }
+  .frame-line3{
+    height: 605/@rem;
+    width: 100%;
+    background-size: 100%;
+    margin-top: 50/@rem;
+    background-image: url('https://yun.dui88.com/yoofans/images/201806/coupon/coupon/circle.png');
+    position:relative;
+    background-repeat:no-repeat; 
+  }
+  .frame-user{
+    position: absolute;
+    left:50%;
+    transform: translateX(-50%);
+    top: -70/@rem;
+    img{   
+      border-radius: 50%;
+      display: block;
+      width: 140/@rem;
+      height: 140/@rem;
+      box-shadow:0px 4/@rem 4/@rem 0 rgba(0,0,0,0.33);
+    }
+  }
+  .frame-title{
+    padding-top: 84/@rem;
+    font-size: 38/@rem;
+    color: #fff;
+    line-height: 53/@rem;
+    text-align: center;
+    margin:0 auto;
+    width: 517/@rem;
+  }
+  .frame-detail{
+    width: 562/@rem;
+    margin:100/@rem auto 0;
+    height: 170/@rem;
+    background-size: 100%;
+    background-image: url('https://yun.duiba.com.cn/yoofans/images/201806/box.png');
+    background-repeat:no-repeat;
+    .frame-prize{
+      width: 173/@rem;
+      line-height: 170/@rem;
+      color: #FF2B38;
+      font-size: 26/@rem;
+      text-align: center;
+      .word{
+        font-size: 50/@rem;
+        padding-right: 5/@rem;
+      }
+    }
+    .frame-fr-title{
+      margin: 23/@rem 0 0 37/@rem; 
+      position: relative;
+      color: #333;
+      padding-left: 13/@rem;
+      font-size: 28/@rem;
+      overflow: hidden;
+      white-space: nowrap;
+      box-sizing: border-box;
+      text-overflow: ellipsis;
+      width: 310/@rem;
+      font-weight: 700;
+      &::before{
+        content:"";
+        width: 3/@rem;
+        height: 22/@rem;
+        position:absolute;
+        top: 9/@rem;
+        left: 0;
+        border-radius:2px;
+        background: #FF831B;
+      }
+    }
+    .frame-fr-service{
+      margin: 4/@rem 0 0 50/@rem; 
+      color: #333;
+      font-size: 23/@rem;
+    }
+    .frame-fr-time{
+      margin: 24/@rem 0 0 50/@rem; 
+      color: #999;
+      font-size: 20/@rem;
+    }
+  }
+  .frame-btn{
+    margin: 62/@rem auto 0;
+    width: 560/@rem;
+    height: 86/@rem;
+    line-height: 86/@rem;
+    background: #FFFA1E;
+    border-radius: 18/@rem;
+    text-align: center;
+    font-size: 40/@rem;
+    color: #FF2B39;
+    font-weight: 700;
+  }
+
+}
+
+.coupon-box{
+    position: fixed;
+    width: 720/@rem;
+    height: 100/@rem;
+    z-index:100;
+    left: 15/@rem;
+    //bottom: 210/@rem;
+    bottom: 110/@rem;
+    background-size: 100% 100%;
+    background-image: url("http://yun.duiba.com.cn/yoofans/images/201806/coupon-box.png");
+    background-repeat: no-repeat;
+    &.hasNav_b{
+        bottom: 210/@rem    
+    }
+.coupon-text{
+    margin-left: 272/@rem;
+    color: #fff;
+    margin-top: 23/@rem;
+    height: 80/@rem;
+    font-size:26/@rem;
+    line-height: 80/@rem;
+    float: right;
+    margin-right: 20/@rem;
+  }
+  .coupon-money{
+    margin-right: 30/@rem;
+    color: #fff;
+    width:112/@rem;
+    text-align: center;
+    margin-top: 23/@rem;
+    height: 80/@rem;
+    font-size:30/@rem;
+    line-height: 80/@rem;
+    float: right;
+  }
+  .ft22{
+    font-size: 22/@rem;
+  }
+}
 </style>
 

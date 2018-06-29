@@ -339,6 +339,7 @@
           font-size: 32/@rem;
           line-height: 42/@rem;
           color: #333;
+          word-wrap: break-word;
         }
         .item-content.show {
           height: 126/@rem;
